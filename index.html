@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="DIGIY EXPLORE - Apporteur d'affaires tourisme Sénégal. Mise en relation directe sans commission abusive.">
   <meta property="og:title" content="DIGIY EXPLORE - Apporteur d'Affaires Tourisme Sénégal">
-  <meta property="og:description" content="Mise en relation entre voyageurs et professionnels africains. Contact direct, modèle équitable.">
+  <meta property="og:description" content="Mise en relation directe entre voyageurs et professionnels africains. Contact direct, modèle équitable.">
   <meta property="og:type" content="website">
   <meta name="robots" content="index, follow">
 
@@ -34,12 +34,12 @@
     :root{
       --gold:#D4AF37;
       --gold-dark:#B8941E;
-      --dark:#111;
       --black:#000;
       --white:#fff;
     }
     .playfair{font-family:'Playfair Display',serif}
     section{scroll-margin-top:80px}
+    a{text-decoration:none}
 
     /* NAV */
     nav{
@@ -55,7 +55,7 @@
     }
     .logo{
       display:flex;align-items:center;gap:.5rem;
-      font-size:1.4rem;font-weight:800;color:var(--gold);
+      font-size:1.4rem;font-weight:900;color:var(--gold);
       white-space:nowrap;
     }
     .logo .inf{font-size:2rem;animation:float 3s ease-in-out infinite}
@@ -69,9 +69,7 @@
       padding:2rem;gap:1.5rem;
       overflow-y:auto;
     }
-    .nav-links a{
-      color:#fff;text-decoration:none;font-size:1.1rem;font-weight:600;
-    }
+    .nav-links a{color:#fff;font-weight:700;font-size:1.1rem}
     .nav-links a:hover{color:var(--gold)}
 
     .nav-actions{display:flex;align-items:center;gap:.7rem}
@@ -79,12 +77,14 @@
     .btn-nav{
       padding:.6rem 1.2rem;
       border-radius:30px;
-      font-weight:800;
+      font-weight:900;
       font-size:.9rem;
-      border:none;
       cursor:pointer;
       transition:.2s;
       white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .btn-pay{
       background:linear-gradient(135deg,var(--gold),var(--gold-dark));
@@ -133,7 +133,7 @@
       color:var(--gold);
       padding:.6rem 1.4rem;
       border-radius:40px;
-      font-weight:700;
+      font-weight:800;
       background:rgba(212,175,55,.12);
       margin-bottom:1.6rem;
     }
@@ -149,6 +149,7 @@
       opacity:.92;
       margin-bottom:2rem;
     }
+
     .cta-group{
       display:flex;
       justify-content:center;
@@ -160,25 +161,22 @@
       border-radius:60px;
       font-weight:900;
       font-size:1.1rem;
-      border:none;
       cursor:pointer;
       transition:.2s;
       display:inline-flex;
       gap:.6rem;
       align-items:center;
+      justify-content:center;
     }
     .btn-hero.explore{
       background:linear-gradient(135deg,var(--gold),var(--gold-dark));
       color:#000;
-      box-shadow:0 18px 50px rgba(212,175,55,.25);
     }
-    .btn-hero.explore:hover{transform:translateY(-3px)}
     .btn-hero.pay{
-      background:transparent;
       border:2px solid #fff;
       color:#fff;
     }
-    .btn-hero.pay:hover{background:#fff;color:#000}
+    .btn-hero:hover{transform:translateY(-2px)}
 
     @media(min-width:768px){
       h1{font-size:4.2rem}
@@ -211,7 +209,7 @@
     }
     footer .tagline{
       color:var(--gold);
-      font-weight:800;
+      font-weight:900;
       margin-top:.8rem;
     }
   </style>
@@ -234,8 +232,15 @@
       </div>
 
       <div class="nav-actions">
-        <button class="btn-nav btn-pay" id="btnPayTop">Commencer à payer</button>
-        <button class="btn-nav btn-enter" id="btnEnterTop">Entrer / Explorer</button>
+        <a id="btnPayTop" class="btn-nav btn-pay"
+           href="https://beauville.github.io/commencer-a-payer/">
+          Commencer à payer
+        </a>
+
+        <a id="btnEnterTop" class="btn-nav btn-enter"
+           href="https://beauville.github.io/digiy-explore/explore.html">
+          Entrer / Explorer
+        </a>
 
         <button class="menu-toggle" id="menuToggle">
           <i class="fas fa-bars"></i>
@@ -247,13 +252,12 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
-
     <div class="hero-content">
+
       <div class="badge">🇸🇳 Saly • Dakar • Petite Côte</div>
 
       <h1 class="playfair">
-        L’Afrique Authentique<br/>
-        Accessible au Monde
+        L’Afrique Authentique<br/>Accessible au Monde
       </h1>
 
       <p class="lead">
@@ -262,13 +266,15 @@
       </p>
 
       <div class="cta-group">
-        <button class="btn-hero explore" id="btnEnterHero">
+        <a id="btnEnterHero" class="btn-hero explore"
+           href="https://beauville.github.io/digiy-explore/explore.html">
           🔥 Entrer dans EXPLORE <i class="fas fa-compass"></i>
-        </button>
+        </a>
 
-        <button class="btn-hero pay" id="btnPayHero">
+        <a id="btnPayHero" class="btn-hero pay"
+           href="https://beauville.github.io/commencer-a-payer/">
           💳 Commencer à payer (Abonnement)
-        </button>
+        </a>
       </div>
     </div>
   </section>
@@ -277,22 +283,21 @@
   <section id="role" class="section">
     <h2 class="playfair">Notre rôle</h2>
     <p>
-      DIGIY EXPLORE est un apporteur d’affaires terrain : visibilité, contact direct, paiement au professionnel.
-      Nous connectons l’Afrique au monde.
+      DIGIY EXPLORE connecte voyageurs et professionnels africains.
+      Contact direct, visibilité internationale, modèle équitable.
     </p>
   </section>
 
   <!-- ZONES -->
   <section id="zones" class="section" style="background:#f9f9f9;">
     <h2 class="playfair">Zones actives</h2>
-    <p>
-      Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine vers d’autres pays africains.
-    </p>
+    <p>Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine.</p>
 
     <div style="margin-top:2rem">
-      <button class="btn-hero explore" id="btnEnterZones">
+      <a id="btnEnterZones" class="btn-hero explore"
+         href="https://beauville.github.io/digiy-explore/explore.html">
         🚀 Explorer maintenant
-      </button>
+      </a>
     </div>
   </section>
 
@@ -300,7 +305,7 @@
   <section id="mission" class="section" style="background:#000;color:#fff;">
     <h2 class="playfair" style="color:var(--gold)">Vision DIGIY</h2>
     <p style="color:rgba(255,255,255,.85)">
-      Un tourisme équitable, enraciné, souverain. La valeur reste en Afrique.
+      Tourisme enraciné, souverain, équitable. La valeur reste en Afrique.
     </p>
   </section>
 
@@ -310,58 +315,17 @@
     <div class="tagline">∞ L’Afrique enracinée, connectée au monde ∞</div>
   </footer>
 
-  <!-- ✅ SCRIPT FINAL NO LOOP -->
+  <!-- ✅ MENU MOBILE -->
   <script>
-  document.addEventListener("DOMContentLoaded", ()=>{
-
-    const EXPLORE_URL = "./explore.html";
-    const PAY_URL = "https://beauville.github.io/commencer-a-payer/";
-
-    function goExplore(){
-      window.location.href = EXPLORE_URL;
-    }
-
-    function goPay(){
-      const u = new URL(PAY_URL);
-
-      u.searchParams.set("kind","explore_sub");
-      u.searchParams.set("module","EXPLORE");
-      u.searchParams.set("plan","pro_month");
-      u.searchParams.set("from","landing");
-
-      u.searchParams.set(
-        "return",
-        "https://beauville.github.io/digiy-explore/explore.html"
-      );
-
-      window.location.href = u.toString();
-    }
-
-    // Safe bind
-    function bind(id, fn){
-      const el = document.getElementById(id);
-      if(el) el.addEventListener("click", fn);
-    }
-
-    // Explore buttons
-    bind("btnEnterTop", goExplore);
-    bind("btnEnterHero", goExplore);
-    bind("btnEnterZones", goExplore);
-
-    // Pay buttons
-    bind("btnPayTop", goPay);
-    bind("btnPayHero", goPay);
-
-    // Mobile menu
-    const menuToggle = document.getElementById("menuToggle");
-    const navLinks = document.getElementById("navLinks");
-    if(menuToggle && navLinks){
-      menuToggle.addEventListener("click", ()=>{
-        navLinks.classList.toggle("active");
-      });
-    }
-
-  });
+    document.addEventListener("DOMContentLoaded", ()=>{
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+      if(menuToggle && navLinks){
+        menuToggle.addEventListener("click", ()=>{
+          navLinks.classList.toggle("active");
+        });
+      }
+    });
   </script>
 
 </body>
