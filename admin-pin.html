@@ -4,29 +4,20 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <meta name="theme-color" content="#071a13"/>
-  <title>DIGIY EXPLORE — Admin Validate</title>
-
-  <!-- Supabase JS v2 -->
+  <title>DIGIY EXPLORE — Admin PIN (Harden)</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#071a13;
-      --card:#0b2a1f;
-      --line:rgba(255,255,255,.12);
-      --text:#eafff1;
-      --muted:rgba(234,255,241,.72);
-      --gold:#facc15;
-      --green:#22c55e;
-      --danger:#fb7185;
-      --shadow:0 14px 40px rgba(0,0,0,.35);
-      --r:18px;
+      --bg:#071a13; --card:#0b2a1f; --line:rgba(255,255,255,.12);
+      --text:#eafff1; --muted:rgba(234,255,241,.72);
+      --gold:#facc15; --green:#22c55e; --danger:#fb7185;
+      --shadow:0 14px 40px rgba(0,0,0,.35); --r:18px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0;
+      margin:0; color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--text);
       background:
         radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
         radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
@@ -50,7 +41,7 @@
       border:1px solid rgba(255,255,255,.15);
       font-weight:900;
     }
-    .t1{font-size:14px;font-weight:900}
+    .t1{font-size:14px;font-weight:1000}
     .t2{font-size:12px;color:var(--muted);margin-top:2px}
     .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
     .btn{
@@ -59,6 +50,7 @@
       border:1px solid rgba(255,255,255,.16);
       background: rgba(6,20,18,.55);
       cursor:pointer;font-size:12px;user-select:none;white-space:nowrap;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
     }
     .btn:active{transform:scale(.98)}
     .btn.gold{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.22)}
@@ -144,6 +136,8 @@
     }
     .toast.show{display:block}
     .small{font-size:12px;color:var(--muted)}
+    .hr{height:1px;background:rgba(255,255,255,.10);margin:10px 0}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
   </style>
 </head>
 
@@ -154,42 +148,45 @@
         <div class="logo">♾️</div>
         <div>
           <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Admin — Validate Draft → Published / Rejected</div>
+          <div class="t2">Admin PIN — Harden (lock + logs + session 8h)</div>
         </div>
       </div>
       <div class="actions">
-        <div class="pill" id="who">auth: —</div>
+        <div class="pill" id="who">admin: —</div>
         <div id="btnGoIndex" class="btn ghost">🏠 Index</div>
+        <div id="btnAudit" class="btn gold">🧾 Audit</div>
         <div id="btnRefresh" class="btn gold">🔄 Refresh</div>
-        <div id="btnLogout" class="btn danger">🚪 Logout</div>
+        <div id="btnLogout" class="btn danger">🧼 Reset</div>
       </div>
     </div>
 
     <div class="grid">
-      <!-- AUTH -->
+      <!-- PIN -->
       <div class="panel">
         <div class="hd">
-          <div class="h1">Connexion Admin (email + password)</div>
-          <div class="h2">Cette page nécessite un compte Supabase Auth. Une fois connecté, tu peux publier / rejeter.</div>
+          <div class="h1">Connexion (Téléphone + PIN)</div>
+          <div class="h2">Anti-bruteforce: 5 échecs → lock 15 min. Session: 8 heures.</div>
         </div>
         <div class="body">
           <div class="field">
-            <div class="label">Email</div>
-            <input id="email" class="input" placeholder="admin@digiylyfe.com" autocomplete="email"/>
+            <div class="label">Téléphone</div>
+            <input id="phone" class="input" placeholder="+22177XXXXXXX" autocomplete="tel"/>
           </div>
           <div style="height:10px"></div>
           <div class="field">
-            <div class="label">Password</div>
-            <input id="pass" class="input" placeholder="••••••••" type="password" autocomplete="current-password"/>
+            <div class="label">PIN</div>
+            <input id="pin" class="input" placeholder="1234" inputmode="numeric" autocomplete="one-time-code"/>
           </div>
           <div style="height:10px"></div>
+
           <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center">
-            <div id="btnLogin" class="btn primary">🔐 Login</div>
-            <div class="hint">Astuce: tu peux garder cette page en favoris.</div>
+            <div id="btnLogin" class="btn primary">🔐 Activer</div>
+            <div class="hint">Si lock, attends ou change le PIN en base.</div>
           </div>
-          <div style="height:10px"></div>
+
+          <div class="hr"></div>
           <div class="small">
-            ⚠️ Si tu ne veux pas d’email/password, on fera une version “PIN + owner_phone” via RPC plus tard.
+            RPC utilisés: <span class="mono">explore_admin_pin_check</span> & <span class="mono">explore_admin_set_status</span>
           </div>
         </div>
       </div>
@@ -205,30 +202,29 @@
         </div>
       </div>
 
-      <!-- DRAFT LIST -->
+      <!-- DRAFTS -->
       <div class="panel" style="grid-column:1/-1">
         <div class="hd">
           <div class="h1">En attente (draft)</div>
-          <div class="h2">Publier = visible sur l’index. Rejeter = refusé.</div>
+          <div class="h2">Publier = visible public. Rejeter = refusé.</div>
         </div>
         <div class="body">
           <div class="list" id="drafts"></div>
-          <div id="emptyDrafts" class="small" style="display:none;margin-top:8px">Aucun draft pour l’instant.</div>
+          <div id="emptyDrafts" class="small" style="display:none;margin-top:8px">Aucun draft.</div>
         </div>
       </div>
 
-      <!-- PUBLISHED LIST -->
+      <!-- PUBLISHED -->
       <div class="panel" style="grid-column:1/-1">
         <div class="hd">
           <div class="h1">Derniers publiés (published)</div>
-          <div class="h2">Un coup d’œil rapide sur le terrain visible.</div>
+          <div class="h2">Tu peux aussi rejeter après publication.</div>
         </div>
         <div class="body">
           <div class="list" id="pubs"></div>
           <div id="emptyPubs" class="small" style="display:none;margin-top:8px">Aucun publié.</div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -236,9 +232,10 @@
 
 <script>
 /* =========================================================
-   ADMIN VALIDATE — EXPLORE
-   Status ENUM/CHECK: draft / published / rejected
-   Type CHECK: resto / plage / culture / nature / hebergement / activite
+   DIGIY EXPLORE — ADMIN PIN HARDEN (DEF)
+   - Session 8h localStorage
+   - Lock status from RPC (locked_until)
+   - Publish/Reject via RPC only
    ========================================================= */
 
 const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
@@ -254,7 +251,7 @@ function ensureSupabase(){
     toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
     throw new Error("Supabase config missing (anon).");
   }
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
   return sb;
 }
 
@@ -271,57 +268,93 @@ function esc(s){
     .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
     .replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
+function normalizePhone(p){
+  return (p||"").toString().trim().replace(/[^\d+]/g,"");
+}
 
+/* -------------------------
+   SESSION (8H)
+------------------------- */
+const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
+const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
+
+function getPinSession(){
+  try{
+    const s = JSON.parse(localStorage.getItem(LS_KEY) || "null");
+    if(!s?.phone || !s?.pin || !s?.ts) return null;
+    if((Date.now() - s.ts) > SESSION_TTL_MS){
+      localStorage.removeItem(LS_KEY);
+      return null;
+    }
+    return s;
+  }catch(e){ return null; }
+}
+function setPinSession(phone, pin){
+  localStorage.setItem(LS_KEY, JSON.stringify({ phone, pin, ts: Date.now() }));
+}
+function clearPinSession(){ localStorage.removeItem(LS_KEY); }
+
+function updateWho(){
+  const s = getPinSession();
+  $("#who").textContent = s?.phone ? ("admin: " + s.phone) : "admin: —";
+}
+
+/* -------------------------
+   RPC
+------------------------- */
+async function pinCheck(phone, pin){
+  const sb = ensureSupabase();
+  const { data, error } = await sb.rpc("explore_admin_pin_check", { p_phone: phone, p_pin: pin });
+  if(error) return { ok:false, error };
+  return data || { ok:false };
+}
+
+async function setStatus(spotId, status){
+  const sb = ensureSupabase();
+  const s = getPinSession();
+  if(!s?.phone || !s?.pin){
+    toast("🔐 PIN requis.");
+    return { ok:false };
+  }
+  const { data, error } = await sb.rpc("explore_admin_set_status", {
+    p_phone: s.phone,
+    p_pin: s.pin,
+    p_spot_id: spotId,
+    p_status: status
+  });
+  if(error) return { ok:false, error };
+  return data || { ok:false };
+}
+
+/* -------------------------
+   UI builders
+------------------------- */
 function fmtSpot(s){
-  const id = s.id;
-  const url = `./spot.html?id=${encodeURIComponent(id)}`;
+  const url = `./spot.html?id=${encodeURIComponent(s.id)}`;
   const name = s.name || "Spot";
   const meta = `${s.type || "—"} • ${s.city || "—"} • ${s.zone || "—"}`;
   const ph = s.photo_url ? `<a href="${esc(s.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`;
   const ln = s.link_url ? `<a href="${esc(s.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 link</a>` : `<span class="tag">🔗 —</span>`;
   const tel = s.phone ? `<a href="tel:${esc(s.phone)}" class="tag">📞 ${esc(s.phone)}</a>` : `<span class="tag">📞 —</span>`;
-  return { url, name, meta, ph, ln, tel };
+  const desc = s.description ? esc(String(s.description).slice(0,140)) : "—";
+  return { url, name, meta, ph, ln, tel, desc };
 }
 
+/* -------------------------
+   LOAD
+------------------------- */
 async function refreshStats(){
   const sb = ensureSupabase();
-
   const [d, p, r] = await Promise.all([
     sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","draft"),
     sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","published"),
     sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","rejected"),
   ]);
-
   const dd = d.count ?? 0, pp = p.count ?? 0, rr = r.count ?? 0;
-
   $("#stats").innerHTML = `
-    <div class="card">
-      <div class="row1">
-        <div>
-          <div class="nm">📥 Draft</div>
-          <div class="meta">${dd} en attente</div>
-        </div>
-        <div class="tag">status=draft</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="row1">
-        <div>
-          <div class="nm">✅ Published</div>
-          <div class="meta">${pp} visibles</div>
-        </div>
-        <div class="tag">status=published</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="row1">
-        <div>
-          <div class="nm">⛔ Rejected</div>
-          <div class="meta">${rr} refusés</div>
-        </div>
-        <div class="tag">status=rejected</div>
-      </div>
-    </div>
+    <div class="card"><div class="row1"><div><div class="nm">📥 Draft</div><div class="meta">${dd} en attente</div></div><div class="tag">draft</div></div></div>
+    <div class="card"><div class="row1"><div><div class="nm">✅ Published</div><div class="meta">${pp} visibles</div></div><div class="tag">published</div></div></div>
+    <div class="card"><div class="row1"><div><div class="nm">⛔ Rejected</div><div class="meta">${rr} refusés</div></div><div class="tag">rejected</div></div></div>
   `;
 }
 
@@ -329,23 +362,21 @@ async function refreshDrafts(){
   const sb = ensureSupabase();
   const { data, error } = await sb
     .from("digiy_explore_spots")
-    .select("id, created_at, name, type, zone, city, phone, lat, lng, description, photo_url, link_url, status, owner_phone, score, tags")
+    .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status, owner_phone")
     .eq("status","draft")
     .order("created_at", { ascending:false })
     .limit(200);
 
   if(error){
     console.error(error);
-    toast("❌ Impossible de charger les drafts (RLS/Update policy?)");
+    toast("❌ Lecture drafts refusée (RLS?).");
     return;
   }
 
   $("#emptyDrafts").style.display = (data?.length ? "none" : "block");
-
   $("#drafts").innerHTML = (data || []).map(s=>{
     const f = fmtSpot(s);
     const created = s.created_at ? new Date(s.created_at).toLocaleString() : "—";
-    const desc = s.description ? esc(String(s.description).slice(0,140)) : "—";
     return `
       <div class="card" data-id="${esc(s.id)}">
         <div class="row1">
@@ -355,13 +386,11 @@ async function refreshDrafts(){
           </div>
           <div class="tag">draft</div>
         </div>
-        <div class="meta">${desc}</div>
+        <div class="meta">${f.desc}</div>
         <div class="row2">
           <div class="left">
-            <a href="${esc(f.url)}" class="tag">👁️ ouvrir fiche</a>
-            ${f.tel}
-            ${f.ph}
-            ${f.ln}
+            <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
+            ${f.tel} ${f.ph} ${f.ln}
             ${s.owner_phone ? `<span class="tag">👤 owner: ${esc(s.owner_phone)}</span>` : ``}
           </div>
           <div class="right">
@@ -374,14 +403,20 @@ async function refreshDrafts(){
   }).join("");
 
   $("#drafts").querySelectorAll(".card .btn").forEach(btn=>{
-    btn.addEventListener("click", async (e)=>{
+    btn.addEventListener("click", async ()=>{
       const act = btn.getAttribute("data-act");
       const card = btn.closest(".card");
       const id = card?.getAttribute("data-id");
       if(!id) return;
 
-      if(act === "publish") await setStatus(id, "published");
-      if(act === "reject") await setStatus(id, "rejected");
+      toast("⏳ Update…");
+      const res = await setStatus(id, act === "publish" ? "published" : "rejected");
+      if(res?.ok){
+        toast("✅ OK");
+        await refreshAll();
+      }else{
+        toast(res?.error?.message ? "❌ " + res.error.message : ("❌ " + (res?.error || "Refusé")));
+      }
     });
   });
 }
@@ -390,24 +425,23 @@ async function refreshPublished(){
   const sb = ensureSupabase();
   const { data, error } = await sb
     .from("digiy_explore_spots")
-    .select("id, created_at, name, type, zone, city, phone, photo_url, link_url, status")
+    .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status")
     .eq("status","published")
     .order("created_at", { ascending:false })
-    .limit(40);
+    .limit(60);
 
   if(error){
     console.error(error);
-    toast("❌ Impossible de charger les published");
+    toast("❌ Lecture published refusée (RLS?).");
     return;
   }
 
   $("#emptyPubs").style.display = (data?.length ? "none" : "block");
-
   $("#pubs").innerHTML = (data || []).map(s=>{
     const f = fmtSpot(s);
     const created = s.created_at ? new Date(s.created_at).toLocaleString() : "—";
     return `
-      <div class="card">
+      <div class="card" data-id="${esc(s.id)}">
         <div class="row1">
           <div>
             <div class="nm">${esc(f.name)}</div>
@@ -415,15 +449,14 @@ async function refreshPublished(){
           </div>
           <div class="tag">published</div>
         </div>
+        <div class="meta">${f.desc}</div>
         <div class="row2">
           <div class="left">
-            <a href="${esc(f.url)}" class="tag">👁️ ouvrir fiche</a>
-            ${f.tel}
-            ${f.ph}
-            ${f.ln}
+            <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
+            ${f.tel} ${f.ph} ${f.ln}
           </div>
           <div class="right">
-            <div class="btn danger" data-id="${esc(s.id)}" data-act="reject">⛔ Rejeter</div>
+            <div class="btn danger" data-act="reject">⛔ Rejeter</div>
           </div>
         </div>
       </div>
@@ -432,28 +465,20 @@ async function refreshPublished(){
 
   $("#pubs").querySelectorAll(".btn.danger").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const id = btn.getAttribute("data-id");
-      if(id) await setStatus(id, "rejected");
+      const card = btn.closest(".card");
+      const id = card?.getAttribute("data-id");
+      if(!id) return;
+
+      toast("⏳ Update…");
+      const res = await setStatus(id, "rejected");
+      if(res?.ok){
+        toast("✅ OK");
+        await refreshAll();
+      }else{
+        toast(res?.error?.message ? "❌ " + res.error.message : ("❌ " + (res?.error || "Refusé")));
+      }
     });
   });
-}
-
-async function setStatus(id, status){
-  const sb = ensureSupabase();
-  toast("⏳ Mise à jour…");
-
-  const { error } = await sb
-    .from("digiy_explore_spots")
-    .update({ status })
-    .eq("id", id);
-
-  if(error){
-    console.error(error);
-    toast("❌ Update refusé (RLS/role).");
-    return;
-  }
-  toast("✅ OK");
-  await refreshAll();
 }
 
 async function refreshAll(){
@@ -462,35 +487,38 @@ async function refreshAll(){
   await refreshPublished();
 }
 
-async function updateWho(){
-  const sb = ensureSupabase();
-  const { data } = await sb.auth.getUser();
-  const email = data?.user?.email || "—";
-  $("#who").textContent = "auth: " + email;
-}
-
+/* -------------------------
+   LOGIN / ACTIONS
+------------------------- */
 async function login(){
-  const sb = ensureSupabase();
-  const email = ($("#email").value || "").trim();
-  const password = ($("#pass").value || "").trim();
-  if(!email || !password){ toast("Email + password requis."); return; }
-
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if(error){
-    console.error(error);
-    toast("❌ Login refusé.");
+  const phone = normalizePhone($("#phone").value);
+  const pin = ($("#pin").value || "").trim();
+  if(!phone || !pin){
+    toast("Téléphone + PIN requis.");
     return;
   }
-  toast("✅ Connecté.");
-  await updateWho();
+
+  toast("🔎 Vérif PIN…");
+  const res = await pinCheck(phone, pin);
+
+  if(!res?.ok){
+    const fc = (res?.fail_count != null) ? (" • essais=" + res.fail_count) : "";
+    const lu = res?.locked_until ? (" • lock=" + res.locked_until) : "";
+    const err = res?.error ? (" • " + res.error) : "";
+    toast("❌ PIN refusé" + err + fc + lu);
+    return;
+  }
+
+  setPinSession(phone, pin);
+  updateWho();
+  toast("✅ Admin OK.");
   await refreshAll();
 }
 
-async function logout(){
-  const sb = ensureSupabase();
-  await sb.auth.signOut();
-  toast("🚪 Logout.");
-  await updateWho();
+function logout(){
+  clearPinSession();
+  updateWho();
+  toast("🧼 Session effacée.");
 }
 
 function bind(){
@@ -498,19 +526,16 @@ function bind(){
   $("#btnLogout").onclick = logout;
   $("#btnRefresh").onclick = refreshAll;
   $("#btnGoIndex").onclick = ()=> location.href = "./index.html";
+  $("#btnAudit").onclick = ()=> location.href = "./admin-audit.html";
 
-  // auto-refresh on auth state change
-  const sb = ensureSupabase();
-  sb.auth.onAuthStateChange(async ()=>{
-    await updateWho();
-    await refreshAll();
-  });
+  const s = getPinSession();
+  if(s?.phone) $("#phone").value = s.phone;
+  updateWho();
 }
 
 (async function boot(){
   try{
     bind();
-    await updateWho();
     await refreshAll();
   }catch(e){
     console.error(e);
