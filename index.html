@@ -412,10 +412,10 @@
 
   <script>
     // ========= LIENS ABSOLUS (ANTI-BOUCLE) =========
-    const LINKS = {
-      explore: "/digiy-explore/explore.html",
-      pay: "https://beauville.github.io/commencer-a-payer/"
-    };
+   const LINKS = {
+  explore: "./explore.html",  // ✅ BON (relatif, même dossier)
+  pay: "https://beauville.github.io/commencer-a-payer/"
+};
 
     function go(url){
       // ouvre paiement en nouvel onglet, explore en même onglet
