@@ -278,7 +278,7 @@
     <h2 class="playfair">Notre rôle</h2>
     <p>
       DIGIY EXPLORE est un apporteur d’affaires terrain : visibilité, contact direct, paiement au professionnel.
-      Nous ne sommes pas une agence. Nous connectons l’Afrique au monde.
+      Nous connectons l’Afrique au monde.
     </p>
   </section>
 
@@ -288,6 +288,7 @@
     <p>
       Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine vers d’autres pays africains.
     </p>
+
     <div style="margin-top:2rem">
       <button class="btn-hero explore" id="btnEnterZones">
         🚀 Explorer maintenant
@@ -309,49 +310,58 @@
     <div class="tagline">∞ L’Afrique enracinée, connectée au monde ∞</div>
   </footer>
 
+  <!-- ✅ SCRIPT FINAL NO LOOP -->
   <script>
-    // =============================
-    // ✅ LIENS OFFICIELS
-    // =============================
-    const EXPLORE_URL = "./explore.html";
+  document.addEventListener("DOMContentLoaded", ()=>{
 
+    const EXPLORE_URL = "./explore.html";
     const PAY_URL = "https://beauville.github.io/commencer-a-payer/";
 
     function goExplore(){
-      location.href = EXPLORE_URL;
+      window.location.href = EXPLORE_URL;
     }
 
     function goPay(){
       const u = new URL(PAY_URL);
 
-      // ✅ contexte abonnement EXPLORE
       u.searchParams.set("kind","explore_sub");
       u.searchParams.set("module","EXPLORE");
       u.searchParams.set("plan","pro_month");
       u.searchParams.set("from","landing");
 
-      // ✅ retour automatique après paiement
-      u.searchParams.set("return", location.origin + "/digiy-explore/explore.html");
+      u.searchParams.set(
+        "return",
+        "https://beauville.github.io/digiy-explore/explore.html"
+      );
 
-      location.href = u.toString();
+      window.location.href = u.toString();
     }
 
-    // ✅ Boutons Explore
-    document.getElementById("btnEnterTop").onclick = goExplore;
-    document.getElementById("btnEnterHero").onclick = goExplore;
-    document.getElementById("btnEnterZones").onclick = goExplore;
+    // Safe bind
+    function bind(id, fn){
+      const el = document.getElementById(id);
+      if(el) el.addEventListener("click", fn);
+    }
 
-    // ✅ Boutons Paiement
-    document.getElementById("btnPayTop").onclick = goPay;
-    document.getElementById("btnPayHero").onclick = goPay;
+    // Explore buttons
+    bind("btnEnterTop", goExplore);
+    bind("btnEnterHero", goExplore);
+    bind("btnEnterZones", goExplore);
 
-    // ✅ Menu mobile
+    // Pay buttons
+    bind("btnPayTop", goPay);
+    bind("btnPayHero", goPay);
+
+    // Mobile menu
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
+    if(menuToggle && navLinks){
+      menuToggle.addEventListener("click", ()=>{
+        navLinks.classList.toggle("active");
+      });
+    }
 
-    menuToggle.addEventListener("click", ()=>{
-      navLinks.classList.toggle("active");
-    });
+  });
   </script>
 
 </body>
