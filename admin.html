@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#071a13"/>
+  <title>DIGIY EXPLORE — Admin Validate</title>
+
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --bg:#071a13;
+      --card:#0b2a1f;
+      --line:rgba(255,255,255,.12);
+      --text:#eafff1;
+      --muted:rgba(234,255,241,.72);
+      --gold:#facc15;
+      --green:#22c55e;
+      --danger:#fb7185;
+      --shadow:0 14px 40px rgba(0,0,0,.35);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
+        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:16px 14px 34px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      padding:10px 12px;border:1px solid var(--line);
+      background:rgba(11,42,31,.65);backdrop-filter: blur(10px);
+      border-radius:22px;box-shadow:var(--shadow);
+      position:sticky;top:10px;z-index:20;
+    }
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
+        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
+      border:1px solid rgba(255,255,255,.15);
+      font-weight:900;
+    }
+    .t1{font-size:14px;font-weight:900}
+    .t2{font-size:12px;color:var(--muted);margin-top:2px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(6,20,18,.55);
+      cursor:pointer;font-size:12px;user-select:none;white-space:nowrap;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.gold{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.22)}
+    .btn.primary{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22)}
+    .btn.danger{background:rgba(251,113,133,.12);border-color:rgba(251,113,133,.22)}
+    .btn.ghost{background:rgba(0,0,0,.20)}
+    .pill{
+      padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);font-size:12px;color:var(--muted)
+    }
+
+    .grid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      border:1px solid var(--line);
+      background: rgba(11,42,31,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .hd .h1{font-weight:1000;font-size:14px}
+    .hd .h2{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
+    .body{padding:12px}
+
+    .field{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(6,20,18,.45);
+      border-radius: 16px;
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .label{font-size:12px;color:var(--muted)}
+    .input{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    .hint{font-size:12px;color:rgba(234,255,241,.70);line-height:1.35}
+
+    .list{display:grid;gap:10px}
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(6,20,18,.45);
+      border-radius: 16px;
+      padding:10px;
+      display:grid;
+      gap:8px;
+    }
+    .row1{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
+    .nm{font-weight:1000}
+    .meta{font-size:12px;color:var(--muted)}
+    .row2{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+    .left{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .tag{
+      padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.16);font-size:12px
+    }
+    .right{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+    .toast{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:14px; z-index:80;
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.18);
+      color:rgba(234,255,241,.92);
+      padding:10px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      display:none;
+      max-width:min(94vw, 900px);
+      box-shadow: var(--shadow);
+      font-size:13px;
+    }
+    .toast.show{display:block}
+    .small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">♾️</div>
+        <div>
+          <div class="t1">DIGIY EXPLORE</div>
+          <div class="t2">Admin — Validate Draft → Published / Rejected</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="pill" id="who">auth: —</div>
+        <div id="btnGoIndex" class="btn ghost">🏠 Index</div>
+        <div id="btnRefresh" class="btn gold">🔄 Refresh</div>
+        <div id="btnLogout" class="btn danger">🚪 Logout</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- AUTH -->
+      <div class="panel">
+        <div class="hd">
+          <div class="h1">Connexion Admin (email + password)</div>
+          <div class="h2">Cette page nécessite un compte Supabase Auth. Une fois connecté, tu peux publier / rejeter.</div>
+        </div>
+        <div class="body">
+          <div class="field">
+            <div class="label">Email</div>
+            <input id="email" class="input" placeholder="admin@digiylyfe.com" autocomplete="email"/>
+          </div>
+          <div style="height:10px"></div>
+          <div class="field">
+            <div class="label">Password</div>
+            <input id="pass" class="input" placeholder="••••••••" type="password" autocomplete="current-password"/>
+          </div>
+          <div style="height:10px"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center">
+            <div id="btnLogin" class="btn primary">🔐 Login</div>
+            <div class="hint">Astuce: tu peux garder cette page en favoris.</div>
+          </div>
+          <div style="height:10px"></div>
+          <div class="small">
+            ⚠️ Si tu ne veux pas d’email/password, on fera une version “PIN + owner_phone” via RPC plus tard.
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="panel">
+        <div class="hd">
+          <div class="h1">Stats rapides</div>
+          <div class="h2">Draft = en attente, Published = visible public, Rejected = refusé.</div>
+        </div>
+        <div class="body">
+          <div class="list" id="stats"></div>
+        </div>
+      </div>
+
+      <!-- DRAFT LIST -->
+      <div class="panel" style="grid-column:1/-1">
+        <div class="hd">
+          <div class="h1">En attente (draft)</div>
+          <div class="h2">Publier = visible sur l’index. Rejeter = refusé.</div>
+        </div>
+        <div class="body">
+          <div class="list" id="drafts"></div>
+          <div id="emptyDrafts" class="small" style="display:none;margin-top:8px">Aucun draft pour l’instant.</div>
+        </div>
+      </div>
+
+      <!-- PUBLISHED LIST -->
+      <div class="panel" style="grid-column:1/-1">
+        <div class="hd">
+          <div class="h1">Derniers publiés (published)</div>
+          <div class="h2">Un coup d’œil rapide sur le terrain visible.</div>
+        </div>
+        <div class="body">
+          <div class="list" id="pubs"></div>
+          <div id="emptyPubs" class="small" style="display:none;margin-top:8px">Aucun publié.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+<script>
+/* =========================================================
+   ADMIN VALIDATE — EXPLORE
+   Status ENUM/CHECK: draft / published / rejected
+   Type CHECK: resto / plage / culture / nature / hebergement / activite
+   ========================================================= */
+
+const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
+const CFG = window.__DIGIY_SUPABASE__ || {};
+const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
+const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+
+let sb = null;
+function ensureSupabase(){
+  if(sb) return sb;
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
+    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
+    throw new Error("Supabase config missing (anon).");
+  }
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return sb;
+}
+
+const $ = (s)=>document.querySelector(s);
+const toastEl = $("#toast");
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
+}
+function esc(s){
+  return (s ?? "").toString()
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+function fmtSpot(s){
+  const id = s.id;
+  const url = `./spot.html?id=${encodeURIComponent(id)}`;
+  const name = s.name || "Spot";
+  const meta = `${s.type || "—"} • ${s.city || "—"} • ${s.zone || "—"}`;
+  const ph = s.photo_url ? `<a href="${esc(s.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`;
+  const ln = s.link_url ? `<a href="${esc(s.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 link</a>` : `<span class="tag">🔗 —</span>`;
+  const tel = s.phone ? `<a href="tel:${esc(s.phone)}" class="tag">📞 ${esc(s.phone)}</a>` : `<span class="tag">📞 —</span>`;
+  return { url, name, meta, ph, ln, tel };
+}
+
+async function refreshStats(){
+  const sb = ensureSupabase();
+
+  const [d, p, r] = await Promise.all([
+    sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","draft"),
+    sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","published"),
+    sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","rejected"),
+  ]);
+
+  const dd = d.count ?? 0, pp = p.count ?? 0, rr = r.count ?? 0;
+
+  $("#stats").innerHTML = `
+    <div class="card">
+      <div class="row1">
+        <div>
+          <div class="nm">📥 Draft</div>
+          <div class="meta">${dd} en attente</div>
+        </div>
+        <div class="tag">status=draft</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row1">
+        <div>
+          <div class="nm">✅ Published</div>
+          <div class="meta">${pp} visibles</div>
+        </div>
+        <div class="tag">status=published</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row1">
+        <div>
+          <div class="nm">⛔ Rejected</div>
+          <div class="meta">${rr} refusés</div>
+        </div>
+        <div class="tag">status=rejected</div>
+      </div>
+    </div>
+  `;
+}
+
+async function refreshDrafts(){
+  const sb = ensureSupabase();
+  const { data, error } = await sb
+    .from("digiy_explore_spots")
+    .select("id, created_at, name, type, zone, city, phone, lat, lng, description, photo_url, link_url, status, owner_phone, score, tags")
+    .eq("status","draft")
+    .order("created_at", { ascending:false })
+    .limit(200);
+
+  if(error){
+    console.error(error);
+    toast("❌ Impossible de charger les drafts (RLS/Update policy?)");
+    return;
+  }
+
+  $("#emptyDrafts").style.display = (data?.length ? "none" : "block");
+
+  $("#drafts").innerHTML = (data || []).map(s=>{
+    const f = fmtSpot(s);
+    const created = s.created_at ? new Date(s.created_at).toLocaleString() : "—";
+    const desc = s.description ? esc(String(s.description).slice(0,140)) : "—";
+    return `
+      <div class="card" data-id="${esc(s.id)}">
+        <div class="row1">
+          <div>
+            <div class="nm">${esc(f.name)}</div>
+            <div class="meta">${esc(f.meta)} • <span class="small">${esc(created)}</span></div>
+          </div>
+          <div class="tag">draft</div>
+        </div>
+        <div class="meta">${desc}</div>
+        <div class="row2">
+          <div class="left">
+            <a href="${esc(f.url)}" class="tag">👁️ ouvrir fiche</a>
+            ${f.tel}
+            ${f.ph}
+            ${f.ln}
+            ${s.owner_phone ? `<span class="tag">👤 owner: ${esc(s.owner_phone)}</span>` : ``}
+          </div>
+          <div class="right">
+            <div class="btn primary" data-act="publish">✅ Publier</div>
+            <div class="btn danger" data-act="reject">⛔ Rejeter</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  $("#drafts").querySelectorAll(".card .btn").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      const act = btn.getAttribute("data-act");
+      const card = btn.closest(".card");
+      const id = card?.getAttribute("data-id");
+      if(!id) return;
+
+      if(act === "publish") await setStatus(id, "published");
+      if(act === "reject") await setStatus(id, "rejected");
+    });
+  });
+}
+
+async function refreshPublished(){
+  const sb = ensureSupabase();
+  const { data, error } = await sb
+    .from("digiy_explore_spots")
+    .select("id, created_at, name, type, zone, city, phone, photo_url, link_url, status")
+    .eq("status","published")
+    .order("created_at", { ascending:false })
+    .limit(40);
+
+  if(error){
+    console.error(error);
+    toast("❌ Impossible de charger les published");
+    return;
+  }
+
+  $("#emptyPubs").style.display = (data?.length ? "none" : "block");
+
+  $("#pubs").innerHTML = (data || []).map(s=>{
+    const f = fmtSpot(s);
+    const created = s.created_at ? new Date(s.created_at).toLocaleString() : "—";
+    return `
+      <div class="card">
+        <div class="row1">
+          <div>
+            <div class="nm">${esc(f.name)}</div>
+            <div class="meta">${esc(f.meta)} • <span class="small">${esc(created)}</span></div>
+          </div>
+          <div class="tag">published</div>
+        </div>
+        <div class="row2">
+          <div class="left">
+            <a href="${esc(f.url)}" class="tag">👁️ ouvrir fiche</a>
+            ${f.tel}
+            ${f.ph}
+            ${f.ln}
+          </div>
+          <div class="right">
+            <div class="btn danger" data-id="${esc(s.id)}" data-act="reject">⛔ Rejeter</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  $("#pubs").querySelectorAll(".btn.danger").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.getAttribute("data-id");
+      if(id) await setStatus(id, "rejected");
+    });
+  });
+}
+
+async function setStatus(id, status){
+  const sb = ensureSupabase();
+  toast("⏳ Mise à jour…");
+
+  const { error } = await sb
+    .from("digiy_explore_spots")
+    .update({ status })
+    .eq("id", id);
+
+  if(error){
+    console.error(error);
+    toast("❌ Update refusé (RLS/role).");
+    return;
+  }
+  toast("✅ OK");
+  await refreshAll();
+}
+
+async function refreshAll(){
+  await refreshStats();
+  await refreshDrafts();
+  await refreshPublished();
+}
+
+async function updateWho(){
+  const sb = ensureSupabase();
+  const { data } = await sb.auth.getUser();
+  const email = data?.user?.email || "—";
+  $("#who").textContent = "auth: " + email;
+}
+
+async function login(){
+  const sb = ensureSupabase();
+  const email = ($("#email").value || "").trim();
+  const password = ($("#pass").value || "").trim();
+  if(!email || !password){ toast("Email + password requis."); return; }
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if(error){
+    console.error(error);
+    toast("❌ Login refusé.");
+    return;
+  }
+  toast("✅ Connecté.");
+  await updateWho();
+  await refreshAll();
+}
+
+async function logout(){
+  const sb = ensureSupabase();
+  await sb.auth.signOut();
+  toast("🚪 Logout.");
+  await updateWho();
+}
+
+function bind(){
+  $("#btnLogin").onclick = login;
+  $("#btnLogout").onclick = logout;
+  $("#btnRefresh").onclick = refreshAll;
+  $("#btnGoIndex").onclick = ()=> location.href = "./index.html";
+
+  // auto-refresh on auth state change
+  const sb = ensureSupabase();
+  sb.auth.onAuthStateChange(async ()=>{
+    await updateWho();
+    await refreshAll();
+  });
+}
+
+(async function boot(){
+  try{
+    bind();
+    await updateWho();
+    await refreshAll();
+  }catch(e){
+    console.error(e);
+    toast("Erreur boot (config Supabase?).");
+  }
+})();
+</script>
+</body>
+</html>
