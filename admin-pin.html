@@ -233,10 +233,11 @@
 <script>
 /* =========================================================
    DIGIY EXPLORE — ADMIN PIN HARDEN (DEF)
-   - Session 8h localStorage
-   - Lock status from RPC (locked_until)
-   - Publish/Reject via RPC only
+   Fix anti-boucle:
+   - URLs ABSOLUES GitHub Pages (/digiy-explore/...)
    ========================================================= */
+
+const BASE = "/digiy-explore";  // ✅ anti-boucle
 
 const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
 const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
@@ -330,7 +331,7 @@ async function setStatus(spotId, status){
    UI builders
 ------------------------- */
 function fmtSpot(s){
-  const url = `./spot.html?id=${encodeURIComponent(s.id)}`;
+  const url = `${BASE}/spot.html?id=${encodeURIComponent(s.id)}`; // ✅ ABSOLU
   const name = s.name || "Spot";
   const meta = `${s.type || "—"} • ${s.city || "—"} • ${s.zone || "—"}`;
   const ph = s.photo_url ? `<a href="${esc(s.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`;
@@ -525,8 +526,10 @@ function bind(){
   $("#btnLogin").onclick = login;
   $("#btnLogout").onclick = logout;
   $("#btnRefresh").onclick = refreshAll;
-  $("#btnGoIndex").onclick = ()=> location.href = "./index.html";
-  $("#btnAudit").onclick = ()=> location.href = "./admin-audit.html";
+
+  // ✅ ABSOLU anti-boucle
+  $("#btnGoIndex").onclick = ()=> location.href = `${BASE}/index.html`;
+  $("#btnAudit").onclick = ()=> location.href = `${BASE}/admin-audit.html`;
 
   const s = getPinSession();
   if(s?.phone) $("#phone").value = s.phone;
