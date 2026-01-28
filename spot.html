@@ -1,17 +1,22 @@
+<!-- ======================================================
+     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE)
+     Fichier: spot.html
+     URLs:
+       - spot.html?id=<uuid>
+       - spot.html?slug=<slug>
+====================================================== -->
 <!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#071a13" />
-  <title>DIGIY EXPLORE — Fiche Spot (Boost Clean V2)</title>
-  <meta name="description" content="DIGIY EXPLORE — Fiche spot (WhatsApp, localisation, photos URL, paiement direct)." />
+  <title>DIGIY EXPLORE — Fiche Spot</title>
+  <meta name="description" content="Fiche spot DIGIY EXPLORE (WhatsApp, localisation, lien, contact direct)." />
 
-  <!-- Leaflet (carte) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -41,8 +46,9 @@
         linear-gradient(180deg, var(--bg) 0%, #020617 100%);
       overflow-x:hidden;
     }
-    a{color:inherit}
+    a{color:inherit; text-decoration:none}
     .wrap{max-width:1080px;margin:0 auto;padding:16px 14px 34px}
+
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; flex-wrap:wrap;
@@ -83,6 +89,7 @@
     .btn.primary{background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.22)}
     .btn.gold{background: rgba(250,204,21,.12); border-color: rgba(250,204,21,.22)}
     .btn.ghost{background: rgba(0,0,0,.20)}
+
     .grid{
       margin-top:14px;
       display:grid;
@@ -123,6 +130,7 @@
     .badge.closed .b{background:var(--danger)}
 
     .body{padding:12px}
+
     .gallery{
       display:grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -134,7 +142,7 @@
       border-radius: 16px;
       overflow:hidden;
       background: rgba(6,20,18,.45);
-      min-height:130px;
+      min-height:140px;
       position:relative;
       cursor:pointer;
     }
@@ -176,26 +184,15 @@
     }
     @media (max-width: 980px){ .side{position:static} }
 
-    .qrBox{
-      padding:12px;
-      display:grid;
-      grid-template-columns: 132px 1fr;
-      gap:12px;
-      align-items:center;
+    .pillRow{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      color:rgba(234,255,241,.88);
     }
-    @media (max-width:520px){ .qrBox{grid-template-columns:1fr} }
-    .qr{
-      width:132px;height:132px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      display:grid;place-items:center;
-      overflow:hidden;
-    }
-    canvas{display:block}
-    .qrTxt .t1{font-weight:1000}
-    .qrTxt .t2{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35}
-    .small{font-size:12px;color:var(--muted)}
 
     .toast{
       position:fixed; left:50%; transform:translateX(-50%);
@@ -231,6 +228,7 @@
       box-shadow: var(--shadow);
       background:#000;
     }
+    .small{font-size:12px;color:var(--muted);line-height:1.35}
   </style>
 </head>
 
@@ -241,7 +239,7 @@
         <div class="logo">♾️</div>
         <div>
           <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Fiche Spot — Boost Clean V2</div>
+          <div class="t2">Fiche Spot — slug & id</div>
         </div>
       </div>
       <div class="actions">
@@ -257,6 +255,7 @@
           <div>
             <div id="spotName" class="name">Chargement…</div>
             <div id="spotMeta" class="meta">—</div>
+            <div class="pillRow" id="pillRow" style="margin-top:10px"></div>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
             <div id="badgeBoost" class="badge boost" style="display:none"><span class="b"></span> 🔥 Boost</div>
@@ -292,11 +291,11 @@
 
             <div class="row">
               <div class="l">
-                <div class="k">Paiement</div>
-                <div class="v">Direct au pro (0% commission)</div>
+                <div class="k">Lien</div>
+                <div id="linkLine" class="small">—</div>
               </div>
               <div class="r">
-                <div id="btnPay" class="btn gold">💳 Payer (PAY PRO)</div>
+                <div id="btnLink" class="btn gold">🔗 Ouvrir</div>
               </div>
             </div>
 
@@ -306,8 +305,8 @@
                 <div id="infoLine" class="small">—</div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
 
@@ -315,25 +314,10 @@
         <div id="map"></div>
 
         <div class="panel">
-          <div style="padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <div style="font-weight:900;font-size:13px">QR du Spot</div>
-            <div class="small">Scan → ouvrir la fiche</div>
-          </div>
-          <div class="qrBox">
-            <div class="qr"><canvas id="qr" width="120" height="120"></canvas></div>
-            <div class="qrTxt">
-              <div class="t1" id="qrTitle">DIGIY EXPLORE</div>
-              <div class="t2" id="qrUrl">—</div>
-              <div class="small" style="margin-top:10px">Astuce: partage le lien WhatsApp si tu veux.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
           <div style="padding:12px 12px 12px">
             <div style="font-weight:900;font-size:13px">Sécurité</div>
             <div class="small" style="margin-top:6px">
-              Photos en URL (pas lourdes), données minimales, contact direct.
+              Données minimales, contact direct. 💪
             </div>
           </div>
         </div>
@@ -365,7 +349,6 @@ function ensureSupabase(){
 
 const $ = (s)=>document.querySelector(s);
 const toastEl = $("#toast");
-
 function toast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add("show");
@@ -378,102 +361,15 @@ function esc(s){
     .replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
 function qs(k){ return new URL(location.href).searchParams.get(k); }
-
 function normalizePhone(p){
   if(!p) return "";
   return (p+"").trim().replace(/[^\d+]/g,"");
 }
-
-function parseTimeToMin(t){
-  if(typeof t !== "string") return null;
-  const m = t.trim().match(/^(\d{1,2}):(\d{2})$/);
-  if(!m) return null;
-  const hh = Math.max(0, Math.min(23, parseInt(m[1],10)));
-  const mm = Math.max(0, Math.min(59, parseInt(m[2],10)));
-  return hh*60+mm;
-}
-function isOpenNow(spot){
-  const oh = spot?.open_hours_json;
-  if(!oh || typeof oh !== "object") return null;
-  const d = new Date();
-  const dayKey = ["sun","mon","tue","wed","thu","fri","sat"][d.getDay()];
-  const slots = oh[dayKey];
-  if(!Array.isArray(slots)) return null;
-  const nowMin = d.getHours()*60 + d.getMinutes();
-  for(const s of slots){
-    if(!Array.isArray(s) || s.length<2) continue;
-    const am = parseTimeToMin(s[0]);
-    const bm = parseTimeToMin(s[1]);
-    if(am==null || bm==null) continue;
-    if(nowMin >= am && nowMin <= bm) return true;
-  }
-  return false;
-}
-function computeBoosted(spot){
-  if(spot?.is_boosted === true) return true;
-  if(spot?.boost_until){
-    const t = Date.parse(spot.boost_until);
-    if(!Number.isNaN(t) && t > Date.now()) return true;
-  }
-  if(Number.isFinite(spot?.boost_rank) && Number(spot.boost_rank) > 0) return true;
-  return false;
-}
-
-/* QR visuel (placeholder) */
-function drawFakeQR(text){
-  const c = $("#qr");
-  const ctx = c.getContext("2d");
-  const size = c.width;
-  ctx.clearRect(0,0,size,size);
-  const n = 29;
-  const cell = Math.floor(size / n);
-
-  function hash(str){
-    let h=2166136261;
-    for(let i=0;i<str.length;i++){
-      h ^= str.charCodeAt(i);
-      h = Math.imul(h, 16777619);
-    }
-    return h>>>0;
-  }
-  const seed = hash(text);
-  function bit(i){
-    let x = (seed + i*2654435761) >>> 0;
-    x ^= x<<13; x ^= x>>>17; x ^= x<<5;
-    return (x>>>0) & 1;
-  }
-
-  ctx.fillStyle = "rgba(255,255,255,.92)";
-  ctx.fillRect(0,0,size,size);
-
-  function finder(x,y){
-    ctx.fillStyle="#000";
-    ctx.fillRect(x,y,7*cell,7*cell);
-    ctx.fillStyle="#fff";
-    ctx.fillRect(x+cell,y+cell,5*cell,5*cell);
-    ctx.fillStyle="#000";
-    ctx.fillRect(x+2*cell,y+2*cell,3*cell,3*cell);
-  }
-  finder(1*cell,1*cell);
-  finder((n-8)*cell,1*cell);
-  finder(1*cell,(n-8)*cell);
-
-  for(let y=0;y<n;y++){
-    for(let x=0;x<n;x++){
-      const inFinder =
-        (x>=1 && x<=7 && y>=1 && y<=7) ||
-        (x>=n-8 && x<=n-2 && y>=1 && y<=7) ||
-        (x>=1 && x<=7 && y>=n-8 && y<=n-2);
-      if(inFinder) continue;
-
-      const i = y*n + x;
-      const v = bit(i) ^ bit(i+17) ^ bit(i+53);
-      if(v){
-        ctx.fillStyle="#000";
-        ctx.fillRect(x*cell, y*cell, cell, cell);
-      }
-    }
-  }
+function safeUrl(u){
+  const s = (u||"").toString().trim();
+  if(!s) return "";
+  if(s.startsWith("http://") || s.startsWith("https://")) return s;
+  return "https://" + s;
 }
 
 /* Lightbox */
@@ -497,38 +393,6 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 let marker = null;
 
-function renderGallery(photos){
-  const gal = $("#gallery");
-  const arr = Array.isArray(photos) ? photos.map(x=>(x||"").toString().trim()).filter(Boolean) : [];
-  if(!arr.length){
-    gal.innerHTML = `
-      <div class="ph" style="grid-column:1/-1;display:grid;place-items:center;min-height:160px;cursor:default">
-        <div style="text-align:center;color:rgba(234,255,241,.78);padding:18px">
-          📷 Pas de photo pour l’instant<br><span style="font-size:12px;opacity:.85">Ajoute une URL photo dans le spot.</span>
-        </div>
-      </div>
-    `;
-    return;
-  }
-  gal.innerHTML = arr.slice(0,9).map(u=>`
-    <div class="ph" data-src="${esc(u)}"><img src="${esc(u)}" alt=""></div>
-  `).join("");
-  gal.querySelectorAll(".ph").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      const src = el.getAttribute("data-src") || "";
-      if(src) openLightbox(src);
-    });
-  });
-}
-
-function setBadgeState(spot){
-  const boosted = computeBoosted(spot);
-  $("#badgeBoost").style.display = boosted ? "inline-flex" : "none";
-  const open = isOpenNow(spot);
-  $("#badgeOpen").style.display = (open===true) ? "inline-flex" : "none";
-  $("#badgeClosed").style.display = (open===false) ? "inline-flex" : "none";
-}
-
 function setMap(lat,lng,title){
   if(!isFinite(lat) || !isFinite(lng)){
     map.setView(DEFAULT_CENTER, 12);
@@ -539,7 +403,6 @@ function setMap(lat,lng,title){
   if(marker) map.removeLayer(marker);
   marker = L.marker(pt).addTo(map).bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
 }
-
 function buildMapsLink(lat,lng,title){
   if(!isFinite(lat) || !isFinite(lng)) return "";
   const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
@@ -552,86 +415,136 @@ function buildWhatsAppLink(phone, title){
   return `https://wa.me/${p}?text=${txt}`;
 }
 function buildShareText(spot, pageUrl){
-  return `DIGIY EXPLORE — ${spot.name||"Spot"} (${spot.city||"—"})\n${pageUrl}`;
+  const n = spot?.name || "Spot";
+  const c = spot?.city || "—";
+  return `DIGIY EXPLORE — ${n} (${c})\n${pageUrl}`;
 }
 
-/* PAY placeholder (id-mode) */
-function goPay(spot){
-  const PAY_URL = (window.__DIGIY_PAY_URL__ || "").trim();
-  if(!PAY_URL){
-    toast("💳 PAY PRO pas encore branché ici. Donne moi l’URL et je le connecte.");
+function renderGallery(spot){
+  const gal = $("#gallery");
+  const main = (spot?.photo_url || "").toString().trim();
+  const arr = [];
+  if(main) arr.push(main);
+
+  if(!arr.length){
+    gal.innerHTML = `
+      <div class="ph" style="grid-column:1/-1;display:grid;place-items:center;min-height:160px;cursor:default">
+        <div style="text-align:center;color:rgba(234,255,241,.78);padding:18px">
+          📷 Pas de photo pour l’instant<br><span style="font-size:12px;opacity:.85">Ajoute une URL photo.</span>
+        </div>
+      </div>
+    `;
     return;
   }
-  const u = new URL(PAY_URL, location.href);
-  u.searchParams.set("kind","explore");
-  u.searchParams.set("id", spot.id || "");
-  u.searchParams.set("name", spot.name || "");
-  location.href = u.toString();
+
+  gal.innerHTML = arr.map(u=>`
+    <div class="ph" data-src="${esc(u)}"><img src="${esc(u)}" alt=""></div>
+  `).join("");
+
+  gal.querySelectorAll(".ph").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const src = el.getAttribute("data-src") || "";
+      if(src) openLightbox(src);
+    });
+  });
+}
+
+function setBadgeState(spot){
+  const b = (spot?.badge || "").toString().toLowerCase().trim();
+  $("#badgeBoost").style.display  = (b === "boost" || b === "boosted" || b === "🔥") ? "inline-flex" : "none";
+  $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert"  || b === "🟢") ? "inline-flex" : "none";
+  $("#badgeClosed").style.display = (b === "closed"|| b === "ferme"   || b === "🔴") ? "inline-flex" : "none";
+}
+
+function renderPills(spot){
+  const row = $("#pillRow");
+  const pills = [];
+  if(spot?.type) pills.push(`🏷️ ${spot.type}`);
+  if(spot?.budget) pills.push(`💰 ${spot.budget}`);
+  if(spot?.duree) pills.push(`⏱️ ${spot.duree}`);
+
+  if(Array.isArray(spot?.ambiance)){
+    for(const a of spot.ambiance.slice(0,4)){
+      if(a) pills.push(`✨ ${a}`);
+    }
+  }
+  if(Array.isArray(spot?.tags)){
+    for(const t of spot.tags.slice(0,6)){
+      if(t) pills.push(`#${t}`);
+    }
+  }
+  row.innerHTML = pills.map(p=>`<span class="pill">${esc(p)}</span>`).join("");
 }
 
 async function loadSpot(){
-  // ✅ ID MODE (plus de slug)
   const id = (qs("id") || "").trim();
-  if(!id){
-    toast("ID manquant. Retour index.");
+  const slug = (qs("slug") || "").trim();
+
+  if(!id && !slug){
+    toast("Paramètre manquant (?id=... ou ?slug=...)");
     setTimeout(()=>location.href="./index.html", 700);
     return;
   }
 
   const sb = ensureSupabase();
 
-  // ✅ Schéma réel de ta table
-  const { data, error } = await sb
+  let q = sb
     .from("digiy_explore_spots")
-    .select("id, name, type, zone, city, phone, lat, lng, badge, description, photo_url, link_url, status, score, tags")
-    .eq("id", id)
-    .eq("status","active")
-    .maybeSingle();
+    .select("id, slug, name, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, ambiance, duree, budget, tags, score")
+    .eq("status", "published");
+
+  if(id) q = q.eq("id", id);
+  else q = q.eq("slug", slug);
+
+  const { data, error } = await q.maybeSingle();
 
   if(error){
     console.error(error);
-    toast("❌ Erreur lecture spot (RLS/table).");
     $("#spotName").textContent = "Erreur";
-    $("#spotMeta").textContent = "Impossible de charger ce spot.";
+    $("#spotMeta").textContent = "Lecture refusée (RLS / config).";
+    toast("❌ Erreur lecture spot.");
     return;
   }
   if(!data){
-    toast("Introuvable ou pas encore actif.");
     $("#spotName").textContent = "Spot introuvable";
-    $("#spotMeta").textContent = "—";
+    $("#spotMeta").textContent = "Pas publié ou lien incorrect.";
+    toast("Introuvable / non publié.");
     return;
   }
 
   const spot = data;
-
   const title = spot.name || "Spot";
-  const cat = spot.type || "—";
-  const city = spot.city || "—";
-  const phone = normalizePhone(spot.phone || "");
+  document.title = `DIGIY EXPLORE — ${title}`;
 
   $("#spotName").textContent = title;
-  $("#spotMeta").textContent = `${cat} • ${city}`;
-  $("#phoneLine").textContent = phone || "—";
-  $("#addrLine").textContent = (spot.zone || city || "—");
-  $("#infoLine").textContent = spot.description ? String(spot.description).slice(0,160) : "Infos simples, contact direct, paiement au pro.";
+  $("#spotMeta").textContent =
+    `${spot.type || "—"} • ${spot.city || "—"} • ${spot.zone || "—"} • slug: ${spot.slug || "—"}`;
 
+  const phone = normalizePhone(spot.phone || "");
+  $("#phoneLine").textContent = phone || "—";
+
+  const addr = [spot.zone, spot.city].filter(Boolean).join(" • ");
+  $("#addrLine").textContent = addr || "—";
+
+  $("#infoLine").textContent = spot.description ? String(spot.description).slice(0,220) : "Infos simples, contact direct.";
+
+  const link = safeUrl(spot.link_url);
+  $("#linkLine").textContent = link ? link : "—";
+  $("#btnLink").style.opacity = link ? "1" : ".45";
+  $("#btnLink").style.pointerEvents = link ? "auto" : "none";
+
+  renderPills(spot);
+  renderGallery(spot);
   setBadgeState(spot);
 
-  renderGallery(spot.photo_url ? [spot.photo_url] : []);
-
   setMap(Number(spot.lat), Number(spot.lng), title);
-
-  const pageUrl = location.href;
-  $("#qrTitle").textContent = title;
-  $("#qrUrl").textContent = pageUrl;
-  drawFakeQR(pageUrl);
 
   $("#btnBack").onclick = ()=> history.length>1 ? history.back() : (location.href="./index.html");
 
   $("#btnMaps").onclick = ()=>{
-    const link = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
-    if(!link){ toast("Coordonnées manquantes."); return; }
-    window.open(link, "_blank");
+    const url = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
+    if(!url){ toast("Coordonnées manquantes."); return; }
+    window.open(url, "_blank");
   };
 
   $("#btnCall").onclick = ()=>{
@@ -643,27 +556,30 @@ async function loadSpot(){
     location.href = "sms:" + phone;
   };
 
+  const wa = buildWhatsAppLink(phone, title);
   $("#btnWhats").onclick = ()=>{
-    const wa = buildWhatsAppLink(phone, title);
     if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
     window.open(wa, "_blank");
   };
 
+  $("#btnLink").onclick = ()=>{
+    if(!link){ toast("Lien manquant."); return; }
+    window.open(link, "_blank");
+  };
+
   $("#btnShare").onclick = async ()=>{
-    const txt = buildShareText(spot, pageUrl);
+    const txt = buildShareText(spot, location.href);
     if(navigator.share){
-      try{ await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: pageUrl }); }catch(e){}
+      try{ await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: location.href }); }catch(e){}
       return;
     }
     try{
       await navigator.clipboard.writeText(txt);
       toast("✅ Lien copié.");
     }catch(e){
-      toast("Copie impossible.");
+      toast("Copie impossible (sécurité navigateur).");
     }
   };
-
-  $("#btnPay").onclick = ()=> goPay(spot);
 
   $("#lb").addEventListener("click", closeLightbox);
   document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
