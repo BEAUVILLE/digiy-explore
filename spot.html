@@ -552,10 +552,10 @@ function buildWhatsAppLink(phone, title){
   return `https://wa.me/${p}?text=${txt}`;
 }
 function buildShareText(spot, pageUrl){
-  return `DIGIY EXPLORE — ${spot.title||"Spot"} (${spot.city||"—"})\n${pageUrl}`;
+  return `DIGIY EXPLORE — ${spot.name||"Spot"} (${spot.city||"—"})\n${pageUrl}`;
 }
 
-/* PAY placeholder */
+/* PAY placeholder (id-mode) */
 function goPay(spot){
   const PAY_URL = (window.__DIGIY_PAY_URL__ || "").trim();
   if(!PAY_URL){
@@ -564,25 +564,27 @@ function goPay(spot){
   }
   const u = new URL(PAY_URL, location.href);
   u.searchParams.set("kind","explore");
-  u.searchParams.set("slug", spot.slug || "");
-  u.searchParams.set("title", spot.title || "");
+  u.searchParams.set("id", spot.id || "");
+  u.searchParams.set("name", spot.name || "");
   location.href = u.toString();
 }
 
 async function loadSpot(){
-  const slug = (qs("slug") || "").trim();
-  if(!slug){
-    toast("Slug manquant. Retour à Explore.");
+  // ✅ ID MODE (plus de slug)
+  const id = (qs("id") || "").trim();
+  if(!id){
+    toast("ID manquant. Retour index.");
     setTimeout(()=>location.href="./index.html", 700);
     return;
   }
 
   const sb = ensureSupabase();
 
+  // ✅ Schéma réel de ta table
   const { data, error } = await sb
     .from("digiy_explore_spots")
-    .select("id, slug, title, category, city, phone, lat, lng, photos, photo_url, status, is_boosted, boost_rank, boost_until, open_hours_json, address, desc, tags")
-    .eq("slug", slug)
+    .select("id, name, type, zone, city, phone, lat, lng, badge, description, photo_url, link_url, status, score, tags")
+    .eq("id", id)
     .eq("status","active")
     .maybeSingle();
 
@@ -594,29 +596,28 @@ async function loadSpot(){
     return;
   }
   if(!data){
-    toast("Introuvable. Peut-être désactivé.");
+    toast("Introuvable ou pas encore actif.");
     $("#spotName").textContent = "Spot introuvable";
     $("#spotMeta").textContent = "—";
     return;
   }
 
   const spot = data;
-  const title = spot.title || "Spot";
-  const cat = spot.category || "—";
+
+  const title = spot.name || "Spot";
+  const cat = spot.type || "—";
   const city = spot.city || "—";
   const phone = normalizePhone(spot.phone || "");
 
   $("#spotName").textContent = title;
-  $("#spotMeta").textContent = `${cat} • ${city} • slug: ${spot.slug || "—"}`;
+  $("#spotMeta").textContent = `${cat} • ${city}`;
   $("#phoneLine").textContent = phone || "—";
-  $("#addrLine").textContent = (spot.address || city || "—");
-  $("#infoLine").textContent = spot.desc ? String(spot.desc).slice(0,160) : "Infos simples, contact direct, paiement au pro.";
+  $("#addrLine").textContent = (spot.zone || city || "—");
+  $("#infoLine").textContent = spot.description ? String(spot.description).slice(0,160) : "Infos simples, contact direct, paiement au pro.";
 
   setBadgeState(spot);
 
-  let photos = Array.isArray(spot.photos) ? spot.photos : [];
-  if((!photos || !photos.length) && spot.photo_url) photos = [spot.photo_url];
-  renderGallery(photos);
+  renderGallery(spot.photo_url ? [spot.photo_url] : []);
 
   setMap(Number(spot.lat), Number(spot.lng), title);
 
@@ -626,6 +627,7 @@ async function loadSpot(){
   drawFakeQR(pageUrl);
 
   $("#btnBack").onclick = ()=> history.length>1 ? history.back() : (location.href="./index.html");
+
   $("#btnMaps").onclick = ()=>{
     const link = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
     if(!link){ toast("Coordonnées manquantes."); return; }
@@ -641,8 +643,8 @@ async function loadSpot(){
     location.href = "sms:" + phone;
   };
 
-  const wa = buildWhatsAppLink(phone, title);
   $("#btnWhats").onclick = ()=>{
+    const wa = buildWhatsAppLink(phone, title);
     if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
     window.open(wa, "_blank");
   };
@@ -657,7 +659,7 @@ async function loadSpot(){
       await navigator.clipboard.writeText(txt);
       toast("✅ Lien copié.");
     }catch(e){
-      toast("Copie impossible (sécurité navigateur).");
+      toast("Copie impossible.");
     }
   };
 
