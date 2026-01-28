@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#071a13"/>
+  <title>DIGIY EXPLORE — Admin Audit</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --bg:#071a13; --card:#0b2a1f; --line:rgba(255,255,255,.12);
+      --text:#eafff1; --muted:rgba(234,255,241,.72);
+      --gold:#facc15; --shadow:0 14px 40px rgba(0,0,0,.35); --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
+        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:16px 14px 34px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      padding:10px 12px;border:1px solid var(--line);
+      background:rgba(11,42,31,.65);backdrop-filter: blur(10px);
+      border-radius:22px;box-shadow:var(--shadow);
+      position:sticky;top:10px;z-index:20;
+    }
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
+        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
+      border:1px solid rgba(255,255,255,.15);
+      font-weight:900;
+    }
+    .t1{font-size:14px;font-weight:1000}
+    .t2{font-size:12px;color:var(--muted);margin-top:2px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(6,20,18,.55);
+      cursor:pointer;font-size:12px;user-select:none;white-space:nowrap;
+    }
+    .btn.gold{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.22)}
+    .btn.ghost{background:rgba(0,0,0,.20)}
+    .panel{
+      margin-top:14px;
+      border:1px solid var(--line);
+      background: rgba(11,42,31,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .hd .h1{font-weight:1000;font-size:14px}
+    .hd .h2{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
+    .body{padding:12px}
+    .list{display:grid;gap:10px}
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(6,20,18,.45);
+      border-radius: 16px;
+      padding:10px;
+      display:grid;
+      gap:6px;
+    }
+    .row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .nm{font-weight:1000}
+    .meta{font-size:12px;color:var(--muted)}
+    .tag{
+      padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.16);font-size:12px
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .toast{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:14px; z-index:80;
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.18);
+      color:rgba(234,255,241,.92);
+      padding:10px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      display:none;
+      max-width:min(94vw, 900px);
+      box-shadow: var(--shadow);
+      font-size:13px;
+    }
+    .toast.show{display:block}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">♾️</div>
+        <div>
+          <div class="t1">DIGIY EXPLORE</div>
+          <div class="t2">Admin Audit — lecture des logs</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div id="btnBack" class="btn ghost">⬅️ Admin PIN</div>
+        <div id="btnIndex" class="btn ghost">🏠 Index</div>
+        <div id="btnRefresh" class="btn gold">🔄 Refresh</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="hd">
+        <div class="h1">Historique</div>
+        <div class="h2">Dernières actions admin: pin_ok / pin_fail / publish / reject.</div>
+      </div>
+      <div class="body">
+        <div class="list" id="list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+<script>
+const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
+const CFG = window.__DIGIY_SUPABASE__ || {};
+const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
+const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+
+let sb=null;
+function ensureSupabase(){
+  if(sb) return sb;
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
+    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
+    throw new Error("Supabase config missing (anon).");
+  }
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
+  return sb;
+}
+const $=(s)=>document.querySelector(s);
+const toastEl=$("#toast");
+function toast(msg){
+  toastEl.textContent=msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastEl._t);
+  toastEl._t=setTimeout(()=>toastEl.classList.remove("show"),2800);
+}
+function esc(s){
+  return (s ?? "").toString()
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+async function loadAudit(){
+  const sb=ensureSupabase();
+  const { data, error } = await sb
+    .from("digiy_explore_admin_audit")
+    .select("created_at, admin_phone, action, spot_id, old_status, new_status, note")
+    .order("created_at", { ascending:false })
+    .limit(300);
+
+  if(error){
+    console.error(error);
+    toast("❌ Lecture audit refusée (RLS?)");
+    return;
+  }
+
+  $("#list").innerHTML = (data||[]).map(x=>{
+    const when = x.created_at ? new Date(x.created_at).toLocaleString() : "—";
+    const spot = x.spot_id ? String(x.spot_id) : "—";
+    const st = (x.old_status || x.new_status) ? `${x.old_status||"—"} → ${x.new_status||"—"}` : "—";
+    const note = x.note ? esc(x.note) : "";
+    return `
+      <div class="card">
+        <div class="row">
+          <div class="nm">${esc(x.action || "—")}</div>
+          <div class="tag">${esc(when)}</div>
+        </div>
+        <div class="meta">admin: <span class="mono">${esc(x.admin_phone||"—")}</span></div>
+        <div class="meta">spot: <span class="mono">${esc(spot)}</span></div>
+        <div class="meta">status: ${esc(st)}</div>
+        ${note ? `<div class="meta">note: ${note}</div>` : ``}
+      </div>
+    `;
+  }).join("");
+}
+
+$("#btnBack").onclick = ()=> location.href="./admin-pin.html";
+$("#btnIndex").onclick = ()=> location.href="./index.html";
+$("#btnRefresh").onclick = loadAudit;
+
+loadAudit();
+</script>
+</body>
+</html>
