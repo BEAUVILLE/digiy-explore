@@ -1,216 +1,299 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DIGIY EXPLORE - Apporteur d'affaires tourisme Sénégal. Mise en relation directe sans commission abusive.">
-  <meta property="og:title" content="DIGIY EXPLORE - Apporteur d'Affaires Tourisme Sénégal">
-  <meta property="og:description" content="Mise en relation directe entre voyageurs et professionnels africains. Contact direct, modèle équitable.">
-  <meta property="og:type" content="website">
-  <meta name="robots" content="index, follow">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="DIGIY EXPLORE - Mise en relation directe entre voyageurs et professionnels africains. Zéro commission abusive. Paiement direct au pro." />
+  <meta name="theme-color" content="#000000" />
   <title>DIGIY EXPLORE ∞ | Saly • Dakar • Petite Côte</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth;overflow-x:hidden}
-    body{
-      font-family:'Poppins',sans-serif;
-      line-height:1.6;
-      color:#111;
-      background:#fff;
-      overflow-x:hidden;
-    }
-    body.menu-open{overflow:hidden}
-
     :root{
       --gold:#D4AF37;
-      --gold-dark:#B8941E;
+      --gold2:#B8941E;
       --black:#000;
+      --dark:#111;
       --white:#fff;
+      --muted:rgba(255,255,255,.78);
+      --card: rgba(0,0,0,.55);
+      --line: rgba(255,255,255,.12);
+      --shadow: 0 14px 40px rgba(0,0,0,.45);
     }
-    .playfair{font-family:'Playfair Display',serif}
-    section{scroll-margin-top:80px}
-    a{text-decoration:none}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:#000;
+      color:#fff;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
 
-    /* NAV */
+    /* ===== NAV ===== */
     nav{
-      position:fixed;top:0;left:0;right:0;z-index:1000;
-      background:rgba(0,0,0,.95);
-      backdrop-filter:blur(20px);
-      padding:1rem 0;
-      border-bottom:1px solid rgba(255,255,255,.08);
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background: rgba(0,0,0,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 14px 0;
     }
     .nav-container{
-      max-width:1400px;margin:0 auto;padding:0 1.5rem;
-      display:flex;justify-content:space-between;align-items:center;gap:1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
     .logo{
-      display:flex;align-items:center;gap:.5rem;
-      font-size:1.4rem;font-weight:900;color:var(--gold);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.3px;
+      color: var(--gold);
+      user-select:none;
       white-space:nowrap;
     }
-    .logo .inf{font-size:2rem;animation:float 3s ease-in-out infinite}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-
-    .nav-links{display:none}
-    .nav-links.active{
-      display:flex;flex-direction:column;
-      position:fixed;top:70px;left:0;right:0;bottom:0;
-      background:rgba(0,0,0,.98);
-      padding:2rem;gap:1.5rem;
-      overflow-y:auto;
+    .logo .inf{font-size:22px}
+    .nav-links{
+      display:none;
+      gap:18px;
+      align-items:center;
     }
-    .nav-links a{color:#fff;font-weight:700;font-size:1.1rem}
-    .nav-links a:hover{color:var(--gold)}
-
-    .nav-actions{display:flex;align-items:center;gap:.7rem}
-
-    .btn-nav{
-      padding:.6rem 1.2rem;
-      border-radius:30px;
-      font-weight:900;
-      font-size:.9rem;
-      cursor:pointer;
+    .nav-links a{
+      color: rgba(255,255,255,.86);
+      font-weight:600;
+      font-size:14px;
+      padding:8px 10px;
+      border-radius:999px;
       transition:.2s;
+    }
+    .nav-links a:hover{background: rgba(255,255,255,.08); color:#fff}
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .nav-cta{
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color:#000;
+      border:0;
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      cursor:pointer;
+      box-shadow: 0 10px 24px rgba(212,175,55,.25);
+      transition: transform .06s ease;
       white-space:nowrap;
-      display:inline-flex;
+    }
+    .nav-cta:active{transform:scale(.98)}
+    .menu-toggle{
+      background:none;border:0;color:#fff;
+      font-size:20px; cursor:pointer;
+      padding:8px 10px;
+      border-radius:12px;
+    }
+
+    /* Mobile menu */
+    .drawer{
+      position:fixed; inset:60px 0 0 0;
+      background: rgba(0,0,0,.96);
+      border-top:1px solid rgba(255,255,255,.08);
+      display:none;
+      padding:18px 16px;
+      z-index:999;
+      overflow:auto;
+    }
+    .drawer.open{display:block}
+    .drawer a{
+      display:block;
+      padding:14px 12px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      margin-bottom:10px;
+      background: rgba(255,255,255,.04);
+      font-weight:700;
+      color: rgba(255,255,255,.92);
+    }
+
+    @media (min-width: 880px){
+      .menu-toggle{display:none}
+      .nav-links{display:flex}
+      .drawer{display:none !important}
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      min-height: 100vh;
+      display:flex;
       align-items:center;
       justify-content:center;
+      padding: 110px 16px 40px;
+      position:relative;
+      overflow:hidden;
     }
-    .btn-pay{
-      background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-      color:#000;
-    }
-    .btn-pay:hover{transform:translateY(-2px)}
-    .btn-enter{
-      background:transparent;
-      color:#fff;
-      border:1px solid rgba(255,255,255,.35);
-    }
-    .btn-enter:hover{background:#fff;color:#000}
-
-    .menu-toggle{
-      background:none;border:none;color:#fff;font-size:1.6rem;
-      cursor:pointer;padding:.4rem;
-    }
-
-    @media(min-width:768px){
-      .menu-toggle{display:none}
-      .nav-links{display:flex;gap:2rem;position:static;background:none;padding:0;flex-direction:row}
-      .nav-links a{font-size:1rem}
-    }
-
-    /* HERO */
-    .hero{
-      height:100vh;min-height:650px;
-      display:flex;align-items:center;justify-content:center;
-      position:relative;overflow:hidden;
-    }
-    .hero-bg{
-      position:absolute;inset:0;
+    .hero::before{
+      content:"";
+      position:absolute; inset:0;
       background:
-        linear-gradient(45deg,rgba(0,0,0,.65),rgba(0,0,0,.35)),
-        url("https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&auto=format&fit=crop&q=70&fm=webp")
-        center/cover;
+        linear-gradient(45deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.25) 50%, rgba(0,0,0,.72) 100%),
+        url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&auto=format&fit=crop&q=70&fm=webp') center/cover;
+      transform: scale(1.02);
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 520px at 15% 12%, rgba(212,175,55,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 90%, rgba(34,197,94,.12), transparent 55%);
+      pointer-events:none;
     }
     .hero-content{
-      position:relative;z-index:2;
-      text-align:center;color:#fff;
-      max-width:1000px;padding:2rem;
+      position:relative; z-index:5;
+      max-width: 980px;
+      text-align:center;
     }
     .badge{
       display:inline-block;
-      border:1px solid var(--gold);
-      color:var(--gold);
-      padding:.6rem 1.4rem;
-      border-radius:40px;
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.55);
+      background: rgba(212,175,55,.10);
+      color: var(--gold);
       font-weight:800;
-      background:rgba(212,175,55,.12);
-      margin-bottom:1.6rem;
+      letter-spacing:.6px;
+      font-size:13px;
+      margin-bottom:18px;
     }
     h1{
-      font-size:2.8rem;
+      font-family:'Playfair Display',serif;
       font-weight:900;
-      line-height:1.15;
-      text-shadow:0 4px 25px rgba(0,0,0,.55);
-      margin-bottom:1rem;
+      font-size: 40px;
+      line-height:1.1;
+      text-shadow: 0 6px 24px rgba(0,0,0,.6);
     }
-    p.lead{
-      font-size:1.2rem;
-      opacity:.92;
-      margin-bottom:2rem;
+    .sub{
+      margin: 14px auto 22px;
+      max-width: 820px;
+      color: rgba(255,255,255,.90);
+      font-size: 16px;
+      line-height:1.6;
+      text-shadow: 0 4px 18px rgba(0,0,0,.55);
+    }
+    @media (min-width: 768px){
+      h1{font-size:64px}
+      .sub{font-size:18px}
     }
 
-    .cta-group{
+    /* ===== CTA GRID ===== */
+    .cta-grid{
       display:flex;
+      gap:12px;
       justify-content:center;
-      gap:1rem;
       flex-wrap:wrap;
+      margin-top: 10px;
     }
-    .btn-hero{
-      padding:1.15rem 2.4rem;
-      border-radius:60px;
-      font-weight:900;
-      font-size:1.1rem;
-      cursor:pointer;
-      transition:.2s;
+    .btn{
       display:inline-flex;
-      gap:.6rem;
       align-items:center;
       justify-content:center;
-    }
-    .btn-hero.explore{
-      background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-      color:#000;
-    }
-    .btn-hero.pay{
-      border:2px solid #fff;
+      gap:10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.45);
       color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      min-width: 240px;
     }
-    .btn-hero:hover{transform:translateY(-2px)}
-
-    @media(min-width:768px){
-      h1{font-size:4.2rem}
-      p.lead{font-size:1.45rem}
+    .btn:active{transform:scale(.98)}
+    .btn.primary{
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color:#000;
+      border-color: rgba(212,175,55,.55);
+      box-shadow: 0 18px 44px rgba(212,175,55,.22);
+    }
+    .btn.secondary{
+      background: rgba(0,0,0,.55);
+      border-color: rgba(255,255,255,.16);
+    }
+    .btn.ghost{
+      background: rgba(255,255,255,.06);
     }
 
-    /* SECTIONS */
+    /* ===== SECTIONS ===== */
+    section{scroll-margin-top:80px}
     .section{
-      padding:5rem 1.5rem;
+      padding: 60px 16px;
+      background:#000;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .container{max-width: 1100px;margin:0 auto}
+    .sec-title{
+      font-family:'Playfair Display',serif;
+      font-size: 34px;
+      color: var(--gold);
       text-align:center;
+      margin-bottom: 12px;
     }
-    .section h2{
-      font-size:2.2rem;
-      font-weight:900;
-      margin-bottom:1rem;
+    .sec-sub{
+      text-align:center;
+      color: rgba(255,255,255,.78);
+      max-width: 860px;
+      margin: 0 auto 26px;
+      line-height:1.7;
     }
-    .section p{
-      max-width:800px;
-      margin:0 auto;
-      color:#555;
-      font-size:1.05rem;
+
+    .cards{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top: 18px;
+    }
+    @media (min-width: 900px){
+      .cards{grid-template-columns: repeat(3, 1fr)}
+    }
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{font-size:16px;margin-bottom:8px}
+    .card p{color: rgba(255,255,255,.76); line-height:1.7; font-size:14px}
+
+    .big-cta{
+      margin-top: 22px;
+      display:flex;
+      justify-content:center;
+    }
+    .big-cta .btn{
+      min-width: min(560px, 92vw);
+      font-size: 16px;
+      padding: 16px 18px;
     }
 
     footer{
-      background:#000;
-      color:#fff;
+      padding: 28px 16px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.55);
       text-align:center;
-      padding:2.5rem 1.5rem;
-      font-size:.9rem;
-    }
-    footer .tagline{
-      color:var(--gold);
-      font-weight:900;
-      margin-top:.8rem;
+      font-size: 12px;
+      background:#000;
     }
   </style>
 </head>
@@ -220,113 +303,147 @@
   <!-- NAV -->
   <nav>
     <div class="nav-container">
-      <div class="logo">
+      <div class="logo" id="homeTop">
         <span class="inf">∞</span>
-        DIGIY EXPLORE
+        <span>DIGIY EXPLORE</span>
       </div>
 
-      <div class="nav-links" id="navLinks">
+      <div class="nav-links">
         <a href="#role">Notre rôle</a>
         <a href="#zones">Zones</a>
-        <a href="#mission">Vision</a>
+        <a href="#vision">Vision</a>
+        <a href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">Commencer à payer</a>
+        <a href="/digiy-explore/explore.html">Entrer / Explorer</a>
       </div>
 
       <div class="nav-actions">
-        <a id="btnPayTop" class="btn-nav btn-pay"
-           href="https://beauville.github.io/commencer-a-payer/">
-          Commencer à payer
-        </a>
-
-        <a id="btnEnterTop" class="btn-nav btn-enter"
-           href="https://beauville.github.io/digiy-explore/explore.html">
-          Entrer / Explorer
-        </a>
-
-        <button class="menu-toggle" id="menuToggle">
-          <i class="fas fa-bars"></i>
-        </button>
+        <button class="nav-cta" id="ctaPayTop">💳 Commencer à payer</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </nav>
 
+  <!-- MOBILE DRAWER -->
+  <div class="drawer" id="drawer">
+    <a href="#role">Notre rôle</a>
+    <a href="#zones">Zones</a>
+    <a href="#vision">Vision</a>
+    <a href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 Commencer à payer</a>
+    <a href="/digiy-explore/explore.html">🔥 Entrer / Explorer</a>
+  </div>
+
   <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
+  <header class="hero" id="top">
     <div class="hero-content">
-
       <div class="badge">🇸🇳 Saly • Dakar • Petite Côte</div>
-
-      <h1 class="playfair">
-        L’Afrique Authentique<br/>Accessible au Monde
-      </h1>
-
-      <p class="lead">
+      <h1>L’Afrique Authentique<br/>Accessible au Monde</h1>
+      <p class="sub">
         Mise en relation directe entre voyageurs et professionnels africains.<br/>
         Zéro commission abusive. Paiement direct au pro.
       </p>
 
-      <div class="cta-group">
-        <a id="btnEnterHero" class="btn-hero explore"
-           href="https://beauville.github.io/digiy-explore/explore.html">
-          🔥 Entrer dans EXPLORE <i class="fas fa-compass"></i>
-        </a>
+      <!-- Boutons du haut -->
+      <div class="cta-grid">
+        <button class="btn primary" id="ctaExploreTop">🔥 Entrer dans EXPLORE</button>
+        <button class="btn secondary" id="ctaPayMid">💳 Commencer à payer (Abonnement)</button>
+      </div>
+    </div>
+  </header>
 
-        <a id="btnPayHero" class="btn-hero pay"
-           href="https://beauville.github.io/commencer-a-payer/">
-          💳 Commencer à payer (Abonnement)
-        </a>
+  <!-- ROLE -->
+  <section class="section" id="role">
+    <div class="container">
+      <div class="sec-title">Notre rôle</div>
+      <div class="sec-sub">
+        DIGIY EXPLORE facilite la mise en relation : tu découvres un pro terrain, tu le contactes directement.
+        Les prix et paiements se font sans intermédiaire.
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>1) Visibilité</h3>
+          <p>On donne une vitrine propre et internationale aux pros africains.</p>
+        </div>
+        <div class="card">
+          <h3>2) Contact direct</h3>
+          <p>WhatsApp / téléphone / lien — le voyageur parle au pro, pas à une plateforme.</p>
+        </div>
+        <div class="card">
+          <h3>3) Valeur en Afrique</h3>
+          <p>Zéro commission abusive : l’essentiel reste chez le pro terrain.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ROLE -->
-  <section id="role" class="section">
-    <h2 class="playfair">Notre rôle</h2>
-    <p>
-      DIGIY EXPLORE connecte voyageurs et professionnels africains.
-      Contact direct, visibilité internationale, modèle équitable.
-    </p>
-  </section>
-
   <!-- ZONES -->
-  <section id="zones" class="section" style="background:#f9f9f9;">
-    <h2 class="playfair">Zones actives</h2>
-    <p>Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine.</p>
+  <section class="section" id="zones">
+    <div class="container">
+      <div class="sec-title">Zones actives</div>
+      <div class="sec-sub">
+        Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine vers d’autres pays africains.
+      </div>
 
-    <div style="margin-top:2rem">
-      <a id="btnEnterZones" class="btn-hero explore"
-         href="https://beauville.github.io/digiy-explore/explore.html">
-        🚀 Explorer maintenant
-      </a>
+      <!-- GROS BOUTON (celui qui bouclait chez toi) -->
+      <div class="big-cta">
+        <button class="btn primary" id="ctaExploreBottom">🚀 Explorer maintenant</button>
+      </div>
     </div>
   </section>
 
-  <!-- MISSION -->
-  <section id="mission" class="section" style="background:#000;color:#fff;">
-    <h2 class="playfair" style="color:var(--gold)">Vision DIGIY</h2>
-    <p style="color:rgba(255,255,255,.85)">
-      Tourisme enraciné, souverain, équitable. La valeur reste en Afrique.
-    </p>
+  <!-- VISION -->
+  <section class="section" id="vision">
+    <div class="container">
+      <div class="sec-title">Vision</div>
+      <div class="sec-sub">
+        Construire un écosystème enraciné, simple et juste : découverte + contact direct + paiement direct.
+      </div>
+
+      <div class="cta-grid" style="margin-top:18px">
+        <button class="btn ghost" id="ctaPayBottom">💳 Commencer à payer</button>
+        <button class="btn secondary" id="ctaEnter">🔥 Entrer / Explorer</button>
+      </div>
+    </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    © 2026 DIGIYLYFE — DIGIY EXPLORE  
-    <div class="tagline">∞ L’Afrique enracinée, connectée au monde ∞</div>
+    © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Mise en relation directe • Paiement direct au pro
   </footer>
 
-  <!-- ✅ MENU MOBILE -->
   <script>
-    document.addEventListener("DOMContentLoaded", ()=>{
-      const menuToggle = document.getElementById("menuToggle");
-      const navLinks = document.getElementById("navLinks");
-      if(menuToggle && navLinks){
-        menuToggle.addEventListener("click", ()=>{
-          navLinks.classList.toggle("active");
-        });
+    // ========= LIENS ABSOLUS (ANTI-BOUCLE) =========
+    const LINKS = {
+      explore: "/digiy-explore/explore.html",
+      pay: "https://beauville.github.io/commencer-a-payer/"
+    };
+
+    function go(url){
+      // ouvre paiement en nouvel onglet, explore en même onglet
+      if(url === LINKS.pay){
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        location.href = url;
       }
+    }
+
+    // CTA
+    document.getElementById("ctaExploreTop").onclick = () => go(LINKS.explore);
+    document.getElementById("ctaExploreBottom").onclick = () => go(LINKS.explore);
+    document.getElementById("ctaEnter").onclick = () => go(LINKS.explore);
+
+    document.getElementById("ctaPayTop").onclick = () => go(LINKS.pay);
+    document.getElementById("ctaPayMid").onclick = () => go(LINKS.pay);
+    document.getElementById("ctaPayBottom").onclick = () => go(LINKS.pay);
+
+    // Menu mobile
+    const menuToggle = document.getElementById("menuToggle");
+    const drawer = document.getElementById("drawer");
+    menuToggle.onclick = () => drawer.classList.toggle("open");
+
+    // ferme drawer quand on clique un lien interne
+    drawer.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener("click", ()=>drawer.classList.remove("open"));
     });
   </script>
-
 </body>
 </html>
