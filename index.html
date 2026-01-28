@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DIGIY EXPLORE - Apporteur d'affaires tourisme Afrique. Saly, Dakar, Mbour, Petite Côte. Mise en relation guides locaux et voyageurs. Visibilité sans commission abusive.">
-  <meta name="keywords" content="guide sénégal, saly, mbour, somone, ngaparou, dakar, petite côte, tourisme responsable, apporteur affaires, excursion lac rose, île gorée">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DIGIY EXPLORE - Apporteur d'affaires tourisme Afrique. Saly, Dakar, Mbour, Petite Côte. Mise en relation guides locaux et voyageurs. Visibilité sans commission abusive." />
+  <meta name="keywords" content="guide sénégal, saly, mbour, somone, ngaparou, dakar, petite côte, tourisme responsable, apporteur affaires, excursion lac rose, île gorée" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="robots" content="index,follow" />
 
-  <meta property="og:title" content="DIGIY EXPLORE - Apporteur d'Affaires Tourisme Sénégal">
-  <meta property="og:description" content="Mise en relation entre voyageurs et professionnels africains. Saly, Dakar, Petite Côte. Visibilité internationale, modèle équitable.">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="fr_FR">
-
-  <meta name="theme-color" content="#000000">
-  <meta name="robots" content="index,follow">
+  <!-- ✅ Canonical / Social (à adapter à TON domaine final) -->
+  <link rel="canonical" href="https://digiylyfe.com/explore" />
+  <meta property="og:title" content="DIGIY EXPLORE - Apporteur d'Affaires Tourisme Sénégal" />
+  <meta property="og:description" content="Mise en relation entre voyageurs et professionnels africains. Saly, Dakar, Petite Côte. Visibilité internationale, modèle équitable." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:url" content="https://digiylyfe.com/explore" />
+  <meta property="og:image" content="https://digiylyfe.com/assets/explore-og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DIGIY EXPLORE ∞ | Tourisme Sénégal • Saly • Dakar" />
+  <meta name="twitter:description" content="Mise en relation voyageurs ↔ pros locaux. Paiement direct au pro. Modèle équitable." />
+  <meta name="twitter:image" content="https://digiylyfe.com/assets/explore-og.jpg" />
 
   <title>DIGIY EXPLORE ∞ | Tourisme Sénégal • Saly • Dakar • Petite Côte</title>
 
   <!-- Fonts optimisés -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- ✅ Supabase (optionnel - seulement si tu veux logguer les leads) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- ✅ SEO: JSON-LD (Organisation + Website + FAQ) -->
   <script type="application/ld+json">
@@ -31,7 +42,7 @@
       {
         "@type":"Organization",
         "name":"DIGIY EXPLORE",
-        "url":"https://digiylyfe.com",
+        "url":"https://digiylyfe.com/explore",
         "logo":"https://digiylyfe.com/logo.png",
         "sameAs":[
           "https://www.facebook.com/",
@@ -50,7 +61,7 @@
       {
         "@type":"WebSite",
         "name":"DIGIY EXPLORE",
-        "url":"https://digiylyfe.com",
+        "url":"https://digiylyfe.com/explore",
         "inLanguage":"fr"
       },
       {
@@ -66,10 +77,10 @@
           },
           {
             "@type":"Question",
-            "name":"Comment sont fixés les prix ?",
+            "name":"Comment se fait le paiement ?",
             "acceptedAnswer":{
               "@type":"Answer",
-              "text":"Les prix sont décidés directement entre le voyageur et le professionnel. DIGIY EXPLORE n’impose pas de commission sur la vente."
+              "text":"Le paiement se fait directement au professionnel. DIGIY EXPLORE ne prélève pas de commission sur la vente."
             }
           },
           {
@@ -87,7 +98,6 @@
   </script>
 
   <style>
-    /* ==================== RESET ==================== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; overflow-x: hidden; }
     body { font-family: 'Poppins', sans-serif; line-height: 1.6; color: #1a1a1a; background: #fff; overflow-x: hidden; }
@@ -102,10 +112,9 @@
     }
 
     .playfair { font-family: 'Playfair Display', serif; }
-
     section { scroll-margin-top: 80px; }
 
-    /* ==================== NAVIGATION ==================== */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -115,7 +124,6 @@
       padding: 1rem 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-
     .nav-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -123,8 +131,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
     }
-
     .logo {
       display: flex;
       align-items: center;
@@ -134,19 +142,13 @@
       color: var(--gold);
       user-select: none;
     }
-
     .logo .infinity {
       font-size: 1.8rem;
       animation: float 3s ease-in-out infinite;
     }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
     .nav-links { display: none; }
-
     .nav-links.active {
       display: flex;
       flex-direction: column;
@@ -158,16 +160,9 @@
       gap: 1.5rem;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       animation: slideDown 0.3s ease;
+      overflow: auto;
     }
-
-    /* ✅ Accessibilité mobile menu */
-    .nav-links.active[role="dialog"] { outline: none; }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     .nav-links a {
       color: white;
       text-decoration: none;
@@ -175,31 +170,21 @@
       transition: color 0.3s ease;
       font-size: 1.1rem;
     }
-
     .nav-links a:hover { color: var(--gold); }
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
     .nav-cta {
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
       color: var(--black);
-      padding: 0.6rem 1.5rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 30px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.9rem;
       text-decoration: none;
       transition: all 0.3s ease;
       white-space: nowrap;
     }
-
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
 
     .menu-toggle {
       background: none;
@@ -227,7 +212,7 @@
       .logo .infinity { font-size: 2rem; }
     }
 
-    /* ==================== FLOATING WHATSAPP ==================== */
+    /* WhatsApp float */
     .whatsapp-float {
       position: fixed;
       bottom: 2rem;
@@ -245,15 +230,10 @@
       transition: all 0.3s ease;
       text-decoration: none;
     }
-
-    .whatsapp-float:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-    }
-
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6); }
     .whatsapp-float i { color: white; font-size: 1.8rem; }
 
-    /* ==================== HERO ==================== */
+    /* HERO */
     .hero {
       position: relative;
       height: 100vh;
@@ -265,15 +245,18 @@
       overflow: hidden;
     }
 
+    /* ✅ background image (garde ton style) */
     .hero-bg {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(45deg,
-        rgba(0,0,0,0.6) 0%,
-        rgba(0,0,0,0.3) 50%,
-        rgba(0,0,0,0.6) 100%),
+      background:
+        linear-gradient(45deg,
+          rgba(0,0,0,0.6) 0%,
+          rgba(0,0,0,0.3) 50%,
+          rgba(0,0,0,0.6) 100%),
         url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1400&q=70&auto=format&fit=crop&fm=webp') center/cover;
+      transform: scale(1.02);
     }
 
     .hero-content {
@@ -294,7 +277,7 @@
       display: inline-block;
       margin-bottom: 1.5rem;
       font-size: 0.9rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 1px;
     }
 
@@ -305,28 +288,21 @@
       line-height: 1.2;
       text-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
-
     .hero-subtitle {
       font-size: 1.2rem;
       margin-bottom: 2rem;
       font-weight: 300;
-      color: rgba(255,255,255,0.9);
+      color: rgba(255,255,255,0.92);
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
-    .hero-cta-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
+    .hero-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
       color: var(--black);
       padding: 1rem 2rem;
       border-radius: 50px;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 1rem;
       text-decoration: none;
       display: inline-flex;
@@ -336,11 +312,7 @@
       border: none;
       cursor: pointer;
     }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); }
 
     .btn-secondary {
       background: transparent;
@@ -348,12 +320,11 @@
       border: 2px solid white;
       padding: 1rem 2rem;
       border-radius: 50px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 1rem;
       text-decoration: none;
       transition: all 0.3s ease;
     }
-
     .btn-secondary:hover { background: white; color: var(--black); }
 
     @media (min-width: 768px) {
@@ -362,7 +333,7 @@
       .hero-badge { font-size: 1rem; }
     }
 
-    /* ==================== SECTIONS ==================== */
+    /* SECTIONS */
     .section-padding { padding: 5rem 1.5rem; }
 
     .section-header {
@@ -372,25 +343,21 @@
       margin-left: auto;
       margin-right: auto;
     }
-
     .section-title {
       font-size: 2rem;
       font-weight: 900;
       margin-bottom: 1rem;
       color: var(--dark);
     }
-
     .section-subtitle {
       font-size: 1.1rem;
       color: #666;
       font-weight: 300;
     }
-
     @media (min-width: 768px) { .section-title { font-size: 3rem; } }
 
-    /* ==================== HOW IT WORKS ==================== */
+    /* HOW IT WORKS */
     .how-it-works { background: white; }
-
     .steps-grid {
       max-width: 1200px;
       margin: 0 auto;
@@ -398,9 +365,7 @@
       grid-template-columns: 1fr;
       gap: 2rem;
     }
-
     .step-card { text-align: center; padding: 2rem; }
-
     .step-number {
       width: 60px; height: 60px;
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
@@ -413,21 +378,12 @@
       font-weight: 900;
       margin: 0 auto 1.5rem;
     }
-
-    .step-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      color: var(--dark);
-    }
-
+    .step-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--dark); }
     .step-description { color: #666; line-height: 1.7; }
-
     @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
 
-    /* ==================== ZONES ==================== */
+    /* ZONES */
     .zones-section { background: #f9f9f9; }
-
     .zones-grid {
       max-width: 1000px;
       margin: 0 auto;
@@ -435,7 +391,6 @@
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.5rem;
     }
-
     .zone-card {
       background: white;
       border: 1px solid #e5e7eb;
@@ -444,19 +399,13 @@
       text-align: center;
       transition: all 0.3s ease;
     }
-
-    .zone-card:hover {
-      border-color: var(--gold);
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-    }
-
+    .zone-card:hover { border-color: var(--gold); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
     .zone-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .zone-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .zone-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.5rem; }
     .zone-description { font-size: 0.9rem; color: #666; }
 
-    /* ==================== GALLERY ==================== */
+    /* GALLERY */
     .gallery-section { background: #f9f9f9; }
-
     .gallery-grid {
       max-width: 1200px;
       margin: 0 auto;
@@ -464,26 +413,23 @@
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
-
     .gallery-item {
       position: relative;
       height: 400px;
       border-radius: 15px;
       overflow: hidden;
       transition: transform 0.3s ease;
+      background: #111;
     }
-
     .gallery-item:hover { transform: translateY(-5px); }
-
     .gallery-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
+      display: block;
     }
-
     .gallery-item:hover img { transform: scale(1.05); }
-
     .gallery-overlay {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -491,44 +437,24 @@
       background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
       color: white;
     }
-
     .gallery-category {
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: var(--gold);
       margin-bottom: 0.5rem;
-      font-weight: 600;
+      font-weight: 700;
     }
-
-    .gallery-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .gallery-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
     .gallery-description { font-size: 0.95rem; opacity: 0.9; }
-
     @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
 
-    /* ==================== MISSION ==================== */
-    .mission-section {
-      background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-      color: white;
-    }
-
+    /* MISSION */
+    .mission-section { background: linear-gradient(135deg, #000 0%, #1a1a1a 100%); color: white; }
     .mission-container { max-width: 900px; margin: 0 auto; text-align: center; }
-
-    .mission-title {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 2rem;
-      color: var(--gold);
-    }
-
-    .mission-text {
-      font-size: 1.2rem;
-      line-height: 1.9;
-      margin-bottom: 1.5rem;
-      font-weight: 300;
-    }
-
+    .mission-title { font-size: 2rem; font-weight: 900; margin-bottom: 2rem; color: var(--gold); }
+    .mission-text { font-size: 1.2rem; line-height: 1.9; margin-bottom: 1.5rem; font-weight: 300; }
     .mission-highlight {
       background: rgba(212, 175, 55, 0.1);
       border-left: 4px solid var(--gold);
@@ -536,35 +462,21 @@
       margin: 2rem 0;
       text-align: left;
     }
-
-    .values-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
+    .values-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 3rem; }
     .value-item { text-align: center; }
     .value-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .value-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--gold); }
+    .value-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--gold); }
     .value-text { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
-
     @media (min-width: 768px) {
       .mission-title { font-size: 3rem; }
       .values-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    /* ==================== OPERATOR CTA ==================== */
-    .operator-cta {
-      background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
-      color: var(--dark);
-    }
-
+    /* OPERATOR CTA */
+    .operator-cta { background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%); color: var(--dark); }
     .operator-container { max-width: 900px; margin: 0 auto; text-align: center; }
-
     .operator-title { font-size: 2rem; font-weight: 900; margin-bottom: 1.5rem; }
     .operator-subtitle { font-size: 1.2rem; margin-bottom: 3rem; font-weight: 300; }
-
     .benefits-list {
       background: white;
       border-radius: 15px;
@@ -572,56 +484,31 @@
       margin-bottom: 2rem;
       text-align: left;
     }
-
-    .benefit-item {
-      display: flex;
-      align-items: start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+    .benefit-item { display: flex; align-items: start; gap: 1rem; margin-bottom: 1.5rem; }
     .benefit-item:last-child { margin-bottom: 0; }
-
     .benefit-icon { font-size: 1.5rem; color: var(--gold-dark); flex-shrink: 0; }
-    .benefit-text { flex: 1; }
-
-    .benefit-text strong { display: block; font-weight: 700; margin-bottom: 0.25rem; color: var(--dark); }
+    .benefit-text strong { display: block; font-weight: 800; margin-bottom: 0.25rem; color: var(--dark); }
     .benefit-text p { color: #666; font-size: 0.95rem; }
-
     .pricing-note {
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.08);
       border-radius: 10px;
       padding: 1rem;
       margin-top: 1.5rem;
       font-size: 0.95rem;
+      line-height: 1.7;
     }
-
     @media (min-width: 768px) { .operator-title { font-size: 3rem; } }
 
-    /* ==================== FAQ (SEO + conversion) ==================== */
+    /* FAQ */
     .faq-section { background: white; }
-    .faq-grid {
-      max-width: 900px;
-      margin: 0 auto;
-      display: grid;
-      gap: 1rem;
-    }
-    details.faq {
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 1rem 1.2rem;
-      background: #fff;
-    }
-    details.faq summary {
-      cursor: pointer;
-      font-weight: 700;
-      list-style: none;
-    }
+    .faq-grid { max-width: 900px; margin: 0 auto; display: grid; gap: 1rem; }
+    details.faq { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem 1.2rem; background: #fff; }
+    details.faq summary { cursor: pointer; font-weight: 800; list-style: none; }
     details.faq summary::-webkit-details-marker { display: none; }
     .faq p { margin-top: 0.75rem; color:#666; line-height:1.8; }
 
-    /* ==================== CONTACT ==================== */
+    /* CONTACT */
     .contact-section { background: #f9f9f9; }
-
     .contact-form {
       max-width: 600px;
       margin: 0 auto;
@@ -631,16 +518,8 @@
       padding: 2rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-
     .form-group { margin-bottom: 1.5rem; }
-
-    .form-label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--dark);
-    }
-
+    .form-label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
     .form-input {
       width: 100%;
       padding: 0.75rem 1rem;
@@ -649,13 +528,7 @@
       font-size: 1rem;
       transition: all 0.3s ease;
     }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-    }
-
+    .form-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
     .form-textarea { resize: vertical; min-height: 100px; }
 
     .contact-methods {
@@ -666,7 +539,6 @@
       padding-top: 2rem;
       border-top: 1px solid #e5e7eb;
     }
-
     .contact-method {
       display: flex;
       align-items: center;
@@ -675,13 +547,12 @@
       background: #f9f9f9;
       border-radius: 8px;
     }
-
     .contact-method i { font-size: 1.5rem; color: var(--gold); }
     .contact-method-text { flex: 1; }
-    .contact-method-label { font-weight: 600; margin-bottom: 0.25rem; }
+    .contact-method-label { font-weight: 800; margin-bottom: 0.25rem; }
     .contact-method-value { color: #666; font-size: 0.9rem; }
 
-    /* ==================== LEGAL SECTIONS ==================== */
+    /* LEGAL */
     .legal-section { background:#fff; }
     .legal-box {
       max-width: 900px;
@@ -698,13 +569,8 @@
     .legal-box ul { margin-left: 1.2rem; color:#666; }
     .legal-box li { margin-bottom: 0.5rem; }
 
-    /* ==================== FOOTER ==================== */
-    footer {
-      background: #000;
-      color: white;
-      padding: 3rem 1.5rem 1.5rem;
-    }
-
+    /* FOOTER */
+    footer { background: #000; color: white; padding: 3rem 1.5rem 1.5rem; }
     .footer-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -713,66 +579,38 @@
       gap: 2rem;
       margin-bottom: 2rem;
     }
-
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .footer-description {
-      color: rgba(255,255,255,0.7);
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-
-    .footer-section h4 {
-      color: var(--gold);
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-    }
-
-    .footer-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .footer-links a {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.3s ease;
-    }
-
+    .footer-brand { display: flex; flex-direction: column; gap: 1rem; }
+    .footer-logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 800; color: var(--gold); }
+    .footer-description { color: rgba(255,255,255,0.7); line-height: 1.7; font-size: 0.95rem; }
+    .footer-section h4 { color: var(--gold); margin-bottom: 1rem; font-size: 1.1rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease; }
     .footer-links a:hover { color: var(--gold); }
 
     .footer-bottom {
       border-top: 1px solid rgba(255,255,255,0.1);
       padding-top: 1.5rem;
       text-align: center;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.55);
       font-size: 0.85rem;
+      line-height: 1.7;
     }
-
-    .footer-tagline {
-      color: var(--gold);
-      font-weight: 600;
-      margin-top: 1rem;
-    }
+    .footer-tagline { color: var(--gold); font-weight: 700; margin-top: 1rem; }
 
     @media (min-width: 768px) {
       .footer-container { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    }
+
+    /* tiny helper */
+    .hint { font-size: 0.9rem; color: #666; margin-top: 1rem; text-align:center; }
+    .danger-note{
+      margin-top: 2rem;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -791,7 +629,7 @@
   <!-- NAVIGATION -->
   <nav>
     <div class="nav-container">
-      <div class="logo">
+      <div class="logo" role="banner" aria-label="DIGIY EXPLORE">
         <span class="infinity">∞</span>
         <span>DIGIY EXPLORE</span>
       </div>
@@ -810,7 +648,7 @@
       </div>
 
       <div class="nav-actions">
-        <a href="#contact" class="nav-cta">Être Rappelé</a>
+        <a href="#partenaires" class="nav-cta">Devenir Partenaire</a>
         <button class="menu-toggle"
                 id="menuToggle"
                 aria-label="Ouvrir le menu"
@@ -823,8 +661,8 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-content">
       <div class="hero-badge">🇸🇳 Saly • Dakar • Petite Côte</div>
       <h1 class="hero-title playfair">
@@ -852,8 +690,8 @@
     <div class="section-header">
       <h2 class="section-title playfair">Notre Rôle : Apporteur d'Affaires</h2>
       <p class="section-subtitle">
-        DIGIY EXPLORE n'est pas une agence de voyage. Nous sommes un facilitateur
-        qui crée de la mise en relation entre voyageurs et professionnels africains.
+        DIGIY EXPLORE n'est pas une agence de voyage. Nous facilitons la mise en relation
+        entre voyageurs et professionnels africains (contact direct, paiement direct).
       </p>
     </div>
 
@@ -862,8 +700,8 @@
         <div class="step-number">1</div>
         <h3 class="step-title">Nous Créons la Visibilité</h3>
         <p class="step-description">
-          Nous donnons une vitrine internationale aux guides, hébergeurs et prestataires africains
-          via notre site, nos réseaux et notre référencement.
+          Vitrine internationale pour guides, hébergeurs et prestataires locaux
+          via le site, les réseaux et le référencement.
         </p>
       </div>
 
@@ -871,17 +709,17 @@
         <div class="step-number">2</div>
         <h3 class="step-title">Nous Facilitons le Contact</h3>
         <p class="step-description">
-          Le voyageur découvre les professionnels via DIGIY EXPLORE, puis échange directement
-          avec eux (WhatsApp, téléphone, email) pour organiser son expérience.
+          Le voyageur vous découvre sur DIGIY EXPLORE, puis vous contacte directement
+          (WhatsApp, téléphone) pour organiser son expérience.
         </p>
       </div>
 
       <div class="step-card">
         <div class="step-number">3</div>
-        <h3 class="step-title">Ils S'Organisent Ensemble</h3>
+        <h3 class="step-title">Vous Closez Ensemble</h3>
         <p class="step-description">
           Prix, dates, modalités : tout se décide entre le voyageur et le professionnel.
-          Le paiement se fait directement. DIGIY reste un facilitateur.
+          DIGIY reste un facilitateur.
         </p>
       </div>
     </div>
@@ -917,7 +755,7 @@
 
     <div class="gallery-grid">
       <div class="gallery-item">
-        <img decoding="async" loading="lazy"
+        <img decoding="async" loading="lazy" width="700" height="400"
              src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=700&q=70&auto=format&fit=crop&fm=webp"
              alt="Sénégal Saly">
         <div class="gallery-overlay">
@@ -928,7 +766,7 @@
       </div>
 
       <div class="gallery-item">
-        <img decoding="async" loading="lazy"
+        <img decoding="async" loading="lazy" width="700" height="400"
              src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=700&q=70&auto=format&fit=crop&fm=webp"
              alt="Culture africaine">
         <div class="gallery-overlay">
@@ -939,7 +777,7 @@
       </div>
 
       <div class="gallery-item">
-        <img decoding="async" loading="lazy"
+        <img decoding="async" loading="lazy" width="700" height="400"
              src="https://images.unsplash.com/photo-1571118199144-431c4e84d119?w=700&q=70&auto=format&fit=crop&fm=webp"
              alt="Plages Sénégal">
         <div class="gallery-overlay">
@@ -950,7 +788,7 @@
       </div>
 
       <div class="gallery-item">
-        <img decoding="async" loading="lazy"
+        <img decoding="async" loading="lazy" width="700" height="400"
              src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=700&q=70&auto=format&fit=crop&fm=webp"
              alt="Safari Afrique">
         <div class="gallery-overlay">
@@ -961,7 +799,7 @@
       </div>
 
       <div class="gallery-item">
-        <img decoding="async" loading="lazy"
+        <img decoding="async" loading="lazy" width="700" height="400"
              src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=700&q=70&auto=format&fit=crop&fm=webp"
              alt="Gastronomie sénégalaise">
         <div class="gallery-overlay">
@@ -972,7 +810,7 @@
       </div>
 
       <div class="gallery-item">
-        <img decoding="async" loading="lazy"
+        <img decoding="async" loading="lazy" width="700" height="400"
              src="https://images.unsplash.com/photo-1609198092357-c7da4a4d6160?w=700&q=70&auto=format&fit=crop&fm=webp"
              alt="Expansion Afrique">
         <div class="gallery-overlay">
@@ -989,16 +827,16 @@
     <div class="mission-container">
       <h2 class="mission-title playfair">Notre Vision</h2>
       <p class="mission-text">
-        Les grandes plateformes internationales prélèvent jusqu'à 30% de commission
-        sur chaque transaction, extrayant ainsi la valeur du tourisme africain.
+        Les grandes plateformes prélèvent parfois des commissions lourdes.
+        Nous voulons un modèle qui respecte les pros et garde la valeur sur le terrain.
       </p>
       <p class="mission-text"><strong>DIGIY EXPLORE propose un modèle différent.</strong></p>
 
       <div class="mission-highlight">
-        <p style="margin: 0; font-size: 1.1rem;">
+        <p style="margin:0; font-size:1.1rem;">
           <strong style="color: var(--gold);">Notre modèle :</strong>
-          Une formule simple sur devis pour les professionnels (mise en visibilité + apport d'affaires)
-          plutôt qu'une commission sur chaque vente. L'argent reste en Afrique.
+          une formule simple pour les professionnels (visibilité + apport d’affaires),
+          plutôt qu’une commission sur chaque vente. Paiement direct au pro.
         </p>
       </div>
 
@@ -1006,25 +844,25 @@
         <div class="value-item">
           <div class="value-icon">🤝</div>
           <h3 class="value-title">Mise en Relation</h3>
-          <p class="value-text">Nous connectons, nous ne vendons pas à la place des pros</p>
+          <p class="value-text">On connecte, on ne vend pas à la place des pros.</p>
         </div>
 
         <div class="value-item">
           <div class="value-icon">🌍</div>
           <h3 class="value-title">Visibilité Internationale</h3>
-          <p class="value-text">Référencement, marketing, réseaux sociaux pour nos partenaires</p>
+          <p class="value-text">SEO, contenu, réseaux : on met la lumière sur le terrain.</p>
         </div>
 
         <div class="value-item">
           <div class="value-icon">💰</div>
           <h3 class="value-title">Modèle Équitable</h3>
-          <p class="value-text">Les professionnels gardent l'essentiel de leurs revenus</p>
+          <p class="value-text">Les revenus restent majoritairement chez les professionnels.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PARTENAIRES -->
+   <!-- PARTENAIRES -->
   <section id="partenaires" class="operator-cta section-padding">
     <div class="operator-container">
       <div style="font-size: 3rem; margin-bottom: 1rem;">🦅</div>
@@ -1387,3 +1225,4 @@
 
 </body>
 </html>
+
