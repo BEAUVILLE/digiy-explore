@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#071a13" />
+  <title>DIGIY EXPLORE — Fiche Spot (Boost Clean V2)</title>
+  <meta name="description" content="DIGIY EXPLORE — Fiche spot (WhatsApp, localisation, photos URL, paiement direct)." />
+
+  <!-- Leaflet (carte) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- QR (no lib) -> canvas -->
+  <style>
+    :root{
+      --bg:#071a13;
+      --card:#0b2a1f;
+      --card2:#0a241b;
+      --line:rgba(255,255,255,.12);
+      --text:#eafff1;
+      --muted:rgba(234,255,241,.72);
+      --gold:#facc15;
+      --orange:#f59e0b;
+      --green:#22c55e;
+      --danger:#fb7185;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --r:18px; --r2:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
+        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:1080px;margin:0 auto;padding:16px 14px 34px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:wrap;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:rgba(11,42,31,.65);
+      backdrop-filter: blur(10px);
+      border-radius:22px;
+      box-shadow: var(--shadow);
+      position:sticky; top:10px; z-index:30;
+    }
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{
+      width:38px;height:38px;border-radius:14px;
+      display:grid;place-items:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
+        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
+      border:1px solid rgba(255,255,255,.15);
+      font-weight:900;
+    }
+    .brand .t1{margin:0;font-size:14px;font-weight:900;letter-spacing:.3px}
+    .brand .t2{margin:2px 0 0;font-size:12px;color:var(--muted)}
+    .actions{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(6,20,18,.55);
+      cursor:pointer;
+      font-size:12px;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.primary{background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.22)}
+    .btn.gold{background: rgba(250,204,21,.12); border-color: rgba(250,204,21,.22)}
+    .btn.ghost{background: rgba(0,0,0,.20)}
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      border:1px solid var(--line);
+      background: rgba(11,42,31,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel .hd{
+      padding:12px 12px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+    }
+    .name{font-weight:1000;font-size:18px;line-height:1.1}
+    .meta{margin-top:6px;font-size:13px;color:var(--muted)}
+    .badge{
+      display:inline-flex; align-items:center; gap:7px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .b{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.35)}
+    .badge.boost .b{background:var(--orange)}
+    .badge.open .b{background:var(--green)}
+    .badge.closed .b{background:var(--danger)}
+
+    .body{padding:12px}
+    .gallery{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width:720px){ .gallery{grid-template-columns: 1fr 1fr} }
+    .ph{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(6,20,18,.45);
+      min-height:130px;
+      position:relative;
+      cursor:pointer;
+    }
+    .ph img{width:100%;height:100%;object-fit:cover;display:block}
+    .ph::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.35));
+      pointer-events:none;
+      opacity:.8;
+    }
+
+    .rows{display:grid; gap:10px; margin-top:12px}
+    .row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+      padding:10px 10px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(6,20,18,.45);
+    }
+    .row .l{display:flex; flex-direction:column; gap:4px}
+    .row .k{font-size:12px;color:var(--muted)}
+    .row .v{font-size:14px;font-weight:800}
+    .row .r{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+
+    #map{
+      width:100%;
+      height: 360px;
+      border-radius: var(--r);
+      overflow:hidden;
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: rgba(11,42,31,.55);
+    }
+    .side{
+      display:grid; gap:14px;
+      position:sticky; top:86px;
+    }
+    @media (max-width: 980px){ .side{position:static} }
+
+    .qrBox{
+      padding:12px;
+      display:grid;
+      grid-template-columns: 132px 1fr;
+      gap:12px;
+      align-items:center;
+    }
+    @media (max-width:520px){ .qrBox{grid-template-columns:1fr} }
+    .qr{
+      width:132px;height:132px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      display:grid;place-items:center;
+      overflow:hidden;
+    }
+    canvas{display:block}
+    .qrTxt .t1{font-weight:1000}
+    .qrTxt .t2{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35}
+    .small{font-size:12px;color:var(--muted)}
+
+    .toast{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:14px; z-index:80;
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.18);
+      color:rgba(234,255,241,.92);
+      padding:10px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      display:none;
+      max-width:min(94vw, 720px);
+      box-shadow: var(--shadow);
+      font-size:13px;
+    }
+    .toast.show{display:block}
+
+    /* Lightbox */
+    .lb{
+      position:fixed; inset:0; z-index:90;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .lb.show{display:flex}
+    .lb img{
+      max-width:min(96vw, 980px);
+      max-height:82vh;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: var(--shadow);
+      background:#000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">♾️</div>
+        <div>
+          <div class="t1">DIGIY EXPLORE</div>
+          <div class="t2">Fiche Spot — Boost Clean V2</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div id="btnBack" class="btn ghost">⬅️ Retour</div>
+        <div id="btnShare" class="btn gold">🔗 Partager</div>
+        <div id="btnWhats" class="btn primary">💬 WhatsApp</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <div class="panel">
+        <div class="hd">
+          <div>
+            <div id="spotName" class="name">Chargement…</div>
+            <div id="spotMeta" class="meta">—</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+            <div id="badgeBoost" class="badge boost" style="display:none"><span class="b"></span> 🔥 Boost</div>
+            <div id="badgeOpen" class="badge open" style="display:none"><span class="b"></span> 🟢 Ouvert</div>
+            <div id="badgeClosed" class="badge closed" style="display:none"><span class="b"></span> 🔴 Fermé</div>
+          </div>
+        </div>
+
+        <div class="body">
+          <div id="gallery" class="gallery"></div>
+
+          <div class="rows">
+            <div class="row">
+              <div class="l">
+                <div class="k">Téléphone</div>
+                <div id="phoneLine" class="v">—</div>
+              </div>
+              <div class="r">
+                <div id="btnCall" class="btn">📞 Appeler</div>
+                <div id="btnSms" class="btn">✉️ SMS</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="l">
+                <div class="k">Localisation</div>
+                <div id="addrLine" class="v">—</div>
+              </div>
+              <div class="r">
+                <div id="btnMaps" class="btn">🗺️ Itinéraire</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="l">
+                <div class="k">Paiement</div>
+                <div class="v">Direct au pro (0% commission)</div>
+              </div>
+              <div class="r">
+                <div id="btnPay" class="btn gold">💳 Payer (PAY PRO)</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="l">
+                <div class="k">Infos</div>
+                <div id="infoLine" class="small">—</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="side">
+        <div id="map"></div>
+
+        <div class="panel">
+          <div class="panel-hd" style="padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)">
+            <div style="font-weight:900;font-size:13px">QR du Spot</div>
+            <div class="small">Scan → ouvrir la fiche</div>
+          </div>
+          <div class="qrBox">
+            <div class="qr"><canvas id="qr" width="120" height="120"></canvas></div>
+            <div class="qrTxt">
+              <div class="t1" id="qrTitle">DIGIY EXPLORE</div>
+              <div class="t2" id="qrUrl">—</div>
+              <div class="small" style="margin-top:10px">Astuce: partage le lien WhatsApp si tu veux.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div style="padding:12px 12px 12px">
+            <div style="font-weight:900;font-size:13px">Sécurité</div>
+            <div class="small" style="margin-top:6px">
+              Photos en URL (pas lourdes), données minimales, contact direct.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="lb" class="lb" aria-hidden="true"><img id="lbImg" alt=""></div>
+
+<script>
+/* =========================================================
+   DIGIY EXPLORE — spot.html (V2 Clean)
+   - Charge 1 spot via slug
+   - Affiche galerie (photos URL)
+   - WhatsApp / tel / sms
+   - Carte + itinéraire
+   - Bouton Pay (redirige vers PAY PRO / Wave si tu veux)
+   ========================================================= */
+
+/* -------------------------
+   Supabase config
+   ------------------------- */
+const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
+const CFG = window.__DIGIY_SUPABASE__ || {};
+const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
+const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+
+let sb = null;
+function ensureSupabase(){
+  if(sb) return sb;
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
+    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
+    throw new Error("Supabase config missing (anon).");
+  }
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession:false }
+  });
+  return sb;
+}
+
+/* -------------------------
+   Helpers
+   ------------------------- */
+const $ = (s)=>document.querySelector(s);
+const toastEl = $("#toast");
+
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
+}
+
+function esc(s){
+  return (s ?? "").toString()
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+function qs(k){
+  return new URL(location.href).searchParams.get(k);
+}
+
+function normalizePhone(p){
+  if(!p) return "";
+  // garde + et chiffres
+  let s = (p+"").trim().replace(/[^\d+]/g,"");
+  // si pas de +, on laisse (WhatsApp accepte souvent sans +, mais mieux avec)
+  return s;
+}
+
+/* -------------------------
+   Open now (optionnel)
+   ------------------------- */
+function parseTimeToMin(t){
+  if(typeof t !== "string") return null;
+  const m = t.trim().match(/^(\d{1,2}):(\d{2})$/);
+  if(!m) return null;
+  const hh = Math.max(0, Math.min(23, parseInt(m[1],10)));
+  const mm = Math.max(0, Math.min(59, parseInt(m[2],10)));
+  return hh*60+mm;
+}
+function isOpenNow(spot){
+  const oh = spot?.open_hours_json;
+  if(!oh || typeof oh !== "object") return null;
+  const d = new Date();
+  const dayKey = ["sun","mon","tue","wed","thu","fri","sat"][d.getDay()];
+  const slots = oh[dayKey];
+  if(!Array.isArray(slots)) return null;
+  const nowMin = d.getHours()*60 + d.getMinutes();
+  for(const s of slots){
+    if(!Array.isArray(s) || s.length<2) continue;
+    const am = parseTimeToMin(s[0]);
+    const bm = parseTimeToMin(s[1]);
+    if(am==null || bm==null) continue;
+    if(nowMin >= am && nowMin <= bm) return true;
+  }
+  return false;
+}
+
+function computeBoosted(spot){
+  if(spot?.is_boosted === true) return true;
+  if(spot?.boost_until){
+    const t = Date.parse(spot.boost_until);
+    if(!Number.isNaN(t) && t > Date.now()) return true;
+  }
+  if(Number.isFinite(spot?.boost_rank) && Number(spot.boost_rank) > 0) return true;
+  return false;
+}
+
+/* -------------------------
+   QR (ultra simple)
+   - Ce n'est pas un QR "norme ISO" complet.
+   - Pour un vrai QR, on branchera une mini lib (qrcodejs) en V3.
+   - Ici: on fait un "code" visuel scannable par certains lecteurs? => non garanti.
+   => Mais on garde le canvas + texte, propre. (Et on peut activer lib après.)
+   ------------------------- */
+function drawFakeQR(text){
+  const c = $("#qr");
+  const ctx = c.getContext("2d");
+  const size = c.width;
+  ctx.clearRect(0,0,size,size);
+  // fond
+  ctx.fillStyle = "rgba(0,0,0,.0)";
+  ctx.fillRect(0,0,size,size);
+
+  // grille pseudo
+  const n = 29;
+  const cell = Math.floor(size / n);
+  function hash(str){
+    let h=2166136261;
+    for(let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h>>>0;
+  }
+  const seed = hash(text);
+  function bit(i){
+    // xorshift-ish
+    let x = (seed + i*2654435761) >>> 0;
+    x ^= x<<13; x ^= x>>>17; x ^= x<<5;
+    return (x>>>0) & 1;
+  }
+
+  // bg blanc style
+  ctx.fillStyle = "rgba(255,255,255,.92)";
+  ctx.fillRect(0,0,size,size);
+
+  // zones "finder" simples
+  function finder(x,y){
+    ctx.fillStyle="#000";
+    ctx.fillRect(x,y,7*cell,7*cell);
+    ctx.fillStyle="#fff";
+    ctx.fillRect(x+cell,y+cell,5*cell,5*cell);
+    ctx.fillStyle="#000";
+    ctx.fillRect(x+2*cell,y+2*cell,3*cell,3*cell);
+  }
+  finder(1*cell,1*cell);
+  finder((n-8)*cell,1*cell);
+  finder(1*cell,(n-8)*cell);
+
+  // data blocks (hors zones finder)
+  for(let y=0;y<n;y++){
+    for(let x=0;x<n;x++){
+      const inFinder =
+        (x>=1 && x<=7 && y>=1 && y<=7) ||
+        (x>=n-8 && x<=n-2 && y>=1 && y<=7) ||
+        (x>=1 && x<=7 && y>=n-8 && y<=n-2);
+      if(inFinder) continue;
+
+      const i = y*n + x;
+      const v = bit(i) ^ bit(i+17) ^ bit(i+53);
+      if(v){
+        ctx.fillStyle="#000";
+        ctx.fillRect(x*cell, y*cell, cell, cell);
+      }
+    }
+  }
+
+  // marge arrondie
+  ctx.strokeStyle="rgba(255,255,255,.0)";
+}
+
+/* -------------------------
+   Lightbox
+   ------------------------- */
+function openLightbox(src){
+  $("#lbImg").src = src;
+  $("#lb").classList.add("show");
+  $("#lb").setAttribute("aria-hidden","false");
+}
+function closeLightbox(){
+  $("#lb").classList.remove("show");
+  $("#lb").setAttribute("aria-hidden","true");
+  $("#lbImg").src = "";
+}
+
+/* -------------------------
+   Map
+   ------------------------- */
+const DEFAULT_CENTER = [14.446, -17.007];
+const map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap"
+}).addTo(map);
+let marker = null;
+
+/* -------------------------
+   Render
+   ------------------------- */
+function renderGallery(photos){
+  const gal = $("#gallery");
+  const arr = Array.isArray(photos) ? photos.map(x=>(x||"").toString().trim()).filter(Boolean) : [];
+  if(!arr.length){
+    gal.innerHTML = `
+      <div class="ph" style="grid-column:1/-1;display:grid;place-items:center;min-height:160px;cursor:default">
+        <div style="text-align:center;color:rgba(234,255,241,.78);padding:18px">
+          📷 Pas de photo pour l’instant<br><span style="font-size:12px;opacity:.85">Ajoute une URL photo dans le spot.</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  gal.innerHTML = arr.slice(0,9).map(u=>`
+    <div class="ph" data-src="${esc(u)}"><img src="${esc(u)}" alt=""></div>
+  `).join("");
+  gal.querySelectorAll(".ph").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const src = el.getAttribute("data-src") || "";
+      if(src) openLightbox(src);
+    });
+  });
+}
+
+function setBadgeState(spot){
+  const boosted = computeBoosted(spot);
+  $("#badgeBoost").style.display = boosted ? "inline-flex" : "none";
+
+  const open = isOpenNow(spot);
+  $("#badgeOpen").style.display = (open===true) ? "inline-flex" : "none";
+  $("#badgeClosed").style.display = (open===false) ? "inline-flex" : "none";
+}
+
+function setMap(lat,lng,title){
+  if(!isFinite(lat) || !isFinite(lng)){
+    map.setView(DEFAULT_CENTER, 12);
+    return;
+  }
+  const pt = [Number(lat), Number(lng)];
+  map.setView(pt, 15);
+  if(marker) map.removeLayer(marker);
+  marker = L.marker(pt).addTo(map).bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
+}
+
+function buildMapsLink(lat,lng,title){
+  if(!isFinite(lat) || !isFinite(lng)) return "";
+  // Google Maps query (universel)
+  const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
+  return `https://www.google.com/maps?q=${q}`;
+}
+
+function buildWhatsAppLink(phone, title){
+  const p = normalizePhone(phone).replace(/\+/g,"");
+  if(!p) return "";
+  const txt = encodeURIComponent(`Bonjour 👋 Je viens de voir "${title||"votre spot"}" sur DIGIY EXPLORE. Je veux des infos svp.`);
+  return `https://wa.me/${p}?text=${txt}`;
+}
+
+function buildShareText(spot, pageUrl){
+  return `DIGIY EXPLORE — ${spot.title||"Spot"} (${spot.city||"—"})\n${pageUrl}`;
+}
+
+/* -------------------------
+   PAY button behavior (placeholder)
+   - Tu pourras brancher sur ton module DIGIY PAY PRO
+   - Exemple:
+     https://beauville.github.io/digiy-pay-pro/pay.html?kind=explore&slug=...&amount=...
+   ------------------------- */
+function goPay(spot){
+  // Mets ton URL PAY PRO ici si tu veux
+  const PAY_URL = (window.__DIGIY_PAY_URL__ || "").trim();
+  if(!PAY_URL){
+    toast("💳 PAY PRO pas encore branché ici. Donne moi l’URL et je le connecte.");
+    return;
+  }
+  const u = new URL(PAY_URL, location.href);
+  u.searchParams.set("kind","explore");
+  u.searchParams.set("slug", spot.slug || "");
+  u.searchParams.set("title", spot.title || "");
+  location.href = u.toString();
+}
+
+/* -------------------------
+   Load spot
+   ------------------------- */
+async function loadSpot(){
+  const slug = (qs("slug") || "").trim();
+  if(!slug){
+    toast("Slug manquant. Retour à Explore.");
+    setTimeout(()=>location.href="./index.html", 700);
+    return;
+  }
+
+  const sb = ensureSupabase();
+
+  const { data, error } = await sb
+    .from("digiy_explore_spots")
+    .select("id, slug, title, category, city, phone, lat, lng, photos, photo_url, status, is_boosted, boost_rank, boost_until, open_hours_json, address, desc, tags")
+    .eq("slug", slug)
+    .eq("status","active")
+    .maybeSingle();
+
+  if(error){
+    console.error(error);
+    toast("❌ Erreur lecture spot (RLS/table).");
+    $("#spotName").textContent = "Erreur";
+    $("#spotMeta").textContent = "Impossible de charger ce spot.";
+    return;
+  }
+  if(!data){
+    toast("Introuvable. Peut-être désactivé.");
+    $("#spotName").textContent = "Spot introuvable";
+    $("#spotMeta").textContent = "—";
+    return;
+  }
+
+  const spot = data;
+  const title = spot.title || "Spot";
+  const cat = spot.category || "—";
+  const city = spot.city || "—";
+  const phone = normalizePhone(spot.phone || "");
+
+  $("#spotName").textContent = title;
+  $("#spotMeta").textContent = `${cat} • ${city} • slug: ${spot.slug || "—"}`;
+  $("#phoneLine").textContent = phone || "—";
+  $("#addrLine").textContent = (spot.address || city || "—");
+  $("#infoLine").textContent = spot.desc ? String(spot.desc).slice(0,160) : "Infos simples, contact direct, paiement au pro.";
+
+  setBadgeState(spot);
+
+  // gallery: photos[] sinon photo_url
+  let photos = Array.isArray(spot.photos) ? spot.photos : [];
+  if((!photos || !photos.length) && spot.photo_url) photos = [spot.photo_url];
+  renderGallery(photos);
+
+  // map
+  setMap(Number(spot.lat), Number(spot.lng), title);
+
+  // QR section
+  const pageUrl = location.href;
+  $("#qrTitle").textContent = title;
+  $("#qrUrl").textContent = pageUrl;
+  drawFakeQR(pageUrl);
+
+  // Buttons
+  $("#btnBack").onclick = ()=> history.length>1 ? history.back() : (location.href="./index.html");
+  $("#btnMaps").onclick = ()=>{
+    const link = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
+    if(!link){ toast("Coordonnées manquantes."); return; }
+    window.open(link, "_blank");
+  };
+
+  $("#btnCall").onclick = ()=>{
+    if(!phone){ toast("Téléphone manquant."); return; }
+    location.href = "tel:" + phone;
+  };
+  $("#btnSms").onclick = ()=>{
+    if(!phone){ toast("Téléphone manquant."); return; }
+    location.href = "sms:" + phone;
+  };
+
+  const wa = buildWhatsAppLink(phone, title);
+  const btnWhats = $("#btnWhats");
+  btnWhats.onclick = ()=>{
+    if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
+    window.open(wa, "_blank");
+  };
+
+  $("#btnShare").onclick = async ()=>{
+    const txt = buildShareText(spot, pageUrl);
+    if(navigator.share){
+      try{
+        await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: pageUrl });
+      }catch(e){}
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(txt);
+      toast("✅ Lien copié.");
+    }catch(e){
+      toast("Copie impossible (sécurité navigateur).");
+    }
+  };
+
+  $("#btnPay").onclick = ()=> goPay(spot);
+
+  // lightbox close
+  $("#lb").addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
+}
+
+/* -------------------------
+   Boot
+   ------------------------- */
+(function boot(){
+  try{
+    loadSpot();
+  }catch(err){
+    console.error(err);
+  }
+})();
+</script>
+</body>
+</html>
