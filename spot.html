@@ -14,7 +14,6 @@
   <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- QR (no lib) -> canvas -->
   <style>
     :root{
       --bg:#071a13;
@@ -214,7 +213,6 @@
     }
     .toast.show{display:block}
 
-    /* Lightbox */
     .lb{
       position:fixed; inset:0; z-index:90;
       background: rgba(0,0,0,.72);
@@ -254,7 +252,6 @@
     </div>
 
     <div class="grid">
-      <!-- LEFT -->
       <div class="panel">
         <div class="hd">
           <div>
@@ -314,12 +311,11 @@
         </div>
       </div>
 
-      <!-- RIGHT -->
       <div class="side">
         <div id="map"></div>
 
         <div class="panel">
-          <div class="panel-hd" style="padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)">
+          <div style="padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)">
             <div style="font-weight:900;font-size:13px">QR du Spot</div>
             <div class="small">Scan → ouvrir la fiche</div>
           </div>
@@ -347,22 +343,9 @@
   </div>
 
   <div id="toast" class="toast"></div>
-
   <div id="lb" class="lb" aria-hidden="true"><img id="lbImg" alt=""></div>
 
 <script>
-/* =========================================================
-   DIGIY EXPLORE — spot.html (V2 Clean)
-   - Charge 1 spot via slug
-   - Affiche galerie (photos URL)
-   - WhatsApp / tel / sms
-   - Carte + itinéraire
-   - Bouton Pay (redirige vers PAY PRO / Wave si tu veux)
-   ========================================================= */
-
-/* -------------------------
-   Supabase config
-   ------------------------- */
 const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
 const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
 const CFG = window.__DIGIY_SUPABASE__ || {};
@@ -376,15 +359,10 @@ function ensureSupabase(){
     toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
     throw new Error("Supabase config missing (anon).");
   }
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { persistSession:false }
-  });
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
   return sb;
 }
 
-/* -------------------------
-   Helpers
-   ------------------------- */
 const $ = (s)=>document.querySelector(s);
 const toastEl = $("#toast");
 
@@ -394,28 +372,18 @@ function toast(msg){
   clearTimeout(toastEl._t);
   toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
 }
-
 function esc(s){
   return (s ?? "").toString()
     .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
     .replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
-
-function qs(k){
-  return new URL(location.href).searchParams.get(k);
-}
+function qs(k){ return new URL(location.href).searchParams.get(k); }
 
 function normalizePhone(p){
   if(!p) return "";
-  // garde + et chiffres
-  let s = (p+"").trim().replace(/[^\d+]/g,"");
-  // si pas de +, on laisse (WhatsApp accepte souvent sans +, mais mieux avec)
-  return s;
+  return (p+"").trim().replace(/[^\d+]/g,"");
 }
 
-/* -------------------------
-   Open now (optionnel)
-   ------------------------- */
 function parseTimeToMin(t){
   if(typeof t !== "string") return null;
   const m = t.trim().match(/^(\d{1,2}):(\d{2})$/);
@@ -441,7 +409,6 @@ function isOpenNow(spot){
   }
   return false;
 }
-
 function computeBoosted(spot){
   if(spot?.is_boosted === true) return true;
   if(spot?.boost_until){
@@ -452,25 +419,15 @@ function computeBoosted(spot){
   return false;
 }
 
-/* -------------------------
-   QR (ultra simple)
-   - Ce n'est pas un QR "norme ISO" complet.
-   - Pour un vrai QR, on branchera une mini lib (qrcodejs) en V3.
-   - Ici: on fait un "code" visuel scannable par certains lecteurs? => non garanti.
-   => Mais on garde le canvas + texte, propre. (Et on peut activer lib après.)
-   ------------------------- */
+/* QR visuel (placeholder) */
 function drawFakeQR(text){
   const c = $("#qr");
   const ctx = c.getContext("2d");
   const size = c.width;
   ctx.clearRect(0,0,size,size);
-  // fond
-  ctx.fillStyle = "rgba(0,0,0,.0)";
-  ctx.fillRect(0,0,size,size);
-
-  // grille pseudo
   const n = 29;
   const cell = Math.floor(size / n);
+
   function hash(str){
     let h=2166136261;
     for(let i=0;i<str.length;i++){
@@ -481,17 +438,14 @@ function drawFakeQR(text){
   }
   const seed = hash(text);
   function bit(i){
-    // xorshift-ish
     let x = (seed + i*2654435761) >>> 0;
     x ^= x<<13; x ^= x>>>17; x ^= x<<5;
     return (x>>>0) & 1;
   }
 
-  // bg blanc style
   ctx.fillStyle = "rgba(255,255,255,.92)";
   ctx.fillRect(0,0,size,size);
 
-  // zones "finder" simples
   function finder(x,y){
     ctx.fillStyle="#000";
     ctx.fillRect(x,y,7*cell,7*cell);
@@ -504,7 +458,6 @@ function drawFakeQR(text){
   finder((n-8)*cell,1*cell);
   finder(1*cell,(n-8)*cell);
 
-  // data blocks (hors zones finder)
   for(let y=0;y<n;y++){
     for(let x=0;x<n;x++){
       const inFinder =
@@ -521,14 +474,9 @@ function drawFakeQR(text){
       }
     }
   }
-
-  // marge arrondie
-  ctx.strokeStyle="rgba(255,255,255,.0)";
 }
 
-/* -------------------------
-   Lightbox
-   ------------------------- */
+/* Lightbox */
 function openLightbox(src){
   $("#lbImg").src = src;
   $("#lb").classList.add("show");
@@ -540,9 +488,7 @@ function closeLightbox(){
   $("#lbImg").src = "";
 }
 
-/* -------------------------
-   Map
-   ------------------------- */
+/* Map */
 const DEFAULT_CENTER = [14.446, -17.007];
 const map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -551,9 +497,6 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 }).addTo(map);
 let marker = null;
 
-/* -------------------------
-   Render
-   ------------------------- */
 function renderGallery(photos){
   const gal = $("#gallery");
   const arr = Array.isArray(photos) ? photos.map(x=>(x||"").toString().trim()).filter(Boolean) : [];
@@ -581,7 +524,6 @@ function renderGallery(photos){
 function setBadgeState(spot){
   const boosted = computeBoosted(spot);
   $("#badgeBoost").style.display = boosted ? "inline-flex" : "none";
-
   const open = isOpenNow(spot);
   $("#badgeOpen").style.display = (open===true) ? "inline-flex" : "none";
   $("#badgeClosed").style.display = (open===false) ? "inline-flex" : "none";
@@ -600,30 +542,21 @@ function setMap(lat,lng,title){
 
 function buildMapsLink(lat,lng,title){
   if(!isFinite(lat) || !isFinite(lng)) return "";
-  // Google Maps query (universel)
   const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
   return `https://www.google.com/maps?q=${q}`;
 }
-
 function buildWhatsAppLink(phone, title){
   const p = normalizePhone(phone).replace(/\+/g,"");
   if(!p) return "";
   const txt = encodeURIComponent(`Bonjour 👋 Je viens de voir "${title||"votre spot"}" sur DIGIY EXPLORE. Je veux des infos svp.`);
   return `https://wa.me/${p}?text=${txt}`;
 }
-
 function buildShareText(spot, pageUrl){
   return `DIGIY EXPLORE — ${spot.title||"Spot"} (${spot.city||"—"})\n${pageUrl}`;
 }
 
-/* -------------------------
-   PAY button behavior (placeholder)
-   - Tu pourras brancher sur ton module DIGIY PAY PRO
-   - Exemple:
-     https://beauville.github.io/digiy-pay-pro/pay.html?kind=explore&slug=...&amount=...
-   ------------------------- */
+/* PAY placeholder */
 function goPay(spot){
-  // Mets ton URL PAY PRO ici si tu veux
   const PAY_URL = (window.__DIGIY_PAY_URL__ || "").trim();
   if(!PAY_URL){
     toast("💳 PAY PRO pas encore branché ici. Donne moi l’URL et je le connecte.");
@@ -636,9 +569,6 @@ function goPay(spot){
   location.href = u.toString();
 }
 
-/* -------------------------
-   Load spot
-   ------------------------- */
 async function loadSpot(){
   const slug = (qs("slug") || "").trim();
   if(!slug){
@@ -684,21 +614,17 @@ async function loadSpot(){
 
   setBadgeState(spot);
 
-  // gallery: photos[] sinon photo_url
   let photos = Array.isArray(spot.photos) ? spot.photos : [];
   if((!photos || !photos.length) && spot.photo_url) photos = [spot.photo_url];
   renderGallery(photos);
 
-  // map
   setMap(Number(spot.lat), Number(spot.lng), title);
 
-  // QR section
   const pageUrl = location.href;
   $("#qrTitle").textContent = title;
   $("#qrUrl").textContent = pageUrl;
   drawFakeQR(pageUrl);
 
-  // Buttons
   $("#btnBack").onclick = ()=> history.length>1 ? history.back() : (location.href="./index.html");
   $("#btnMaps").onclick = ()=>{
     const link = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
@@ -716,8 +642,7 @@ async function loadSpot(){
   };
 
   const wa = buildWhatsAppLink(phone, title);
-  const btnWhats = $("#btnWhats");
-  btnWhats.onclick = ()=>{
+  $("#btnWhats").onclick = ()=>{
     if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
     window.open(wa, "_blank");
   };
@@ -725,9 +650,7 @@ async function loadSpot(){
   $("#btnShare").onclick = async ()=>{
     const txt = buildShareText(spot, pageUrl);
     if(navigator.share){
-      try{
-        await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: pageUrl });
-      }catch(e){}
+      try{ await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: pageUrl }); }catch(e){}
       return;
     }
     try{
@@ -740,20 +663,12 @@ async function loadSpot(){
 
   $("#btnPay").onclick = ()=> goPay(spot);
 
-  // lightbox close
   $("#lb").addEventListener("click", closeLightbox);
   document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
 }
 
-/* -------------------------
-   Boot
-   ------------------------- */
 (function boot(){
-  try{
-    loadSpot();
-  }catch(err){
-    console.error(err);
-  }
+  try{ loadSpot(); } catch(err){ console.error(err); }
 })();
 </script>
 </body>
