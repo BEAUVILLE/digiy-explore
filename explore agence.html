@@ -311,7 +311,7 @@
         <div class="mark"><span>∞</span></div>
         <div class="txt">
           <b>DIGIY EXPLORE — Agence PRO</b>
-          <small>Pack ESSENTIEL • 150k activation + 30k/mois</small>
+          <small>Pack ESSENTIEL • <span id="navSetupFee">150k</span> activation + <span id="navMonthly">30k</span>/mois</small>
         </div>
       </a>
 
@@ -409,12 +409,12 @@
             <div class="priceBox">
               <div class="priceLine">
                 <b>Activation (1 fois)</b>
-                <span class="val big">150 000 FCFA</span>
+                <span class="val big" id="setupFee">150 000 FCFA</span>
               </div>
               <div class="hr"></div>
               <div class="priceLine">
                 <b>Mensualité</b>
-                <span class="val big">30 000 FCFA</span>
+                <span class="val big" id="priceMonthly">30 000 FCFA</span>
               </div>
               <div class="priceLine">
                 <b>Commission</b>
@@ -517,7 +517,7 @@
         <div class="card">
           <div class="icon"><i class="fa-solid fa-file-signature"></i></div>
           <h3>2) Activation</h3>
-          <p>Validation + activation <b>150 000 FCFA</b> (une fois) puis démarrage.</p>
+          <p>Validation + activation <b id="setupFeeInline">150 000 FCFA</b> (une fois) puis démarrage.</p>
           <div class="list">
             <div class="li"><i class="fa-solid fa-circle-check"></i> Kit média + texte</div>
             <div class="li"><i class="fa-solid fa-circle-check"></i> Mise en place vitrine</div>
@@ -527,7 +527,7 @@
         <div class="card">
           <div class="icon"><i class="fa-solid fa-rocket"></i></div>
           <h3>3) Croissance</h3>
-          <p>Mensualité <b>30 000 FCFA</b>. Optimisation et montée en visibilité.</p>
+          <p>Mensualité <b id="priceMonthlyInline">30 000 FCFA</b>. Optimisation et montée en visibilité.</p>
           <div class="list">
             <div class="li"><i class="fa-solid fa-circle-check"></i> Publication régulière</div>
             <div class="li"><i class="fa-solid fa-circle-check"></i> Ajustement pages</div>
@@ -603,7 +603,7 @@
           </div>
 
           <div class="noteBox">
-            <b>Pack ESSENTIEL :</b> 150 000 FCFA (activation) + 30 000 FCFA / mois.<br/>
+            <b>Pack ESSENTIEL :</b> <span id="setupFeeNote">150 000 FCFA</span> (activation) + <span id="priceMonthlyNote">30 000 FCFA</span> / mois.<br/>
             <span class="tiny">
               * DIGIY EXPLORE facilite la mise en relation. Les conditions se négocient directement entre l’agence et le client.
             </span>
@@ -646,19 +646,25 @@
 
   <script>
     // ==============================
-    // CONFIG — SUPABASE (à coller)
+    // CONFIG — SUPABASE
     // ==============================
-    // ⚠️ Mets ici TES variables (comme tu fais sur tes autres modules).
-    // Je ne les invente pas.
+    // ✅ Remplace juste ces 2 lignes par tes vraies valeurs (comme sur tes autres modules).
     const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL";
     const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY";
 
-    // Table leads recommandée:
-    // public.digiy_explore_agency_leads
+    // Leads table
     const LEADS_TABLE = "digiy_explore_agency_leads";
+
+    // Pricing table (OFFICIEL)
+    const PRICING_TABLE = "digiy_pricing_plans";
+    const PRICING_KEY = { module:"explore", plan_code:"essentiel", audience:"agence" };
 
     // Numéro WhatsApp DIGIY
     const DIGIY_WA = "221771342889";
+
+    // Fallback hard (si pricing indispo)
+    const FALLBACK_MONTH = 30000;
+    const FALLBACK_SETUP = 150000;
 
     // ==============================
     // UI — MENU
@@ -692,6 +698,13 @@
     // ==============================
     function $(id){ return document.getElementById(id); }
     function clean(s){ return (s||"").toString().trim(); }
+
+    function fmtFcfa(n){
+      const x = Number(n);
+      if(!Number.isFinite(x)) return "—";
+      return x.toLocaleString("fr-FR") + " FCFA";
+    }
+
     function buildWhatsAppMessage(data){
       const msg =
 `Bonjour DIGIY EXPLORE,
@@ -708,9 +721,10 @@ Site/Page: ${data.website || "—"}
 Message:
 ${data.message || "Je souhaite devenir partenaire."}
 
-Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
+Tarif compris: Activation ${fmtFcfa(data.setup_fee_fcfa)} + ${fmtFcfa(data.price_month_fcfa)} / mois.`;
       return encodeURIComponent(msg);
     }
+
     function setStatus(kind, text){
       const el = $("status");
       el.className = "status " + (kind==="ok" ? "ok" : "bad");
@@ -729,6 +743,62 @@ Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
       sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       return sb;
     }
+
+    // ==============================
+    // PRICING (OFFICIEL) → UI
+    // ==============================
+    let PRICING_CACHE = { price_month_fcfa: FALLBACK_MONTH, setup_fee_fcfa: FALLBACK_SETUP };
+
+    async function loadPricing(){
+      try{
+        const sb = getSb();
+        const { data, error } = await sb
+          .from(PRICING_TABLE)
+          .select("price_month_fcfa, setup_fee_fcfa, is_active")
+          .eq("module", PRICING_KEY.module)
+          .eq("plan_code", PRICING_KEY.plan_code)
+          .eq("audience", PRICING_KEY.audience)
+          .eq("is_active", true)
+          .maybeSingle();
+
+        if(error || !data){
+          console.warn("Pricing load failed:", error);
+          applyPricingToUi(PRICING_CACHE);
+          return;
+        }
+
+        PRICING_CACHE = {
+          price_month_fcfa: Number(data.price_month_fcfa) || FALLBACK_MONTH,
+          setup_fee_fcfa: Number(data.setup_fee_fcfa) || FALLBACK_SETUP
+        };
+        applyPricingToUi(PRICING_CACHE);
+
+      }catch(err){
+        console.warn("Pricing exception:", err);
+        applyPricingToUi(PRICING_CACHE);
+      }
+    }
+
+    function applyPricingToUi(p){
+      const m = fmtFcfa(p.price_month_fcfa);
+      const s = fmtFcfa(p.setup_fee_fcfa);
+
+      if($("priceMonthly")) $("priceMonthly").textContent = m;
+      if($("setupFee")) $("setupFee").textContent = s;
+
+      if($("priceMonthlyInline")) $("priceMonthlyInline").textContent = m;
+      if($("setupFeeInline")) $("setupFeeInline").textContent = s;
+
+      if($("priceMonthlyNote")) $("priceMonthlyNote").textContent = m;
+      if($("setupFeeNote")) $("setupFeeNote").textContent = s;
+
+      // mini nav
+      if($("navMonthly")) $("navMonthly").textContent = (Number(p.price_month_fcfa)||FALLBACK_MONTH).toLocaleString("fr-FR") + " FCFA";
+      if($("navSetupFee")) $("navSetupFee").textContent = (Number(p.setup_fee_fcfa)||FALLBACK_SETUP).toLocaleString("fr-FR") + " FCFA";
+    }
+
+    // Lance le pricing dès que possible (si Supabase configuré)
+    try{ loadPricing(); }catch(e){ /* si non configuré, on garde fallback */ }
 
     // ==============================
     // FORM SUBMIT
@@ -752,10 +822,14 @@ Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
         zones: clean($("zones").value),
         website: clean($("website").value),
         message: clean($("message").value),
+
+        // meta
         source: "explore_agence_pro_v1",
         pack: "essentiel",
-        price_month_fcfa: 30000,
-        setup_fee_fcfa: 150000
+
+        // ✅ OFFICIEL : on pousse les prix du pricing (ou fallback)
+        price_month_fcfa: PRICING_CACHE.price_month_fcfa,
+        setup_fee_fcfa: PRICING_CACHE.setup_fee_fcfa
       };
 
       updateWaLink(data);
@@ -769,11 +843,12 @@ Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
       // 1) Try Supabase insert
       try{
         const sb = getSb();
+
         const { error } = await sb.from(LEADS_TABLE).insert([data]);
         if(error) throw error;
 
         setStatus("ok","Demande envoyée ✅ On vous contacte sur WhatsApp.");
-        // option: ouvrir WA en plus
+        // ouvrir WA en plus (closing direct)
         window.open(waFallback.href, "_blank", "noopener,noreferrer");
         leadForm.reset();
         return;
@@ -786,7 +861,9 @@ Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
 
     // Init WA link with empty values (safe)
     updateWaLink({
-      agency_name:"", manager_name:"", phone:"", city:"", zones:"", website:"", message:""
+      agency_name:"", manager_name:"", phone:"", city:"", zones:"", website:"", message:"",
+      price_month_fcfa: PRICING_CACHE.price_month_fcfa,
+      setup_fee_fcfa: PRICING_CACHE.setup_fee_fcfa
     });
 
     // Smooth anchors (avoid '#' traps)
@@ -819,7 +896,7 @@ Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
     setup_fee_fcfa int
   );
 
-  -- RLS (simple, optionnel) : autoriser inserts publics
+  -- RLS (simple) : autoriser inserts publics
   alter table public.digiy_explore_agency_leads enable row level security;
 
   drop policy if exists "public_insert_leads" on public.digiy_explore_agency_leads;
@@ -831,4 +908,3 @@ Tarif compris: Activation 150 000 FCFA + 30 000 FCFA / mois.`;
   -->
 </body>
 </html>
-
