@@ -1,836 +1,158 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <title>DIGIY EXPLORE — Lieux, Activités, Expériences (0% Com)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="DIGIY EXPLORE — Découvre les meilleurs lieux, restos, activités et hébergements. Contact direct, 0% commission, sélection DIGIYLYFE.">
+  <meta charset="utf-8"/>
+  <title>DIGIY EXPLORE V2 — Carte Sénégal</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <meta name="theme-color" content="#0b2a1f"/>
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    :root{
-      --bg:#020617;
-      --bg-soft:#020818;
-      --card:#030712;
-      --accent-main:#22c55e; /* Vert Explore */
-      --accent-soft:#38bdf8; /* Bleu doux */
-      --accent-gold:#facc15; /* Or DIGIY */
-      --ink:#f9fafb;
-      --muted:#cbd5f5;
-      --line:#1f2937;
-      --shadow-soft:0 20px 45px rgba(15,23,42,0.9);
-    }
-    *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
-    body{
-      min-height:100vh;
-      background:
-        radial-gradient(circle at top,rgba(56,189,248,0.18),transparent 60%),
-        radial-gradient(circle at bottom,rgba(34,197,94,0.18),transparent 55%),
-        #020617;
-      color:var(--ink);
+    body{margin:0;font-family:system-ui;background:#061b14;color:white}
+    header{padding:14px;font-weight:900;font-size:18px}
+    #map{height:75vh;border-top:1px solid rgba(255,255,255,.15)}
+    .bar{
+      padding:12px;
       display:flex;
-      justify-content:center;
-      padding:10px;
-      font-size:16px;
-    }
-    .app{
-      width:100%;
-      max-width:1100px;
-      min-height:100vh;
-      background:linear-gradient(135deg,#020617 0%,#020818 50%,#020617 100%);
-      border-radius:24px;
-      border:1px solid rgba(148,163,184,0.25);
-      box-shadow:var(--shadow-soft);
-      padding:16px 16px 22px;
-      display:flex;
-      flex-direction:column;
-      position:relative;
-      overflow:hidden;
-    }
-    .app::before{
-      content:"";
-      position:absolute; inset:-40%;
-      background:
-        radial-gradient(circle at 0% 0%,rgba(56,189,248,0.16),transparent 55%),
-        radial-gradient(circle at 100% 100%,rgba(34,197,94,0.16),transparent 45%);
-      opacity:0.8;
-      pointer-events:none;
-    }
-
-    header{
-      position:relative; z-index:2;
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
-      margin-bottom:12px;
-    }
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand-logo{
-      width:42px;height:42px;border-radius:14px;
-      background:radial-gradient(circle at 30% 0%,#22c55e,#16a34a);
-      display:flex;align-items:center;justify-content:center;
-      font-size:24px;
-      box-shadow:0 12px 30px rgba(34,197,94,0.65);
-    }
-    .brand-text-title{
-      font-size:20px;font-weight:900;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent-main);
-    }
-    .brand-text-sub{font-size:14px;color:var(--muted);font-weight:600}
-    .back-link{
-      font-size:13px;color:var(--muted);text-decoration:none;
-      background:rgba(15,23,42,0.9);
-      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
-      padding:8px 14px;
-      display:inline-flex;align-items:center;gap:6px;
-      z-index:2;position:relative;font-weight:700;
-    }
-
-    main{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;gap:14px}
-
-    .hero{
-      background:radial-gradient(circle at top left,rgba(56,189,248,0.18),rgba(3,7,18,0.96));
-      border-radius:22px;border:1px solid rgba(148,163,184,0.6);
-      padding:16px;
-      box-shadow:0 18px 44px rgba(15,23,42,0.95);
-      display:flex;flex-direction:column;gap:8px;
-    }
-    .hero-title{font-size:26px;font-weight:900;color:var(--accent-main)}
-    .hero-title span{color:var(--accent-soft)}
-    .hero-sub{
-      font-size:16px;color:#e5e7eb;max-width:760px;font-weight:500;line-height:1.6;
-    }
-    .hero-sub strong{font-weight:800;color:var(--accent-soft)}
-    .hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
-    .hero-tag{
-      font-size:13px;padding:5px 11px;border-radius:999px;
-      border:1px solid rgba(148,163,184,0.7);
-      background:rgba(15,23,42,0.95);color:#e5e7eb;font-weight:600;
-    }
-    .hero-tag strong{color:var(--accent-main);font-weight:800}
-
-    .hero-cta-row{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
-    .hero-cta-btn{
-      border:none;border-radius:999px;padding:10px 16px;font-size:14px;font-weight:900;
-      cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;white-space:nowrap;
-      background:linear-gradient(135deg,#22c55e,#16a34a);
-      color:#022c22;box-shadow:0 7px 18px rgba(34,197,94,0.55);
-    }
-    .hero-cta-btn:hover{transform:translateY(-1px);box-shadow:0 11px 26px rgba(34,197,94,0.7)}
-    .hero-cta-btn-secondary{
-      border-radius:999px;padding:10px 16px;font-size:13px;font-weight:700;text-decoration:none;
-      display:inline-flex;align-items:center;gap:8px;cursor:pointer;
-      background:rgba(15,23,42,0.98);color:#e5e7eb;border:1px solid rgba(148,163,184,0.8);
-    }
-    .hero-cta-btn-secondary:hover{border-color:var(--accent-soft)}
-
-    /* BAR RECHERCHE + FILTRES (vrais) */
-    .controls{
-      margin-top:10px;
-      display:flex;flex-wrap:wrap;gap:8px;align-items:center;
-    }
-    .search{
-      flex:1; min-width:220px;
-      display:flex; gap:8px; align-items:center;
-      background:rgba(15,23,42,0.96);
-      border:1px solid rgba(148,163,184,0.7);
-      border-radius:999px;
-      padding:8px 12px;
-    }
-    .search input{
-      width:100%;
-      border:none; outline:none;
-      background:transparent;
-      color:var(--ink);
-      font-weight:700;
-      font-size:13px;
-    }
-    .search .k{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-
-    .chips{
-      display:flex; flex-wrap:wrap; gap:8px;
-    }
-    .chip{
-      user-select:none;
-      padding:7px 11px;
-      border-radius:999px;
-      background:rgba(15,23,42,0.96);
-      border:1px solid rgba(148,163,184,0.7);
-      color:#e5e7eb;
-      font-size:13px;
-      font-weight:800;
-      cursor:pointer;
-      display:inline-flex; align-items:center; gap:6px;
-    }
-    .chip small{opacity:.75;font-weight:800}
-    .chip.active{
-      border-color:rgba(34,197,94,.85);
-      box-shadow:0 0 0 3px rgba(34,197,94,.12);
-      color:var(--accent-main);
-    }
-    .chip:hover{border-color:rgba(56,189,248,.85)}
-
-    .layout{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:12px;
-      align-items:start;
-    }
-    @media(max-width:900px){
-      .layout{grid-template-columns:1fr}
-    }
-
-    .section{
-      margin-top:16px;
-      background:radial-gradient(circle at top right,rgba(15,23,42,0.12),rgba(3,7,18,0.98));
-      border-radius:22px;border:1px solid rgba(148,163,184,0.5);
-      padding:14px 14px 16px;
-      box-shadow:0 16px 38px rgba(15,23,42,0.8);
-    }
-    .section-header{
-      display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-bottom:10px;
-    }
-    .section-title{font-size:18px;font-weight:800;color:var(--accent-soft)}
-    .section-sub{font-size:13px;color:var(--muted);max-width:520px}
-    .section-link{font-size:12px;color:var(--accent-soft);text-decoration:none;font-weight:600}
-
-    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    @media(max-width:900px){.grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:640px){
-      .app{border-radius:0;border:none;box-shadow:none}
-      .grid-3,.grid-2{grid-template-columns:1fr}
-    }
-
-    .card{
-      background:radial-gradient(circle at top,rgba(15,23,42,0.98),#020617);
-      border-radius:20px;border:1px solid rgba(148,163,184,0.6);
-      padding:10px 10px 12px;
-      box-shadow:0 12px 30px rgba(15,23,42,0.9);
-      display:flex;flex-direction:column;gap:6px;
-      position:relative;overflow:hidden;
-    }
-    .card::before{
-      content:"";
-      position:absolute;inset:-40%;
-      background:radial-gradient(circle at top,rgba(56,189,248,0.08),transparent 55%);
-      opacity:0.8;pointer-events:none;
-    }
-    .card-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
-    .card-title{font-size:17px;font-weight:800;color:var(--accent-main)}
-    .card-sub{font-size:13px;color:var(--accent-soft);font-weight:600}
-    .card-badge{
-      font-size:11px;padding:4px 8px;border-radius:999px;
-      border:1px solid rgba(56,189,248,0.9);
-      background:rgba(15,23,42,0.98);
-      color:var(--accent-soft);
-      white-space:nowrap;font-weight:700;
-    }
-    .card-body{position:relative;z-index:2;font-size:14px;color:#e5e7eb;line-height:1.5}
-    .card-meta{margin-top:5px;font-size:13px;color:#cbd5f5;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
-    .card-meta span{display:inline-flex;align-items:center;gap:4px}
-
-    .card-photo{
-      margin-top:4px;border-radius:14px;overflow:hidden;max-height:190px;height:190px;
-      border:2px solid rgba(56,189,248,0.9);
-    }
-    .card-photo img{width:100%;height:100%;object-fit:cover;display:block}
-
-    .card-actions{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
-    .btn{
-      border:none;border-radius:999px;padding:9px 13px;font-size:13px;font-weight:800;
-      cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap;
-      transition:all 0.25s;flex-grow:1;justify-content:center;
-    }
-    .btn-main{background:linear-gradient(135deg,#22c55e,#16a34a);color:#022c22;box-shadow:0 6px 16px rgba(34,197,94,0.55)}
-    .btn-main:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(34,197,94,0.7)}
-    .btn-outline{background:rgba(15,23,42,0.98);color:#e5e7eb;border:1px solid rgba(148,163,184,0.9)}
-    .btn-outline:hover{border-color:var(--accent-soft)}
-
-    /* MAP */
-    .map-box{
-      background:radial-gradient(circle at top,rgba(56,189,248,0.10),rgba(3,7,18,0.98));
-      border-radius:22px;border:1px solid rgba(148,163,184,0.5);
-      padding:10px;
-      box-shadow:0 16px 38px rgba(15,23,42,0.8);
-      position:sticky; top:10px;
-    }
-    #map{
-      height:520px;
-      border-radius:16px;
-      border:1px solid rgba(148,163,184,0.35);
-      overflow:hidden;
-    }
-    .map-help{
-      margin-top:8px;
-      font-size:12px;
-      color:var(--muted);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
+      background:#0b2a1f;
+    }
+    select,input{
+      padding:10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.2);
+      background:#061b14;
+      color:white;
       font-weight:700;
     }
-    .pill{
-      padding:6px 10px;
+    a.btn{
+      padding:10px 14px;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,0.55);
-      background:rgba(15,23,42,0.92);
-      display:inline-flex; align-items:center; gap:6px;
-    }
-
-    footer{
-      position:relative;z-index:2;margin-top:16px;font-size:12px;color:var(--muted);
-      display:flex;flex-direction:column;gap:4px;font-weight:600;line-height:1.4;
-    }
-    footer span{color:var(--accent-main);font-weight:800}
-
-    /* Leaflet tweaks */
-    .leaflet-container{background:#061b14}
-    .leaflet-popup-content-wrapper{
-      background:rgba(3,7,18,.96);
-      color:#e5e7eb;
-      border:1px solid rgba(148,163,184,0.35);
-      border-radius:14px;
-    }
-    .leaflet-popup-tip{background:rgba(3,7,18,.96)}
-    .popup-title{font-weight:900;color:var(--accent-main);margin-bottom:2px}
-    .popup-sub{font-weight:700;color:var(--accent-soft);font-size:12px;margin-bottom:6px}
-    .popup-links a{
-      display:inline-block;
-      margin-right:8px;
-      margin-bottom:6px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(15,23,42,.96);
-      border:1px solid rgba(148,163,184,.55);
-      color:#e5e7eb;
+      background:linear-gradient(135deg,#22c55e,#16a34a);
+      color:#022c22;
       text-decoration:none;
-      font-size:12px;
-      font-weight:800;
+      font-weight:900;
     }
-    .popup-links a:hover{border-color:rgba(34,197,94,.75)}
   </style>
 </head>
 
 <body>
-<div class="app">
-  <header>
-    <div class="brand">
-      <div class="brand-logo">🧭</div>
-      <div>
-        <div class="brand-text-title">DIGIY EXPLORE</div>
-        <div class="brand-text-sub">Lieux, activités, expériences — Sénégal</div>
-      </div>
-    </div>
+<header>DIGIY EXPLORE V2 🧭🇸🇳</header>
 
-    <a href="https://beauville.github.io/mon-espace-digiy/" class="back-link">
-      <span>←</span> Retour DIGIY HUB
-    </a>
-  </header>
+<div class="bar">
+  <input id="q" placeholder="Recherche spot…"/>
+  <select id="type">
+    <option value="all">✨ Tous</option>
+    <option value="resto">🍲 Resto</option>
+    <option value="plage">🏖 Plage</option>
+    <option value="culture">🎭 Culture</option>
+    <option value="nature">🌿 Nature</option>
+    <option value="hebergement">🏠 Hébergement</option>
+    <option value="activite">🏁 Activité</option>
+  </select>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-title">DIGIY EXPLORE <span>0% Commission</span></div>
-      <div class="hero-sub">
-        Découvre les <strong>meilleurs lieux</strong>, <strong>restaurants</strong>,
-        <strong>activités</strong> et <strong>hébergements</strong> sélectionnés par DIGIYLYFE.
-        Contact direct : <strong>WhatsApp, Appel, Localisation</strong>.
-      </div>
-
-      <div class="hero-tags">
-        <div class="hero-tag"><strong>City Guide</strong> — Saly • Dakar • Petite Côte</div>
-        <div class="hero-tag">Contact direct • 0% commission DIGIY</div>
-        <div class="hero-tag">Restaurants • Activités • Excursions • Hôtels</div>
-        <div class="hero-tag">Sélection DIGIY • Terrain réel</div>
-      </div>
-
-      <div class="hero-cta-row">
-        <a href="#spots" class="hero-cta-btn">🌍 Explorer sur la carte</a>
-        <a href="#partenaires" class="hero-cta-btn-secondary">🧰 Référencer mon établissement (PRO)</a>
-      </div>
-
-      <!-- CONTROLS (filtres réels) -->
-      <div class="controls" aria-label="Filtres DIGIY EXPLORE">
-        <div class="search">
-          <div class="k">Recherche</div>
-          <input id="q" type="search" placeholder="Ex: Gorée, Saly, Bandia, rooftop…" autocomplete="off">
-        </div>
-
-        <div class="chips" id="chipsType">
-          <div class="chip active" data-type="all">✨ Tous</div>
-          <div class="chip" data-type="resto">🍲 Resto</div>
-          <div class="chip" data-type="plage">🏖 Plage</div>
-          <div class="chip" data-type="culture">🎭 Culture</div>
-          <div class="chip" data-type="nature">🌿 Nature</div>
-          <div class="chip" data-type="hebergement">🏠 Hébergement</div>
-          <div class="chip" data-type="activite">🏁 Activité</div>
-        </div>
-
-        <div class="chips" id="chipsZone">
-          <div class="chip active" data-zone="all">📍 Sénégal</div>
-          <div class="chip" data-zone="dakar">Dakar</div>
-          <div class="chip" data-zone="saly">Saly</div>
-          <div class="chip" data-zone="petite-cote">Petite Côte</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MAP + SPOTS -->
-    <section class="section" id="spots">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Carte interactive & Spots</div>
-          <p class="section-sub">
-            Clique un spot : la carte zoom + popup. Clique un marker : infos + WhatsApp / Maps / Appel.
-          </p>
-        </div>
-        <a href="#partenaires" class="section-link">Devenir partenaire ↓</a>
-      </div>
-
-      <div class="layout">
-        <!-- LIST -->
-        <div>
-          <div id="spotsGrid" class="grid-3"></div>
-
-          <div id="emptyState" class="card" style="display:none;margin-top:12px">
-            <div class="card-top">
-              <div>
-                <div class="card-title">Aucun résultat</div>
-                <div class="card-sub">Change filtre ou essaye une autre recherche</div>
-              </div>
-              <div class="card-badge">Filtre</div>
-            </div>
-            <div class="card-body">
-              Astuce : tape <b>Saly</b>, <b>Dakar</b>, <b>Gorée</b>, <b>Bandia</b>…
-            </div>
-          </div>
-        </div>
-
-        <!-- MAP -->
-        <div class="map-box">
-          <div id="map"></div>
-          <div class="map-help">
-            <div class="pill">🛡️ Public safe : pas de compte, pas de données sensibles</div>
-            <div class="pill">💬 WhatsApp : +221 77 134 28 89</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PARTENAIRES -->
-    <section class="section" id="partenaires">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Devenir Partenaire DIGIY EXPLORE</div>
-          <p class="section-sub">
-            Restaurant, hôtel, activité, service ou spot unique ? Référence ton établissement dans DIGIY EXPLORE.
-          </p>
-        </div>
-        <a href="https://beauville.github.io/inscription-digiy/?module=explore&plan=starter"
-           class="section-link" target="_blank" rel="noopener">
-          Ouvrir la page d’inscription DIGIY →
-        </a>
-      </div>
-
-      <div class="grid-2">
-        <article class="card">
-          <div class="card-top">
-            <div>
-              <div class="card-title">Formule Partenaire</div>
-              <div class="card-sub">Visibilité & contact direct</div>
-            </div>
-            <div class="card-badge">0% commission</div>
-          </div>
-          <div class="card-body">
-            Ton spot apparaît sur la carte + la liste, avec :
-            <ul style="margin-top:8px;padding-left:18px;color:#e5e7eb;line-height:1.55">
-              <li>Photo + description</li>
-              <li>Zone / type (resto, activité, hébergement…)</li>
-              <li>Boutons WhatsApp, Appel, Maps</li>
-              <li>Lien vers ta fiche DIGIY (LOC, RESTO, etc.)</li>
-            </ul>
-            <div style="margin-top:10px;color:#cbd5f5;font-weight:800">
-              Modèle DIGIY : le client te contacte directement.
-            </div>
-          </div>
-          <div class="card-actions">
-            <a class="btn btn-main"
-               href="https://beauville.github.io/inscription-digiy/?module=explore&plan=starter"
-               target="_blank" rel="noopener">
-              ✍️ Devenir partenaire
-            </a>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-top">
-            <div>
-              <div class="card-title">Parler à l’équipe DIGIY</div>
-              <div class="card-sub">Accompagnement terrain</div>
-            </div>
-            <div class="card-badge">WhatsApp direct</div>
-          </div>
-          <div class="card-body">
-            Tu préfères échanger avant de t’inscrire ? Écris-nous : activité + ville + proposition.
-          </div>
-          <div class="card-actions">
-            <a class="btn btn-main"
-               href="https://wa.me/221771342889?text=Bonjour%20DIGIY,%20je%20veux%20r%C3%A9f%C3%A9rencer%20mon%20%C3%A9tablissement%20sur%20DIGIY%20EXPLORE."
-               target="_blank" rel="noopener">
-              💬 WhatsApp DIGIY
-            </a>
-            <a class="btn btn-outline" href="mailto:contact@digiylyfe.com">
-              ✉️ Email
-            </a>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div>DIGIY EXPLORE • <span>Super App DIGIYLYFE</span> — Sénégal → Afrique</div>
-    <div>City guide terrain • Lieux, activités, restos, hébergements • 0% commission côté pro.</div>
-    <div style="font-size:11px; color:#a8b1c2;">
-      DIGIYLYFE facilite la mise en relation. Vérifiez toujours les informations, les tarifs,
-      les conditions et les avis avant de réserver ou de payer.
-    </div>
-  </footer>
+  <a class="btn" href="./submit.html">➕ Proposer un spot</a>
 </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<div id="map"></div>
 
 <script>
-/* ============================
-   DIGIY EXPLORE — PUBLIC SAFE
-   Dataset local (mock propre)
-   ============================ */
+/* ===============================
+   CONFIG SUPABASE
+   =============================== */
+const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const SUPABASE_ANON_KEY = "✅TON_ANON_KEY_ICI";
 
-const DIGIY_WA = "221771342889"; // WhatsApp support DIGIY
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Types: resto | plage | culture | nature | hebergement | activite
-// Zones: dakar | saly | petite-cote
-const SPOTS = [
-  {
-    id:"goree",
-    name:"Île de Gorée",
-    type:"culture",
-    zone:"dakar",
-    city:"Dakar",
-    lat:14.6680, lng:-17.3980,
-    badge:"Incontournable",
-    desc:"Histoire & ruelles colorées. Maison des Esclaves, artistes, mer.",
-    photo:"https://images.unsplash.com/photo-1509099863731-ef4bff19e808?auto=format&fit=crop&w=900&q=80",
-    mapsQuery:"Ile de Goree Senegal",
-    phone:"",
-    waText:"Bonjour DIGIY, je veux infos pour visiter l'Île de Gorée (DIGIY EXPLORE)."
-  },
-  {
-    id:"bandia",
-    name:"Réserve de Bandia (Safari)",
-    type:"nature",
-    zone:"petite-cote",
-    city:"Bandia",
-    lat:14.5650, lng:-17.0740,
-    badge:"Excursion",
-    desc:"Safari 4x4, faune africaine à ~1h de Dakar. Famille friendly.",
-    photo:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=80",
-    mapsQuery:"Reserve de Bandia Senegal",
-    phone:"",
-    waText:"Bonjour DIGIY, je veux infos et réservation pour la Réserve de Bandia (DIGIY EXPLORE)."
-  },
-  {
-    id:"saly-plage",
-    name:"Plage de Saly",
-    type:"plage",
-    zone:"saly",
-    city:"Saly",
-    lat:14.4390, lng:-17.0050,
-    badge:"Spot balnéaire",
-    desc:"Plage + ambiance vacances. Base parfaite pour Petite Côte.",
-    photo:"https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80",
-    mapsQuery:"Saly Senegal plage",
-    phone:"",
-    waText:"Bonjour DIGIY, je veux un bon spot plage à Saly (DIGIY EXPLORE)."
-  },
-  {
-    id:"quad",
-    name:"Sortie Quad Dunes & Plages",
-    type:"activite",
-    zone:"petite-cote",
-    city:"Petite Côte",
-    lat:14.4100, lng:-16.9800,
-    badge:"Sport",
-    desc:"Balade quad : dunes, pistes, bords de mer. Briefing sécurité inclus.",
-    photo:"https://images.unsplash.com/photo-1601758260944-72f233eae2e0?auto=format&fit=crop&w=900&q=80",
-    mapsQuery:"Saly quad dunes",
-    phone:"",
-    waText:"Bonjour DIGIY, je veux réserver une sortie Quad (DIGIY EXPLORE)."
-  },
-  {
-    id:"ngor-sunset",
-    name:"Spot Sunset Ngor",
-    type:"plage",
-    zone:"dakar",
-    city:"Ngor / Almadies",
-    lat:14.7468, lng:-17.5242,
-    badge:"Sunset",
-    desc:"Simple, efficace : coucher de soleil, ambiance bord de mer.",
-    photo:"https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=900&q=80",
-    mapsQuery:"Ngor Senegal",
-    phone:"",
-    waText:"Bonjour DIGIY, je cherche un spot sunset à Ngor (DIGIY EXPLORE)."
-  },
-  {
-    id:"chez-baptiste",
-    name:"Chez Baptiste — Résidence",
-    type:"hebergement",
-    zone:"saly",
-    city:"Saly",
-    lat:14.4382, lng:-17.0104,
-    badge:"DIGIY LOC",
-    desc:"Appartement équipé, résidence + piscine, proche plage. Gestion DIGIY LOC.",
-    photo:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80",
-    mapsQuery:"Saly residence piscine",
-    phone:"",
-    link:"https://beauville.github.io/chez-baptiste-digiy-loc/",
-    waText:"Bonjour DIGIY, je veux infos sur Chez Baptiste (DIGIY LOC) à Saly."
-  }
-];
+const WA = "221771342889";
 
-/* ============================
-   Helpers
-   ============================ */
-const $ = (s)=>document.querySelector(s);
-const $$ = (s)=>Array.from(document.querySelectorAll(s));
-
-function esc(s){
-  return String(s||"").replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[m]));
-}
-function typeLabel(t){
-  const map = {
-    resto:"🍲 Resto",
-    plage:"🏖 Plage",
-    culture:"🎭 Culture",
-    nature:"🌿 Nature",
-    hebergement:"🏠 Hébergement",
-    activite:"🏁 Activité"
-  };
-  return map[t] || t;
-}
-function zoneLabel(z){
-  const map = {dakar:"Dakar", saly:"Saly", "petite-cote":"Petite Côte"};
-  return map[z] || z;
-}
-function waLink(text){
-  return `https://wa.me/${DIGIY_WA}?text=${encodeURIComponent(text||"Bonjour DIGIY EXPLORE 👋")}`;
-}
-function mapsLink(query, lat, lng){
-  // Si coords dispo => direct; sinon query
-  if(typeof lat==="number" && typeof lng==="number"){
-    return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-  }
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query||"Senegal")}`;
-}
-function telLink(phone){
-  const p = String(phone||"").trim();
-  if(!p) return "";
-  return `tel:${p.replace(/\s+/g,"")}`;
-}
-
-/* ============================
-   Filters state
-   ============================ */
-let filterType = "all";
-let filterZone = "all";
-let q = "";
-
-/* ============================
-   MAP init
-   ============================ */
-const map = L.map("map", { zoomControl:true }).setView([14.68,-17.45], 7);
+/* ===============================
+   MAP INIT
+   =============================== */
+const map = L.map("map").setView([14.68,-17.45], 7);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
   attribution:"© OpenStreetMap"
 }).addTo(map);
 
-const markersById = new Map();
-let markerLayer = L.layerGroup().addTo(map);
+let markers=[];
 
-/* ============================
-   Render cards + map markers
-   ============================ */
-function getFiltered(){
-  const qq = q.trim().toLowerCase();
-  return SPOTS.filter(s=>{
-    const okType = (filterType==="all") ? true : s.type===filterType;
-    const okZone = (filterZone==="all") ? true : s.zone===filterZone;
-    const hay = `${s.name} ${s.city} ${s.desc} ${s.type} ${s.zone}`.toLowerCase();
-    const okQ = qq ? hay.includes(qq) : true;
-    return okType && okZone && okQ;
+/* ===============================
+   Load Spots Published
+   =============================== */
+async function loadSpots(){
+  const { data, error } = await sb
+    .from("digiy_explore_spots")
+    .select("*")
+    .eq("status","published");
+
+  if(error){
+    alert("Erreur chargement spots");
+    console.error(error);
+    return [];
+  }
+  return data||[];
+}
+
+function clearMarkers(){
+  markers.forEach(m=>map.removeLayer(m));
+  markers=[];
+}
+
+function render(spots){
+  clearMarkers();
+
+  const q = document.getElementById("q").value.toLowerCase();
+  const type = document.getElementById("type").value;
+
+  const filtered = spots.filter(s=>{
+    const okType = (type==="all") ? true : s.type===type;
+    const hay = (s.name+" "+(s.city||"")+" "+(s.description||"")).toLowerCase();
+    const okQ = q ? hay.includes(q) : true;
+    return okType && okQ;
+  });
+
+  filtered.forEach(s=>{
+    if(!s.lat || !s.lng) return;
+
+    const mk = L.marker([s.lat,s.lng]).addTo(map)
+      .bindPopup(`
+        <b>${s.name}</b><br>
+        ${s.city||""}<br><br>
+        <a target="_blank"
+           href="https://wa.me/${WA}?text=${encodeURIComponent("Salut DIGIY 👋 je veux ce spot : "+s.name)}">
+           💬 WhatsApp DIGIY
+        </a><br>
+        <a target="_blank"
+           href="https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}">
+           📍 Ouvrir Maps
+        </a>
+      `);
+
+    markers.push(mk);
   });
 }
 
-function popupHtml(s){
-  const title = esc(s.name);
-  const sub = `${typeLabel(s.type)} • ${esc(s.city || zoneLabel(s.zone))}`;
-  const links = [];
+/* ===============================
+   Init
+   =============================== */
+let ALL=[];
 
-  links.push(`<a target="_blank" rel="noopener" href="${waLink(s.waText || ("Bonjour DIGIY, infos pour "+s.name+" (DIGIY EXPLORE)."))}">💬 WhatsApp</a>`);
-  links.push(`<a target="_blank" rel="noopener" href="${mapsLink(s.mapsQuery, s.lat, s.lng)}">📍 Maps</a>`);
+(async ()=>{
+  ALL = await loadSpots();
+  render(ALL);
+})();
 
-  if(s.phone && telLink(s.phone)){
-    links.push(`<a href="${telLink(s.phone)}">📞 Appeler</a>`);
-  }
-  if(s.link){
-    links.push(`<a target="_blank" rel="noopener" href="${s.link}">🔗 Fiche</a>`);
-  }
-
-  return `
-    <div class="popup-title">${title}</div>
-    <div class="popup-sub">${esc(sub)}</div>
-    <div style="font-size:12px;line-height:1.45;color:#e5e7eb;margin-bottom:8px">
-      ${esc(s.desc || "")}
-    </div>
-    <div class="popup-links">${links.join("")}</div>
-  `;
-}
-
-function renderMarkers(list){
-  markerLayer.clearLayers();
-  markersById.clear();
-
-  list.forEach(s=>{
-    if(typeof s.lat!=="number" || typeof s.lng!=="number") return;
-
-    const m = L.marker([s.lat, s.lng]).bindPopup(popupHtml(s), { maxWidth: 260 });
-    m.on("click", ()=>{ /* keep */ });
-    m.addTo(markerLayer);
-    markersById.set(s.id, m);
-  });
-}
-
-function focusSpot(s){
-  if(typeof s.lat==="number" && typeof s.lng==="number"){
-    map.setView([s.lat, s.lng], 13, { animate:true });
-    const m = markersById.get(s.id);
-    if(m){
-      m.openPopup();
-    }else{
-      // fallback: rebuild markers then open
-      renderMarkers(getFiltered());
-      const m2 = markersById.get(s.id);
-      if(m2) m2.openPopup();
-    }
-  }
-}
-
-function renderCards(list){
-  const grid = $("#spotsGrid");
-  const empty = $("#emptyState");
-
-  grid.innerHTML = "";
-  empty.style.display = list.length ? "none" : "block";
-
-  list.forEach(s=>{
-    const badge = esc(s.badge || zoneLabel(s.zone));
-    const title = esc(s.name);
-    const sub = esc(`${typeLabel(s.type)} • ${s.city || zoneLabel(s.zone)}`);
-    const desc = esc(s.desc || "");
-    const photo = s.photo ? `<div class="card-photo"><img src="${esc(s.photo)}" alt="${title}"></div>` : "";
-
-    const btnWA = waLink(s.waText || ("Bonjour DIGIY, infos pour "+s.name+" (DIGIY EXPLORE)."));
-    const btnMaps = mapsLink(s.mapsQuery, s.lat, s.lng);
-    const btnTel = s.phone ? telLink(s.phone) : "";
-    const btnLink = s.link || "";
-
-    const actions = `
-      <div class="card-actions">
-        <a class="btn btn-main" href="${btnWA}" target="_blank" rel="noopener">💬 WhatsApp</a>
-        <a class="btn btn-outline" href="${btnMaps}" target="_blank" rel="noopener">📍 Maps</a>
-        ${btnTel ? `<a class="btn btn-outline" href="${btnTel}">📞 Appel</a>` : ""}
-        ${btnLink ? `<a class="btn btn-outline" href="${esc(btnLink)}" target="_blank" rel="noopener">🔗 Fiche</a>` : ""}
-      </div>
-    `;
-
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="card-top">
-        <div>
-          <div class="card-title">${title}</div>
-          <div class="card-sub">${sub}</div>
-        </div>
-        <div class="card-badge">${badge}</div>
-      </div>
-      <div class="card-body">${desc}</div>
-      ${photo}
-      <div class="card-meta">
-        <span>📍 ${esc(s.city || zoneLabel(s.zone))}</span>
-        <span>🏷 ${esc(typeLabel(s.type))}</span>
-      </div>
-      ${actions}
-    `;
-
-    // click card => focus on map
-    card.style.cursor = "pointer";
-    card.addEventListener("click", (e)=>{
-      // Si clique sur un bouton/lien => laisse
-      const a = e.target.closest("a");
-      if(a) return;
-      focusSpot(s);
-    });
-
-    grid.appendChild(card);
-  });
-}
-
-function renderAll(){
-  const list = getFiltered();
-  renderCards(list);
-  renderMarkers(list);
-
-  // Ajuster vue si filtre très restrictif
-  if(list.length === 1){
-    focusSpot(list[0]);
-  }
-}
-
-/* ============================
-   Chip handlers
-   ============================ */
-function setupChips(containerId, key){
-  const wrap = document.getElementById(containerId);
-  if(!wrap) return;
-  wrap.querySelectorAll(".chip").forEach(chip=>{
-    chip.addEventListener("click", ()=>{
-      wrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
-      chip.classList.add("active");
-      const v = chip.dataset[key];
-      if(key === "type") filterType = v || "all";
-      if(key === "zone") filterZone = v || "all";
-      renderAll();
-    });
-  });
-}
-
-setupChips("chipsType", "type");
-setupChips("chipsZone", "zone");
-
-/* Search */
-const qInput = document.getElementById("q");
-qInput.addEventListener("input", ()=>{
-  q = qInput.value || "";
-  renderAll();
-});
-
-/* Initial render */
-renderAll();
+document.getElementById("q").addEventListener("input",()=>render(ALL));
+document.getElementById("type").addEventListener("change",()=>render(ALL));
 </script>
+
 </body>
 </html>
