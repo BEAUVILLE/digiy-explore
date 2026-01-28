@@ -1,1446 +1,963 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DIGIY EXPLORE - Apporteur d'affaires tourisme Afrique. Saly, Dakar, Mbour, Petite Côte. Mise en relation guides locaux et voyageurs. Visibilité sans commission abusive.">
-  <meta name="keywords" content="guide sénégal, saly, mbour, somone, ngaparou, dakar, petite côte, tourisme responsable, apporteur affaires, excursion lac rose, île gorée">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#071a13" />
+  <title>DIGIY EXPLORE — Public (Boost Clean V2)</title>
+  <meta name="description" content="DIGIY EXPLORE — Découvre autour de toi (0% commission). Spots, services, restos, logements." />
 
-  <meta property="og:title" content="DIGIY EXPLORE - Apporteur d'Affaires Tourisme Sénégal">
-  <meta property="og:description" content="Mise en relation entre voyageurs et professionnels africains. Saly, Dakar, Petite Côte. Visibilité internationale, modèle équitable.">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="fr_FR">
-  <!-- ✅ OG IMAGE (meilleur rendu WhatsApp/FB) -->
-  <meta property="og:image" content="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=1200&q=70&auto=format&fit=crop&fm=jpg">
+  <!-- Leaflet (carte) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <meta name="theme-color" content="#000000">
-  <meta name="robots" content="index,follow">
-
-  <title>DIGIY EXPLORE ∞ | Tourisme Sénégal • Saly • Dakar • Petite Côte</title>
-
-  <!-- Fonts optimisés -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- ✅ SEO: JSON-LD (Organisation + Website + FAQ) -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@graph":[
-      {
-        "@type":"Organization",
-        "name":"DIGIY EXPLORE",
-        "url":"https://digiylyfe.com",
-        "logo":"https://digiylyfe.com/logo.png",
-        "sameAs":[
-          "https://www.facebook.com/",
-          "https://www.instagram.com/"
-        ],
-        "contactPoint":[
-          {
-            "@type":"ContactPoint",
-            "telephone":"+221771342889",
-            "contactType":"customer support",
-            "areaServed":"SN",
-            "availableLanguage":["fr","wo","en"]
-          }
-        ]
-      },
-      {
-        "@type":"WebSite",
-        "name":"DIGIY EXPLORE",
-        "url":"https://digiylyfe.com",
-        "inLanguage":"fr"
-      },
-      {
-        "@type":"FAQPage",
-        "mainEntity":[
-          {
-            "@type":"Question",
-            "name":"DIGIY EXPLORE est-il une agence de voyage ?",
-            "acceptedAnswer":{
-              "@type":"Answer",
-              "text":"Non. DIGIY EXPLORE facilite la mise en relation entre voyageurs et professionnels locaux. Les conditions et paiements se font directement entre les parties."
-            }
-          },
-          {
-            "@type":"Question",
-            "name":"Comment sont fixés les prix ?",
-            "acceptedAnswer":{
-              "@type":"Answer",
-              "text":"Les prix sont décidés directement entre le voyageur et le professionnel. DIGIY EXPLORE n’impose pas de commission sur la vente."
-            }
-          },
-          {
-            "@type":"Question",
-            "name":"Quels lieux couvrez-vous ?",
-            "acceptedAnswer":{
-              "@type":"Answer",
-              "text":"Saly, Somone, Ngaparou, Mbour, Dakar, Lac Rose, Delta du Saloum, et expansion progressive vers d’autres régions."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* ==================== RESET ==================== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-    body { font-family: 'Poppins', sans-serif; line-height: 1.6; color: #1a1a1a; background: #fff; overflow-x: hidden; }
-
-    :root {
-      --gold: #D4AF37;
-      --gold-light: #F4E4C1;
-      --gold-dark: #B8941E;
-      --black: #000000;
-      --dark: #1a1a1a;
-      --white: #ffffff;
+    :root{
+      --bg:#071a13;
+      --bg2:#061412;
+      --card:#0b2a1f;
+      --card2:#0a241b;
+      --line:rgba(255,255,255,.12);
+      --text:#eafff1;
+      --muted:rgba(234,255,241,.72);
+      --gold:#facc15;
+      --orange:#f59e0b;
+      --green:#22c55e;
+      --danger:#fb7185;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
+        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{
+      max-width:1180px;
+      margin:0 auto;
+      padding:16px 14px 28px;
     }
 
-    .playfair { font-family: 'Playfair Display', serif; }
-    section { scroll-margin-top: 80px; }
-
-    /* ==================== NAVIGATION ==================== */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(20px);
-      padding: 1rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* Header */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:rgba(11,42,31,.65);
+      backdrop-filter: blur(10px);
+      border-radius:22px;
+      box-shadow: var(--shadow);
+      position:sticky; top:10px; z-index:30;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 220px;
+    }
+    .logo{
+      width:38px;height:38px;border-radius:14px;
+      display:grid;place-items:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
+        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
+      border:1px solid rgba(255,255,255,.15);
+      font-weight:900;
+    }
+    .brand h1{
+      margin:0;
+      font-size:14px;
+      line-height:1.1;
+      letter-spacing:.3px;
+    }
+    .brand .sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .actions{
+      display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(6,20,18,.55);
+      color:var(--text);
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+    }
+    .pill:active{transform: scale(.98)}
+    .pill.on{
+      border-color: rgba(250,204,21,.55);
+      background: rgba(250,204,21,.12);
+    }
+    .pill .dot{
+      width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.35);
+    }
+    .pill.on .dot{background: var(--gold)}
+    .pill.warn.on{border-color: rgba(245,158,11,.65); background: rgba(245,158,11,.12)}
+    .pill.warn.on .dot{background: var(--orange)}
+    .pill.good.on{border-color: rgba(34,197,94,.65); background: rgba(34,197,94,.10)}
+    .pill.good.on .dot{background: var(--green)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(34,197,94,.12);
+      cursor:pointer;
+      font-size:12px;
+      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color: rgba(34,197,94,.45)}
+    .btn:active{transform: scale(.98)}
+    .btn.secondary{
+      background: rgba(250,204,21,.10);
+      border-color: rgba(250,204,21,.22);
     }
 
-    .nav-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--gold);
-      user-select: none;
-    }
-
-    .logo .infinity {
-      font-size: 1.8rem;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    .nav-links { display: none; }
-
-    .nav-links.active {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 70px;
-      left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.98);
-      padding: 2rem;
-      gap: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      animation: slideDown 0.3s ease;
-    }
-
-    .nav-links.active[role="dialog"] { outline: none; }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-      font-size: 1.1rem;
-    }
-    .nav-links a:hover { color: var(--gold); }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .nav-cta {
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: var(--black);
-      padding: 0.6rem 1.5rem;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    }
-
-    .menu-toggle {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .menu-toggle { display: none; }
-      .nav-links {
-        display: flex;
-        flex-direction: row;
-        position: static;
-        background: none;
-        padding: 0;
-        gap: 2rem;
-        border: none;
-        animation: none;
-      }
-      .nav-links a { font-size: 1rem; }
-      .logo { font-size: 1.5rem; }
-      .logo .infinity { font-size: 2rem; }
-    }
-
-    /* ==================== FLOATING WHATSAPP ==================== */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 999;
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #25D366, #128C7E);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-    }
-
-    .whatsapp-float:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-    }
-
-    .whatsapp-float i { color: white; font-size: 1.8rem; }
-
-    /* ==================== HERO ==================== */
-    .hero {
-      position: relative;
-      height: 100vh;
-      min-height: 600px;
-      max-height: 900px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(45deg,
-        rgba(0,0,0,0.6) 0%,
-        rgba(0,0,0,0.3) 50%,
-        rgba(0,0,0,0.6) 100%),
-        url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1400&q=70&auto=format&fit=crop&fm=webp') center/cover;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      color: white;
-      max-width: 1000px;
-      padding: 2rem 1.5rem;
-    }
-
-    .hero-badge {
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 0.6rem 1.5rem;
-      border-radius: 30px;
-      display: inline-block;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    }
-
-    .hero-subtitle {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      font-weight: 300;
-      color: rgba(255,255,255,0.9);
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    .hero-cta-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: var(--black);
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: white;
-      border: 2px solid white;
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .btn-secondary:hover { background: white; color: var(--black); }
-
-    @media (min-width: 768px) {
-      .hero-title { font-size: 4rem; }
-      .hero-subtitle { font-size: 1.5rem; }
-      .hero-badge { font-size: 1rem; }
-    }
-
-    /* ==================== SECTIONS ==================== */
-    .section-padding { padding: 5rem 1.5rem; }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 4rem;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .section-title {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
-      color: var(--dark);
-    }
-
-    .section-subtitle {
-      font-size: 1.1rem;
-      color: #666;
-      font-weight: 300;
-    }
-
-    @media (min-width: 768px) { .section-title { font-size: 3rem; } }
-
-    /* ==================== HOW IT WORKS ==================== */
-    .how-it-works { background: white; }
-
-    .steps-grid {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .step-card { text-align: center; padding: 2rem; }
-
-    .step-number {
-      width: 60px; height: 60px;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: var(--black);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 900;
-      margin: 0 auto 1.5rem;
-    }
-
-    .step-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      color: var(--dark);
-    }
-
-    .step-description { color: #666; line-height: 1.7; }
-
-    @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
-
-    /* ==================== ZONES ==================== */
-    .zones-section { background: #f9f9f9; }
-
-    .zones-grid {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .zone-card {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .zone-card:hover {
-      border-color: var(--gold);
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-    }
-
-    .zone-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .zone-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .zone-description { font-size: 0.9rem; color: #666; }
-
-    /* ==================== GALLERY ==================== */
-    .gallery-section { background: #f9f9f9; }
-
-    .gallery-grid {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .gallery-item {
-      position: relative;
-      height: 400px;
-      border-radius: 15px;
-      overflow: hidden;
-      transition: transform 0.3s ease;
-    }
-
-    .gallery-item:hover { transform: translateY(-5px); }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-
-    .gallery-item:hover img { transform: scale(1.05); }
-
-    .gallery-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 2rem;
-      background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
-      color: white;
-    }
-
-    .gallery-category {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .gallery-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .gallery-description { font-size: 0.95rem; opacity: 0.9; }
-
-    @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
-
-    /* ==================== MISSION ==================== */
-    .mission-section {
-      background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-      color: white;
-    }
-
-    .mission-container { max-width: 900px; margin: 0 auto; text-align: center; }
-
-    .mission-title {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 2rem;
-      color: var(--gold);
-    }
-
-    .mission-text {
-      font-size: 1.2rem;
-      line-height: 1.9;
-      margin-bottom: 1.5rem;
-      font-weight: 300;
-    }
-
-    .mission-highlight {
-      background: rgba(212, 175, 55, 0.1);
-      border-left: 4px solid var(--gold);
-      padding: 1.5rem;
-      margin: 2rem 0;
-      text-align: left;
-    }
-
-    .values-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
-    .value-item { text-align: center; }
-    .value-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .value-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--gold); }
-    .value-text { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
-
-    @media (min-width: 768px) {
-      .mission-title { font-size: 3rem; }
-      .values-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    /* ==================== OPERATOR CTA ==================== */
-    .operator-cta {
-      background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
-      color: var(--dark);
-    }
-
-    .operator-container { max-width: 900px; margin: 0 auto; text-align: center; }
-
-    .operator-title { font-size: 2rem; font-weight: 900; margin-bottom: 1.5rem; }
-    .operator-subtitle { font-size: 1.2rem; margin-bottom: 3rem; font-weight: 300; }
-
-    .benefits-list {
-      background: white;
-      border-radius: 15px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      text-align: left;
-    }
-
-    .benefit-item {
-      display: flex;
-      align-items: start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .benefit-item:last-child { margin-bottom: 0; }
-
-    .benefit-icon { font-size: 1.5rem; color: var(--gold-dark); flex-shrink: 0; }
-    .benefit-text { flex: 1; }
-
-    .benefit-text strong { display: block; font-weight: 700; margin-bottom: 0.25rem; color: var(--dark); }
-    .benefit-text p { color: #666; font-size: 0.95rem; }
-
-    .pricing-note {
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      padding: 1rem;
-      margin-top: 1.5rem;
-      font-size: 0.95rem;
-    }
-
-    @media (min-width: 768px) { .operator-title { font-size: 3rem; } }
-
-    /* ✅ Mini strip photos PARTENAIRES */
-    .partner-photos{
+    /* Layout */
+    .grid{
+      margin-top:14px;
       display:grid;
-      grid-template-columns:1fr;
-      gap:1rem;
-      margin: 2rem auto 0;
-      max-width: 1000px;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+      align-items:start;
     }
-    .partner-photos .pitem{
-      position:relative;
-      height:220px;
-      border-radius:14px;
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr; }
+      .brand{min-width:auto}
+    }
+
+    /* Search bar */
+    .panel{
+      border:1px solid var(--line);
+      background: rgba(11,42,31,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
       overflow:hidden;
-      border:1px solid rgba(0,0,0,0.12);
-      background:#000;
     }
-    .partner-photos .pitem img{
-      width:100%; height:100%;
+    .panel-hd{
+      padding:12px 12px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .panel-hd .title{
+      font-weight:800;
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    .panel-hd .meta{
+      font-size:12px;color:var(--muted);
+    }
+    .searchRow{
+      padding:10px 12px 12px;
+      display:grid;
+      grid-template-columns: 1fr 140px;
+      gap:10px;
+    }
+    @media (max-width:560px){
+      .searchRow{grid-template-columns:1fr}
+    }
+    .input{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(6,20,18,.55);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    .select{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(6,20,18,.55);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+      appearance:none;
+    }
+
+    /* Chips categories */
+    .chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:0 12px 12px;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(6,20,18,.45);
+      cursor:pointer;
+      font-size:12px;
+      color:rgba(234,255,241,.92);
+      transition: background .15s ease, border-color .15s ease, transform .05s ease;
+      user-select:none;
+    }
+    .chip:active{transform:scale(.98)}
+    .chip.on{
+      border-color: rgba(250,204,21,.55);
+      background: rgba(250,204,21,.12);
+    }
+    .chip .k{
+      width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.35);
+    }
+    .chip.on .k{background: var(--gold)}
+
+    /* List */
+    .list{
+      padding: 12px;
+      display:grid;
+      gap:10px;
+    }
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--r2);
+      background: rgba(6,20,18,.45);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 110px 1fr;
+      gap:0;
+      cursor:pointer;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
+    }
+    .card:hover{
+      border-color: rgba(250,204,21,.25);
+      background: rgba(6,20,18,.55);
+    }
+    .card:active{transform: scale(.995)}
+    .thumb{
+      height:100%;
+      min-height:92px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(250,204,21,.22), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(34,197,94,.16), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-right:1px solid rgba(255,255,255,.08);
+      position:relative;
+      overflow:hidden;
+    }
+    .thumb img{
+      width:100%;height:100%;
       object-fit:cover;
       display:block;
-      filter: contrast(1.02) saturate(1.02);
+      filter:saturate(1.05);
     }
-    .partner-photos .plabel{
-      position:absolute; left:0; right:0; bottom:0;
-      padding: 1rem;
-      color:#fff;
-      background: linear-gradient(0deg, rgba(0,0,0,.85), rgba(0,0,0,0));
-      font-weight:700;
+    .badge{
+      position:absolute;left:8px;top:8px;
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      background: rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.18);
+      display:inline-flex; align-items:center; gap:6px;
+      backdrop-filter: blur(8px);
     }
-    @media(min-width:768px){
-      .partner-photos{grid-template-columns:repeat(3, 1fr);}
-      .partner-photos .pitem{height:240px;}
+    .badge .b{width:8px;height:8px;border-radius:999px;background: rgba(255,255,255,.35)}
+    .badge.boost .b{background: var(--orange)}
+    .badge.open .b{background: var(--green)}
+    .badge.closed .b{background: var(--danger)}
+    .cardBody{padding:10px 10px 10px}
+    .row1{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
+    .name{font-weight:900; font-size:14px; line-height:1.15}
+    .cat{font-size:12px; color:var(--muted); margin-top:4px}
+    .row2{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:8px;
+      font-size:12px;
+      color:rgba(234,255,241,.85);
     }
+    .tag{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+    }
+    .tag .t{width:7px;height:7px;border-radius:999px;background: rgba(255,255,255,.28)}
+    .tag.good .t{background: var(--green)}
+    .tag.warn .t{background: var(--orange)}
 
-    /* ==================== FAQ ==================== */
-    .faq-section { background: white; }
-    .faq-grid {
-      max-width: 900px;
-      margin: 0 auto;
-      display: grid;
-      gap: 1rem;
+    /* Map */
+    #map{
+      width:100%;
+      height: 520px;
+      border-radius: var(--r);
+      overflow:hidden;
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: rgba(11,42,31,.55);
     }
-    details.faq {
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 1rem 1.2rem;
-      background: #fff;
+    @media (max-width: 980px){
+      #map{height: 420px}
     }
-    details.faq summary {
-      cursor: pointer;
-      font-weight: 700;
-      list-style: none;
+    .mapWrap{
+      position:sticky; top:86px;
     }
-    details.faq summary::-webkit-details-marker { display: none; }
-    .faq p { margin-top: 0.75rem; color:#666; line-height:1.8; }
-
-    /* ==================== CONTACT ==================== */
-    .contact-section { background: #f9f9f9; }
-
-    .contact-form {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      border: 1px solid rgba(17,24,39,0.1);
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-
-    .form-group { margin-bottom: 1.5rem; }
-
-    .form-label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--dark);
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+    @media (max-width: 980px){
+      .mapWrap{position:static}
     }
 
-    .form-input:focus {
-      outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    /* Empty / loading */
+    .state{
+      padding:18px 12px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
     }
-
-    .form-textarea { resize: vertical; min-height: 100px; }
-
-    .contact-methods {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid #e5e7eb;
+    .hr{height:1px;background:rgba(255,255,255,.08);margin:10px 0}
+    .small{font-size:12px;color:var(--muted)}
+    .toast{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:14px; z-index:80;
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.18);
+      color:rgba(234,255,241,.92);
+      padding:10px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      display:none;
+      max-width:min(94vw, 720px);
+      box-shadow: var(--shadow);
+      font-size:13px;
     }
-
-    .contact-method {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: #f9f9f9;
-      border-radius: 8px;
-    }
-
-    .contact-method i { font-size: 1.5rem; color: var(--gold); }
-    .contact-method-text { flex: 1; }
-    .contact-method-label { font-weight: 600; margin-bottom: 0.25rem; }
-    .contact-method-value { color: #666; font-size: 0.9rem; }
-
-    /* ==================== LEGAL ==================== */
-    .legal-section { background:#fff; }
-    .legal-box {
-      max-width: 900px;
-      margin: 0 auto;
-      border: 1px solid #e5e7eb;
-      border-radius: 15px;
-      padding: 2rem;
-      background: #fff;
-      line-height: 1.9;
-      color: #444;
-    }
-    .legal-box h3 { margin-bottom: 0.75rem; color: var(--dark); }
-    .legal-box p { margin-bottom: 1rem; color:#666; }
-    .legal-box ul { margin-left: 1.2rem; color:#666; }
-    .legal-box li { margin-bottom: 0.5rem; }
-
-    /* ==================== FOOTER ==================== */
-    footer {
-      background: #000;
-      color: white;
-      padding: 3rem 1.5rem 1.5rem;
-    }
-
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .footer-description {
-      color: rgba(255,255,255,0.7);
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-
-    .footer-section h4 {
-      color: var(--gold);
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-    }
-
-    .footer-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .footer-links a {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.3s ease;
-    }
-
-    .footer-links a:hover { color: var(--gold); }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 1.5rem;
-      text-align: center;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.85rem;
-    }
-
-    .footer-tagline {
-      color: var(--gold);
-      font-weight: 600;
-      margin-top: 1rem;
-    }
-
-    @media (min-width: 768px) {
-      .footer-container { grid-template-columns: 2fr 1fr 1fr 1fr; }
-    }
+    .toast.show{display:block}
   </style>
 </head>
 
 <body>
+  <div class="wrap">
 
-  <!-- WhatsApp Flottant -->
-  <a href="https://wa.me/221771342889?text=Bonjour%20DIGIY%20EXPLORE%2C%20je%20souhaite%20discuter%20d%27un%20partenariat."
-     target="_blank"
-     rel="noopener"
-     class="whatsapp-float"
-     aria-label="Contacter sur WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-
-  <!-- NAVIGATION -->
-  <nav>
-    <div class="nav-container">
-      <div class="logo">
-        <span class="infinity">∞</span>
-        <span>DIGIY EXPLORE</span>
-      </div>
-
-      <div class="nav-links"
-           id="navLinks"
-           aria-expanded="false"
-           aria-label="Menu de navigation principal">
-        <a href="#comment">Notre Rôle</a>
-        <a href="#zones">Zones Couvertes</a>
-        <a href="#experiences">Destinations</a>
-        <a href="#mission">Vision</a>
-        <a href="#partenaires">Devenir Partenaire</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-      </div>
-
-      <div class="nav-actions">
-        <a href="#contact" class="nav-cta">Être Rappelé</a>
-        <button class="menu-toggle"
-                id="menuToggle"
-                aria-label="Ouvrir le menu"
-                aria-controls="navLinks"
-                aria-expanded="false">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <div class="hero-badge">🇸🇳 Saly • Dakar • Petite Côte</div>
-      <h1 class="hero-title playfair">
-        L'Afrique Authentique<br/>
-        Accessible au Monde Entier
-      </h1>
-      <p class="hero-subtitle">
-        DIGIY EXPLORE est votre apporteur d'affaires tourisme africain.<br/>
-        Nous mettons en relation voyageurs et professionnels locaux.
-      </p>
-      <div class="hero-cta-group">
-        <a href="#comment" class="btn-primary">
-          Comprendre notre rôle
-          <i class="fas fa-arrow-down"></i>
-        </a>
-        <a href="#experiences" class="btn-secondary">
-          Découvrir l'Afrique
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section id="comment" class="how-it-works section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Notre Rôle : Apporteur d'Affaires</h2>
-      <p class="section-subtitle">
-        DIGIY EXPLORE n'est pas une agence de voyage. Nous sommes un facilitateur
-        qui crée de la mise en relation entre voyageurs et professionnels africains.
-      </p>
-    </div>
-
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <h3 class="step-title">Nous Créons la Visibilité</h3>
-        <p class="step-description">
-          Nous donnons une vitrine internationale aux guides, hébergeurs et prestataires africains
-          via notre site, nos réseaux et notre référencement.
-        </p>
-      </div>
-
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <h3 class="step-title">Nous Facilitons le Contact</h3>
-        <p class="step-description">
-          Le voyageur découvre les professionnels via DIGIY EXPLORE, puis échange directement
-          avec eux (WhatsApp, téléphone, email) pour organiser son expérience.
-        </p>
-      </div>
-
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <h3 class="step-title">Ils S'Organisent Ensemble</h3>
-        <p class="step-description">
-          Prix, dates, modalités : tout se décide entre le voyageur et le professionnel.
-          Le paiement se fait directement. DIGIY reste un facilitateur.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ZONES -->
-  <section id="zones" class="zones-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Zones Couvertes au Sénégal</h2>
-      <p class="section-subtitle">
-        Nos professionnels partenaires vous accueillent dans toute la Petite Côte et au-delà
-      </p>
-    </div>
-
-    <div class="zones-grid">
-      <div class="zone-card"><div class="zone-icon">🏖️</div><h3 class="zone-name">Saly</h3><p class="zone-description">Station balnéaire • Plages • Nightlife</p></div>
-      <div class="zone-card"><div class="zone-icon">🌊</div><h3 class="zone-name">Somone</h3><p class="zone-description">Lagune • Nature • Détente</p></div>
-      <div class="zone-card"><div class="zone-icon">🏄</div><h3 class="zone-name">Ngaparou</h3><p class="zone-description">Surf • Restaurants • Ambiance</p></div>
-      <div class="zone-card"><div class="zone-icon">🎣</div><h3 class="zone-name">Mbour</h3><p class="zone-description">Port de pêche • Marché • Artisanat</p></div>
-      <div class="zone-card"><div class="zone-icon">🏛️</div><h3 class="zone-name">Dakar</h3><p class="zone-description">Capitale • Culture • Île de Gorée</p></div>
-      <div class="zone-card"><div class="zone-icon">🌸</div><h3 class="zone-name">Lac Rose</h3><p class="zone-description">Lac Retba • Récolte de sel • Photos</p></div>
-      <div class="zone-card"><div class="zone-icon">🦅</div><h3 class="zone-name">Delta du Saloum</h3><p class="zone-description">Mangrove • Ornithologie • Pirogue</p></div>
-      <div class="zone-card"><div class="zone-icon">🚀</div><h3 class="zone-name">Bientôt...</h3><p class="zone-description">Saint-Louis • Casamance • Expansion</p></div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCES GALLERY -->
-  <section id="experiences" class="gallery-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Découvrez l'Afrique Authentique</h2>
-      <p class="section-subtitle">Nos partenaires terrain vous accueillent dans toute l'Afrique de l'Ouest</p>
-    </div>
-
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <img decoding="async" loading="lazy"
-             src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=700&q=70&auto=format&fit=crop&fm=webp"
-             alt="Sénégal Saly">
-        <div class="gallery-overlay">
-          <div class="gallery-category">Actif • Phase Pilote</div>
-          <h3 class="gallery-title">Sénégal</h3>
-          <p class="gallery-description">Saly, Dakar, Lac Rose, Gorée, Delta du Saloum</p>
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="brand" role="banner">
+        <div class="logo">♾️</div>
+        <div>
+          <h1>DIGIY EXPLORE</h1>
+          <div class="sub">Boost Clean V2 — Découvre comme un local</div>
         </div>
       </div>
 
-      <div class="gallery-item">
-        <img decoding="async" loading="lazy"
-             src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=700&q=70&auto=format&fit=crop&fm=webp"
-             alt="Culture africaine">
-        <div class="gallery-overlay">
-          <div class="gallery-category">Immersion Culturelle</div>
-          <h3 class="gallery-title">Rencontres Authentiques</h3>
-          <p class="gallery-description">Artisans, musiciens, chefs traditionnels</p>
+      <div class="actions">
+        <div id="pillNear" class="pill good" title="Trouver autour de moi">
+          <span class="dot"></span> Autour de moi
         </div>
-      </div>
-
-      <div class="gallery-item">
-        <img decoding="async" loading="lazy"
-             src="https://images.unsplash.com/photo-1571118199144-431c4e84d119?w=700&q=70&auto=format&fit=crop&fm=webp"
-             alt="Plages Sénégal">
-        <div class="gallery-overlay">
-          <div class="gallery-category">Détente & Aventure</div>
-          <h3 class="gallery-title">Plages Paradisiaques</h3>
-          <p class="gallery-description">Surf, plongée, farniente au soleil</p>
+        <div id="pillBoost" class="pill warn" title="Afficher d’abord les spots boostés">
+          <span class="dot"></span> Top Boost
         </div>
-      </div>
-
-      <div class="gallery-item">
-        <img decoding="async" loading="lazy"
-             src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=700&q=70&auto=format&fit=crop&fm=webp"
-             alt="Safari Afrique">
-        <div class="gallery-overlay">
-          <div class="gallery-category">Bientôt • En Préparation</div>
-          <h3 class="gallery-title">Safari & Nature</h3>
-          <p class="gallery-description">Kenya, Tanzanie, Afrique du Sud</p>
+        <div id="pillOpenNow" class="pill" title="Filtrer : ouvert maintenant (si horaires fournis)">
+          <span class="dot"></span> Ouvert
         </div>
-      </div>
-
-      <div class="gallery-item">
-        <img decoding="async" loading="lazy"
-             src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=700&q=70&auto=format&fit=crop&fm=webp"
-             alt="Gastronomie sénégalaise">
-        <div class="gallery-overlay">
-          <div class="gallery-category">Saveurs Africaines</div>
-          <h3 class="gallery-title">Gastronomie Locale</h3>
-          <p class="gallery-description">Thieb, mafé, cours de cuisine traditionnelle</p>
-        </div>
-      </div>
-
-      <div class="gallery-item">
-        <img decoding="async" loading="lazy"
-             src="https://images.unsplash.com/photo-1609198092357-c7da4a4d6160?w=700&q=70&auto=format&fit=crop&fm=webp"
-             alt="Expansion Afrique">
-        <div class="gallery-overlay">
-          <div class="gallery-category">2025-2026 • Expansion</div>
-          <h3 class="gallery-title">Bientôt Plus de Pays</h3>
-          <p class="gallery-description">Mali, Bénin, Côte d'Ivoire, Ghana...</p>
-        </div>
+        <div id="btnReload" class="btn secondary">🔄 Rafraîchir</div>
+        <div id="btnHelp" class="btn">🧭 Aide</div>
       </div>
     </div>
-  </section>
 
-  <!-- MISSION -->
-  <section id="mission" class="mission-section section-padding">
-    <div class="mission-container">
-      <h2 class="mission-title playfair">Notre Vision</h2>
-      <p class="mission-text">
-        Les grandes plateformes internationales prélèvent jusqu'à 30% de commission
-        sur chaque transaction, extrayant ainsi la valeur du tourisme africain.
-      </p>
-      <p class="mission-text"><strong>DIGIY EXPLORE propose un modèle différent.</strong></p>
-
-      <div class="mission-highlight">
-        <p style="margin: 0; font-size: 1.1rem;">
-          <strong style="color: var(--gold);">Notre modèle :</strong>
-          Une formule simple pour les professionnels (mise en visibilité + apport d'affaires)
-          plutôt qu'une commission sur chaque vente. L'argent reste en Afrique.
-        </p>
-      </div>
-
-      <div class="values-grid">
-        <div class="value-item">
-          <div class="value-icon">🤝</div>
-          <h3 class="value-title">Mise en Relation</h3>
-          <p class="value-text">Nous connectons, nous ne vendons pas à la place des pros</p>
-        </div>
-
-        <div class="value-item">
-          <div class="value-icon">🌍</div>
-          <h3 class="value-title">Visibilité Internationale</h3>
-          <p class="value-text">Référencement, marketing, réseaux sociaux pour nos partenaires</p>
-        </div>
-
-        <div class="value-item">
-          <div class="value-icon">💰</div>
-          <h3 class="value-title">Modèle Équitable</h3>
-          <p class="value-text">Les professionnels gardent l'essentiel de leurs revenus</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PARTENAIRES -->
-  <section id="partenaires" class="operator-cta section-padding">
-    <div class="operator-container">
-      <div style="font-size: 3rem; margin-bottom: 1rem;">🦅</div>
-      <h2 class="operator-title playfair">Professionnels du Tourisme Africain</h2>
-      <p class="operator-subtitle">
-        Vous êtes guide, hébergeur, restaurateur ou prestataire d'activités ?<br/>
-        Gagnez en visibilité internationale avec DIGIY EXPLORE.
-      </p>
-
-      <div class="benefits-list">
-        <div class="benefit-item">
-          <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-          <div class="benefit-text">
-            <strong>Votre Vitrine Professionnelle</strong>
-            <p>Fiche complète avec photos, description, contact direct, localisation</p>
+    <div class="grid">
+      <!-- LEFT: LIST + FILTERS -->
+      <div class="panel">
+        <div class="panel-hd">
+          <div>
+            <div class="title">Explorer</div>
+            <div class="meta" id="metaLine">Chargement…</div>
           </div>
+          <div class="small" id="locLine">📍 Position : —</div>
         </div>
 
-        <div class="benefit-item">
-          <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-          <div class="benefit-text">
-            <strong>Visibilité & Référencement</strong>
-            <p>Présence sur Google, réseaux sociaux, pages locales</p>
-          </div>
-        </div>
-
-        <div class="benefit-item">
-          <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-          <div class="benefit-text">
-            <strong>Formule d'Apporteur d'Affaires</strong>
-            <p>On ne prend pas de commission sur vos ventes : relation directe.</p>
-          </div>
-        </div>
-
-        <div class="benefit-item">
-          <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
-          <div class="benefit-text">
-            <strong>Support Terrain</strong>
-            <p>Équipe basée à Saly pour vous accompagner (photo, rédaction, conseils)</p>
-          </div>
-        </div>
-
-        <!-- ✅ PRIX CORRIGÉS FCFA (Pack ESSENTIEL) -->
-        <div class="pricing-note">
-          <strong>💡 Pack AGENCE (ESSENTIEL) :</strong>
-          Activation <b>150 000 FCFA</b> (1 fois) + <b>30 000 FCFA/mois</b>.<br/>
-          <span style="font-size:.9rem; opacity:.9;">
-            Mise en relation directe • paiement direct au pro • 0% commission abusive
-          </span>
-        </div>
-      </div>
-
-      <!-- ✅ MINI PHOTOS AJOUTÉES -->
-      <div class="partner-photos" aria-label="Exemples d'expériences">
-        <div class="pitem">
-          <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=70&auto=format&fit=crop&fm=webp"
-               alt="Excursions et paysages du Sénégal">
-          <div class="plabel">Excursions • Nature</div>
-        </div>
-
-        <div class="pitem">
-          <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=900&q=70&auto=format&fit=crop&fm=webp"
-               alt="Saly, Petite Côte — accueil et plages">
-          <div class="plabel">Saly • Petite Côte</div>
-        </div>
-
-        <div class="pitem">
-          <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=900&q=70&auto=format&fit=crop&fm=webp"
-               alt="Culture, rencontres, artisanat">
-          <div class="plabel">Culture • Rencontres</div>
-        </div>
-      </div>
-
-      <a href="#contact" class="btn-primary" style="font-size: 1.1rem; padding: 1.2rem 2.5rem; margin-top: 2rem;">
-        <i class="fas fa-phone"></i> Être Rappelé
-      </a>
-
-      <p style="margin-top: 1.5rem; color: rgba(0,0,0,0.6); font-size: 0.9rem;">
-        Discussion sans engagement • Devis simple • Activation rapide
-      </p>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="faq-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">FAQ</h2>
-      <p class="section-subtitle">Clair, simple, sans blabla : comment ça marche.</p>
-    </div>
-
-    <div class="faq-grid">
-      <details class="faq">
-        <summary>DIGIY EXPLORE est-il une agence de voyage ?</summary>
-        <p>Non. On facilite la mise en relation. Le voyageur et le pro échangent et décident ensemble.</p>
-      </details>
-
-      <details class="faq">
-        <summary>Comment se fait le paiement ?</summary>
-        <p>Le paiement se fait directement au professionnel. DIGIY ne prend pas de commission sur la vente.</p>
-      </details>
-
-      <details class="faq">
-        <summary>Vous couvrez quelles zones ?</summary>
-        <p>Saly, Somone, Ngaparou, Mbour, Dakar, Lac Rose, Saloum… et on étend progressivement.</p>
-      </details>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="contact-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Demande de Contact</h2>
-      <p class="section-subtitle">
-        Vous souhaitez référencer votre activité ou organiser une expérience ?<br/>
-        Laissez vos coordonnées, on vous rappelle.
-      </p>
-    </div>
-
-    <div class="contact-form">
-      <form id="contactForm">
-        <div class="form-group">
-          <label class="form-label" for="name">Nom / Prénom *</label>
-          <input type="text" id="name" class="form-input" placeholder="Ex: Mamadou Diop" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="whatsapp">WhatsApp *</label>
-          <input type="tel" id="whatsapp" class="form-input" placeholder="Ex: +221 77 123 45 67" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="type">Type d'activité</label>
-          <select id="type" class="form-input">
-            <option value="">Sélectionnez...</option>
-            <option value="guide">Guide touristique</option>
-            <option value="hebergement">Hébergement</option>
-            <option value="restaurant">Restaurant</option>
-            <option value="activite">Activité / Excursion</option>
-            <option value="transport">Transport</option>
-            <option value="autre">Autre</option>
+        <div class="searchRow">
+          <input id="q" class="input" placeholder="Recherche : resto, logement, artisan… (ex: 'poisson', 'coiffeur', 'Saly')" />
+          <select id="city" class="select">
+            <option value="">Ville (toutes)</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="message">Votre message</label>
-          <textarea id="message" class="form-input form-textarea" placeholder="Décrivez brièvement votre activité..."></textarea>
+        <div class="chips" id="chips"></div>
+
+        <div class="hr"></div>
+
+        <div class="list" id="list">
+          <div class="state">Chargement des spots…</div>
         </div>
+      </div>
 
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          <i class="fab fa-whatsapp"></i> Envoyer via WhatsApp
-        </button>
+      <!-- RIGHT: MAP -->
+      <div class="mapWrap">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
 
-        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #666;">
-          En cliquant, WhatsApp s'ouvre avec votre message pré-rempli.
-        </p>
-      </form>
+  <div id="toast" class="toast"></div>
 
-      <div class="contact-methods">
-        <div class="contact-method">
-          <i class="fas fa-phone"></i>
-          <div class="contact-method-text">
-            <div class="contact-method-label">Téléphone Direct</div>
-            <div class="contact-method-value">
-              <a href="tel:+221771342889" style="color: #666; text-decoration: none;">+221 77 134 28 89</a>
+<script>
+/* =========================================================
+   DIGIY EXPLORE — BOOST CLEAN V2 (1) — PUBLIC INDEX
+   - Carte + liste + filtres + "autour de moi" + tri boost
+   - Table attendue: public.digiy_explore_spots
+     Champs recommandés:
+      id, slug, title, category, city, phone,
+      lat, lng, photos (text[]), status,
+      boost_rank (int) OU is_boosted (bool) OU boost_until (timestamptz),
+      open_hours_json (jsonb optionnel)
+   ========================================================= */
+
+/* -------------------------
+   Supabase config
+   ------------------------- */
+const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+
+/* 💡 Frérot: pour éviter de recoller la clé partout,
+   tu peux la stocker une fois:
+   localStorage.setItem("DIGIY_SUPABASE_ANON", "TON_ANON_KEY")
+*/
+const DEFAULT_SUPABASE_ANON =
+  (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
+
+/* Option: config globale si tu veux
+   window.__DIGIY_SUPABASE__ = { url:"...", anon:"..." }
+*/
+const CFG = window.__DIGIY_SUPABASE__ || {};
+const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
+const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON_KEY_FALLBACK()).trim();
+
+function DEFAULT_SUPABASE_ANON_KEY_FALLBACK(){
+  // Si vide, on laisse vide et on explique via toast.
+  return DEFAULT_SUPABASE_ANON || "";
+}
+
+let sb = null;
+
+function ensureSupabase(){
+  if(sb) return sb;
+  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
+    toast("⚠️ Clé Supabase manquante. Mets ton ANON dans localStorage: DIGIY_SUPABASE_ANON");
+    throw new Error("Supabase config missing (anon).");
+  }
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession:false }
+  });
+  return sb;
+}
+
+/* -------------------------
+   UI helpers
+   ------------------------- */
+const $ = (s)=>document.querySelector(s);
+const listEl = $("#list");
+const chipsEl = $("#chips");
+const metaLine = $("#metaLine");
+const locLine = $("#locLine");
+const toastEl = $("#toast");
+
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
+}
+
+function esc(s){
+  return (s ?? "").toString()
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+/* -------------------------
+   State
+   ------------------------- */
+const CATEGORIES = [
+  {key:"manger", label:"🍲 Manger"},
+  {key:"dormir", label:"🏠 Dormir"},
+  {key:"acheter", label:"🛍️ Acheter"},
+  {key:"transport", label:"🚕 Transport"},
+  {key:"services", label:"🛠️ Services"},
+  {key:"spots", label:"🏖️ Spots"},
+];
+
+let rawSpots = [];
+let filteredSpots = [];
+let markers = [];
+let userPos = null;
+
+let filters = {
+  q: "",
+  city: "",
+  category: "",
+  near: false,
+  topBoost: false,
+  openNow: false,
+};
+
+const NEAR_RADIUS_KM = 4.0;
+
+/* -------------------------
+   Map init
+   ------------------------- */
+const DEFAULT_CENTER = [14.446, -17.007]; // proche Saly/Mbour (ajuste si tu veux)
+const DEFAULT_ZOOM = 11;
+
+const map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap"
+}).addTo(map);
+
+const userMarker = L.circleMarker(DEFAULT_CENTER, {
+  radius:8, weight:2, fillOpacity:.4
+});
+let userMarkerAdded = false;
+
+/* -------------------------
+   Chips render
+   ------------------------- */
+function renderChips(){
+  const html = [
+    `<div class="chip ${filters.category===""?"on":""}" data-cat="">
+      <span class="k"></span> Tout
+    </div>`,
+    ...CATEGORIES.map(c => `
+      <div class="chip ${filters.category===c.key?"on":""}" data-cat="${esc(c.key)}">
+        <span class="k"></span> ${esc(c.label)}
+      </div>
+    `)
+  ].join("");
+  chipsEl.innerHTML = html;
+
+  chipsEl.querySelectorAll(".chip").forEach(ch=>{
+    ch.addEventListener("click", ()=>{
+      filters.category = ch.getAttribute("data-cat") || "";
+      renderChips();
+      applyFilters();
+    });
+  });
+}
+
+/* -------------------------
+   Distance (km)
+   ------------------------- */
+function haversineKm(lat1,lng1,lat2,lng2){
+  const R = 6371;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2-lat1);
+  const dLng = toRad(lng2-lng1);
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*
+            Math.sin(dLng/2)**2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R*c;
+}
+
+/* -------------------------
+   Open now (optionnel)
+   - si spot.open_hours_json = { "mon":[["09:00","18:00"]], ... }
+   ------------------------- */
+function isOpenNow(spot){
+  const oh = spot?.open_hours_json;
+  if(!oh || typeof oh !== "object") return null; // inconnu
+  const d = new Date();
+  const dayKey = ["sun","mon","tue","wed","thu","fri","sat"][d.getDay()];
+  const slots = oh[dayKey];
+  if(!Array.isArray(slots)) return null;
+
+  const nowMin = d.getHours()*60 + d.getMinutes();
+  for(const s of slots){
+    if(!Array.isArray(s) || s.length<2) continue;
+    const [a,b] = s;
+    const am = parseTimeToMin(a);
+    const bm = parseTimeToMin(b);
+    if(am==null || bm==null) continue;
+    if(nowMin >= am && nowMin <= bm) return true;
+  }
+  return false;
+}
+function parseTimeToMin(t){
+  if(typeof t !== "string") return null;
+  const m = t.trim().match(/^(\d{1,2}):(\d{2})$/);
+  if(!m) return null;
+  const hh = Math.max(0, Math.min(23, parseInt(m[1],10)));
+  const mm = Math.max(0, Math.min(59, parseInt(m[2],10)));
+  return hh*60+mm;
+}
+
+/* -------------------------
+   Markers
+   ------------------------- */
+function clearMarkers(){
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+}
+function fitToSpots(spots){
+  const pts = spots
+    .filter(s => isFinite(s.lat) && isFinite(s.lng))
+    .map(s => [Number(s.lat), Number(s.lng)]);
+  if(pts.length === 0){
+    map.setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+    return;
+  }
+  const b = L.latLngBounds(pts);
+  map.fitBounds(b.pad(0.18));
+}
+
+function addMarkers(spots){
+  clearMarkers();
+  for(const s of spots){
+    if(!isFinite(s.lat) || !isFinite(s.lng)) continue;
+    const open = isOpenNow(s);
+    const badge = s._boosted ? "🔥 Boost" : (open===true ? "🟢 Ouvert" : (open===false ? "🔴 Fermé" : "📍 Spot"));
+    const m = L.marker([Number(s.lat), Number(s.lng)]);
+    m.addTo(map);
+    m.bindPopup(`
+      <div style="min-width:220px">
+        <div style="font-weight:900;margin-bottom:4px">${esc(s.title || "Spot")}</div>
+        <div style="opacity:.8;font-size:12px;margin-bottom:8px">${esc(s.category || "—")} • ${esc(s.city || "—")}</div>
+        <div style="font-size:12px;margin-bottom:10px">${esc(badge)}</div>
+        <button
+          style="width:100%;padding:10px 10px;border-radius:12px;border:1px solid rgba(0,0,0,.12);background:#facc15;font-weight:900;cursor:pointer"
+          onclick="location.href='./spot.html?slug=${encodeURIComponent(s.slug||"")}'"
+        >Voir la fiche</button>
+      </div>
+    `);
+    markers.push(m);
+  }
+}
+
+/* -------------------------
+   List render
+   ------------------------- */
+function pickPhoto(spot){
+  const arr = spot?.photos;
+  if(Array.isArray(arr) && arr.length){
+    const u = (arr[0] || "").toString().trim();
+    return u || "";
+  }
+  // fallback possible: spot.photo_url
+  const u2 = (spot?.photo_url || "").toString().trim();
+  return u2 || "";
+}
+
+function renderList(spots){
+  if(!spots.length){
+    listEl.innerHTML = `<div class="state">Aucun spot trouvé. Essaie une autre recherche, ou enlève un filtre.</div>`;
+    return;
+  }
+
+  const html = spots.map(s=>{
+    const img = pickPhoto(s);
+    const open = isOpenNow(s);
+    const dist = (filters.near && userPos && isFinite(s.lat) && isFinite(s.lng))
+      ? haversineKm(userPos.lat, userPos.lng, Number(s.lat), Number(s.lng))
+      : null;
+
+    const badgeClass = s._boosted ? "boost" : (open===true ? "open" : (open===false ? "closed" : ""));
+    const badgeLabel = s._boosted ? "🔥 Boost" : (open===true ? "🟢 Ouvert" : (open===false ? "🔴 Fermé" : "📍 Spot"));
+
+    return `
+      <div class="card" data-slug="${esc(s.slug||"")}">
+        <div class="thumb">
+          ${img ? `<img src="${esc(img)}" alt="">` : ``}
+          <div class="badge ${badgeClass}">
+            <span class="b"></span> ${esc(badgeLabel)}
+          </div>
+        </div>
+        <div class="cardBody">
+          <div class="row1">
+            <div>
+              <div class="name">${esc(s.title || "Spot")}</div>
+              <div class="cat">${esc(s.category || "—")} • ${esc(s.city || "—")}</div>
             </div>
           </div>
-        </div>
-
-        <div class="contact-method">
-          <i class="fas fa-map-marker-alt"></i>
-          <div class="contact-method-text">
-            <div class="contact-method-label">Localisation</div>
-            <div class="contact-method-value">Saly, Sénégal (Petite Côte)</div>
+          <div class="row2">
+            ${dist!=null ? `<span class="tag good"><span class="t"></span> ${dist.toFixed(1)} km</span>` : ``}
+            ${s.phone ? `<span class="tag"><span class="t"></span> 📞 ${esc(s.phone)}</span>` : ``}
+            ${s._boosted ? `<span class="tag warn"><span class="t"></span> Top</span>` : ``}
           </div>
         </div>
       </div>
-    </div>
+    `;
+  }).join("");
 
-    <p style="text-align: center; margin-top: 2rem; color: #666; font-size: 0.9rem; max-width: 700px; margin-left: auto; margin-right: auto;">
-      <strong>Important :</strong> DIGIY EXPLORE facilite la mise en relation.
-      Prix, conditions et modalités se négocient directement entre vous et le professionnel.
-    </p>
-  </section>
+  listEl.innerHTML = html;
 
-  <!-- LEGAL -->
-  <section id="mentions" class="legal-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Mentions Légales</h2>
-      <p class="section-subtitle">Transparence : on met tout clair.</p>
-    </div>
-    <div class="legal-box">
-      <h3>Éditeur</h3>
-      <p>DIGIYLYFE / DIGIY EXPLORE — Sénégal / France (informations détaillées sur demande).</p>
+  listEl.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("click", ()=>{
+      const slug = card.getAttribute("data-slug") || "";
+      if(!slug){ toast("Slug manquant sur ce spot."); return; }
+      location.href = "./spot.html?slug=" + encodeURIComponent(slug);
+    });
+  });
+}
 
-      <h3>Contact</h3>
-      <p>Téléphone / WhatsApp : +221 77 134 28 89</p>
+/* -------------------------
+   Filters + sorting
+   ------------------------- */
+function normalize(s){
+  return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+}
 
-      <h3>Rôle de la plateforme</h3>
-      <p>DIGIY EXPLORE est une plateforme de mise en relation. Nous ne sommes pas une agence de voyage.</p>
-    </div>
-  </section>
+function computeBoosted(spot){
+  // Tu peux piloter ça comme tu veux (3 options)
+  // 1) spot.is_boosted bool
+  if(spot?.is_boosted === true) return true;
 
-  <section id="cgu" class="legal-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Conditions Générales</h2>
-      <p class="section-subtitle">Cadre simple : relation directe voyageur ↔ pro.</p>
-    </div>
-    <div class="legal-box">
-      <ul>
-        <li>Les échanges se font directement entre voyageurs et professionnels.</li>
-        <li>Les tarifs et modalités sont fixés par les professionnels.</li>
-        <li>DIGIY EXPLORE n’encaisse pas les paiements dans cette version vitrine.</li>
-      </ul>
-    </div>
-  </section>
+  // 2) spot.boost_until (date)
+  if(spot?.boost_until){
+    const t = Date.parse(spot.boost_until);
+    if(!Number.isNaN(t) && t > Date.now()) return true;
+  }
 
-  <section id="confidentialite" class="legal-section section-padding">
-    <div class="section-header">
-      <h2 class="section-title playfair">Confidentialité</h2>
-      <p class="section-subtitle">On collecte le minimum utile.</p>
-    </div>
-    <div class="legal-box">
-      <p>Les données saisies dans le formulaire servent uniquement à faciliter un rappel / une mise en relation via WhatsApp.</p>
-      <p>Nous évitons toute collecte excessive. Vous gardez le contrôle.</p>
-    </div>
-  </section>
+  // 3) spot.boost_rank (int)
+  if(Number.isFinite(spot?.boost_rank) && Number(spot.boost_rank) > 0) return true;
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <span style="font-size: 2rem;">∞</span>
-          <span>DIGIY EXPLORE</span>
-        </div>
-        <p class="footer-description">
-          Apporteur d'affaires tourisme africain. Mise en relation entre voyageurs
-          et professionnels locaux. Visibilité internationale, modèle équitable.
-        </p>
-      </div>
+  return false;
+}
 
-      <div class="footer-section">
-        <h4>Navigation</h4>
-        <ul class="footer-links">
-          <li><a href="#comment">Notre Rôle</a></li>
-          <li><a href="#zones">Zones Couvertes</a></li>
-          <li><a href="#experiences">Destinations</a></li>
-          <li><a href="#mission">Vision</a></li>
-          <li><a href="#partenaires">Devenir Partenaire</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
+function applyFilters(){
+  const qn = normalize(filters.q);
+  const cityN = normalize(filters.city);
+  const catN = normalize(filters.category);
 
-      <div class="footer-section">
-        <h4>Zones Actives</h4>
-        <ul class="footer-links">
-          <li><a href="#zones">🇸🇳 Saly</a></li>
-          <li><a href="#zones">🇸🇳 Dakar</a></li>
-          <li><a href="#zones">🇸🇳 Petite Côte</a></li>
-          <li><a href="#zones">🇸🇳 Lac Rose</a></li>
-          <li><a href="#zones">🚀 Expansion</a></li>
-        </ul>
-      </div>
+  let out = rawSpots.map(s=>{
+    const boosted = computeBoosted(s);
+    return Object.assign({}, s, { _boosted: boosted });
+  });
 
-      <div class="footer-section">
-        <h4>Légal</h4>
-        <ul class="footer-links">
-          <li><a href="#mentions">Mentions Légales</a></li>
-          <li><a href="#cgu">Conditions Générales</a></li>
-          <li><a href="#confidentialite">Confidentialité</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
+  if(qn){
+    out = out.filter(s=>{
+      const t = normalize(s.title);
+      const c = normalize(s.category);
+      const city = normalize(s.city);
+      const slug = normalize(s.slug);
+      return (t.includes(qn) || c.includes(qn) || city.includes(qn) || slug.includes(qn));
+    });
+  }
 
-    <div class="footer-bottom">
-      <p>© 2026 DIGIYLYFE - Apporteur d'affaires tourisme • En développement</p>
-      <p>Saly/Mbour (Sénégal) • France</p>
-      <p style="font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.7;">
-        DIGIY EXPLORE facilite la mise en relation. Vérifiez toujours informations, tarifs et conditions avant engagement.
-      </p>
-      <p class="footer-tagline">∞ L'Afrique enracinée, connectée au monde ∞</p>
-    </div>
-  </footer>
+  if(cityN){
+    out = out.filter(s => normalize(s.city) === cityN);
+  }
 
-  <script>
-    // ========= Menu mobile (click outside + ESC + aria + lock scroll) =========
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
+  if(catN){
+    out = out.filter(s => normalize(s.category) === catN);
+  }
 
-    function lockScroll(lock){
-      document.documentElement.style.overflow = lock ? 'hidden' : '';
-      document.body.style.overflow = lock ? 'hidden' : '';
+  if(filters.openNow){
+    out = out.filter(s => isOpenNow(s) === true);
+  }
+
+  if(filters.near){
+    if(!userPos){
+      toast("📍 Active la géolocalisation pour 'Autour de moi'.");
+    } else {
+      out = out
+        .map(s=>{
+          if(!isFinite(s.lat) || !isFinite(s.lng)) return Object.assign({}, s, {_dist: Infinity});
+          const d = haversineKm(userPos.lat, userPos.lng, Number(s.lat), Number(s.lng));
+          return Object.assign({}, s, { _dist: d });
+        })
+        .filter(s => s._dist <= NEAR_RADIUS_KM);
+      out.sort((a,b)=> (a._dist||999) - (b._dist||999));
     }
+  }
 
-    function toggleMenu(forceClose = false) {
-      const isOpen = navLinks.classList.contains('active');
-      const willOpen = forceClose ? false : !isOpen;
+  // Top boost: d’abord boost, puis titre
+  if(filters.topBoost){
+    out.sort((a,b)=>{
+      const A = a._boosted ? 1 : 0;
+      const B = b._boosted ? 1 : 0;
+      if(B !== A) return B - A;
+      const ar = (a.boost_rank||0), br = (b.boost_rank||0);
+      if(br !== ar) return br - ar;
+      return (a.title||"").localeCompare(b.title||"", "fr");
+    });
+  } else {
+    out.sort((a,b)=> (a.title||"").localeCompare(b.title||"", "fr"));
+  }
 
-      if (willOpen) {
-        navLinks.classList.add('active');
-        navLinks.setAttribute('role', 'dialog');
-        navLinks.setAttribute('aria-modal', 'true');
-        menuToggle.querySelector('i').classList.remove('fa-bars');
-        menuToggle.querySelector('i').classList.add('fa-times');
-        menuToggle.setAttribute('aria-expanded', 'true');
-        navLinks.setAttribute('aria-expanded', 'true');
-        menuToggle.setAttribute('aria-label', 'Fermer le menu');
-        lockScroll(true);
-      } else {
-        navLinks.classList.remove('active');
-        navLinks.removeAttribute('role');
-        navLinks.removeAttribute('aria-modal');
-        menuToggle.querySelector('i').classList.add('fa-bars');
-        menuToggle.querySelector('i').classList.remove('fa-times');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        navLinks.setAttribute('aria-expanded', 'false');
-        menuToggle.setAttribute('aria-label', 'Ouvrir le menu');
-        lockScroll(false);
-      }
+  filteredSpots = out;
+
+  metaLine.textContent = `${filteredSpots.length} spot(s) • filtre actif: ${
+    [filters.category && ("cat:"+filters.category), filters.city && ("ville:"+filters.city), filters.near && ("près"), filters.topBoost && ("boost"), filters.openNow && ("ouvert")]
+      .filter(Boolean).join(" / ") || "aucun"
+  }`;
+
+  renderList(filteredSpots);
+  addMarkers(filteredSpots);
+  if(!filters.near) fitToSpots(filteredSpots);
+}
+
+/* -------------------------
+   City select fill
+   ------------------------- */
+function fillCities(spots){
+  const cities = Array.from(new Set(spots.map(s => (s.city||"").trim()).filter(Boolean)))
+    .sort((a,b)=>a.localeCompare(b,"fr"));
+  const sel = $("#city");
+  sel.innerHTML = `<option value="">Ville (toutes)</option>` + cities.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+}
+
+/* -------------------------
+   Load from Supabase
+   ------------------------- */
+async function loadSpots(){
+  listEl.innerHTML = `<div class="state">Chargement des spots…</div>`;
+  metaLine.textContent = "Chargement…";
+
+  const sb = ensureSupabase();
+
+  // ⚠️ Sélection: adapte si tes colonnes diffèrent
+  const { data, error } = await sb
+    .from("digiy_explore_spots")
+    .select("id, slug, title, category, city, phone, lat, lng, photos, photo_url, status, is_boosted, boost_rank, boost_until, open_hours_json")
+    .eq("status", "active")
+    .limit(400);
+
+  if(error){
+    console.error(error);
+    listEl.innerHTML = `<div class="state">Erreur chargement. Vérifie Supabase / RLS / table digiy_explore_spots.</div>`;
+    metaLine.textContent = "Erreur.";
+    toast("❌ Supabase: erreur de lecture (RLS/table).");
+    return;
+  }
+
+  rawSpots = (data || []).map(s=>{
+    // sécurité types
+    if(s.lat!=null) s.lat = Number(s.lat);
+    if(s.lng!=null) s.lng = Number(s.lng);
+    return s;
+  });
+
+  fillCities(rawSpots);
+  applyFilters();
+}
+
+/* -------------------------
+   Geolocation
+   ------------------------- */
+async function getUserPos(){
+  return new Promise((resolve,reject)=>{
+    if(!navigator.geolocation){
+      reject(new Error("Geolocation not supported"));
+      return;
     }
+    navigator.geolocation.getCurrentPosition(
+      (p)=> resolve({ lat:p.coords.latitude, lng:p.coords.longitude, acc:p.coords.accuracy }),
+      (e)=> reject(e),
+      { enableHighAccuracy:true, timeout: 9000, maximumAge: 90000 }
+    );
+  });
+}
 
-    menuToggle.addEventListener('click', () => toggleMenu(false));
+async function toggleNear(){
+  filters.near = !filters.near;
+  $("#pillNear").classList.toggle("on", filters.near);
 
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (navLinks.classList.contains('active')) toggleMenu(true);
-      });
-    });
+  if(filters.near && !userPos){
+    try{
+      toast("📍 Localisation…");
+      const p = await getUserPos();
+      userPos = { lat:p.lat, lng:p.lng, acc:p.acc };
+      locLine.textContent = `📍 Position : ${userPos.lat.toFixed(4)}, ${userPos.lng.toFixed(4)} (±${Math.round(userPos.acc)}m)`;
 
-    document.addEventListener('click', (e) => {
-      if (navLinks.classList.contains('active') &&
-          !navLinks.contains(e.target) &&
-          !menuToggle.contains(e.target)) {
-        toggleMenu(true);
+      // user marker
+      if(!userMarkerAdded){
+        userMarker.addTo(map);
+        userMarkerAdded = true;
       }
-    });
+      userMarker.setLatLng([userPos.lat, userPos.lng]);
+      map.setView([userPos.lat, userPos.lng], 14);
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-        toggleMenu(true);
-      }
-    });
+    } catch(err){
+      console.warn(err);
+      filters.near = false;
+      $("#pillNear").classList.remove("on");
+      toast("⚠️ Autorise la localisation (sinon désactive 'Autour de moi').");
+    }
+  }
 
-    // ========= Form -> WhatsApp (sanitize + encode) =========
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+  applyFilters();
+}
 
-      const name = document.getElementById('name').value.trim();
-      const whatsapp = document.getElementById('whatsapp').value.trim();
-      const type = document.getElementById('type').value || 'Non spécifié';
-      const message = (document.getElementById('message').value || '').trim();
+/* -------------------------
+   Events
+   ------------------------- */
+function bindUI(){
+  renderChips();
 
-      const safeName = name || 'Non renseigné';
-      const safeWa   = whatsapp || 'Non renseigné';
+  $("#q").addEventListener("input", (e)=>{
+    filters.q = e.target.value || "";
+    applyFilters();
+  });
 
-      const fullMessage =
-        `Bonjour DIGIY EXPLORE,\n\n` +
-        `Nom: ${safeName}\n` +
-        `WhatsApp: ${safeWa}\n` +
-        `Type d'activité: ${type}\n\n` +
-        `Message:\n${message || "Je souhaite discuter d'un partenariat."}`;
+  $("#city").addEventListener("change", (e)=>{
+    filters.city = e.target.value || "";
+    applyFilters();
+  });
 
-      const waLink = `https://wa.me/221771342889?text=${encodeURIComponent(fullMessage)}`;
-      window.open(waLink, '_blank', 'noopener');
-    });
+  $("#pillNear").addEventListener("click", toggleNear);
 
-    // ========= Smooth scroll safe =========
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', function(e){
-        const href = this.getAttribute('href');
-        if (!href || href === '#' || href === '#!') return;
-        const target = document.querySelector(href);
-        if (!target) return;
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  </script>
+  $("#pillBoost").addEventListener("click", ()=>{
+    filters.topBoost = !filters.topBoost;
+    $("#pillBoost").classList.toggle("on", filters.topBoost);
+    applyFilters();
+  });
 
+  $("#pillOpenNow").addEventListener("click", ()=>{
+    filters.openNow = !filters.openNow;
+    $("#pillOpenNow").classList.toggle("on", filters.openNow);
+    applyFilters();
+  });
+
+  $("#btnReload").addEventListener("click", ()=>{
+    toast("🔄 Rafraîchissement…");
+    loadSpots();
+  });
+
+  $("#btnHelp").addEventListener("click", ()=>{
+    toast("🧭 Recherche + filtres + carte. Clique un spot → fiche.");
+  });
+}
+
+/* -------------------------
+   Boot
+   ------------------------- */
+(function boot(){
+  try{
+    bindUI();
+    loadSpots();
+    // petits toggles visuels init
+    $("#pillNear").classList.toggle("on", filters.near);
+    $("#pillBoost").classList.toggle("on", filters.topBoost);
+    $("#pillOpenNow").classList.toggle("on", filters.openNow);
+  } catch(err){
+    console.error(err);
+    listEl.innerHTML = `<div class="state">Impossible de démarrer. Vérifie la config Supabase (ANON).</div>`;
+  }
+})();
+</script>
 </body>
 </html>
