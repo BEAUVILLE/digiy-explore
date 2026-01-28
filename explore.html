@@ -1,5 +1,5 @@
 <!-- ======================================================
-     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE)
+     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE) — FIXED
      Fichier: spot.html
      URLs:
        - spot.html?id=<uuid>
@@ -241,7 +241,7 @@
         <div class="logo">♾️</div>
         <div>
           <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Fiche Spot — ID + SLUG</div>
+          <div class="t2">Fiche Spot — ID + SLUG (FIX)</div>
         </div>
       </div>
       <div class="actions">
@@ -429,7 +429,7 @@ function buildShareText(spot, pageUrl){
   return `DIGIY EXPLORE — ${n} (${c})\n${pageUrl}`;
 }
 
-/* Gallery (photo_url only for now) */
+/* Gallery: support photo_url + photo_url[] in future */
 function renderGallery(spot){
   const gal = $("#gallery");
   const main = (spot?.photo_url || "").toString().trim();
@@ -460,9 +460,8 @@ function renderGallery(spot){
   });
 }
 
-/* Badges (simple) */
+/* Badges (badge column text) */
 function setBadgeState(spot){
-  // badge column is text (ex: "boost", "open", "closed")
   const b = (spot?.badge || "").toString().toLowerCase().trim();
   $("#badgeBoost").style.display  = (b === "boost" || b === "🔥" || b === "boosted") ? "inline-flex" : "none";
   $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert" || b === "🟢") ? "inline-flex" : "none";
@@ -478,14 +477,11 @@ function renderPills(spot){
   if(spot?.budget) pills.push(`💰 ${spot.budget}`);
   if(spot?.duree) pills.push(`⏱️ ${spot.duree}`);
 
-  // ambiance array
   if(Array.isArray(spot?.ambiance)){
     for(const a of spot.ambiance.slice(0,4)){
       if(a) pills.push(`✨ ${a}`);
     }
   }
-
-  // tags array
   if(Array.isArray(spot?.tags)){
     for(const t of spot.tags.slice(0,6)){
       if(t) pills.push(`#${t}`);
@@ -496,7 +492,7 @@ function renderPills(spot){
 }
 
 /* ===============================
-   LOAD SPOT (ID OR SLUG)
+   LOAD SPOT (ID OR SLUG) — REAL
 ================================ */
 async function loadSpot(){
   const id = (qs("id") || "").trim();
@@ -512,16 +508,15 @@ async function loadSpot(){
 
   let q = sb
     .from("digiy_explore_spots")
-    .select("id, name, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, owner_phone, ambiance, duree, budget, tags, score");
+    .select("id, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, owner_phone, ambiance, duree, budget, tags, score");
 
+  // ✅ ID MODE
   if(id) q = q.eq("id", id);
-  else q = q.eq("id", slug); // (sécurité) jamais utilisé, mais on garde
-  if(slug && !id) {
-    // si tu as une colonne slug plus tard : remplace ici par .eq("slug", slug)
-    // pour l’instant on ne l’a pas dans ton schema listé, donc on reste id-mode
-  }
 
-  // public view: published only
+  // ✅ SLUG MODE (REAL)
+  if(!id && slug) q = q.eq("slug", slug);
+
+  // Public view: published only
   q = q.eq("status", "published");
 
   const { data, error } = await q.maybeSingle();
@@ -535,7 +530,7 @@ async function loadSpot(){
   }
   if(!data){
     $("#spotName").textContent = "Spot introuvable";
-    $("#spotMeta").textContent = "Pas publié ou ID incorrect.";
+    $("#spotMeta").textContent = "Pas publié ou ID/slug incorrect.";
     toast("Introuvable / non publié.");
     return;
   }
@@ -546,7 +541,9 @@ async function loadSpot(){
   document.title = `DIGIY EXPLORE — ${title}`;
 
   $("#spotName").textContent = title;
-  $("#spotMeta").textContent = `${spot.type || "—"} • ${spot.city || "—"} • ${spot.zone || "—"} • id: ${spot.id}`;
+  $("#spotMeta").textContent =
+    `${spot.type || "—"} • ${spot.city || "—"} • ${spot.zone || "—"} • ` +
+    (spot.slug ? `slug: ${spot.slug}` : `id: ${spot.id}`);
 
   const phone = normalizePhone(spot.phone || "");
   $("#phoneLine").textContent = phone || "—";
@@ -567,13 +564,17 @@ async function loadSpot(){
 
   setMap(Number(spot.lat), Number(spot.lng), title);
 
-  // actions
-  $("#btnBack").onclick = ()=> history.length>1 ? history.back() : (location.href="./index.html");
+  // ✅ Retour anti-boucle: on revient sur explore.html (pas index)
+  $("#btnBack").onclick = ()=>{
+    if(history.length > 1) return history.back();
+    // fallback safe:
+    location.href = "./explore.html";
+  };
 
   $("#btnMaps").onclick = ()=>{
     const url = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
     if(!url){ toast("Coordonnées manquantes."); return; }
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   $("#btnCall").onclick = ()=>{
@@ -589,12 +590,12 @@ async function loadSpot(){
   const wa = buildWhatsAppLink(phone, title);
   $("#btnWhats").onclick = ()=>{
     if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
-    window.open(wa, "_blank");
+    window.open(wa, "_blank", "noopener,noreferrer");
   };
 
   $("#btnLink").onclick = ()=>{
     if(!link){ toast("Lien manquant."); return; }
-    window.open(link, "_blank");
+    window.open(link, "_blank", "noopener,noreferrer");
   };
 
   $("#btnShare").onclick = async ()=>{
