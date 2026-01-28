@@ -2,157 +2,819 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <title>DIGIY EXPLORE V2 — Carte Sénégal</title>
+  <title>DIGIY EXPLORE — Saly & Petite Côte (0% Com)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="description" content="DIGIY EXPLORE — Guide terrain Saly & Petite Côte : spots, restos, activités, culture, nature, hébergements. Contact direct WhatsApp. Sélection DIGIYLYFE."/>
   <meta name="theme-color" content="#0b2a1f"/>
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    body{margin:0;font-family:system-ui;background:#061b14;color:white}
-    header{padding:14px;font-weight:900;font-size:18px}
-    #map{height:75vh;border-top:1px solid rgba(255,255,255,.15)}
-    .bar{
+    :root{
+      --bg:#020617; --bg2:#020818;
+      --card:#030712;
+      --line:rgba(148,163,184,.35);
+      --ink:#f9fafb;
+      --muted:rgba(203,213,245,.88);
+      --green:#22c55e;
+      --green2:#16a34a;
+      --blue:#38bdf8;
+      --gold:#facc15;
+      --shadow:0 18px 44px rgba(15,23,42,.95);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:system-ui,-apple-system,"SF Pro Text",sans-serif;
+      background:
+        radial-gradient(circle at 20% 8%, rgba(56,189,248,.16), transparent 55%),
+        radial-gradient(circle at 90% 92%, rgba(34,197,94,.16), transparent 55%),
+        linear-gradient(135deg,var(--bg) 0%, var(--bg2) 55%, var(--bg) 100%);
+      color:var(--ink);
       padding:12px;
       display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      background:#0b2a1f;
+      justify-content:center;
     }
-    select,input{
-      padding:10px;
+    .app{
+      width:100%;
+      max-width:1150px;
+      min-height:100vh;
+      border-radius:22px;
+      border:1px solid rgba(148,163,184,.25);
+      box-shadow:var(--shadow);
+      background:rgba(2,6,23,.88);
+      overflow:hidden;
+      position:relative;
+    }
+    .app::before{
+      content:"";
+      position:absolute; inset:-35%;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(56,189,248,.14),transparent 58%),
+        radial-gradient(circle at 100% 100%,rgba(34,197,94,.14),transparent 55%);
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    header{
+      position:relative; z-index:2;
+      padding:14px 14px 10px;
+      display:flex; gap:10px;
+      align-items:center; justify-content:space-between;
+      border-bottom:1px solid rgba(148,163,184,.18);
+      backdrop-filter: blur(6px);
+    }
+    .brand{display:flex; gap:10px; align-items:center}
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:radial-gradient(circle at 30% 0%, var(--green), var(--green2));
+      box-shadow:0 12px 30px rgba(34,197,94,.55);
+      font-size:22px;
+    }
+    .bt{display:flex;flex-direction:column;gap:2px}
+    .title{
+      font-weight:900; letter-spacing:.08em; text-transform:uppercase;
+      color:var(--green); font-size:18px;
+    }
+    .sub{color:var(--muted); font-weight:700; font-size:13px}
+    .nav{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.2);
-      background:#061b14;
-      color:white;
+      border:1px solid rgba(148,163,184,.55);
+      background:rgba(15,23,42,.78);
+      color:var(--ink);
+      padding:8px 12px;
+      text-decoration:none;
+      font-weight:800;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .pill:hover{border-color:rgba(56,189,248,.9)}
+    .pill.primary{
+      border:none;
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#022c22;
+      box-shadow:0 8px 18px rgba(34,197,94,.45);
+    }
+    .pill.primary:hover{transform:translateY(-1px); box-shadow:0 12px 26px rgba(34,197,94,.62)}
+
+    main{position:relative; z-index:2; padding:14px; display:flex; flex-direction:column; gap:14px}
+
+    /* HERO */
+    .hero{
+      border-radius:22px;
+      border:1px solid rgba(148,163,184,.45);
+      background:radial-gradient(circle at top left,rgba(56,189,248,.18),rgba(3,7,18,.96));
+      box-shadow:var(--shadow);
+      padding:16px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .hero h1{
+      font-size:26px;
+      line-height:1.15;
+      font-weight:950;
+      color:var(--green);
+    }
+    .hero h1 span{color:var(--blue)}
+    .hero p{
+      color:#e5e7eb;
+      font-weight:550;
+      line-height:1.6;
+      max-width:820px;
+      font-size:15.5px;
+    }
+    .hero p strong{color:var(--blue); font-weight:900}
+    .mini{
+      display:flex; gap:8px; flex-wrap:wrap; margin-top:2px
+    }
+    .tag{
+      font-size:12.5px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.55);
+      background:rgba(15,23,42,.86);
+      padding:6px 10px;
+      color:#e5e7eb;
       font-weight:700;
     }
-    a.btn{
-      padding:10px 14px;
-      border-radius:999px;
-      background:linear-gradient(135deg,#22c55e,#16a34a);
-      color:#022c22;
-      text-decoration:none;
-      font-weight:900;
+    .tag b{color:var(--gold)}
+    .controls{
+      display:flex; flex-direction:column; gap:8px; margin-top:6px;
     }
+    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      user-select:none;
+      cursor:pointer;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.55);
+      background:rgba(15,23,42,.84);
+      color:#e5e7eb;
+      padding:8px 12px;
+      font-weight:900;
+      font-size:13px;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .chip.active{
+      border-color:rgba(34,197,94,.95);
+      box-shadow:0 0 0 3px rgba(34,197,94,.12);
+    }
+    .search{
+      display:flex; align-items:center; gap:10px;
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,.45);
+      background:rgba(15,23,42,.78);
+      padding:10px 12px;
+      max-width:520px;
+    }
+    .search .k{font-weight:900; color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase}
+    .search input{
+      width:100%;
+      background:transparent;
+      border:none; outline:none;
+      color:var(--ink);
+      font-weight:800;
+      font-size:14px;
+    }
+
+    /* SECTION */
+    .section{
+      border-radius:22px;
+      border:1px solid rgba(148,163,184,.35);
+      background:radial-gradient(circle at top right,rgba(15,23,42,.12),rgba(3,7,18,.98));
+      padding:14px;
+      box-shadow:0 16px 38px rgba(15,23,42,.8);
+    }
+    .section-header{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-bottom:10px;
+    }
+    .section-title{
+      font-size:18px; font-weight:950; color:var(--blue);
+    }
+    .section-sub{font-size:13px; color:var(--muted); max-width:520px; font-weight:700; line-height:1.5}
+    .section-link{
+      font-size:12px; color:var(--blue); text-decoration:none; font-weight:900; white-space:nowrap;
+    }
+
+    /* GRID CARDS */
+    .grid-3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+    @media(max-width:980px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media(max-width:680px){
+      body{padding:0}
+      .app{border-radius:0; border:none; box-shadow:none}
+      header{position:sticky; top:0; background:rgba(2,6,23,.95)}
+      .grid-3{grid-template-columns:1fr}
+    }
+
+    .card{
+      border-radius:20px;
+      border:1px solid rgba(148,163,184,.45);
+      background:radial-gradient(circle at top,rgba(15,23,42,.96),rgba(2,6,23,.96));
+      padding:10px 10px 12px;
+      box-shadow:0 12px 30px rgba(15,23,42,.88);
+      display:flex; flex-direction:column; gap:8px;
+      position:relative; overflow:hidden;
+    }
+    .card::before{
+      content:""; position:absolute; inset:-40%;
+      background:radial-gradient(circle at top,rgba(56,189,248,.08),transparent 55%);
+      pointer-events:none; opacity:.8;
+    }
+    .card-top{position:relative; z-index:2; display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+    .card-title{font-size:16.5px; font-weight:950; color:var(--green)}
+    .card-sub{font-size:12.5px; font-weight:900; color:var(--blue)}
+    .badge{
+      font-size:11px; font-weight:950;
+      border-radius:999px;
+      padding:4px 8px;
+      border:1px solid rgba(56,189,248,.9);
+      background:rgba(15,23,42,.88);
+      color:var(--blue);
+      white-space:nowrap;
+    }
+    .card-body{position:relative; z-index:2; color:#e5e7eb; font-size:13.8px; line-height:1.5}
+    .meta{position:relative; z-index:2; display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12.5px; font-weight:800}
+    .meta span{display:inline-flex; align-items:center; gap:6px}
+    .photo{
+      position:relative; z-index:2;
+      border-radius:14px;
+      overflow:hidden;
+      height:175px;
+      border:2px solid rgba(56,189,248,.85);
+      background:rgba(15,23,42,.6);
+    }
+    .photo img{width:100%; height:100%; object-fit:cover; display:block}
+    .actions{position:relative; z-index:2; display:flex; gap:8px; flex-wrap:wrap; margin-top:2px}
+    .btn{
+      flex:1;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border-radius:999px;
+      padding:9px 12px;
+      text-decoration:none;
+      font-weight:950;
+      font-size:13px;
+      white-space:nowrap;
+      transition:all .22s ease;
+    }
+    .btn.main{
+      border:none;
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      color:#022c22;
+      box-shadow:0 7px 18px rgba(34,197,94,.45);
+    }
+    .btn.main:hover{transform:translateY(-1px); box-shadow:0 11px 26px rgba(34,197,94,.62)}
+    .btn.outline{
+      background:rgba(15,23,42,.88);
+      border:1px solid rgba(148,163,184,.55);
+      color:#e5e7eb;
+    }
+    .btn.outline:hover{border-color:rgba(56,189,248,.9)}
+    #map{
+      height:360px;
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,.35);
+      overflow:hidden;
+    }
+    footer{
+      position:relative; z-index:2;
+      padding:14px;
+      border-top:1px solid rgba(148,163,184,.18);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      line-height:1.5;
+    }
+    footer b{color:var(--green)}
   </style>
 </head>
-
 <body>
-<header>DIGIY EXPLORE V2 🧭🇸🇳</header>
+  <div class="app">
 
-<div class="bar">
-  <input id="q" placeholder="Recherche spot…"/>
-  <select id="type">
-    <option value="all">✨ Tous</option>
-    <option value="resto">🍲 Resto</option>
-    <option value="plage">🏖 Plage</option>
-    <option value="culture">🎭 Culture</option>
-    <option value="nature">🌿 Nature</option>
-    <option value="hebergement">🏠 Hébergement</option>
-    <option value="activite">🏁 Activité</option>
-  </select>
+    <header>
+      <div class="brand">
+        <div class="logo">🧭</div>
+        <div class="bt">
+          <div class="title">DIGIY EXPLORE</div>
+          <div class="sub">Saly • Petite Côte — Guide terrain</div>
+        </div>
+      </div>
 
-  <a class="btn" href="./submit.html">➕ Proposer un spot</a>
-</div>
+      <div class="nav">
+        <a class="pill" href="#spots">🧩 Mix du jour</a>
+        <a class="pill" href="#mapWrap">🗺️ Carte</a>
+        <a class="pill" href="#partenaires">🤝 Partenaires</a>
+        <a class="pill primary" id="waTop" href="#" target="_blank" rel="noopener">💬 WhatsApp DIGIY</a>
+      </div>
+    </header>
 
-<div id="map"></div>
+    <main>
 
-<script>
-/* ===============================
-   CONFIG SUPABASE
-   =============================== */
-const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY = "✅TON_ANON_KEY_ICI";
+      <section class="hero">
+        <h1>DIGIY EXPLORE <span>— l’expérience locale</span></h1>
+        <p>
+          Tu choisis <strong>Saly</strong> ou <strong>Petite Côte</strong>, tu filtres (type, ambiance, durée, budget),
+          et je te sors <strong>6 cartes propres</strong>. Contact direct WhatsApp : rapide, simple, terrain.
+        </p>
 
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        <div class="mini">
+          <div class="tag"><b>0%</b> commission côté pro</div>
+          <div class="tag">📍 Zones : Saly / Petite Côte</div>
+          <div class="tag">🎚 Ambiance : chill / famille / nightlife / romantique</div>
+          <div class="tag">⏱ Durée : 1h / 1/2 journée / journée</div>
+          <div class="tag">💸 Budget : petit / moyen / premium</div>
+        </div>
 
-const WA = "221771342889";
+        <!-- CONTROLS -->
+        <div class="controls">
 
-/* ===============================
-   MAP INIT
-   =============================== */
-const map = L.map("map").setView([14.68,-17.45], 7);
+          <div class="chips" id="chipsZone">
+            <div class="chip active" data-zone="saly">📍 Saly</div>
+            <div class="chip" data-zone="petite-cote">📍 Petite Côte</div>
+          </div>
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-  attribution:"© OpenStreetMap"
-}).addTo(map);
+          <div class="chips" id="chipsType">
+            <div class="chip active" data-type="all">✨ Tout</div>
+            <div class="chip" data-type="plage">🏖 Plage</div>
+            <div class="chip" data-type="resto">🍲 Resto</div>
+            <div class="chip" data-type="culture">🎭 Culture</div>
+            <div class="chip" data-type="nature">🌿 Nature</div>
+            <div class="chip" data-type="activite">🏁 Activité</div>
+            <div class="chip" data-type="hebergement">🏠 Hébergement</div>
+          </div>
 
-let markers=[];
+          <div class="chips" id="chipsAmbiance">
+            <div class="chip active" data-amb="all">🎚 Ambiance</div>
+            <div class="chip" data-amb="chill">😌 Chill</div>
+            <div class="chip" data-amb="famille">👨‍👩‍👧‍👦 Famille</div>
+            <div class="chip" data-amb="nightlife">🌙 Nightlife</div>
+            <div class="chip" data-amb="romantique">💛 Romantique</div>
+          </div>
 
-/* ===============================
-   Load Spots Published
-   =============================== */
-async function loadSpots(){
-  const { data, error } = await sb
-    .from("digiy_explore_spots")
-    .select("*")
-    .eq("status","published");
+          <div class="chips" id="chipsDuree">
+            <div class="chip active" data-duree="all">⏱ Durée</div>
+            <div class="chip" data-duree="1h">1h</div>
+            <div class="chip" data-duree="halfday">1/2 journée</div>
+            <div class="chip" data-duree="day">Journée</div>
+          </div>
 
-  if(error){
-    alert("Erreur chargement spots");
-    console.error(error);
-    return [];
+          <div class="chips" id="chipsBudget">
+            <div class="chip active" data-budget="all">💸 Budget</div>
+            <div class="chip" data-budget="petit">Petit</div>
+            <div class="chip" data-budget="moyen">Moyen</div>
+            <div class="chip" data-budget="premium">Premium</div>
+          </div>
+
+          <div class="search">
+            <div class="k">Recherche</div>
+            <input id="q" type="search" placeholder="Ex: plage, bandia, villa, sunset…" autocomplete="off"/>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- MIX DU JOUR -->
+      <section class="section" id="spots">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Mix du jour 🥘 — 6 cartes propres</div>
+            <div class="section-sub">
+              Par défaut : 2 chill + 2 famille + 1 romantique + 1 nightlife (si dispo).
+              Clique une carte → zoom & popup sur la carte.
+            </div>
+          </div>
+          <a href="#" class="section-link" id="seeMore" style="display:none">Voir plus ↓</a>
+        </div>
+
+        <div id="spotsGrid" class="grid-3"></div>
+
+        <div id="emptyState" class="card" style="display:none">
+          <div class="card-top">
+            <div>
+              <div class="card-title">Aucun résultat</div>
+              <div class="card-sub">Change un filtre (budget/durée/ambiance)</div>
+            </div>
+            <div class="badge">Filtre</div>
+          </div>
+          <div class="card-body">Astuce : enlève 1 filtre ou repasse sur “all”.</div>
+        </div>
+      </section>
+
+      <!-- MAP -->
+      <section class="section" id="mapWrap">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Carte interactive 🗺️</div>
+            <div class="section-sub">On affiche les markers des 6 cartes (lisible + clean).</div>
+          </div>
+          <a class="section-link" href="#spots">Retour aux cartes ↑</a>
+        </div>
+        <div id="map"></div>
+      </section>
+
+      <!-- PARTENAIRES -->
+      <section class="section" id="partenaires">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Business apporteur d’affaires 🤝</div>
+            <div class="section-sub">
+              Tu es guide, agence, activité, resto, hébergement ? DIGIY te donne une vitrine internationale + des clients qualifiés.
+            </div>
+          </div>
+          <a class="section-link" href="#" id="waPro">WhatsApp Partenaires →</a>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="card-title">Visibilité internationale</div>
+                <div class="card-sub">SEO + vitrine propre</div>
+              </div>
+              <div class="badge">PRO</div>
+            </div>
+            <div class="card-body">
+              Page dédiée, photos, description claire, et présence “Google-friendly”.
+              Tu fais ton métier, DIGIY s’occupe de la visibilité.
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="card-title">Leads qualifiés</div>
+                <div class="card-sub">WhatsApp direct</div>
+              </div>
+              <div class="badge">CLIENT</div>
+            </div>
+            <div class="card-body">
+              Le client arrive avec : zone, budget, durée, ambiance. Moins de perte de temps, plus de conversion.
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <div class="card-title">Modèle juste</div>
+                <div class="card-sub">0% com côté pro</div>
+              </div>
+              <div class="badge">DIGIY</div>
+            </div>
+            <div class="card-body">
+              Pas de plateforme qui te mange 30%. DIGIY te met en relation et tu gardes ton business.
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div><b>DIGIY EXPLORE</b> facilite la mise en relation (Saly / Petite Côte). Tarifs, dispo, conditions et paiement se valident directement avec le partenaire.</div>
+      <div style="opacity:.85;margin-top:6px">Conseil terrain : vérifie toujours les infos avant de réserver.</div>
+    </footer>
+  </div>
+
+  <!-- Leaflet + Supabase -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+  // =============================
+  // CONFIG (à adapter)
+  // =============================
+  const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+  const SUPABASE_ANON_KEY = "__ANON_KEY__"; // <-- Mets TA vraie clé
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const DIGIY_WA = "221771342889";
+
+  // =============================
+  // Helpers
+  // =============================
+  function esc(s){
+    return String(s||"").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[m]));
   }
-  return data||[];
-}
+  function labelType(t){
+    return ({
+      plage:"🏖 Plage", resto:"🍲 Resto", culture:"🎭 Culture",
+      nature:"🌿 Nature", activite:"🏁 Activité", hebergement:"🏠 Hébergement"
+    }[t] || t);
+  }
+  function labelDuree(d){ return ({ "1h":"1h", halfday:"1/2 journée", day:"Journée" }[d] || d || "—"); }
+  function labelBudget(b){ return ({ petit:"Petit", moyen:"Moyen", premium:"Premium" }[b] || b || "—"); }
+  function labelAmb(arr){
+    const map = {chill:"😌 Chill",famille:"👨‍👩‍👧‍👦 Famille",nightlife:"🌙 Nightlife",romantique:"💛 Romantique"};
+    const a = Array.isArray(arr) ? arr : [];
+    return a.length ? a.map(x=>map[x]||x).join(" • ") : "—";
+  }
+  function waLink(spotName){
+    const txt = `Salut DIGIY 👋 Je veux ce spot : ${spotName}. Zone: ${state.zone}. Budget: ${state.budget}. Durée: ${state.duree}.`;
+    return `https://wa.me/${DIGIY_WA}?text=${encodeURIComponent(txt)}`;
+  }
+  function mapsLink(lat,lng){
+    return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  }
 
-function clearMarkers(){
-  markers.forEach(m=>map.removeLayer(m));
-  markers=[];
-}
+  // =============================
+  // WhatsApp buttons
+  // =============================
+  const waTop = document.getElementById("waTop");
+  const waPro = document.getElementById("waPro");
 
-function render(spots){
-  clearMarkers();
+  function setWaLinks(){
+    const base = `Salut DIGIY 👋 Je veux des infos (EXPLORE). Zone: ${state.zone}. Type: ${state.type}. Ambiance: ${state.amb}. Durée: ${state.duree}. Budget: ${state.budget}.`;
+    waTop.href = `https://wa.me/${DIGIY_WA}?text=${encodeURIComponent(base)}`;
 
-  const q = document.getElementById("q").value.toLowerCase();
-  const type = document.getElementById("type").value;
+    const proTxt = "Salut DIGIY 👋 Je suis un PRO (guide/agence/resto/activité/hébergement). Je veux être référencé sur DIGIY EXPLORE. Envoie-moi la procédure.";
+    waPro.href = `https://wa.me/${DIGIY_WA}?text=${encodeURIComponent(proTxt)}`;
+  }
 
-  const filtered = spots.filter(s=>{
-    const okType = (type==="all") ? true : s.type===type;
-    const hay = (s.name+" "+(s.city||"")+" "+(s.description||"")).toLowerCase();
-    const okQ = q ? hay.includes(q) : true;
-    return okType && okQ;
+  // =============================
+  // State
+  // =============================
+  let state = {
+    zone: "saly",
+    type: "all",
+    amb: "all",
+    duree: "all",
+    budget: "all",
+    q: "",
+    limit: 6
+  };
+
+  // =============================
+  // Map
+  // =============================
+  const map = L.map("map").setView([14.439, -17.01], 12);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    attribution:"© OpenStreetMap"
+  }).addTo(map);
+
+  let markerLayer = L.layerGroup().addTo(map);
+  let markersById = new Map();
+
+  function rebuildMarkers(list){
+    markerLayer.clearLayers();
+    markersById.clear();
+
+    list.forEach(s=>{
+      if(typeof s.lat !== "number" || typeof s.lng !== "number") return;
+
+      const popup = `
+        <div style="font-weight:950;color:#22c55e;margin-bottom:4px">${esc(s.name)}</div>
+        <div style="font-weight:900;color:#38bdf8;font-size:12px;margin-bottom:8px">
+          ${esc(labelType(s.type))} • ${esc(s.city||"")}
+        </div>
+        <div style="font-size:12px;line-height:1.45;color:#e5e7eb;margin-bottom:8px">${esc(s.description||"")}</div>
+        <div style="display:flex;gap:12px;font-weight:900;font-size:12px">
+          <a target="_blank" rel="noopener" href="${waLink(s.name)}">💬 WhatsApp</a>
+          <a target="_blank" rel="noopener" href="${mapsLink(s.lat,s.lng)}">📍 Maps</a>
+        </div>
+      `;
+
+      const mk = L.marker([s.lat, s.lng]).bindPopup(popup, { maxWidth: 260 });
+      mk.addTo(markerLayer);
+      markersById.set(s.id, mk);
+    });
+  }
+
+  function focusSpot(s){
+    if(typeof s.lat==="number" && typeof s.lng==="number"){
+      map.setView([s.lat, s.lng], 13, { animate:true });
+      const mk = markersById.get(s.id);
+      if(mk) mk.openPopup();
+    }
+  }
+
+  // =============================
+  // Supabase fetch
+  // =============================
+  async function fetchSpotsPublished(params){
+    let q = sb
+      .from("digiy_explore_spots")
+      .select("id,name,type,zone,city,lat,lng,badge,description,photo_url,ambiance,duree,budget,score,created_at")
+      .eq("status", "published")
+      .eq("zone", params.zone);
+
+    if (params.type !== "all") q = q.eq("type", params.type);
+    if (params.duree !== "all") q = q.eq("duree", params.duree);
+    if (params.budget !== "all") q = q.eq("budget", params.budget);
+    if (params.amb !== "all") q = q.contains("ambiance", [params.amb]);
+
+    if (params.q && params.q.trim()){
+      const qq = params.q.trim();
+      q = q.or(`name.ilike.%${qq}%,city.ilike.%${qq}%,description.ilike.%${qq}%`);
+    }
+
+    q = q.order("score", { ascending:false }).order("created_at", { ascending:false });
+
+    const { data, error } = await q;
+    if (error) throw error;
+    return data || [];
+  }
+
+  // =============================
+  // Mix du jour
+  // =============================
+  function uniqById(list){
+    const seen = new Set();
+    const out = [];
+    for(const x of list){
+      if(!x || !x.id) continue;
+      if(seen.has(x.id)) continue;
+      seen.add(x.id);
+      out.push(x);
+    }
+    return out;
+  }
+
+  function pickMixOfDay(listAll, want = { chill:2, famille:2, romantique:1, nightlife:1 }, limit = 6){
+    const pool = Array.isArray(listAll) ? listAll.slice() : [];
+    pool.sort((a,b)=> ( (b.score||0) - (a.score||0) ));
+
+    const picked = [];
+
+    function pickByAmb(amb, n){
+      if(n <= 0) return;
+      const candidates = pool.filter(s => Array.isArray(s.ambiance) && s.ambiance.includes(amb));
+      for(const s of candidates){
+        if(picked.length >= limit) break;
+        if(picked.find(x=>x.id===s.id)) continue;
+        picked.push(s);
+
+        const count = picked.filter(x => Array.isArray(x.ambiance) && x.ambiance.includes(amb)).length;
+        if(count >= n) break;
+      }
+    }
+
+    pickByAmb("chill", want.chill||0);
+    pickByAmb("famille", want.famille||0);
+    pickByAmb("romantique", want.romantique||0);
+    pickByAmb("nightlife", want.nightlife||0);
+
+    if(picked.length < limit){
+      for(const s of pool){
+        if(picked.length >= limit) break;
+        if(picked.find(x=>x.id===s.id)) continue;
+        picked.push(s);
+      }
+    }
+
+    return uniqById(picked).slice(0, limit);
+  }
+
+  // =============================
+  // Render
+  // =============================
+  let CACHE = [];
+
+  function renderCards(listAll){
+    const grid = document.getElementById("spotsGrid");
+    const empty = document.getElementById("emptyState");
+    const seeMore = document.getElementById("seeMore");
+
+    grid.innerHTML = "";
+    empty.style.display = listAll.length ? "none" : "block";
+
+    // Mix: si amb=all => mix, sinon => liste normale
+    let shown;
+    if(state.amb !== "all"){
+      shown = listAll.slice(0, state.limit);
+    } else {
+      shown = pickMixOfDay(listAll, { chill:2, famille:2, romantique:1, nightlife:1 }, Math.min(state.limit, 6));
+    }
+
+    // Voir plus => bascule en liste normale
+    if(listAll.length > 6){
+      seeMore.style.display = "inline";
+      seeMore.onclick = (e)=>{
+        e.preventDefault();
+        state.amb = state.amb; // inchangé
+        state.limit += 6;
+        // à partir de >6, on affiche normal (pas mix)
+        const normal = listAll.slice(0, state.limit);
+        drawCards(normal, listAll, true);
+      };
+    } else {
+      seeMore.style.display = "none";
+    }
+
+    drawCards(shown, listAll, false);
+  }
+
+  function drawCards(shown, listAll, isNormalMode){
+    const grid = document.getElementById("spotsGrid");
+    grid.innerHTML = "";
+
+    shown.forEach(s=>{
+      const photo = s.photo_url ? `
+        <div class="photo"><img src="${esc(s.photo_url)}" alt="${esc(s.name)}"></div>
+      ` : "";
+
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-top">
+          <div>
+            <div class="card-title">${esc(s.name)}</div>
+            <div class="card-sub">${esc(labelType(s.type))} • ${esc(s.city||"")}</div>
+          </div>
+          <div class="badge">${esc(s.badge || labelBudget(s.budget))}</div>
+        </div>
+
+        <div class="card-body">${esc(s.description || "")}</div>
+
+        ${photo}
+
+        <div class="meta">
+          <span>⏱ ${esc(labelDuree(s.duree))}</span>
+          <span>💸 ${esc(labelBudget(s.budget))}</span>
+          <span>🎚 ${esc(labelAmb(s.ambiance))}</span>
+        </div>
+
+        <div class="actions">
+          <a class="btn main" href="${waLink(s.name)}" target="_blank" rel="noopener">💬 WhatsApp</a>
+          <a class="btn outline" href="${mapsLink(s.lat,s.lng)}" target="_blank" rel="noopener">📍 Maps</a>
+        </div>
+      `;
+
+      card.style.cursor = "pointer";
+      card.addEventListener("click", (e)=>{
+        if(e.target.closest("a")) return;
+        focusSpot(s);
+      });
+
+      grid.appendChild(card);
+    });
+
+    // Markers = shown
+    rebuildMarkers(shown);
+
+    // Zoom zone
+    if(state.zone === "saly"){
+      map.setView([14.439, -17.01], 12, { animate:true });
+    }else{
+      map.setView([14.52, -16.98], 10, { animate:true });
+    }
+
+    setWaLinks();
+  }
+
+  async function refreshData(){
+    CACHE = await fetchSpotsPublished(state);
+    state.limit = 6;
+  }
+
+  async function rerender(){
+    renderCards(CACHE);
+  }
+
+  // =============================
+  // Bind chips
+  // =============================
+  function bindChipGroup(containerId, key){
+    const wrap = document.getElementById(containerId);
+    if(!wrap) return;
+    wrap.querySelectorAll(".chip").forEach(chip=>{
+      chip.addEventListener("click", async ()=>{
+        wrap.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+        chip.classList.add("active");
+        state[key] = chip.dataset[key] || "all";
+        await refreshData();
+        await rerender();
+      });
+    });
+  }
+
+  bindChipGroup("chipsZone", "zone");
+  bindChipGroup("chipsType", "type");
+  bindChipGroup("chipsAmbiance", "amb");
+  bindChipGroup("chipsDuree", "duree");
+  bindChipGroup("chipsBudget", "budget");
+
+  // Search
+  const qInput = document.getElementById("q");
+  qInput.addEventListener("input", async ()=>{
+    state.q = qInput.value || "";
+    await refreshData();
+    await rerender();
   });
 
-  filtered.forEach(s=>{
-    if(!s.lat || !s.lng) return;
-
-    const mk = L.marker([s.lat,s.lng]).addTo(map)
-      .bindPopup(`
-        <b>${s.name}</b><br>
-        ${s.city||""}<br><br>
-        <a target="_blank"
-           href="https://wa.me/${WA}?text=${encodeURIComponent("Salut DIGIY 👋 je veux ce spot : "+s.name)}">
-           💬 WhatsApp DIGIY
-        </a><br>
-        <a target="_blank"
-           href="https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}">
-           📍 Ouvrir Maps
-        </a>
-      `);
-
-    markers.push(mk);
-  });
-}
-
-/* ===============================
-   Init
-   =============================== */
-let ALL=[];
-
-(async ()=>{
-  ALL = await loadSpots();
-  render(ALL);
-})();
-
-document.getElementById("q").addEventListener("input",()=>render(ALL));
-document.getElementById("type").addEventListener("change",()=>render(ALL));
-</script>
-
+  // Boot
+  (async ()=>{
+    try{
+      await refreshData();
+      await rerender();
+    }catch(e){
+      console.error(e);
+      alert("Erreur Explore : vérifie ta ANON KEY + RLS + data published.");
+    }
+  })();
+  </script>
 </body>
 </html>
