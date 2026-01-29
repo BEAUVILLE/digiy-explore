@@ -1,5 +1,5 @@
 <!-- ======================================================
-     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE) — FIXED
+     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE) — FIXED FULL
      Fichier: spot.html
      URLs:
        - spot.html?id=<uuid>
@@ -179,7 +179,12 @@
       border:1px solid var(--line);
       box-shadow: var(--shadow);
       background: rgba(11,42,31,.55);
+      display:grid;
+      place-items:center;
+      color:rgba(234,255,241,.75);
+      font-size:13px;
     }
+
     .side{
       display:grid; gap:14px;
       position:sticky; top:86px;
@@ -307,13 +312,12 @@
                 <div id="infoLine" class="small">—</div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
       <div class="side">
-        <div id="map"></div>
+        <div id="map">🗺️ Chargement carte…</div>
 
         <div class="panel">
           <div style="padding:12px 12px 12px">
@@ -337,18 +341,22 @@
 ================================ */
 const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
 const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-const CFG = window.__DIGIY_SUPABASE__ || {};
-const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
-const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
 
 let sb = null;
 function ensureSupabase(){
   if(sb) return sb;
-  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
-    throw new Error("Supabase config missing (anon).");
+
+  if(!DEFAULT_SUPABASE_ANON){
+    toast("⚠️ Mets DIGIY_SUPABASE_ANON dans localStorage");
+    throw new Error("Supabase anon missing.");
   }
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
+
+  sb = window.supabase.createClient(
+    DEFAULT_SUPABASE_URL,
+    DEFAULT_SUPABASE_ANON,
+    { auth:{ persistSession:false } }
+  );
+
   return sb;
 }
 
@@ -381,244 +389,108 @@ function safeUrl(u){
   return "https://" + s;
 }
 
-/* Lightbox */
-function openLightbox(src){
-  $("#lbImg").src = src;
-  $("#lb").classList.add("show");
-  $("#lb").setAttribute("aria-hidden","false");
-}
-function closeLightbox(){
-  $("#lb").classList.remove("show");
-  $("#lb").setAttribute("aria-hidden","true");
-  $("#lbImg").src = "";
-}
-
-/* Map */
+/* ===============================
+   MAP SAFE (ANTI-BLOCK)
+================================ */
 const DEFAULT_CENTER = [14.446, -17.007];
-const map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: "&copy; OpenStreetMap"
-}).addTo(map);
+let map = null;
 let marker = null;
 
+function initMap(){
+  const box = document.getElementById("map");
+  if(!box) return;
+
+  if(!window.L){
+    box.innerHTML = "🗺️ Carte indisponible (Leaflet non chargé).";
+    return;
+  }
+
+  map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap"
+  }).addTo(map);
+}
+
 function setMap(lat,lng,title){
+  if(!map) return;
+
   if(!isFinite(lat) || !isFinite(lng)){
     map.setView(DEFAULT_CENTER, 12);
     return;
   }
+
   const pt = [Number(lat), Number(lng)];
   map.setView(pt, 15);
+
   if(marker) map.removeLayer(marker);
-  marker = L.marker(pt).addTo(map).bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
-}
-function buildMapsLink(lat,lng,title){
-  if(!isFinite(lat) || !isFinite(lng)) return "";
-  const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
-  return `https://www.google.com/maps?q=${q}`;
-}
-function buildWhatsAppLink(phone, title){
-  const p = normalizePhone(phone).replace(/\+/g,"");
-  if(!p) return "";
-  const txt = encodeURIComponent(`Bonjour 👋 Je viens de voir "${title||"votre spot"}" sur DIGIY EXPLORE. Je veux des infos svp.`);
-  return `https://wa.me/${p}?text=${txt}`;
-}
-function buildShareText(spot, pageUrl){
-  const n = spot?.name || "Spot";
-  const c = spot?.city || "—";
-  return `DIGIY EXPLORE — ${n} (${c})\n${pageUrl}`;
-}
-
-/* Gallery: support photo_url + photo_url[] in future */
-function renderGallery(spot){
-  const gal = $("#gallery");
-  const main = (spot?.photo_url || "").toString().trim();
-
-  const arr = [];
-  if(main) arr.push(main);
-
-  if(!arr.length){
-    gal.innerHTML = `
-      <div class="ph" style="grid-column:1/-1;display:grid;place-items:center;min-height:160px;cursor:default">
-        <div style="text-align:center;color:rgba(234,255,241,.78);padding:18px">
-          📷 Pas de photo pour l’instant<br><span style="font-size:12px;opacity:.85">Ajoute une URL photo.</span>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  gal.innerHTML = arr.map(u=>`
-    <div class="ph" data-src="${esc(u)}"><img src="${esc(u)}" alt=""></div>
-  `).join("");
-
-  gal.querySelectorAll(".ph").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      const src = el.getAttribute("data-src") || "";
-      if(src) openLightbox(src);
-    });
-  });
-}
-
-/* Badges (badge column text) */
-function setBadgeState(spot){
-  const b = (spot?.badge || "").toString().toLowerCase().trim();
-  $("#badgeBoost").style.display  = (b === "boost" || b === "🔥" || b === "boosted") ? "inline-flex" : "none";
-  $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert" || b === "🟢") ? "inline-flex" : "none";
-  $("#badgeClosed").style.display = (b === "closed"|| b === "ferme"  || b === "🔴") ? "inline-flex" : "none";
-}
-
-/* Pills */
-function renderPills(spot){
-  const row = $("#pillRow");
-  const pills = [];
-
-  if(spot?.type) pills.push(`🏷️ ${spot.type}`);
-  if(spot?.budget) pills.push(`💰 ${spot.budget}`);
-  if(spot?.duree) pills.push(`⏱️ ${spot.duree}`);
-
-  if(Array.isArray(spot?.ambiance)){
-    for(const a of spot.ambiance.slice(0,4)){
-      if(a) pills.push(`✨ ${a}`);
-    }
-  }
-  if(Array.isArray(spot?.tags)){
-    for(const t of spot.tags.slice(0,6)){
-      if(t) pills.push(`#${t}`);
-    }
-  }
-
-  row.innerHTML = pills.map(p=>`<span class="pill">${esc(p)}</span>`).join("");
+  marker = L.marker(pt).addTo(map)
+    .bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
 }
 
 /* ===============================
-   LOAD SPOT (ID OR SLUG) — REAL
+   LOAD SPOT (ID OR SLUG)
 ================================ */
 async function loadSpot(){
+  initMap();
+
   const id = (qs("id") || "").trim();
   const slug = (qs("slug") || "").trim();
 
   if(!id && !slug){
     toast("Paramètre manquant (?id=... ou ?slug=...)");
-    setTimeout(()=>location.href="./index.html", 700);
     return;
   }
 
   const sb = ensureSupabase();
 
-  let q = sb
-    .from("digiy_explore_spots")
-    .select("id, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, owner_phone, ambiance, duree, budget, tags, score");
+  let q = sb.from("digiy_explore_spots")
+    .select("*")
+    .eq("status","published");
 
-  // ✅ ID MODE
   if(id) q = q.eq("id", id);
-
-  // ✅ SLUG MODE (REAL)
   if(!id && slug) q = q.eq("slug", slug);
-
-  // Public view: published only
-  q = q.eq("status", "published");
 
   const { data, error } = await q.maybeSingle();
 
   if(error){
     console.error(error);
-    $("#spotName").textContent = "Erreur";
-    $("#spotMeta").textContent = "Lecture refusée (RLS / config).";
-    toast("❌ Erreur lecture spot.");
+    $("#spotName").textContent = "Erreur lecture";
+    toast("❌ RLS ou config Supabase.");
     return;
   }
+
   if(!data){
     $("#spotName").textContent = "Spot introuvable";
-    $("#spotMeta").textContent = "Pas publié ou ID/slug incorrect.";
-    toast("Introuvable / non publié.");
+    toast("Slug inconnu ou non publié.");
     return;
   }
 
   const spot = data;
-
   const title = spot.name || "Spot";
-  document.title = `DIGIY EXPLORE — ${title}`;
 
   $("#spotName").textContent = title;
-  $("#spotMeta").textContent =
-    `${spot.type || "—"} • ${spot.city || "—"} • ${spot.zone || "—"} • ` +
-    (spot.slug ? `slug: ${spot.slug}` : `id: ${spot.id}`);
+  $("#spotMeta").textContent = `${spot.city||"—"} • ${spot.zone||"—"} • slug: ${spot.slug||"—"}`;
 
-  const phone = normalizePhone(spot.phone || "");
-  $("#phoneLine").textContent = phone || "—";
-
-  const addr = [spot.zone, spot.city].filter(Boolean).join(" • ");
-  $("#addrLine").textContent = addr || "—";
-
-  $("#infoLine").textContent = spot.description ? String(spot.description).slice(0,220) : "Infos simples, contact direct.";
-
-  const link = safeUrl(spot.link_url);
-  $("#linkLine").textContent = link ? link : "—";
-  $("#btnLink").style.opacity = link ? "1" : ".45";
-  $("#btnLink").style.pointerEvents = link ? "auto" : "none";
-
-  renderPills(spot);
-  renderGallery(spot);
-  setBadgeState(spot);
+  $("#phoneLine").textContent = spot.phone || "—";
+  $("#addrLine").textContent = [spot.zone, spot.city].filter(Boolean).join(" • ") || "—";
+  $("#infoLine").textContent = spot.description || "Infos simples, contact direct.";
 
   setMap(Number(spot.lat), Number(spot.lng), title);
 
-  // ✅ Retour anti-boucle: on revient sur explore.html (pas index)
-  $("#btnBack").onclick = ()=>{
-    if(history.length > 1) return history.back();
-    // fallback safe:
-    location.href = "./explore.html";
-  };
-
-  $("#btnMaps").onclick = ()=>{
-    const url = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
-    if(!url){ toast("Coordonnées manquantes."); return; }
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
-  $("#btnCall").onclick = ()=>{
-    if(!phone){ toast("Téléphone manquant."); return; }
-    location.href = "tel:" + phone;
-  };
-
-  $("#btnSms").onclick = ()=>{
-    if(!phone){ toast("Téléphone manquant."); return; }
-    location.href = "sms:" + phone;
-  };
-
-  const wa = buildWhatsAppLink(phone, title);
-  $("#btnWhats").onclick = ()=>{
-    if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
-    window.open(wa, "_blank", "noopener,noreferrer");
-  };
-
-  $("#btnLink").onclick = ()=>{
-    if(!link){ toast("Lien manquant."); return; }
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
-
-  $("#btnShare").onclick = async ()=>{
-    const txt = buildShareText(spot, location.href);
-    if(navigator.share){
-      try{ await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: location.href }); }catch(e){}
-      return;
-    }
-    try{
-      await navigator.clipboard.writeText(txt);
-      toast("✅ Lien copié.");
-    }catch(e){
-      toast("Copie impossible (sécurité navigateur).");
-    }
-  };
-
-  // lightbox
-  $("#lb").addEventListener("click", closeLightbox);
-  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
+  $("#btnBack").onclick = ()=> location.href="./explore.html";
 }
 
+/* ===============================
+   BOOT SAFE
+================================ */
 (function boot(){
-  try{ loadSpot(); } catch(err){ console.error(err); }
+  try{ loadSpot(); }
+  catch(err){
+    console.error("BOOT ERROR:", err);
+    toast("Crash JS — voir console.");
+  }
 })();
 </script>
 </body>
