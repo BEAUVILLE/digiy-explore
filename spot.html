@@ -1,5 +1,5 @@
 <!-- ======================================================
-     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE)
+     DIGIY EXPLORE — SPOT (ID + SLUG) — FULL FIX
      Fichier: spot.html
      URLs:
        - spot.html?id=<uuid>
@@ -14,9 +14,11 @@
   <title>DIGIY EXPLORE — Fiche Spot</title>
   <meta name="description" content="Fiche spot DIGIY EXPLORE (WhatsApp, localisation, lien, contact direct)." />
 
+  <!-- Leaflet (carte) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+  <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -177,6 +179,10 @@
       border:1px solid var(--line);
       box-shadow: var(--shadow);
       background: rgba(11,42,31,.55);
+      display:grid;
+      place-items:center;
+      color:rgba(234,255,241,.75);
+      font-size:13px;
     }
     .side{
       display:grid; gap:14px;
@@ -239,7 +245,7 @@
         <div class="logo">♾️</div>
         <div>
           <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Fiche Spot — slug & id</div>
+          <div class="t2">Fiche Spot — ID + SLUG (FIX)</div>
         </div>
       </div>
       <div class="actions">
@@ -311,13 +317,13 @@
       </div>
 
       <div class="side">
-        <div id="map"></div>
+        <div id="map">🗺️ Carte…</div>
 
         <div class="panel">
           <div style="padding:12px 12px 12px">
             <div style="font-weight:900;font-size:13px">Sécurité</div>
             <div class="small" style="margin-top:6px">
-              Données minimales, contact direct. 💪
+              Données minimales, contact direct, liens externes optionnels. 💪
             </div>
           </div>
         </div>
@@ -330,26 +336,53 @@
   <div id="lb" class="lb" aria-hidden="true"><img id="lbImg" alt=""></div>
 
 <script>
+/* ===============================
+   CRASH TRAPS (visible console)
+================================ */
+window.addEventListener("error", (e)=>console.error("JS ERROR:", e.message, e.error));
+window.addEventListener("unhandledrejection", (e)=>console.error("PROMISE ERROR:", e.reason));
+
+/* ===============================
+   SUPABASE CONFIG (SAFE)
+   priority:
+     1) window.__DIGIY_SUPABASE__ = { url, anon }  (ex: guard.js)
+     2) localStorage DIGIY_SUPABASE_ANON
+================================ */
 const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-const CFG = window.__DIGIY_SUPABASE__ || {};
-const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
-const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+const CFG = window.__DIGIY_SUPABASE__ || window.__DIGIY_SUPABASE_CFG__ || window.__DIGIY_SUPABASE__CFG__ || {};
+const SUPABASE_URL = String(CFG.url || DEFAULT_SUPABASE_URL).trim();
+
+const LS_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
+const SUPABASE_ANON_KEY = String(CFG.anon || LS_ANON || "").trim();
 
 let sb = null;
 function ensureSupabase(){
   if(sb) return sb;
+
   if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
+    setMeta(`⚠️ Supabase: clé manquante (localStorage DIGIY_SUPABASE_ANON ou window.__DIGIY_SUPABASE__)`);
+    toast("⚠️ Clé Supabase manquante.");
     throw new Error("Supabase config missing (anon).");
   }
+
+  if(!window.supabase?.createClient){
+    setMeta("❌ Supabase JS non chargé (CDN).");
+    toast("❌ Supabase JS non chargé.");
+    throw new Error("Supabase JS not loaded.");
+  }
+
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
   return sb;
 }
 
+/* ===============================
+   HELPERS
+================================ */
 const $ = (s)=>document.querySelector(s);
 const toastEl = $("#toast");
+
 function toast(msg){
+  if(!toastEl) return;
   toastEl.textContent = msg;
   toastEl.classList.add("show");
   clearTimeout(toastEl._t);
@@ -371,6 +404,10 @@ function safeUrl(u){
   if(s.startsWith("http://") || s.startsWith("https://")) return s;
   return "https://" + s;
 }
+function setMeta(t){
+  const el = $("#spotMeta");
+  if(el) el.textContent = t || "—";
+}
 
 /* Lightbox */
 function openLightbox(src){
@@ -384,16 +421,37 @@ function closeLightbox(){
   $("#lbImg").src = "";
 }
 
-/* Map */
+/* ===============================
+   MAP SAFE (Leaflet optionnel)
+================================ */
 const DEFAULT_CENTER = [14.446, -17.007];
-const map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: "&copy; OpenStreetMap"
-}).addTo(map);
+let map = null;
 let marker = null;
 
+function initMapSafe(){
+  const box = document.getElementById("map");
+  if(!box) return;
+
+  if(!window.L){
+    box.textContent = "🗺️ Carte indisponible (Leaflet non chargé).";
+    return;
+  }
+
+  try{
+    map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
+  }catch(e){
+    console.error("MAP INIT ERROR:", e);
+    box.textContent = "🗺️ Carte indisponible (erreur).";
+    map = null;
+  }
+}
+
 function setMap(lat,lng,title){
+  if(!map) return;
   if(!isFinite(lat) || !isFinite(lng)){
     map.setView(DEFAULT_CENTER, 12);
     return;
@@ -403,6 +461,7 @@ function setMap(lat,lng,title){
   if(marker) map.removeLayer(marker);
   marker = L.marker(pt).addTo(map).bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
 }
+
 function buildMapsLink(lat,lng,title){
   if(!isFinite(lat) || !isFinite(lng)) return "";
   const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
@@ -420,6 +479,7 @@ function buildShareText(spot, pageUrl){
   return `DIGIY EXPLORE — ${n} (${c})\n${pageUrl}`;
 }
 
+/* Gallery */
 function renderGallery(spot){
   const gal = $("#gallery");
   const main = (spot?.photo_url || "").toString().trim();
@@ -449,13 +509,15 @@ function renderGallery(spot){
   });
 }
 
+/* Badges */
 function setBadgeState(spot){
   const b = (spot?.badge || "").toString().toLowerCase().trim();
-  $("#badgeBoost").style.display  = (b === "boost" || b === "boosted" || b === "🔥") ? "inline-flex" : "none";
-  $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert"  || b === "🟢") ? "inline-flex" : "none";
-  $("#badgeClosed").style.display = (b === "closed"|| b === "ferme"   || b === "🔴") ? "inline-flex" : "none";
+  $("#badgeBoost").style.display  = (b === "boost" || b === "🔥" || b === "boosted") ? "inline-flex" : "none";
+  $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert" || b === "🟢") ? "inline-flex" : "none";
+  $("#badgeClosed").style.display = (b === "closed"|| b === "ferme"  || b === "🔴") ? "inline-flex" : "none";
 }
 
+/* Pills */
 function renderPills(spot){
   const row = $("#pillRow");
   const pills = [];
@@ -476,39 +538,47 @@ function renderPills(spot){
   row.innerHTML = pills.map(p=>`<span class="pill">${esc(p)}</span>`).join("");
 }
 
+/* ===============================
+   LOAD SPOT (ID OR SLUG)
+================================ */
 async function loadSpot(){
+  initMapSafe();
+
   const id = (qs("id") || "").trim();
   const slug = (qs("slug") || "").trim();
 
   if(!id && !slug){
-    toast("Paramètre manquant (?id=... ou ?slug=...)");
-    setTimeout(()=>location.href="./index.html", 700);
+    $("#spotName").textContent = "Paramètre manquant";
+    setMeta("Ajoute ?slug=... ou ?id=...");
+    toast("Paramètre manquant");
     return;
   }
+
+  setMeta(`Boot… slug=${slug||"—"} id=${id||"—"}`);
 
   const sb = ensureSupabase();
 
   let q = sb
     .from("digiy_explore_spots")
-    .select("id, slug, name, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, ambiance, duree, budget, tags, score")
+    .select("id, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, ambiance, duree, budget, tags")
     .eq("status", "published");
 
   if(id) q = q.eq("id", id);
-  else q = q.eq("slug", slug);
+  if(!id && slug) q = q.eq("slug", slug);
 
   const { data, error } = await q.maybeSingle();
 
   if(error){
-    console.error(error);
+    console.error("SUPABASE ERROR:", error);
     $("#spotName").textContent = "Erreur";
-    $("#spotMeta").textContent = "Lecture refusée (RLS / config).";
-    toast("❌ Erreur lecture spot.");
+    setMeta("Lecture refusée (RLS) ou config Supabase.");
+    toast("❌ Erreur lecture spot");
     return;
   }
   if(!data){
     $("#spotName").textContent = "Spot introuvable";
-    $("#spotMeta").textContent = "Pas publié ou lien incorrect.";
-    toast("Introuvable / non publié.");
+    setMeta("Pas publié ou slug/id incorrect.");
+    toast("Introuvable / non publié");
     return;
   }
 
@@ -517,8 +587,7 @@ async function loadSpot(){
   document.title = `DIGIY EXPLORE — ${title}`;
 
   $("#spotName").textContent = title;
-  $("#spotMeta").textContent =
-    `${spot.type || "—"} • ${spot.city || "—"} • ${spot.zone || "—"} • slug: ${spot.slug || "—"}`;
+  setMeta(`${spot.type || "—"} • ${spot.city || "—"} • ${spot.zone || "—"} • slug: ${spot.slug || "—"}`);
 
   const phone = normalizePhone(spot.phone || "");
   $("#phoneLine").textContent = phone || "—";
@@ -536,21 +605,25 @@ async function loadSpot(){
   renderPills(spot);
   renderGallery(spot);
   setBadgeState(spot);
-
   setMap(Number(spot.lat), Number(spot.lng), title);
 
-  $("#btnBack").onclick = ()=> history.length>1 ? history.back() : (location.href="./index.html");
+  // Retour
+  $("#btnBack").onclick = ()=>{
+    if(history.length > 1) return history.back();
+    location.href = "./explore.html";
+  };
 
   $("#btnMaps").onclick = ()=>{
     const url = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
     if(!url){ toast("Coordonnées manquantes."); return; }
-    window.open(url, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   $("#btnCall").onclick = ()=>{
     if(!phone){ toast("Téléphone manquant."); return; }
     location.href = "tel:" + phone;
   };
+
   $("#btnSms").onclick = ()=>{
     if(!phone){ toast("Téléphone manquant."); return; }
     location.href = "sms:" + phone;
@@ -559,12 +632,12 @@ async function loadSpot(){
   const wa = buildWhatsAppLink(phone, title);
   $("#btnWhats").onclick = ()=>{
     if(!wa){ toast("WhatsApp: téléphone manquant."); return; }
-    window.open(wa, "_blank");
+    window.open(wa, "_blank", "noopener,noreferrer");
   };
 
   $("#btnLink").onclick = ()=>{
     if(!link){ toast("Lien manquant."); return; }
-    window.open(link, "_blank");
+    window.open(link, "_blank", "noopener,noreferrer");
   };
 
   $("#btnShare").onclick = async ()=>{
@@ -581,12 +654,20 @@ async function loadSpot(){
     }
   };
 
+  // lightbox
   $("#lb").addEventListener("click", closeLightbox);
   document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
 }
 
 (function boot(){
-  try{ loadSpot(); } catch(err){ console.error(err); }
+  try{
+    loadSpot();
+  }catch(err){
+    console.error("BOOT ERROR:", err);
+    $("#spotName").textContent = "Crash JS";
+    setMeta("Regarde Console (F12).");
+    toast("Crash JS — Console");
+  }
 })();
 </script>
 </body>
