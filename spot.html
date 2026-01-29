@@ -661,7 +661,7 @@ async function loadSpot(){
 
 (function boot(){
   try{
-    loadSpot();
+       const $ = (s)=>document.querySelector(s);    loadSpot();
   }catch(err){
     console.error("BOOT ERROR:", err);
     $("#spotName").textContent = "Crash JS";
