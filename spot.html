@@ -1,5 +1,5 @@
 <!-- ======================================================
-     DIGIY EXPLORE — SPOT (ID + SLUG) — FULL FIX
+     DIGIY EXPLORE — SPOT (ID + SLUG) — HARDKEY WORKING
      Fichier: spot.html
      URLs:
        - spot.html?id=<uuid>
@@ -23,18 +23,11 @@
 
   <style>
     :root{
-      --bg:#071a13;
-      --card:#0b2a1f;
-      --card2:#0a241b;
-      --line:rgba(255,255,255,.12);
-      --text:#eafff1;
-      --muted:rgba(234,255,241,.72);
-      --gold:#facc15;
-      --orange:#f59e0b;
-      --green:#22c55e;
-      --danger:#fb7185;
+      --bg:#071a13; --card:#0b2a1f; --card2:#0a241b;
+      --line:rgba(255,255,255,.12); --text:#eafff1; --muted:rgba(234,255,241,.72);
+      --gold:#facc15; --orange:#f59e0b; --green:#22c55e; --danger:#fb7185;
       --shadow: 0 14px 40px rgba(0,0,0,.35);
-      --r:18px; --r2:14px;
+      --r:18px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -83,7 +76,6 @@
       background: rgba(6,20,18,.55);
       cursor:pointer;
       font-size:12px;
-      transition: transform .05s ease, border-color .15s ease, background .15s ease;
       user-select:none;
       white-space:nowrap;
     }
@@ -92,13 +84,7 @@
     .btn.gold{background: rgba(250,204,21,.12); border-color: rgba(250,204,21,.22)}
     .btn.ghost{background: rgba(0,0,0,.20)}
 
-    .grid{
-      margin-top:14px;
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:14px;
-      align-items:start;
-    }
+    .grid{margin-top:14px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:start}
     @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
 
     .panel{
@@ -119,12 +105,10 @@
     .meta{margin-top:6px;font-size:13px;color:var(--muted)}
     .badge{
       display:inline-flex; align-items:center; gap:7px;
-      padding:8px 10px;
-      border-radius:999px;
+      padding:8px 10px;border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
       background: rgba(0,0,0,.18);
-      font-size:12px;
-      white-space:nowrap;
+      font-size:12px; white-space:nowrap;
     }
     .b{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.35)}
     .badge.boost .b{background:var(--orange)}
@@ -133,15 +117,11 @@
 
     .body{padding:12px}
 
-    .gallery{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width:720px){ .gallery{grid-template-columns: 1fr 1fr} }
+    .gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media (max-width:720px){ .gallery{grid-template-columns:1fr 1fr} }
     .ph{
       border:1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
+      border-radius:16px;
       overflow:hidden;
       background: rgba(6,20,18,.45);
       min-height:140px;
@@ -149,13 +129,6 @@
       cursor:pointer;
     }
     .ph img{width:100%;height:100%;object-fit:cover;display:block}
-    .ph::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.35));
-      pointer-events:none;
-      opacity:.8;
-    }
 
     .rows{display:grid; gap:10px; margin-top:12px}
     .row{
@@ -172,28 +145,22 @@
     .row .r{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
 
     #map{
-      width:100%;
-      height: 360px;
+      width:100%; height:360px;
       border-radius: var(--r);
       overflow:hidden;
       border:1px solid var(--line);
       box-shadow: var(--shadow);
       background: rgba(11,42,31,.55);
-      display:grid;
-      place-items:center;
+      display:grid; place-items:center;
       color:rgba(234,255,241,.75);
       font-size:13px;
     }
-    .side{
-      display:grid; gap:14px;
-      position:sticky; top:86px;
-    }
+    .side{display:grid; gap:14px; position:sticky; top:86px}
     @media (max-width: 980px){ .side{position:static} }
 
     .pillRow{display:flex;gap:8px;flex-wrap:wrap}
     .pill{
-      padding:7px 10px;
-      border-radius:999px;
+      padding:7px 10px;border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.18);
       font-size:12px;
@@ -245,7 +212,7 @@
         <div class="logo">♾️</div>
         <div>
           <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Fiche Spot — ID + SLUG (FIX)</div>
+          <div class="t2">Fiche Spot — ID + SLUG</div>
         </div>
       </div>
       <div class="actions">
@@ -260,7 +227,7 @@
         <div class="hd">
           <div>
             <div id="spotName" class="name">Chargement…</div>
-            <div id="spotMeta" class="meta">—</div>
+            <div id="spotMeta" class="meta">Boot…</div>
             <div class="pillRow" id="pillRow" style="margin-top:10px"></div>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
@@ -311,7 +278,6 @@
                 <div id="infoLine" class="small">—</div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -337,56 +303,31 @@
 
 <script>
 /* ===============================
-   CRASH TRAPS (visible console)
+   SUPABASE (HARDCODED)
 ================================ */
-window.addEventListener("error", (e)=>console.error("JS ERROR:", e.message, e.error));
-window.addEventListener("unhandledrejection", (e)=>console.error("PROMISE ERROR:", e.reason));
-
-/* ===============================
-   SUPABASE CONFIG (SAFE)
-   priority:
-     1) window.__DIGIY_SUPABASE__ = { url, anon }  (ex: guard.js)
-     2) localStorage DIGIY_SUPABASE_ANON
-================================ */
-const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const CFG = window.__DIGIY_SUPABASE__ || window.__DIGIY_SUPABASE_CFG__ || window.__DIGIY_SUPABASE__CFG__ || {};
-const SUPABASE_URL = String(CFG.url || DEFAULT_SUPABASE_URL).trim();
-
-const LS_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-const SUPABASE_ANON_KEY = String(CFG.anon || LS_ANON || "").trim();
-
-let sb = null;
-function ensureSupabase(){
-  if(sb) return sb;
-
-  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    setMeta(`⚠️ Supabase: clé manquante (localStorage DIGIY_SUPABASE_ANON ou window.__DIGIY_SUPABASE__)`);
-    toast("⚠️ Clé Supabase manquante.");
-    throw new Error("Supabase config missing (anon).");
-  }
-
-  if(!window.supabase?.createClient){
-    setMeta("❌ Supabase JS non chargé (CDN).");
-    toast("❌ Supabase JS non chargé.");
-    throw new Error("Supabase JS not loaded.");
-  }
-
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
-  return sb;
-}
+const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
 /* ===============================
    HELPERS
 ================================ */
 const $ = (s)=>document.querySelector(s);
-const toastEl = $("#toast");
 
+window.addEventListener("error", (e)=>console.error("JS ERROR:", e.message, e.error));
+window.addEventListener("unhandledrejection", (e)=>console.error("PROMISE ERROR:", e.reason));
+
+const toastEl = $("#toast");
 function toast(msg){
   if(!toastEl) return;
   toastEl.textContent = msg;
   toastEl.classList.add("show");
   clearTimeout(toastEl._t);
   toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
+}
+function setMeta(t){
+  const el = $("#spotMeta");
+  if(el) el.textContent = t || "—";
 }
 function esc(s){
   return (s ?? "").toString()
@@ -404,29 +345,24 @@ function safeUrl(u){
   if(s.startsWith("http://") || s.startsWith("https://")) return s;
   return "https://" + s;
 }
-function setMeta(t){
-  const el = $("#spotMeta");
-  if(el) el.textContent = t || "—";
-}
-
-/* Lightbox */
-function openLightbox(src){
-  $("#lbImg").src = src;
-  $("#lb").classList.add("show");
-  $("#lb").setAttribute("aria-hidden","false");
-}
-function closeLightbox(){
-  $("#lb").classList.remove("show");
-  $("#lb").setAttribute("aria-hidden","true");
-  $("#lbImg").src = "";
-}
 
 /* ===============================
-   MAP SAFE (Leaflet optionnel)
+   SUPABASE CLIENT
+================================ */
+function getSb(){
+  if(!window.supabase?.createClient){
+    setMeta("❌ Supabase JS non chargé (CDN).");
+    throw new Error("Supabase JS not loaded");
+  }
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
+}
+const sb = getSb();
+
+/* ===============================
+   MAP SAFE
 ================================ */
 const DEFAULT_CENTER = [14.446, -17.007];
-let map = null;
-let marker = null;
+let map=null, marker=null;
 
 function initMapSafe(){
   const box = document.getElementById("map");
@@ -436,32 +372,25 @@ function initMapSafe(){
     box.textContent = "🗺️ Carte indisponible (Leaflet non chargé).";
     return;
   }
-
   try{
     map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "&copy; OpenStreetMap"
+      maxZoom:19, attribution:"&copy; OpenStreetMap"
     }).addTo(map);
   }catch(e){
     console.error("MAP INIT ERROR:", e);
     box.textContent = "🗺️ Carte indisponible (erreur).";
-    map = null;
+    map=null;
   }
 }
-
 function setMap(lat,lng,title){
   if(!map) return;
-  if(!isFinite(lat) || !isFinite(lng)){
-    map.setView(DEFAULT_CENTER, 12);
-    return;
-  }
-  const pt = [Number(lat), Number(lng)];
-  map.setView(pt, 15);
+  if(!isFinite(lat) || !isFinite(lng)){ map.setView(DEFAULT_CENTER,12); return; }
+  const pt=[Number(lat),Number(lng)];
+  map.setView(pt,15);
   if(marker) map.removeLayer(marker);
   marker = L.marker(pt).addTo(map).bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
 }
-
 function buildMapsLink(lat,lng,title){
   if(!isFinite(lat) || !isFinite(lng)) return "";
   const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
@@ -483,10 +412,7 @@ function buildShareText(spot, pageUrl){
 function renderGallery(spot){
   const gal = $("#gallery");
   const main = (spot?.photo_url || "").toString().trim();
-  const arr = [];
-  if(main) arr.push(main);
-
-  if(!arr.length){
+  if(!main){
     gal.innerHTML = `
       <div class="ph" style="grid-column:1/-1;display:grid;place-items:center;min-height:160px;cursor:default">
         <div style="text-align:center;color:rgba(234,255,241,.78);padding:18px">
@@ -496,40 +422,21 @@ function renderGallery(spot){
     `;
     return;
   }
-
-  gal.innerHTML = arr.map(u=>`
-    <div class="ph" data-src="${esc(u)}"><img src="${esc(u)}" alt=""></div>
-  `).join("");
-
-  gal.querySelectorAll(".ph").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      const src = el.getAttribute("data-src") || "";
-      if(src) openLightbox(src);
-    });
-  });
+  gal.innerHTML = `<div class="ph" data-src="${esc(main)}"><img src="${esc(main)}" alt=""></div>`;
 }
 
-/* Badges */
 function setBadgeState(spot){
   const b = (spot?.badge || "").toString().toLowerCase().trim();
   $("#badgeBoost").style.display  = (b === "boost" || b === "🔥" || b === "boosted") ? "inline-flex" : "none";
   $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert" || b === "🟢") ? "inline-flex" : "none";
   $("#badgeClosed").style.display = (b === "closed"|| b === "ferme"  || b === "🔴") ? "inline-flex" : "none";
 }
-
-/* Pills */
 function renderPills(spot){
   const row = $("#pillRow");
   const pills = [];
   if(spot?.type) pills.push(`🏷️ ${spot.type}`);
   if(spot?.budget) pills.push(`💰 ${spot.budget}`);
   if(spot?.duree) pills.push(`⏱️ ${spot.duree}`);
-
-  if(Array.isArray(spot?.ambiance)){
-    for(const a of spot.ambiance.slice(0,4)){
-      if(a) pills.push(`✨ ${a}`);
-    }
-  }
   if(Array.isArray(spot?.tags)){
     for(const t of spot.tags.slice(0,6)){
       if(t) pills.push(`#${t}`);
@@ -539,7 +446,7 @@ function renderPills(spot){
 }
 
 /* ===============================
-   LOAD SPOT (ID OR SLUG)
+   LOAD SPOT
 ================================ */
 async function loadSpot(){
   initMapSafe();
@@ -556,12 +463,10 @@ async function loadSpot(){
 
   setMeta(`Boot… slug=${slug||"—"} id=${id||"—"}`);
 
-  const sb = ensureSupabase();
-
   let q = sb
     .from("digiy_explore_spots")
-    .select("id, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, ambiance, duree, budget, tags")
-    .eq("status", "published");
+    .select("id, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, duree, budget, tags")
+    .eq("status","published");
 
   if(id) q = q.eq("id", id);
   if(!id && slug) q = q.eq("slug", slug);
@@ -571,14 +476,14 @@ async function loadSpot(){
   if(error){
     console.error("SUPABASE ERROR:", error);
     $("#spotName").textContent = "Erreur";
-    setMeta("Lecture refusée (RLS) ou config Supabase.");
-    toast("❌ Erreur lecture spot");
+    setMeta("RLS refuse ou table/colonnes incorrectes.");
+    toast("Erreur lecture (RLS)");
     return;
   }
   if(!data){
     $("#spotName").textContent = "Spot introuvable";
     setMeta("Pas publié ou slug/id incorrect.");
-    toast("Introuvable / non publié");
+    toast("Introuvable");
     return;
   }
 
@@ -607,11 +512,8 @@ async function loadSpot(){
   setBadgeState(spot);
   setMap(Number(spot.lat), Number(spot.lng), title);
 
-  // Retour
-  $("#btnBack").onclick = ()=>{
-    if(history.length > 1) return history.back();
-    location.href = "./explore.html";
-  };
+  // Actions
+  $("#btnBack").onclick = ()=> location.href="./explore.html";
 
   $("#btnMaps").onclick = ()=>{
     const url = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
@@ -643,32 +545,36 @@ async function loadSpot(){
   $("#btnShare").onclick = async ()=>{
     const txt = buildShareText(spot, location.href);
     if(navigator.share){
-      try{ await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: location.href }); }catch(e){}
+      try{ await navigator.share({ title:"DIGIY EXPLORE", text:txt, url:location.href }); }catch(e){}
       return;
     }
     try{
       await navigator.clipboard.writeText(txt);
       toast("✅ Lien copié.");
     }catch(e){
-      toast("Copie impossible (sécurité navigateur).");
+      toast("Copie impossible.");
     }
   };
-
-  // lightbox
-  $("#lb").addEventListener("click", closeLightbox);
-  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
 }
 
-(function boot(){
-  try{
-       const $ = (s)=>document.querySelector(s);    loadSpot();
-  }catch(err){
-    console.error("BOOT ERROR:", err);
-    $("#spotName").textContent = "Crash JS";
-    setMeta("Regarde Console (F12).");
-    toast("Crash JS — Console");
-  }
-})();
+/* ===============================
+   BOOT DOM SAFE
+================================ */
+function boot(){
+  setMeta("Boot… (DOM ready)");
+  loadSpot().catch(err=>{
+    console.error("LOADSPOT ERROR:", err);
+    $("#spotName").textContent = "Erreur";
+    setMeta("Erreur JS/Supabase — ouvre Console (F12).");
+    toast("Erreur — Console");
+  });
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", boot);
+} else {
+  boot();
+}
 </script>
 </body>
 </html>
