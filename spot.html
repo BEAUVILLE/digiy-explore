@@ -1,5 +1,5 @@
 <!-- ======================================================
-     DIGIY EXPLORE — SPOT (ID + SLUG) — HARDKEY WORKING
+     DIGIY EXPLORE — SPOT (ID + SLUG) — V2 FULL WORKING
      Fichier: spot.html
      URLs:
        - spot.html?id=<uuid>
@@ -23,11 +23,18 @@
 
   <style>
     :root{
-      --bg:#071a13; --card:#0b2a1f; --card2:#0a241b;
-      --line:rgba(255,255,255,.12); --text:#eafff1; --muted:rgba(234,255,241,.72);
-      --gold:#facc15; --orange:#f59e0b; --green:#22c55e; --danger:#fb7185;
+      --bg:#071a13;
+      --card:#0b2a1f;
+      --card2:#0a241b;
+      --line:rgba(255,255,255,.12);
+      --text:#eafff1;
+      --muted:rgba(234,255,241,.72);
+      --gold:#facc15;
+      --orange:#f59e0b;
+      --green:#22c55e;
+      --danger:#fb7185;
       --shadow: 0 14px 40px rgba(0,0,0,.35);
-      --r:18px;
+      --r:18px; --r2:14px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -76,6 +83,7 @@
       background: rgba(6,20,18,.55);
       cursor:pointer;
       font-size:12px;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
       user-select:none;
       white-space:nowrap;
     }
@@ -84,7 +92,13 @@
     .btn.gold{background: rgba(250,204,21,.12); border-color: rgba(250,204,21,.22)}
     .btn.ghost{background: rgba(0,0,0,.20)}
 
-    .grid{margin-top:14px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:start}
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:start;
+    }
     @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
 
     .panel{
@@ -105,10 +119,12 @@
     .meta{margin-top:6px;font-size:13px;color:var(--muted)}
     .badge{
       display:inline-flex; align-items:center; gap:7px;
-      padding:8px 10px;border-radius:999px;
+      padding:8px 10px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
       background: rgba(0,0,0,.18);
-      font-size:12px; white-space:nowrap;
+      font-size:12px;
+      white-space:nowrap;
     }
     .b{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.35)}
     .badge.boost .b{background:var(--orange)}
@@ -117,11 +133,15 @@
 
     .body{padding:12px}
 
-    .gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-    @media (max-width:720px){ .gallery{grid-template-columns:1fr 1fr} }
+    .gallery{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width:720px){ .gallery{grid-template-columns: 1fr 1fr} }
     .ph{
       border:1px solid rgba(255,255,255,.12);
-      border-radius:16px;
+      border-radius: 16px;
       overflow:hidden;
       background: rgba(6,20,18,.45);
       min-height:140px;
@@ -129,6 +149,13 @@
       cursor:pointer;
     }
     .ph img{width:100%;height:100%;object-fit:cover;display:block}
+    .ph::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.35));
+      pointer-events:none;
+      opacity:.8;
+    }
 
     .rows{display:grid; gap:10px; margin-top:12px}
     .row{
@@ -145,22 +172,24 @@
     .row .r{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
 
     #map{
-      width:100%; height:360px;
+      width:100%;
+      height: 360px;
       border-radius: var(--r);
       overflow:hidden;
       border:1px solid var(--line);
       box-shadow: var(--shadow);
       background: rgba(11,42,31,.55);
-      display:grid; place-items:center;
-      color:rgba(234,255,241,.75);
-      font-size:13px;
     }
-    .side{display:grid; gap:14px; position:sticky; top:86px}
+    .side{
+      display:grid; gap:14px;
+      position:sticky; top:86px;
+    }
     @media (max-width: 980px){ .side{position:static} }
 
     .pillRow{display:flex;gap:8px;flex-wrap:wrap}
     .pill{
-      padding:7px 10px;border-radius:999px;
+      padding:7px 10px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.18);
       font-size:12px;
@@ -278,12 +307,13 @@
                 <div id="infoLine" class="small">—</div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
 
       <div class="side">
-        <div id="map">🗺️ Carte…</div>
+        <div id="map"></div>
 
         <div class="panel">
           <div style="padding:12px 12px 12px">
@@ -303,31 +333,26 @@
 
 <script>
 /* ===============================
-   SUPABASE (HARDCODED)
+   CRASH TRAPS (console)
+================================ */
+window.addEventListener("error", (e)=>console.error("JS ERROR:", e.message, e.error));
+window.addEventListener("unhandledrejection", (e)=>console.error("PROMISE ERROR:", e.reason));
+
+/* ===============================
+   SUPABASE (HARDCODED LIKE explore.html)
 ================================ */
 const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
 const SUPABASE_ANON_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
-/* ===============================
-   HELPERS
-================================ */
 const $ = (s)=>document.querySelector(s);
-
-window.addEventListener("error", (e)=>console.error("JS ERROR:", e.message, e.error));
-window.addEventListener("unhandledrejection", (e)=>console.error("PROMISE ERROR:", e.reason));
-
 const toastEl = $("#toast");
+
 function toast(msg){
-  if(!toastEl) return;
   toastEl.textContent = msg;
   toastEl.classList.add("show");
   clearTimeout(toastEl._t);
   toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
-}
-function setMeta(t){
-  const el = $("#spotMeta");
-  if(el) el.textContent = t || "—";
 }
 function esc(s){
   return (s ?? "").toString()
@@ -345,49 +370,60 @@ function safeUrl(u){
   if(s.startsWith("http://") || s.startsWith("https://")) return s;
   return "https://" + s;
 }
+function setMeta(t){
+  const el = $("#spotMeta");
+  if(el) el.textContent = t || "—";
+}
 
-/* ===============================
-   SUPABASE CLIENT
-================================ */
 function getSb(){
-  if(!window.supabase?.createClient){
-    setMeta("❌ Supabase JS non chargé (CDN).");
-    throw new Error("Supabase JS not loaded");
-  }
+  if(!window.supabase?.createClient) throw new Error("Supabase JS not loaded");
   return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
 }
 const sb = getSb();
 
-/* ===============================
-   MAP SAFE
-================================ */
+/* Placeholder if image fails */
+const IMG_FALLBACK = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b2a1f"/>
+      <stop offset="1" stop-color="#020617"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <text x="50%" y="48%" text-anchor="middle" font-size="44" fill="#eafff1" font-family="Arial" font-weight="800">♾️ DIGIY EXPLORE</text>
+  <text x="50%" y="58%" text-anchor="middle" font-size="26" fill="rgba(234,255,241,.75)" font-family="Arial">Photo indisponible</text>
+</svg>
+`);
+
+/* Lightbox */
+function openLightbox(src){
+  $("#lbImg").src = src;
+  $("#lb").classList.add("show");
+  $("#lb").setAttribute("aria-hidden","false");
+}
+function closeLightbox(){
+  $("#lb").classList.remove("show");
+  $("#lb").setAttribute("aria-hidden","true");
+  $("#lbImg").src = "";
+}
+
+/* Map */
 const DEFAULT_CENTER = [14.446, -17.007];
-let map=null, marker=null;
+const map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap"
+}).addTo(map);
+let marker = null;
 
-function initMapSafe(){
-  const box = document.getElementById("map");
-  if(!box) return;
-
-  if(!window.L){
-    box.textContent = "🗺️ Carte indisponible (Leaflet non chargé).";
+function setMap(lat,lng,title){
+  if(!isFinite(lat) || !isFinite(lng)){
+    map.setView(DEFAULT_CENTER, 12);
     return;
   }
-  try{
-    map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom:19, attribution:"&copy; OpenStreetMap"
-    }).addTo(map);
-  }catch(e){
-    console.error("MAP INIT ERROR:", e);
-    box.textContent = "🗺️ Carte indisponible (erreur).";
-    map=null;
-  }
-}
-function setMap(lat,lng,title){
-  if(!map) return;
-  if(!isFinite(lat) || !isFinite(lng)){ map.setView(DEFAULT_CENTER,12); return; }
-  const pt=[Number(lat),Number(lng)];
-  map.setView(pt,15);
+  const pt = [Number(lat), Number(lng)];
+  map.setView(pt, 15);
   if(marker) map.removeLayer(marker);
   marker = L.marker(pt).addTo(map).bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
 }
@@ -410,24 +446,10 @@ function buildShareText(spot, pageUrl){
 
 /* Gallery */
 function renderGallery(spot){
-  const gal = document.querySelector("#gallery");
+  const gal = $("#gallery");
   const main = (spot?.photo_url || "").toString().trim();
   const arr = [];
   if(main) arr.push(main);
-
-  const fallback = `data:image/svg+xml;utf8,` + encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stop-color="#0b2a1f"/>
-          <stop offset="1" stop-color="#020617"/>
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#g)"/>
-      <text x="50%" y="48%" text-anchor="middle" font-size="44" fill="#eafff1" font-family="Arial" font-weight="700">📷 Photo indisponible</text>
-      <text x="50%" y="56%" text-anchor="middle" font-size="26" fill="rgba(234,255,241,.75)" font-family="Arial">Ajoute une URL photo valide</text>
-    </svg>
-  `);
 
   if(!arr.length){
     gal.innerHTML = `
@@ -443,8 +465,7 @@ function renderGallery(spot){
   gal.innerHTML = arr.map(u=>`
     <div class="ph" data-src="${esc(u)}">
       <img src="${esc(u)}" alt="" loading="lazy"
-        onerror="this.onerror=null; this.src='${fallback}';"
-      >
+           onerror="this.onerror=null; this.src='${esc(IMG_FALLBACK)}';">
     </div>
   `).join("");
 
@@ -456,21 +477,28 @@ function renderGallery(spot){
     });
   });
 }
-  gal.innerHTML = `<div class="ph" data-src="${esc(main)}"><img src="${esc(main)}" alt=""></div>`;
-}
 
+/* Badges */
 function setBadgeState(spot){
   const b = (spot?.badge || "").toString().toLowerCase().trim();
   $("#badgeBoost").style.display  = (b === "boost" || b === "🔥" || b === "boosted") ? "inline-flex" : "none";
   $("#badgeOpen").style.display   = (b === "open"  || b === "ouvert" || b === "🟢") ? "inline-flex" : "none";
   $("#badgeClosed").style.display = (b === "closed"|| b === "ferme"  || b === "🔴") ? "inline-flex" : "none";
 }
+
+/* Pills */
 function renderPills(spot){
   const row = $("#pillRow");
   const pills = [];
   if(spot?.type) pills.push(`🏷️ ${spot.type}`);
   if(spot?.budget) pills.push(`💰 ${spot.budget}`);
   if(spot?.duree) pills.push(`⏱️ ${spot.duree}`);
+
+  if(Array.isArray(spot?.ambiance)){
+    for(const a of spot.ambiance.slice(0,4)){
+      if(a) pills.push(`✨ ${a}`);
+    }
+  }
   if(Array.isArray(spot?.tags)){
     for(const t of spot.tags.slice(0,6)){
       if(t) pills.push(`#${t}`);
@@ -480,13 +508,13 @@ function renderPills(spot){
 }
 
 /* ===============================
-   LOAD SPOT
+   LOAD SPOT (ID OR SLUG)
 ================================ */
 async function loadSpot(){
-  initMapSafe();
-
   const id = (qs("id") || "").trim();
   const slug = (qs("slug") || "").trim();
+
+  setMeta(`Boot… slug=${slug||"—"} id=${id||"—"}`);
 
   if(!id && !slug){
     $("#spotName").textContent = "Paramètre manquant";
@@ -495,11 +523,9 @@ async function loadSpot(){
     return;
   }
 
-  setMeta(`Boot… slug=${slug||"—"} id=${id||"—"}`);
-
   let q = sb
     .from("digiy_explore_spots")
-    .select("id, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, duree, budget, tags")
+    .select("id, created_at, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, ambiance, duree, budget, tags, score")
     .eq("status","published");
 
   if(id) q = q.eq("id", id);
@@ -510,14 +536,14 @@ async function loadSpot(){
   if(error){
     console.error("SUPABASE ERROR:", error);
     $("#spotName").textContent = "Erreur";
-    setMeta("RLS refuse ou table/colonnes incorrectes.");
-    toast("Erreur lecture (RLS)");
+    setMeta(`Erreur Supabase: ${error.message || "RLS/config"}`);
+    toast("❌ Erreur lecture spot");
     return;
   }
   if(!data){
     $("#spotName").textContent = "Spot introuvable";
     setMeta("Pas publié ou slug/id incorrect.");
-    toast("Introuvable");
+    toast("Introuvable / non publié");
     return;
   }
 
@@ -534,7 +560,7 @@ async function loadSpot(){
   const addr = [spot.zone, spot.city].filter(Boolean).join(" • ");
   $("#addrLine").textContent = addr || "—";
 
-  $("#infoLine").textContent = spot.description ? String(spot.description).slice(0,220) : "Infos simples, contact direct.";
+  $("#infoLine").textContent = spot.description ? String(spot.description).slice(0,260) : "Infos simples, contact direct.";
 
   const link = safeUrl(spot.link_url);
   $("#linkLine").textContent = link ? link : "—";
@@ -546,8 +572,11 @@ async function loadSpot(){
   setBadgeState(spot);
   setMap(Number(spot.lat), Number(spot.lng), title);
 
-  // Actions
-  $("#btnBack").onclick = ()=> location.href="./explore.html";
+  // Retour
+  $("#btnBack").onclick = ()=>{
+    if(history.length > 1) return history.back();
+    location.href = "./explore.html";
+  };
 
   $("#btnMaps").onclick = ()=>{
     const url = buildMapsLink(Number(spot.lat), Number(spot.lng), title);
@@ -579,36 +608,35 @@ async function loadSpot(){
   $("#btnShare").onclick = async ()=>{
     const txt = buildShareText(spot, location.href);
     if(navigator.share){
-      try{ await navigator.share({ title:"DIGIY EXPLORE", text:txt, url:location.href }); }catch(e){}
+      try{ await navigator.share({ title: "DIGIY EXPLORE", text: txt, url: location.href }); }catch(e){}
       return;
     }
     try{
       await navigator.clipboard.writeText(txt);
       toast("✅ Lien copié.");
     }catch(e){
-      toast("Copie impossible.");
+      toast("Copie impossible (sécurité navigateur).");
     }
   };
+
+  // lightbox
+  $("#lb").addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeLightbox(); });
 }
 
 /* ===============================
-   BOOT DOM SAFE
+   BOOT
 ================================ */
-function boot(){
-  setMeta("Boot… (DOM ready)");
-  loadSpot().catch(err=>{
-    console.error("LOADSPOT ERROR:", err);
-    $("#spotName").textContent = "Erreur";
-    setMeta("Erreur JS/Supabase — ouvre Console (F12).");
-    toast("Erreur — Console");
-  });
-}
-
-if(document.readyState === "loading"){
-  document.addEventListener("DOMContentLoaded", boot);
-} else {
-  boot();
-}
+(function boot(){
+  try{
+    loadSpot();
+  }catch(err){
+    console.error("BOOT ERROR:", err);
+    $("#spotName").textContent = "Crash JS";
+    setMeta("Regarde Console (F12).");
+    toast("Crash JS — Console");
+  }
+})();
 </script>
 </body>
 </html>
