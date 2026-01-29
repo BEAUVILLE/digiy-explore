@@ -1,9 +1,6 @@
 <!-- ======================================================
-     DIGIY EXPLORE — SPOT DEF (ID + SLUG MODE) — FIXED FULL
-     Fichier: spot.html
-     URLs:
-       - spot.html?id=<uuid>
-       - spot.html?slug=<slug>
+     DIGIY EXPLORE — LISTING (PUBLIC) — explore.html
+     Data: public.digiy_explore_spots (status='published')
 ====================================================== -->
 <!doctype html>
 <html lang="fr">
@@ -11,28 +8,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#071a13" />
-  <title>DIGIY EXPLORE — Fiche Spot</title>
-  <meta name="description" content="Fiche spot DIGIY EXPLORE (WhatsApp, localisation, lien, contact direct)." />
-
-  <!-- Leaflet (carte) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <title>DIGIY EXPLORE — Explorer</title>
+  <meta name="description" content="Découvre les meilleurs spots DIGIY : resto, plage, culture, nature, hébergement, activités." />
 
   <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#071a13;
-      --card:#0b2a1f;
-      --card2:#0a241b;
-      --line:rgba(255,255,255,.12);
-      --text:#eafff1;
-      --muted:rgba(234,255,241,.72);
-      --gold:#facc15;
-      --orange:#f59e0b;
-      --green:#22c55e;
-      --danger:#fb7185;
+      --bg:#071a13; --card:#0b2a1f; --card2:#0a241b;
+      --line:rgba(255,255,255,.12); --text:#eafff1; --muted:rgba(234,255,241,.72);
+      --gold:#facc15; --orange:#f59e0b; --green:#22c55e; --danger:#fb7185;
       --shadow: 0 14px 40px rgba(0,0,0,.35);
       --r:18px; --r2:14px;
     }
@@ -49,7 +35,7 @@
       overflow-x:hidden;
     }
     a{color:inherit; text-decoration:none}
-    .wrap{max-width:1080px;margin:0 auto;padding:16px 14px 34px}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px 14px 34px}
 
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
@@ -74,7 +60,7 @@
     }
     .brand .t1{margin:0;font-size:14px;font-weight:900;letter-spacing:.3px}
     .brand .t2{margin:2px 0 0;font-size:12px;color:var(--muted)}
-    .actions{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:8px;
       padding:10px 12px;
@@ -83,115 +69,131 @@
       background: rgba(6,20,18,.55);
       cursor:pointer;
       font-size:12px;
-      transition: transform .05s ease, border-color .15s ease, background .15s ease;
       user-select:none;
       white-space:nowrap;
+      transition: transform .05s ease;
     }
     .btn:active{transform:scale(.98)}
     .btn.primary{background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.22)}
     .btn.gold{background: rgba(250,204,21,.12); border-color: rgba(250,204,21,.22)}
     .btn.ghost{background: rgba(0,0,0,.20)}
+    .btn.small{padding:8px 10px;font-size:12px}
+
+    .hero{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--r);
+      background: rgba(11,42,31,.35);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .heroIn{padding:14px 14px 12px}
+    .hTitle{font-weight:1000;font-size:18px;letter-spacing:.2px}
+    .hSub{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.35}
+
+    .controls{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1.2fr .9fr .9fr .9fr;
+      gap:10px;
+      align-items:center;
+    }
+    @media (max-width:980px){ .controls{grid-template-columns:1fr 1fr; } }
+    @media (max-width:540px){ .controls{grid-template-columns:1fr; } }
+
+    .field{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(6,20,18,.45);
+      border-radius: 16px;
+      padding:10px 10px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .field input, .field select{
+      width:100%;
+      background:transparent;
+      border:0;
+      outline:none;
+      color:var(--text);
+      font-size:13px;
+      appearance:none;
+    }
+    .field label{font-size:12px;color:var(--muted);white-space:nowrap}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      color:rgba(234,255,241,.88);
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip.on{border-color: rgba(250,204,21,.30); background: rgba(250,204,21,.10);}
+
+    .statsRow{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      margin-top:12px;
+    }
+    .stat{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      color:rgba(234,255,241,.88);
+    }
 
     .grid{
       margin-top:14px;
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:14px;
-      align-items:start;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
     }
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    @media (max-width:980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width:560px){ .grid{grid-template-columns: 1fr;} }
 
-    .panel{
-      border:1px solid var(--line);
+    .card{
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(11,42,31,.55);
       backdrop-filter: blur(10px);
       border-radius: var(--r);
       box-shadow: var(--shadow);
       overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height: 240px;
     }
-    .panel .hd{
-      padding:12px 12px 10px;
+    .thumb{
+      height:140px;
+      background:
+        radial-gradient(700px 260px at 20% 20%, rgba(250,204,21,.18), transparent 55%),
+        radial-gradient(700px 260px at 80% 80%, rgba(34,197,94,.16), transparent 55%),
+        linear-gradient(135deg, rgba(6,20,18,.55), rgba(0,0,0,.35));
+      position:relative;
       border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
+      overflow:hidden;
     }
-    .name{font-weight:1000;font-size:18px;line-height:1.1}
-    .meta{margin-top:6px;font-size:13px;color:var(--muted)}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
     .badge{
-      display:inline-flex; align-items:center; gap:7px;
-      padding:8px 10px;
+      position:absolute; top:10px; left:10px;
+      padding:7px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
+      background: rgba(0,0,0,.35);
       font-size:12px;
-      white-space:nowrap;
+      display:inline-flex; align-items:center; gap:8px;
     }
-    .b{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.35)}
-    .badge.boost .b{background:var(--orange)}
-    .badge.open .b{background:var(--green)}
-    .badge.closed .b{background:var(--danger)}
+    .dot{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.35)}
+    .badge.open .dot{background:var(--green)}
+    .badge.boost .dot{background:var(--orange)}
+    .badge.closed .dot{background:var(--danger)}
 
-    .body{padding:12px}
-
-    .gallery{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width:720px){ .gallery{grid-template-columns: 1fr 1fr} }
-    .ph{
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      overflow:hidden;
-      background: rgba(6,20,18,.45);
-      min-height:140px;
-      position:relative;
-      cursor:pointer;
-    }
-    .ph img{width:100%;height:100%;object-fit:cover;display:block}
-    .ph::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.35));
-      pointer-events:none;
-      opacity:.8;
-    }
-
-    .rows{display:grid; gap:10px; margin-top:12px}
-    .row{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
-      padding:10px 10px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(6,20,18,.45);
-    }
-    .row .l{display:flex; flex-direction:column; gap:4px}
-    .row .k{font-size:12px;color:var(--muted)}
-    .row .v{font-size:14px;font-weight:800}
-    .row .r{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
-
-    #map{
-      width:100%;
-      height: 360px;
-      border-radius: var(--r);
-      overflow:hidden;
-      border:1px solid var(--line);
-      box-shadow: var(--shadow);
-      background: rgba(11,42,31,.55);
-      display:grid;
-      place-items:center;
-      color:rgba(234,255,241,.75);
-      font-size:13px;
-    }
-
-    .side{
-      display:grid; gap:14px;
-      position:sticky; top:86px;
-    }
-    @media (max-width: 980px){ .side{position:static} }
-
-    .pillRow{display:flex;gap:8px;flex-wrap:wrap}
+    .cardIn{padding:12px; display:flex; flex-direction:column; gap:8px; flex:1}
+    .title{font-weight:1000; font-size:15px; line-height:1.15}
+    .meta{color:var(--muted); font-size:12px; line-height:1.35}
+    .pillRow{display:flex; gap:8px; flex-wrap:wrap}
     .pill{
       padding:7px 10px;
       border-radius:999px;
@@ -199,6 +201,18 @@
       background:rgba(0,0,0,.18);
       font-size:12px;
       color:rgba(234,255,241,.88);
+    }
+    .cardActions{margin-top:auto; display:flex; gap:8px; flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .empty{
+      margin-top:14px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius: var(--r);
+      padding:16px;
+      background: rgba(0,0,0,.18);
+      color:rgba(234,255,241,.85);
+      text-align:center;
+      line-height:1.4;
     }
 
     .toast{
@@ -216,26 +230,6 @@
       font-size:13px;
     }
     .toast.show{display:block}
-
-    .lb{
-      position:fixed; inset:0; z-index:90;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(6px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-    .lb.show{display:flex}
-    .lb img{
-      max-width:min(96vw, 980px);
-      max-height:82vh;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow: var(--shadow);
-      background:#000;
-    }
-    .small{font-size:12px;color:var(--muted);line-height:1.35}
   </style>
 </head>
 
@@ -246,126 +240,90 @@
         <div class="logo">♾️</div>
         <div>
           <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Fiche Spot — ID + SLUG (FIX)</div>
+          <div class="t2">Vitrine — Spots publiés</div>
         </div>
       </div>
-      <div class="actions">
-        <div id="btnBack" class="btn ghost">⬅️ Retour</div>
-        <div id="btnShare" class="btn gold">🔗 Partager</div>
-        <div id="btnWhats" class="btn primary">💬 WhatsApp</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+        <a class="btn ghost" href="./explore.html">🧭 Explorer</a>
+        <a class="btn gold" href="./spot.html?slug=chez-astou-saly">⭐ Exemple</a>
       </div>
     </div>
 
-    <div class="grid">
-      <div class="panel">
-        <div class="hd">
-          <div>
-            <div id="spotName" class="name">Chargement…</div>
-            <div id="spotMeta" class="meta">—</div>
-            <div class="pillRow" id="pillRow" style="margin-top:10px"></div>
+    <div class="hero">
+      <div class="heroIn">
+        <div class="hTitle">Trouve un spot terrain en 2 secondes.</div>
+        <div class="hSub">Resto, plage, culture, nature, hébergement, activités. Contact direct, infos utiles, et itinéraire.</div>
+
+        <div class="controls">
+          <div class="field">
+            <label>🔎</label>
+            <input id="q" type="search" placeholder="Rechercher : Chez Astou, Saly, plage, tags…" autocomplete="off">
           </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
-            <div id="badgeBoost" class="badge boost" style="display:none"><span class="b"></span> 🔥 Boost</div>
-            <div id="badgeOpen" class="badge open" style="display:none"><span class="b"></span> 🟢 Ouvert</div>
-            <div id="badgeClosed" class="badge closed" style="display:none"><span class="b"></span> 🔴 Fermé</div>
+
+          <div class="field">
+            <label>Type</label>
+            <select id="type">
+              <option value="">Tous</option>
+              <option value="resto">resto</option>
+              <option value="plage">plage</option>
+              <option value="culture">culture</option>
+              <option value="nature">nature</option>
+              <option value="hebergement">hebergement</option>
+              <option value="activite">activite</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Budget</label>
+            <select id="budget">
+              <option value="">Tous</option>
+              <option value="petit">petit</option>
+              <option value="moyen">moyen</option>
+              <option value="premium">premium</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Tri</label>
+            <select id="sort">
+              <option value="score_desc">Score ↓</option>
+              <option value="new_desc">Nouveau ↓</option>
+              <option value="az">A → Z</option>
+            </select>
           </div>
         </div>
 
-        <div class="body">
-          <div id="gallery" class="gallery"></div>
+        <div class="chips" id="quickChips"></div>
 
-          <div class="rows">
-            <div class="row">
-              <div class="l">
-                <div class="k">Téléphone</div>
-                <div id="phoneLine" class="v">—</div>
-              </div>
-              <div class="r">
-                <div id="btnCall" class="btn">📞 Appeler</div>
-                <div id="btnSms" class="btn">✉️ SMS</div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="l">
-                <div class="k">Localisation</div>
-                <div id="addrLine" class="v">—</div>
-              </div>
-              <div class="r">
-                <div id="btnMaps" class="btn">🗺️ Itinéraire</div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="l">
-                <div class="k">Lien</div>
-                <div id="linkLine" class="small">—</div>
-              </div>
-              <div class="r">
-                <div id="btnLink" class="btn gold">🔗 Ouvrir</div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="l">
-                <div class="k">Infos</div>
-                <div id="infoLine" class="small">—</div>
-              </div>
-            </div>
+        <div class="statsRow">
+          <div class="stat" id="statLine">Chargement…</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div class="btn small ghost" id="btnReload">🔄 Recharger</div>
+            <div class="btn small gold" id="btnCopyUrl">🔗 Copier lien filtre</div>
           </div>
         </div>
       </div>
-
-      <div class="side">
-        <div id="map">🗺️ Chargement carte…</div>
-
-        <div class="panel">
-          <div style="padding:12px 12px 12px">
-            <div style="font-weight:900;font-size:13px">Sécurité</div>
-            <div class="small" style="margin-top:6px">
-              Données minimales, contact direct, liens externes optionnels. 💪
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
+
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" style="display:none"></div>
   </div>
 
   <div id="toast" class="toast"></div>
-  <div id="lb" class="lb" aria-hidden="true"><img id="lbImg" alt=""></div>
 
 <script>
 /* ===============================
-   SUPABASE CONFIG
+   SUPABASE (HARDCODED like spot.html)
 ================================ */
-const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-
-let sb = null;
-function ensureSupabase(){
-  if(sb) return sb;
-
-  if(!DEFAULT_SUPABASE_ANON){
-    toast("⚠️ Mets DIGIY_SUPABASE_ANON dans localStorage");
-    throw new Error("Supabase anon missing.");
-  }
-
-  sb = window.supabase.createClient(
-    DEFAULT_SUPABASE_URL,
-    DEFAULT_SUPABASE_ANON,
-    { auth:{ persistSession:false } }
-  );
-
-  return sb;
-}
+const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
 /* ===============================
    HELPERS
 ================================ */
 const $ = (s)=>document.querySelector(s);
 const toastEl = $("#toast");
-
 function toast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add("show");
@@ -377,121 +335,277 @@ function esc(s){
     .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
     .replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
-function qs(k){ return new URL(location.href).searchParams.get(k); }
 function normalizePhone(p){
   if(!p) return "";
   return (p+"").trim().replace(/[^\d+]/g,"");
 }
-function safeUrl(u){
-  const s = (u||"").toString().trim();
-  if(!s) return "";
-  if(s.startsWith("http://") || s.startsWith("https://")) return s;
-  return "https://" + s;
+function buildWhatsAppLink(phone, title){
+  const p = normalizePhone(phone).replace(/\+/g,"");
+  if(!p) return "";
+  const txt = encodeURIComponent(`Bonjour 👋 Je viens de voir "${title||"votre spot"}" sur DIGIY EXPLORE. Je veux des infos svp.`);
+  return `https://wa.me/${p}?text=${txt}`;
+}
+function buildMapsLink(lat,lng,title){
+  if(!isFinite(lat) || !isFinite(lng)) return "";
+  const q = encodeURIComponent(`${lat},${lng} (${title||"Spot"})`);
+  return `https://www.google.com/maps?q=${q}`;
+}
+function qs(k){ return new URL(location.href).searchParams.get(k); }
+function setQs(params){
+  const u = new URL(location.href);
+  Object.entries(params).forEach(([k,v])=>{
+    if(v===null || v===undefined || v==="") u.searchParams.delete(k);
+    else u.searchParams.set(k, v);
+  });
+  history.replaceState({}, "", u.toString());
+}
+function getSb(){
+  if(!window.supabase?.createClient) throw new Error("Supabase JS not loaded");
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
+}
+const sb = getSb();
+
+/* ===============================
+   STATE
+================================ */
+let ALL = [];
+let filtered = [];
+
+const TYPES = ["resto","plage","culture","nature","hebergement","activite"];
+const QUICK = [
+  {k:"type", v:"resto", label:"🍽️ Resto"},
+  {k:"type", v:"plage", label:"🏖️ Plage"},
+  {k:"type", v:"culture", label:"🏛️ Culture"},
+  {k:"type", v:"nature", label:"🌿 Nature"},
+  {k:"type", v:"hebergement", label:"🏠 Hébergement"},
+  {k:"type", v:"activite", label:"⚡ Activités"},
+  {k:"budget", v:"petit", label:"💸 Petit"},
+  {k:"budget", v:"moyen", label:"💰 Moyen"},
+  {k:"budget", v:"premium", label:"👑 Premium"},
+];
+
+/* ===============================
+   UI INIT
+================================ */
+function renderQuickChips(){
+  const box = $("#quickChips");
+  box.innerHTML = QUICK.map(c=>`<div class="chip" data-k="${c.k}" data-v="${c.v}">${esc(c.label)}</div>`).join("");
+  box.querySelectorAll(".chip").forEach(ch=>{
+    ch.onclick = ()=>{
+      const k = ch.getAttribute("data-k");
+      const v = ch.getAttribute("data-v");
+      if(k==="type") $("#type").value = ($("#type").value===v ? "" : v);
+      if(k==="budget") $("#budget").value = ($("#budget").value===v ? "" : v);
+      applyFilters(true);
+    };
+  });
+}
+
+function readUrlFilters(){
+  const q = (qs("q")||"").trim();
+  const type = (qs("type")||"").trim();
+  const budget = (qs("budget")||"").trim();
+  const sort = (qs("sort")||"score_desc").trim();
+
+  $("#q").value = q;
+  $("#type").value = TYPES.includes(type) ? type : "";
+  $("#budget").value = ["petit","moyen","premium"].includes(budget) ? budget : "";
+  $("#sort").value = ["score_desc","new_desc","az"].includes(sort) ? sort : "score_desc";
+}
+
+function writeUrlFilters(){
+  setQs({
+    q: ($("#q").value||"").trim(),
+    type: ($("#type").value||"").trim(),
+    budget: ($("#budget").value||"").trim(),
+    sort: ($("#sort").value||"").trim(),
+  });
 }
 
 /* ===============================
-   MAP SAFE (ANTI-BLOCK)
+   DATA LOAD
 ================================ */
-const DEFAULT_CENTER = [14.446, -17.007];
-let map = null;
-let marker = null;
+async function loadSpots(){
+  $("#statLine").textContent = "Chargement…";
 
-function initMap(){
-  const box = document.getElementById("map");
-  if(!box) return;
-
-  if(!window.L){
-    box.innerHTML = "🗺️ Carte indisponible (Leaflet non chargé).";
-    return;
-  }
-
-  map = L.map("map", { zoomControl:true }).setView(DEFAULT_CENTER, 12);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "&copy; OpenStreetMap"
-  }).addTo(map);
-}
-
-function setMap(lat,lng,title){
-  if(!map) return;
-
-  if(!isFinite(lat) || !isFinite(lng)){
-    map.setView(DEFAULT_CENTER, 12);
-    return;
-  }
-
-  const pt = [Number(lat), Number(lng)];
-  map.setView(pt, 15);
-
-  if(marker) map.removeLayer(marker);
-  marker = L.marker(pt).addTo(map)
-    .bindPopup(`<b>${esc(title||"Spot")}</b>`).openPopup();
-}
-
-/* ===============================
-   LOAD SPOT (ID OR SLUG)
-================================ */
-async function loadSpot(){
-  initMap();
-
-  const id = (qs("id") || "").trim();
-  const slug = (qs("slug") || "").trim();
-
-  if(!id && !slug){
-    toast("Paramètre manquant (?id=... ou ?slug=...)");
-    return;
-  }
-
-  const sb = ensureSupabase();
-
-  let q = sb.from("digiy_explore_spots")
-    .select("*")
-    .eq("status","published");
-
-  if(id) q = q.eq("id", id);
-  if(!id && slug) q = q.eq("slug", slug);
-
-  const { data, error } = await q.maybeSingle();
+  // Base query: public published
+  const { data, error } = await sb
+    .from("digiy_explore_spots")
+    .select("id, created_at, name, slug, type, zone, city, lat, lng, badge, description, photo_url, phone, link_url, status, duree, budget, tags, score")
+    .eq("status","published")
+    .limit(500);
 
   if(error){
-    console.error(error);
-    $("#spotName").textContent = "Erreur lecture";
-    toast("❌ RLS ou config Supabase.");
+    console.error("SUPABASE ERROR:", error);
+    $("#grid").innerHTML = "";
+    $("#empty").style.display = "block";
+    $("#empty").innerHTML = `❌ Erreur lecture (RLS / table).<br><span class="muted">Ouvre Console (F12) pour voir le détail.</span>`;
+    $("#statLine").textContent = "Erreur";
+    toast("Erreur lecture (Supabase/RLS)");
     return;
   }
 
-  if(!data){
-    $("#spotName").textContent = "Spot introuvable";
-    toast("Slug inconnu ou non publié.");
-    return;
-  }
-
-  const spot = data;
-  const title = spot.name || "Spot";
-
-  $("#spotName").textContent = title;
-  $("#spotMeta").textContent = `${spot.city||"—"} • ${spot.zone||"—"} • slug: ${spot.slug||"—"}`;
-
-  $("#phoneLine").textContent = spot.phone || "—";
-  $("#addrLine").textContent = [spot.zone, spot.city].filter(Boolean).join(" • ") || "—";
-  $("#infoLine").textContent = spot.description || "Infos simples, contact direct.";
-
-  setMap(Number(spot.lat), Number(spot.lng), title);
-
-  $("#btnBack").onclick = ()=> location.href="./explore.html";
+  ALL = Array.isArray(data) ? data : [];
+  applyFilters(false);
 }
 
 /* ===============================
-   BOOT SAFE
+   FILTER + SORT
 ================================ */
-(function boot(){
-  try{ loadSpot(); }
-  catch(err){
-    console.error("BOOT ERROR:", err);
-    toast("Crash JS — voir console.");
+function spotText(s){
+  const tags = Array.isArray(s.tags) ? s.tags.join(" ") : "";
+  return `${s.name||""} ${s.type||""} ${s.zone||""} ${s.city||""} ${tags}`.toLowerCase();
+}
+
+function applyFilters(pushUrl){
+  const q = ($("#q").value||"").trim().toLowerCase();
+  const type = ($("#type").value||"").trim();
+  const budget = ($("#budget").value||"").trim();
+  const sort = ($("#sort").value||"score_desc").trim();
+
+  if(pushUrl) writeUrlFilters();
+
+  filtered = ALL.filter(s=>{
+    if(type && (s.type||"") !== type) return false;
+    if(budget && (s.budget||"") !== budget) return false;
+    if(q){
+      if(!spotText(s).includes(q)) return false;
+    }
+    return true;
+  });
+
+  // sort
+  if(sort==="az"){
+    filtered.sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""), "fr"));
+  } else if(sort==="new_desc"){
+    filtered.sort((a,b)=>new Date(b.created_at||0) - new Date(a.created_at||0));
+  } else { // score_desc
+    filtered.sort((a,b)=> (Number(b.score)||0) - (Number(a.score)||0));
   }
-})();
+
+  render();
+  refreshChipState(type, budget);
+}
+
+function refreshChipState(type, budget){
+  document.querySelectorAll(".chip").forEach(ch=>{
+    const k = ch.getAttribute("data-k");
+    const v = ch.getAttribute("data-v");
+    const on = (k==="type" && type===v) || (k==="budget" && budget===v);
+    ch.classList.toggle("on", !!on);
+  });
+}
+
+/* ===============================
+   RENDER
+================================ */
+function badgeClass(b){
+  const v = (b||"").toString().toLowerCase().trim();
+  if(v==="open" || v==="ouvert" || v==="🟢") return "open";
+  if(v==="boost" || v==="boosted" || v==="🔥") return "boost";
+  if(v==="closed" || v==="ferme" || v==="🔴") return "closed";
+  return "";
+}
+function badgeLabel(b){
+  const v = (b||"").toString().toLowerCase().trim();
+  if(v==="open" || v==="ouvert" || v==="🟢") return "🟢 Ouvert";
+  if(v==="boost" || v==="boosted" || v==="🔥") return "🔥 Boost";
+  if(v==="closed" || v==="ferme" || v==="🔴") return "🔴 Fermé";
+  return "✨ Spot";
+}
+
+function render(){
+  const grid = $("#grid");
+  const empty = $("#empty");
+
+  $("#statLine").textContent = `${filtered.length} spot(s) • Public`;
+
+  if(!filtered.length){
+    grid.innerHTML = "";
+    empty.style.display = "block";
+    empty.innerHTML = `Aucun spot trouvé.<br><span class="muted">Essaie un autre mot ou enlève un filtre.</span>`;
+    return;
+  }
+  empty.style.display = "none";
+
+  grid.innerHTML = filtered.map(s=>{
+    const title = s.name || "Spot";
+    const meta = `${s.type||"—"} • ${s.zone||"—"} • ${s.city||"—"}`;
+    const desc = (s.description||"").toString().slice(0,110);
+    const img = (s.photo_url||"").toString().trim();
+    const slug = (s.slug||"").toString().trim();
+    const href = `./spot.html?slug=${encodeURIComponent(slug)}`;
+
+    const wa = buildWhatsAppLink(s.phone, title);
+    const maps = buildMapsLink(Number(s.lat), Number(s.lng), title);
+
+    const pills = [];
+    if(s.type) pills.push(`🏷️ ${s.type}`);
+    if(s.budget) pills.push(`💰 ${s.budget}`);
+    if(s.duree) pills.push(`⏱️ ${s.duree}`);
+
+    return `
+      <div class="card">
+        <a class="thumb" href="${href}">
+          ${img ? `<img src="${esc(img)}" alt="">` : ``}
+          <div class="badge ${badgeClass(s.badge)}"><span class="dot"></span>${esc(badgeLabel(s.badge))}</div>
+        </a>
+
+        <div class="cardIn">
+          <a class="title" href="${href}">${esc(title)}</a>
+          <div class="meta">${esc(meta)} • <span class="muted">slug: ${esc(slug)}</span></div>
+
+          <div class="pillRow">
+            ${pills.map(p=>`<span class="pill">${esc(p)}</span>`).join("")}
+          </div>
+
+          <div class="meta">${esc(desc || "Spot terrain DIGIY.")}</div>
+
+          <div class="cardActions">
+            <a class="btn small gold" href="${href}">👀 Voir</a>
+            ${wa ? `<a class="btn small primary" href="${wa}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>` : ``}
+            ${maps ? `<a class="btn small ghost" href="${maps}" target="_blank" rel="noopener noreferrer">🗺️ Itinéraire</a>` : ``}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+/* ===============================
+   EVENTS
+================================ */
+function wire(){
+  renderQuickChips();
+  readUrlFilters();
+
+  $("#q").addEventListener("input", ()=>applyFilters(true));
+  $("#type").addEventListener("change", ()=>applyFilters(true));
+  $("#budget").addEventListener("change", ()=>applyFilters(true));
+  $("#sort").addEventListener("change", ()=>applyFilters(true));
+
+  $("#btnReload").onclick = ()=>loadSpots();
+
+  $("#btnCopyUrl").onclick = async ()=>{
+    writeUrlFilters();
+    try{
+      await navigator.clipboard.writeText(location.href);
+      toast("✅ Lien filtre copié.");
+    }catch(e){
+      toast("Copie impossible.");
+    }
+  };
+}
+
+/* ===============================
+   BOOT
+================================ */
+function boot(){
+  wire();
+  loadSpots();
+}
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+else boot();
 </script>
 </body>
 </html>
