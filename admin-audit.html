@@ -1,204 +1,630 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#071a13"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#06130f" />
   <title>DIGIY EXPLORE — Admin Audit</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root{
-      --bg:#071a13; --card:#0b2a1f; --line:rgba(255,255,255,.12);
-      --text:#eafff1; --muted:rgba(234,255,241,.72);
-      --gold:#facc15; --shadow:0 14px 40px rgba(0,0,0,.35); --r:18px;
+      --bg:#06130f;
+      --bg2:#081b15;
+      --card:#0c241c;
+      --card2:#102d23;
+      --line:rgba(255,255,255,.10);
+      --text:#f2fff8;
+      --muted:rgba(242,255,248,.72);
+      --muted-2:rgba(242,255,248,.56);
+      --gold:#d4af37;
+      --gold-2:#b8941e;
+      --green:#22c55e;
+      --orange:#f59e0b;
+      --danger:#fb7185;
+      --shadow:0 18px 50px rgba(0,0,0,.40);
+      --radius:24px;
+      --radius-sm:18px;
+      --max:1160px;
     }
+
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
-      margin:0; color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
-        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+        radial-gradient(900px 480px at 15% 8%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 480px at 85% 100%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020807 100%);
       overflow-x:hidden;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:16px 14px 34px}
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      padding:10px 12px;border:1px solid var(--line);
-      background:rgba(11,42,31,.65);backdrop-filter: blur(10px);
-      border-radius:22px;box-shadow:var(--shadow);
-      position:sticky;top:10px;z-index:20;
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
+    .shell{
+      width:min(var(--max), calc(100vw - 24px));
+      margin:0 auto;
     }
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+
+    /* ===== TOPBAR ===== */
+    .topbar-wrap{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:linear-gradient(180deg, rgba(3,10,8,.82), rgba(3,10,8,.54));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .topbar{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .brand-mark{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:#000;
+      font-size:22px;
+      font-weight:900;
       background:
-        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
-        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
-      border:1px solid rgba(255,255,255,.15);
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 35%),
+        linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 12px 30px rgba(212,175,55,.25);
+      flex:0 0 auto;
+    }
+    .brand-copy{min-width:0}
+    .brand-title{
+      margin:0;
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:.3px;
+      white-space:nowrap;
+    }
+    .brand-sub{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:58vw;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      box-shadow:var(--shadow);
+      transition:transform .06s ease, border-color .2s ease, background .2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    .btn:active{transform:scale(.98)}
+    .btn.gold{
+      color:#000;
+      border-color:rgba(212,175,55,.48);
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 14px 34px rgba(212,175,55,.18);
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.22);
+    }
+    .btn.small{
+      min-height:38px;
+      padding:8px 12px;
+      font-size:12px;
+      box-shadow:none;
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      margin-top:18px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      background:
+        linear-gradient(45deg, rgba(0,0,0,.70) 0%, rgba(0,0,0,.28) 50%, rgba(0,0,0,.70) 100%),
+        radial-gradient(900px 520px at 14% 12%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 520px at 88% 88%, rgba(34,197,94,.10), transparent 60%);
+    }
+    .hero-in{
+      padding:24px 18px 18px;
+    }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.45);
+      background:rgba(212,175,55,.08);
+      color:#f2d26a;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.4px;
+    }
+    .hero-title{
+      margin:16px 0 0;
+      font-family:'Playfair Display',serif;
+      font-size:36px;
+      line-height:1.08;
       font-weight:900;
     }
-    .t1{font-size:14px;font-weight:1000}
-    .t2{font-size:12px;color:var(--muted);margin-top:2px}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(6,20,18,.55);
-      cursor:pointer;font-size:12px;user-select:none;white-space:nowrap;
+    .hero-sub{
+      margin:14px 0 0;
+      max-width:860px;
+      color:rgba(255,255,255,.90);
+      font-size:15px;
+      line-height:1.7;
     }
-    .btn.gold{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.22)}
-    .btn.ghost{background:rgba(0,0,0,.20)}
+
+    .stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .stat{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:38px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.20);
+      font-size:12px;
+      color:rgba(255,255,255,.92);
+      font-weight:700;
+    }
+
+    /* ===== PANEL ===== */
     .panel{
-      margin-top:14px;
-      border:1px solid var(--line);
-      background: rgba(11,42,31,.55);
-      backdrop-filter: blur(10px);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
+      margin-top:16px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(12,36,28,.94) 0%, rgba(9,24,20,.98) 100%);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
-    .hd{padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .hd .h1{font-weight:1000;font-size:14px}
-    .hd .h2{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
-    .body{padding:12px}
-    .list{display:grid;gap:10px}
-    .card{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(6,20,18,.45);
-      border-radius: 16px;
-      padding:10px;
+    .panel-head{
+      padding:16px 18px 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .panel-title{
+      margin:0;
+      font-family:'Playfair Display',serif;
+      font-size:26px;
+      color:var(--gold);
+    }
+    .panel-sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      max-width:860px;
+    }
+    .panel-body{
+      padding:18px;
+    }
+
+    /* ===== LIST ===== */
+    .list{
       display:grid;
-      gap:6px;
+      gap:12px;
     }
-    .row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .nm{font-weight:1000}
-    .meta{font-size:12px;color:var(--muted)}
-    .tag{
-      padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.16);font-size:12px
+    .log-card{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;
+      padding:14px;
     }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-    .toast{
-      position:fixed; left:50%; transform:translateX(-50%);
-      bottom:14px; z-index:80;
-      background: rgba(0,0,0,.65);
-      border:1px solid rgba(255,255,255,.18);
-      color:rgba(234,255,241,.92);
-      padding:10px 12px;
-      border-radius: 999px;
-      backdrop-filter: blur(10px);
-      display:none;
-      max-width:min(94vw, 900px);
-      box-shadow: var(--shadow);
+    .log-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .log-title{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .action-pill,
+    .time-pill,
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      min-height:32px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      font-weight:800;
+    }
+    .action-pill.publish{
+      border-color:rgba(34,197,94,.28);
+      background:rgba(34,197,94,.10);
+    }
+    .action-pill.reject{
+      border-color:rgba(251,113,133,.28);
+      background:rgba(251,113,133,.10);
+    }
+    .action-pill.pin_ok{
+      border-color:rgba(212,175,55,.30);
+      background:rgba(212,175,55,.10);
+    }
+    .action-pill.pin_fail{
+      border-color:rgba(245,158,11,.28);
+      background:rgba(245,158,11,.10);
+    }
+
+    .meta-grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+    }
+    .meta-box{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:rgba(0,0,0,.16);
+      padding:12px;
+    }
+    .meta-label{
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+      color:var(--muted-2);
+      margin-bottom:6px;
+    }
+    .meta-value{
+      color:var(--text);
+      font-size:13px;
+      line-height:1.6;
+      word-break:break-word;
+    }
+    .mono{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+
+    .note{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      line-height:1.7;
       font-size:13px;
     }
+
+    /* ===== STATES ===== */
+    .state{
+      display:none;
+      padding:22px 16px;
+      border-radius:22px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      line-height:1.7;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      z-index:120;
+      display:none;
+      max-width:min(94vw, 780px);
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.66);
+      color:rgba(255,255,255,.94);
+      font-size:13px;
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+    }
     .toast.show{display:block}
+
+    @media (max-width:720px){
+      .brand-sub{max-width:100%}
+      .top-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+      .hero-title{font-size:30px}
+      .meta-grid{grid-template-columns:1fr}
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo">♾️</div>
-        <div>
-          <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Admin Audit — lecture des logs</div>
+  <div class="topbar-wrap">
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">∞</div>
+          <div class="brand-copy">
+            <div class="brand-title">DIGIY EXPLORE</div>
+            <div class="brand-sub">Admin Audit — lecture des actions, suivi terrain, trace simple et claire.</div>
+          </div>
         </div>
-      </div>
-      <div class="actions">
-        <div id="btnBack" class="btn ghost">⬅️ Admin PIN</div>
-        <div id="btnIndex" class="btn ghost">🏠 Index</div>
-        <div id="btnRefresh" class="btn gold">🔄 Refresh</div>
-      </div>
-    </div>
 
-    <div class="panel">
-      <div class="hd">
-        <div class="h1">Historique</div>
-        <div class="h2">Dernières actions admin: pin_ok / pin_fail / publish / reject.</div>
-      </div>
-      <div class="body">
-        <div class="list" id="list"></div>
+        <div class="top-actions">
+          <button id="btnBack" class="btn ghost" type="button">⬅️ Admin PIN</button>
+          <button id="btnIndex" class="btn ghost" type="button">🏠 Index</button>
+          <button id="btnRefresh" class="btn gold" type="button">🔄 Refresh</button>
+        </div>
       </div>
     </div>
   </div>
 
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-in">
+        <div class="hero-badge">🔐 Zone admin</div>
+        <h1 class="hero-title">Historique des actions EXPLORE</h1>
+        <p class="hero-sub">
+          Ici on lit les dernières opérations admin : pin_ok, pin_fail, publish, reject. Une vue simple pour garder la main sur le flux.
+        </p>
+
+        <div class="stats">
+          <div class="stat" id="statCount">Chargement…</div>
+          <div class="stat" id="statLatest">Dernière action : —</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">Journal d’audit</h2>
+        <p class="panel-sub">
+          Lecture brute mais propre des entrées stockées dans <span class="mono">digiy_explore_admin_audit</span>.
+        </p>
+      </div>
+
+      <div class="panel-body">
+        <div id="stateBox" class="state"></div>
+        <div id="list" class="list"></div>
+      </div>
+    </section>
+  </main>
+
   <div id="toast" class="toast"></div>
 
-<script>
-const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-const CFG = window.__DIGIY_SUPABASE__ || {};
-const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
-const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+  <script>
+    const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
+    const CFG = window.__DIGIY_SUPABASE__ || {};
 
-let sb=null;
-function ensureSupabase(){
-  if(sb) return sb;
-  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
-    throw new Error("Supabase config missing (anon).");
-  }
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
-  return sb;
-}
-const $=(s)=>document.querySelector(s);
-const toastEl=$("#toast");
-function toast(msg){
-  toastEl.textContent=msg;
-  toastEl.classList.add("show");
-  clearTimeout(toastEl._t);
-  toastEl._t=setTimeout(()=>toastEl.classList.remove("show"),2800);
-}
-function esc(s){
-  return (s ?? "").toString()
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
+    const SUPABASE_URL = String(CFG.url || DEFAULT_SUPABASE_URL).trim();
+    const SUPABASE_ANON_KEY = String(CFG.anon || DEFAULT_SUPABASE_ANON).trim();
 
-async function loadAudit(){
-  const sb=ensureSupabase();
-  const { data, error } = await sb
-    .from("digiy_explore_admin_audit")
-    .select("created_at, admin_phone, action, spot_id, old_status, new_status, note")
-    .order("created_at", { ascending:false })
-    .limit(300);
+    let sb = null;
 
-  if(error){
-    console.error(error);
-    toast("❌ Lecture audit refusée (RLS?)");
-    return;
-  }
+    const $ = (s) => document.querySelector(s);
 
-  $("#list").innerHTML = (data||[]).map(x=>{
-    const when = x.created_at ? new Date(x.created_at).toLocaleString() : "—";
-    const spot = x.spot_id ? String(x.spot_id) : "—";
-    const st = (x.old_status || x.new_status) ? `${x.old_status||"—"} → ${x.new_status||"—"}` : "—";
-    const note = x.note ? esc(x.note) : "";
-    return `
-      <div class="card">
-        <div class="row">
-          <div class="nm">${esc(x.action || "—")}</div>
-          <div class="tag">${esc(when)}</div>
-        </div>
-        <div class="meta">admin: <span class="mono">${esc(x.admin_phone||"—")}</span></div>
-        <div class="meta">spot: <span class="mono">${esc(spot)}</span></div>
-        <div class="meta">status: ${esc(st)}</div>
-        ${note ? `<div class="meta">note: ${note}</div>` : ``}
-      </div>
-    `;
-  }).join("");
-}
+    function toast(message){
+      const el = $("#toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.remove("show"), 2800);
+    }
 
-$("#btnBack").onclick = ()=> location.href="./admin-pin.html";
-$("#btnIndex").onclick = ()=> location.href="./index.html";
-$("#btnRefresh").onclick = loadAudit;
+    function esc(value){
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-loadAudit();
-</script>
+    function ensureSupabase(){
+      if (sb) return sb;
+
+      if (!window.supabase?.createClient) {
+        toast("Supabase JS non chargé.");
+        throw new Error("Supabase JS not loaded.");
+      }
+
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
+        throw new Error("Supabase config missing.");
+      }
+
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: false }
+      });
+
+      return sb;
+    }
+
+    function formatDate(value){
+      if (!value) return "—";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return "—";
+      return d.toLocaleString("fr-FR");
+    }
+
+    function actionClass(action){
+      const a = String(action || "").trim().toLowerCase();
+      if (["publish"].includes(a)) return "publish";
+      if (["reject"].includes(a)) return "reject";
+      if (["pin_ok"].includes(a)) return "pin_ok";
+      if (["pin_fail"].includes(a)) return "pin_fail";
+      return "";
+    }
+
+    function setState(message){
+      const box = $("#stateBox");
+      box.style.display = "block";
+      box.innerHTML = message;
+    }
+
+    function clearState(){
+      const box = $("#stateBox");
+      box.style.display = "none";
+      box.innerHTML = "";
+    }
+
+    function renderStats(rows){
+      $("#statCount").textContent = `${rows.length} entrée(s)`;
+      $("#statLatest").textContent = rows.length
+        ? `Dernière action : ${formatDate(rows[0].created_at)}`
+        : "Dernière action : —";
+    }
+
+    function renderList(rows){
+      const list = $("#list");
+
+      if (!rows.length) {
+        list.innerHTML = "";
+        setState(`Aucune entrée d’audit pour le moment.<br><span style="opacity:.82">Le journal se remplira au fil des actions admin.</span>`);
+        return;
+      }
+
+      clearState();
+
+      list.innerHTML = rows.map((row) => {
+        const when = formatDate(row.created_at);
+        const action = String(row.action || "—");
+        const statusText = (row.old_status || row.new_status)
+          ? `${row.old_status || "—"} → ${row.new_status || "—"}`
+          : "—";
+
+        return `
+          <article class="log-card">
+            <div class="log-top">
+              <div class="log-title">
+                <span class="action-pill ${esc(actionClass(action))}">${esc(action)}</span>
+                <span class="status-pill">${esc(statusText)}</span>
+              </div>
+              <div class="time-pill">${esc(when)}</div>
+            </div>
+
+            <div class="meta-grid">
+              <div class="meta-box">
+                <div class="meta-label">Admin</div>
+                <div class="meta-value mono">${esc(row.admin_phone || "—")}</div>
+              </div>
+
+              <div class="meta-box">
+                <div class="meta-label">Spot</div>
+                <div class="meta-value mono">${esc(row.spot_id || "—")}</div>
+              </div>
+            </div>
+
+            ${row.note ? `
+              <div class="note">
+                <strong>Note :</strong> ${esc(row.note)}
+              </div>
+            ` : ``}
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadAudit(){
+      try{
+        const client = ensureSupabase();
+
+        $("#statCount").textContent = "Chargement…";
+        $("#statLatest").textContent = "Dernière action : …";
+        $("#list").innerHTML = "";
+        clearState();
+
+        const { data, error } = await client
+          .from("digiy_explore_admin_audit")
+          .select("created_at, admin_phone, action, spot_id, old_status, new_status, note")
+          .order("created_at", { ascending: false })
+          .limit(300);
+
+        if (error) {
+          console.error("AUDIT ERROR:", error);
+          renderStats([]);
+          setState(`❌ Lecture audit refusée.<br><span style="opacity:.82">Vérifie la policy RLS ou la configuration Supabase.</span>`);
+          toast("Lecture audit refusée");
+          return;
+        }
+
+        const rows = Array.isArray(data) ? data : [];
+        renderStats(rows);
+        renderList(rows);
+      }catch(err){
+        console.error("AUDIT CRASH:", err);
+        renderStats([]);
+        setState(`Crash JS 😵‍💫<br><span style="opacity:.82">Vérifie la console ou la config Supabase.</span>`);
+        toast("Crash JS — voir la console");
+      }
+    }
+
+    $("#btnBack").addEventListener("click", () => {
+      location.href = "./admin-pin.html";
+    });
+
+    $("#btnIndex").addEventListener("click", () => {
+      location.href = "./index.html";
+    });
+
+    $("#btnRefresh").addEventListener("click", () => {
+      loadAudit();
+    });
+
+    loadAudit();
+  </script>
 </body>
 </html>
