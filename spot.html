@@ -3,163 +3,916 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#071a13" />
+  <meta name="theme-color" content="#06130f" />
   <title>DIGIY EXPLORE — Fiche Spot</title>
-  <meta name="description" content="Fiche spot DIGIY EXPLORE (WhatsApp, localisation, lien, contact direct)." />
+  <meta
+    name="description"
+    content="Fiche spot DIGIY EXPLORE — contact direct, itinéraire, lien utile, présence premium de la Petite Côte."
+  />
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#071a13;
-      --card:#0b2a1f;
-      --line:rgba(255,255,255,.12);
-      --text:#eafff1;
-      --muted:rgba(234,255,241,.72);
-      --gold:#facc15;
-      --orange:#f59e0b;
+      --bg:#06130f;
+      --bg2:#081b15;
+      --card:#0c241c;
+      --card2:#102d23;
+      --line:rgba(255,255,255,.10);
+      --text:#f2fff8;
+      --muted:rgba(242,255,248,.74);
+      --muted-2:rgba(242,255,248,.58);
+      --gold:#d4af37;
+      --gold-2:#b8941e;
       --green:#22c55e;
+      --orange:#f59e0b;
       --danger:#fb7185;
-      --shadow:0 14px 40px rgba(0,0,0,.35);
-      --r:18px;
+      --shadow:0 18px 50px rgba(0,0,0,.42);
+      --radius:24px;
+      --radius-sm:18px;
+      --max:1180px;
     }
+
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:system-ui,Arial;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
-      background:linear-gradient(180deg,var(--bg) 0%, #020617 100%);
+      background:
+        radial-gradient(900px 480px at 15% 8%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 480px at 85% 100%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020807 100%);
+      overflow-x:hidden;
     }
-    .wrap{max-width:1080px;margin:0 auto;padding:16px}
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
+    .shell{
+      width:min(var(--max), calc(100vw - 24px));
+      margin:0 auto;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar-wrap{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:linear-gradient(180deg, rgba(3,10,8,.82), rgba(3,10,8,.54));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
     .topbar{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:10px;border:1px solid var(--line);
-      border-radius:22px;background:rgba(11,42,31,.65);
-      position:sticky;top:10px;z-index:30;
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:12px 0;
     }
-    .btn{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(0,0,0,.25);cursor:pointer;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .brand-mark{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:#000;
+      font-size:22px;
+      font-weight:900;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 35%),
+        linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 12px 30px rgba(212,175,55,.25);
+      flex:0 0 auto;
+    }
+    .brand-copy{min-width:0}
+    .brand-title{
+      margin:0;
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:.3px;
+      white-space:nowrap;
+    }
+    .brand-sub{
+      margin:3px 0 0;
+      color:var(--muted);
       font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:58vw;
     }
-    .btn.gold{background:rgba(250,204,21,.15)}
+
+    .top-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      box-shadow:var(--shadow);
+      transition:transform .06s ease, border-color .2s ease, background .2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    .btn:active{transform:scale(.98)}
+    .btn.gold{
+      color:#000;
+      border-color:rgba(212,175,55,.48);
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 14px 34px rgba(212,175,55,.18);
+    }
+    .btn.green{
+      border-color:rgba(34,197,94,.30);
+      background:rgba(34,197,94,.12);
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.22);
+    }
+    .btn.small{
+      min-height:38px;
+      padding:8px 12px;
+      font-size:12px;
+      box-shadow:none;
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      margin-top:18px;
+      overflow:hidden;
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      background:#000;
+    }
+    .hero-cover{
+      position:relative;
+      min-height:360px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,.32) 42%, rgba(0,0,0,.78) 100%),
+        radial-gradient(900px 520px at 14% 12%, rgba(212,175,55,.14), transparent 60%),
+        radial-gradient(900px 520px at 88% 88%, rgba(34,197,94,.10), transparent 60%);
+      background-size:cover;
+      background-position:center;
+    }
+    .hero-cover::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.18) 30%, rgba(0,0,0,.82) 100%);
+      pointer-events:none;
+    }
+    .hero-in{
+      position:relative;
+      z-index:1;
+      min-height:360px;
+      display:flex;
+      align-items:flex-end;
+      padding:18px;
+    }
+    .hero-panel{
+      width:min(760px, 100%);
+    }
+    .hero-badges{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
     .badge{
-      padding:8px 10px;border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:34px;
+      padding:7px 12px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
-      font-size:12px;display:none;
+      background:rgba(0,0,0,.34);
+      backdrop-filter:blur(10px);
+      font-size:12px;
+      font-weight:800;
     }
-    .badge.boost{background:rgba(245,158,11,.18)}
-    .grid{display:grid;grid-template-columns:1fr .9fr;gap:14px;margin-top:14px}
-    @media(max-width:980px){.grid{grid-template-columns:1fr}}
-    .panel{border:1px solid var(--line);border-radius:var(--r);padding:14px}
-    .row{display:flex;justify-content:space-between;gap:10px;margin-top:10px}
-    #map{height:360px;border-radius:var(--r)}
+    .badge.gold{
+      color:#f2d26a;
+      border-color:rgba(212,175,55,.42);
+      background:rgba(212,175,55,.10);
+    }
+    .dot{
+      width:9px;
+      height:9px;
+      border-radius:999px;
+      background:rgba(255,255,255,.45);
+      flex:0 0 auto;
+    }
+    .open .dot{background:var(--green)}
+    .boost .dot{background:var(--orange)}
+    .closed .dot{background:var(--danger)}
+
+    .hero-title{
+      margin:0;
+      font-family:'Playfair Display',serif;
+      font-size:42px;
+      line-height:1.08;
+      font-weight:900;
+      text-shadow:0 8px 24px rgba(0,0,0,.55);
+    }
+    .hero-meta{
+      margin-top:10px;
+      color:rgba(255,255,255,.90);
+      font-size:14px;
+      line-height:1.6;
+      text-shadow:0 4px 18px rgba(0,0,0,.45);
+    }
+    .hero-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* ===== GRID ===== */
+    .grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:16px;
+      margin-top:16px;
+      align-items:start;
+    }
+
+    .panel{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(12,36,28,.94) 0%, rgba(9,24,20,.98) 100%);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panel-in{
+      padding:18px;
+    }
+
+    .section-title{
+      margin:0;
+      font-family:'Playfair Display',serif;
+      font-size:26px;
+      color:var(--gold);
+    }
+    .section-sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .desc{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.8;
+      white-space:pre-wrap;
+    }
+
+    .pills{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      min-height:34px;
+      padding:7px 11px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      color:rgba(255,255,255,.92);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .info-list{
+      margin-top:16px;
+      display:grid;
+      gap:10px;
+    }
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+    }
+    .info-label{
+      color:var(--muted-2);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      min-width:110px;
+    }
+    .info-value{
+      flex:1;
+      text-align:right;
+      color:var(--text);
+      font-size:14px;
+      line-height:1.6;
+      word-break:break-word;
+    }
+
+    .contact-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    /* ===== MAP ===== */
+    .map-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    #map{
+      height:380px;
+      border-radius:20px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0a1613;
+    }
+    .map-empty{
+      display:none;
+      padding:18px;
+      border-radius:20px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      text-align:center;
+      line-height:1.7;
+    }
+
+    /* ===== BOOST ===== */
+    .boost-box{
+      display:none;
+      margin-top:16px;
+      padding:16px;
+      border-radius:22px;
+      border:1px solid rgba(212,175,55,.18);
+      background:linear-gradient(180deg, rgba(212,175,55,.08) 0%, rgba(12,36,28,.95) 100%);
+    }
+    .boost-title{
+      font-size:16px;
+      font-weight:800;
+      color:#f2d26a;
+    }
+    .boost-text{
+      margin-top:8px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
+    .boost-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    /* ===== STATES ===== */
+    .state{
+      padding:18px;
+      border-radius:22px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      line-height:1.7;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      z-index:120;
+      display:none;
+      max-width:min(94vw, 780px);
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.66);
+      color:rgba(255,255,255,.94);
+      font-size:13px;
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+    }
+    .toast.show{display:block}
+
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr}
+    }
+    @media (max-width:680px){
+      .hero-title{font-size:32px}
+      .top-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+      .brand-sub{
+        max-width:100%;
+      }
+      .info-row{
+        flex-direction:column;
+      }
+      .info-value{
+        text-align:left;
+      }
+      #map{height:320px}
+    }
   </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="topbar-wrap">
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">∞</div>
+          <div class="brand-copy">
+            <div class="brand-title">DIGIY EXPLORE</div>
+            <div class="brand-sub">Fiche spot — présence premium, terrain direct, signature Petite Côte.</div>
+          </div>
+        </div>
 
-  <div class="topbar">
-    <div><b>DIGIY EXPLORE</b></div>
-    <div>
-      <span id="badgeBoost" class="badge boost">🔥 Boost actif</span>
+        <div class="top-actions">
+          <a class="btn ghost" href="./index.html">🏠 Accueil</a>
+          <a class="btn ghost" href="./explore.html">🧭 Explorer</a>
+          <a class="btn gold" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="grid">
-    <div class="panel">
-      <h2 id="spotName">Chargement…</h2>
-      <div id="spotMeta" style="color:var(--muted);margin-bottom:10px"></div>
+  <main class="shell">
+    <section class="hero panel">
+      <div id="heroCover" class="hero-cover">
+        <div class="hero-in">
+          <div class="hero-panel">
+            <div class="hero-badges" id="heroBadges">
+              <span class="badge">Chargement…</span>
+            </div>
 
-      <!-- BOOST BOX -->
-      <div id="boostBox" class="panel" style="display:none;margin-bottom:14px">
-        <div style="font-weight:700;margin-bottom:6px">Boost Tourisme</div>
-        <div id="boostBoxText" style="margin-bottom:8px"></div>
-        <button id="btnBoost" class="btn gold" style="display:none">🔥 Booster ce spot</button>
+            <h1 id="spotName" class="hero-title">Chargement…</h1>
+            <div id="spotMeta" class="hero-meta">Lecture du spot en cours…</div>
+
+            <div class="hero-actions">
+              <a id="btnWhatsHero" class="btn green" href="#" style="display:none">💬 WhatsApp</a>
+              <a id="btnCallHero" class="btn ghost" href="#" style="display:none">📞 Appeler</a>
+              <a id="btnMapsHero" class="btn ghost" href="#" target="_blank" rel="noopener noreferrer" style="display:none">🗺️ Itinéraire</a>
+              <a id="btnSiteHero" class="btn ghost" href="#" target="_blank" rel="noopener noreferrer" style="display:none">🌐 Lien utile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="stateBox" class="state" style="display:none"></div>
+
+    <section id="contentGrid" class="grid" style="display:none">
+      <div>
+        <article class="panel">
+          <div class="panel-in">
+            <h2 class="section-title">À propos</h2>
+            <p class="section-sub">
+              Une fiche claire, visible et directe. Ici on comprend le lieu, on prend le contact, on avance.
+            </p>
+
+            <div id="spotDesc" class="desc"></div>
+
+            <div id="spotPills" class="pills"></div>
+
+            <div class="info-list">
+              <div class="info-row">
+                <div class="info-label">Téléphone</div>
+                <div id="phoneLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Zone</div>
+                <div id="zoneLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Ville</div>
+                <div id="cityLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Type</div>
+                <div id="typeLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Budget</div>
+                <div id="budgetLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Durée</div>
+                <div id="dureeLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Lien</div>
+                <div id="linkLine" class="info-value">—</div>
+              </div>
+            </div>
+
+            <div class="contact-actions">
+              <a id="btnWhatsMain" class="btn green" href="#" style="display:none">💬 Écrire sur WhatsApp</a>
+              <a id="btnCallMain" class="btn ghost" href="#" style="display:none">📞 Appeler maintenant</a>
+              <a id="btnMapsMain" class="btn ghost" href="#" target="_blank" rel="noopener noreferrer" style="display:none">🗺️ Ouvrir l’itinéraire</a>
+            </div>
+
+            <div id="boostBox" class="boost-box">
+              <div class="boost-title">🔥 Boost Tourisme</div>
+              <div id="boostBoxText" class="boost-text"></div>
+              <div class="boost-actions">
+                <button id="btnBoost" class="btn gold" type="button" style="display:none">🔥 Booster ce spot</button>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
 
-      <div id="phoneLine"></div>
-      <div class="row">
-        <button id="btnWhats" class="btn">💬 WhatsApp</button>
-      </div>
-    </div>
+      <aside>
+        <article class="panel">
+          <div class="panel-in">
+            <div class="map-head">
+              <div>
+                <h2 class="section-title" style="font-size:24px">Localisation</h2>
+                <p class="section-sub" style="margin-top:6px">Repère simple pour guider le visiteur vers le terrain.</p>
+              </div>
+            </div>
 
-    <div>
-      <div id="map"></div>
-    </div>
-  </div>
-</div>
+            <div id="map"></div>
+            <div id="mapEmpty" class="map-empty">
+              Position non renseignée pour le moment.<br />
+              La fiche reste visible, mais l’itinéraire n’est pas encore disponible.
+            </div>
+          </div>
+        </article>
+      </aside>
+    </section>
+  </main>
 
-<script>
-const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+  <div id="toast" class="toast"></div>
 
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
+  <script>
+    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
-function qs(k){ return new URLSearchParams(location.search).get(k); }
-function normalizePhone(p){ return (p||"").replace(/[^\d+]/g,""); }
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false }
+    });
 
-async function checkExploreBoost(phone){
-  if(!phone) return false;
-  const { data } = await sb.rpc("digiy_has_access", { p_phone: phone, p_module: "EXPLORE_BOOST" });
-  return !!data;
-}
+    const IMG_FALLBACK = "data:image/svg+xml;utf8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#0c241c"/>
+            <stop offset="1" stop-color="#020807"/>
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <text x="50%" y="45%" text-anchor="middle" font-size="58" fill="#f2fff8" font-family="Arial" font-weight="800">DIGIY EXPLORE</text>
+        <text x="50%" y="56%" text-anchor="middle" font-size="28" fill="rgba(242,255,248,.72)" font-family="Arial">Fiche spot</text>
+      </svg>
+    `);
 
-async function loadSpot(){
-  const slug = qs("slug");
-  if(!slug){ document.getElementById("spotName").textContent="Slug manquant"; return; }
+    let map = null;
 
-  const { data } = await sb
-    .from("digiy_explore_spots")
-    .select("*")
-    .eq("slug", slug)
-    .eq("status","published")
-    .maybeSingle();
+    function $(id){
+      return document.getElementById(id);
+    }
 
-  if(!data){ document.getElementById("spotName").textContent="Introuvable"; return; }
+    function qs(key){
+      return new URLSearchParams(window.location.search).get(key);
+    }
 
-  document.getElementById("spotName").textContent = data.name;
-  document.getElementById("spotMeta").textContent = data.city || "";
+    function toast(message){
+      const el = $("toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.remove("show"), 2800);
+    }
 
-  const phone = normalizePhone(data.phone);
-  document.getElementById("phoneLine").textContent = phone || "—";
+    function esc(value){
+      return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
-  document.getElementById("btnWhats").onclick = ()=>{
-    if(!phone) return;
-    window.open(`https://wa.me/${phone}`, "_blank");
-  };
+    function normalizePhone(phone){
+      return String(phone ?? "").trim().replace(/[^\d+]/g, "");
+    }
 
-  // MAP
-  const map = L.map("map").setView([data.lat||14.4, data.lng||-17.0], 15);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
-  if(data.lat && data.lng){
-    L.marker([data.lat,data.lng]).addTo(map);
-  }
+    function buildWhatsAppLink(phone, title){
+      const p = normalizePhone(phone).replace(/\+/g, "");
+      if (!p) return "";
+      const txt = encodeURIComponent(`Bonjour 👋 Je viens de voir "${title || "votre spot"}" sur DIGIY EXPLORE. Je veux des infos svp.`);
+      return `https://wa.me/${p}?text=${txt}`;
+    }
 
-  // BOOST CHECK
-  const isProMode = qs("pro")==="1";
-  const boostActive = await checkExploreBoost(phone);
+    function buildCallLink(phone){
+      const p = normalizePhone(phone);
+      return p ? `tel:${p}` : "";
+    }
 
-  if(boostActive){
-    document.getElementById("badgeBoost").style.display="inline-block";
-  }else if(isProMode){
-    document.getElementById("boostBox").style.display="block";
-    document.getElementById("boostBoxText").textContent =
-      "🔒 Aucun boost actif. Active un niveau pour remonter en vitrine.";
-    const btn = document.getElementById("btnBoost");
-    btn.style.display="inline-block";
-    btn.onclick = ()=>{
-      window.open(`https://beauville.github.io/abos/?module=EXPLORE_BOOST&phone=${phone}&plan=local`, "_blank");
-    };
-  }
-}
+    function buildMapsLink(lat, lng, title){
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return "";
+      const q = encodeURIComponent(`${lat},${lng} (${title || "Spot"})`);
+      return `https://www.google.com/maps?q=${q}`;
+    }
 
-loadSpot();
-</script>
+    function safeUrl(raw){
+      const value = String(raw ?? "").trim();
+      if (!value) return "";
+      try{
+        const u = new URL(value, window.location.href);
+        if (u.protocol === "http:" || u.protocol === "https:") return u.href;
+        return "";
+      }catch{
+        return "";
+      }
+    }
+
+    function setState(message){
+      $("stateBox").style.display = "block";
+      $("stateBox").innerHTML = message;
+    }
+
+    function clearState(){
+      $("stateBox").style.display = "none";
+      $("stateBox").innerHTML = "";
+    }
+
+    function badgeClass(value){
+      const v = String(value || "").toLowerCase().trim();
+      if (["open","ouvert","🟢"].includes(v)) return "open";
+      if (["boost","boosted","🔥"].includes(v)) return "boost";
+      if (["closed","ferme","fermé","🔴"].includes(v)) return "closed";
+      return "";
+    }
+
+    function badgeLabel(value){
+      const v = String(value || "").toLowerCase().trim();
+      if (["open","ouvert","🟢"].includes(v)) return "🟢 Ouvert";
+      if (["boost","boosted","🔥"].includes(v)) return "🔥 Boost";
+      if (["closed","ferme","fermé","🔴"].includes(v)) return "🔴 Fermé";
+      return "✨ Spot";
+    }
+
+    function cleanDesc(value){
+      const t = String(value || "").trim();
+      if (!t) {
+        return "Ce spot est visible sur DIGIY EXPLORE pour offrir une présence simple, claire et directe sur le net.";
+      }
+      return t;
+    }
+
+    async function checkExploreBoost(phone){
+      if (!phone) return false;
+      try{
+        const { data, error } = await sb.rpc("digiy_has_access", {
+          p_phone: phone,
+          p_module: "EXPLORE_BOOST"
+        });
+        if (error) {
+          console.warn("BOOST CHECK ERROR:", error);
+          return false;
+        }
+        return !!data;
+      }catch(err){
+        console.warn("BOOST CHECK CRASH:", err);
+        return false;
+      }
+    }
+
+    function renderHeroBadges(data, boostActive){
+      const badges = [];
+      badges.push(`<span class="badge ${esc(badgeClass(data.badge))}"><span class="dot"></span>${esc(badgeLabel(data.badge))}</span>`);
+
+      if (data.type) badges.push(`<span class="badge">${esc("🏷️ " + data.type)}</span>`);
+      if (data.zone || data.city) badges.push(`<span class="badge">${esc("📍 " + [data.zone, data.city].filter(Boolean).join(" • "))}</span>`);
+      if (data.budget) badges.push(`<span class="badge">${esc("💰 " + data.budget)}</span>`);
+      if (data.duree) badges.push(`<span class="badge">${esc("⏱️ " + data.duree)}</span>`);
+      if (boostActive) badges.push(`<span class="badge gold">🔥 Boost actif</span>`);
+
+      $("heroBadges").innerHTML = badges.join("");
+    }
+
+    function setButtonLink(id, href, show){
+      const el = $(id);
+      if (!el) return;
+      if (show && href) {
+        el.href = href;
+        el.style.display = "inline-flex";
+      } else {
+        el.removeAttribute("href");
+        el.style.display = "none";
+      }
+    }
+
+    function renderMap(data){
+      const lat = Number(data.lat);
+      const lng = Number(data.lng);
+      const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
+
+      if (!hasCoords) {
+        $("map").style.display = "none";
+        $("mapEmpty").style.display = "block";
+        return;
+      }
+
+      $("map").style.display = "block";
+      $("mapEmpty").style.display = "none";
+
+      if (map) {
+        map.remove();
+        map = null;
+      }
+
+      map = L.map("map", {
+        scrollWheelZoom: false
+      }).setView([lat, lng], 15);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+
+      L.marker([lat, lng]).addTo(map).bindPopup(esc(data.name || "Spot"));
+    }
+
+    async function loadSpot(){
+      const slug = qs("slug");
+      const id = qs("id");
+
+      if (!slug && !id) {
+        setState(`Slug ou id manquant 😅<br><span style="opacity:.82">Ouvre la fiche avec <b>?slug=...</b> ou <b>?id=...</b>.</span>`);
+        return;
+      }
+
+      let query = sb
+        .from("digiy_explore_spots")
+        .select("*")
+        .eq("status", "published")
+        .limit(1);
+
+      if (slug) query = query.eq("slug", slug);
+      else query = query.eq("id", id);
+
+      const { data, error } = await query.maybeSingle();
+
+      if (error) {
+        console.error("LOAD SPOT ERROR:", error);
+        setState(`❌ Impossible de lire ce spot.<br><span style="opacity:.82">Vérifie la table, la policy RLS ou le slug demandé.</span>`);
+        return;
+      }
+
+      if (!data) {
+        setState(`Spot introuvable.<br><span style="opacity:.82">Il est peut-être non publié, ou le slug n’existe pas.</span>`);
+        return;
+      }
+
+      clearState();
+      $("contentGrid").style.display = "grid";
+
+      const title = data.name || "Spot";
+      const phone = normalizePhone(data.phone);
+      const wa = buildWhatsAppLink(phone, title);
+      const call = buildCallLink(phone);
+      const maps = buildMapsLink(Number(data.lat), Number(data.lng), title);
+      const site = safeUrl(data.link_url);
+      const boostActive = await checkExploreBoost(phone);
+      const isProMode = qs("pro") === "1";
+
+      document.title = `${title} — DIGIY EXPLORE`;
+      const descMeta = document.querySelector('meta[name="description"]');
+      if (descMeta) {
+        descMeta.setAttribute("content", `${title} — fiche spot DIGIY EXPLORE. Contact direct, itinéraire, présence premium.`);
+      }
+
+      const cover = String(data.photo_url || "").trim() || IMG_FALLBACK;
+      $("heroCover").style.backgroundImage =
+        `linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,.32) 42%, rgba(0,0,0,.78) 100%), url("${cover.replace(/"/g, '\\"')}")`;
+
+      $("spotName").textContent = title;
+      $("spotMeta").textContent = [data.zone, data.city].filter(Boolean).join(" • ") || "Petite Côte";
+      $("spotDesc").textContent = cleanDesc(data.description);
+
+      renderHeroBadges(data, boostActive);
+
+      const pills = [];
+      if (data.tags && Array.isArray(data.tags)) {
+        data.tags.forEach(tag => pills.push(`<span class="pill">${esc(tag)}</span>`));
+      }
+      if (Number.isFinite(Number(data.score))) {
+        pills.push(`<span class="pill">${esc("⭐ Score " + Number(data.score))}</span>`);
+      }
+      $("spotPills").innerHTML = pills.join("");
+
+      $("phoneLine").textContent = phone || "Non renseigné";
+      $("zoneLine").textContent = data.zone || "—";
+      $("cityLine").textContent = data.city || "—";
+      $("typeLine").textContent = data.type || "—";
+      $("budgetLine").textContent = data.budget || "—";
+      $("dureeLine").textContent = data.duree || "—";
+
+      if (site) {
+        $("linkLine").innerHTML = `<a href="${esc(site)}" target="_blank" rel="noopener noreferrer">${esc(site)}</a>`;
+      } else {
+        $("linkLine").textContent = "—";
+      }
+
+      setButtonLink("btnWhatsHero", wa, !!wa);
+      setButtonLink("btnWhatsMain", wa, !!wa);
+      setButtonLink("btnCallHero", call, !!call);
+      setButtonLink("btnCallMain", call, !!call);
+      setButtonLink("btnMapsHero", maps, !!maps);
+      setButtonLink("btnMapsMain", maps, !!maps);
+      setButtonLink("btnSiteHero", site, !!site);
+
+      renderMap(data);
+
+      if (boostActive) {
+        $("boostBox").style.display = "block";
+        $("boostBoxText").textContent = "Ce spot dispose déjà d’un boost actif. Il bénéficie d’une mise en avant renforcée dans la vitrine.";
+        $("btnBoost").style.display = "none";
+      } else if (isProMode) {
+        $("boostBox").style.display = "block";
+        $("boostBoxText").textContent = "Aucun boost actif pour ce spot. Active un niveau pour renforcer sa présence en vitrine.";
+        if (phone) {
+          const btn = $("btnBoost");
+          btn.style.display = "inline-flex";
+          btn.onclick = () => {
+            window.open(
+              `https://beauville.github.io/abos/?module=EXPLORE_BOOST&phone=${encodeURIComponent(phone)}&plan=local`,
+              "_blank",
+              "noopener,noreferrer"
+            );
+          };
+        }
+      } else {
+        $("boostBox").style.display = "none";
+      }
+    }
+
+    loadSpot().catch((err) => {
+      console.error("SPOT FATAL:", err);
+      setState(`Crash JS 😵‍💫<br><span style="opacity:.82">Ouvre la console pour voir l’erreur exacte.</span>`);
+      toast("Crash JS — voir la console");
+    });
+  </script>
 </body>
 </html>
