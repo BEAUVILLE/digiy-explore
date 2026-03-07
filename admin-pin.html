@@ -1,550 +1,1008 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#071a13"/>
-  <title>DIGIY EXPLORE — Admin PIN (Harden)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#06130f" />
+  <title>DIGIY EXPLORE — Admin PIN</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#071a13; --card:#0b2a1f; --line:rgba(255,255,255,.12);
-      --text:#eafff1; --muted:rgba(234,255,241,.72);
-      --gold:#facc15; --green:#22c55e; --danger:#fb7185;
-      --shadow:0 14px 40px rgba(0,0,0,.35); --r:18px;
+      --bg:#06130f;
+      --bg2:#081b15;
+      --card:#0c241c;
+      --card2:#102d23;
+      --line:rgba(255,255,255,.10);
+      --text:#f2fff8;
+      --muted:rgba(242,255,248,.72);
+      --muted-2:rgba(242,255,248,.56);
+      --gold:#d4af37;
+      --gold-2:#b8941e;
+      --green:#22c55e;
+      --orange:#f59e0b;
+      --danger:#fb7185;
+      --shadow:0 18px 50px rgba(0,0,0,.40);
+      --radius:24px;
+      --radius-sm:18px;
+      --max:1160px;
     }
+
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
-      margin:0; color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
-        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+        radial-gradient(900px 480px at 15% 8%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 480px at 85% 100%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020807 100%);
       overflow-x:hidden;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:16px 14px 34px}
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      padding:10px 12px;border:1px solid var(--line);
-      background:rgba(11,42,31,.65);backdrop-filter: blur(10px);
-      border-radius:22px;box-shadow:var(--shadow);
-      position:sticky;top:10px;z-index:20;
+
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+
+    .shell{
+      width:min(var(--max), calc(100vw - 24px));
+      margin:0 auto;
     }
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+
+    /* ===== TOPBAR ===== */
+    .topbar-wrap{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:linear-gradient(180deg, rgba(3,10,8,.82), rgba(3,10,8,.54));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .topbar{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .brand-mark{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:#000;
+      font-size:22px;
+      font-weight:900;
       background:
-        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
-        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
-      border:1px solid rgba(255,255,255,.15);
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 35%),
+        linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 12px 30px rgba(212,175,55,.25);
+      flex:0 0 auto;
+    }
+    .brand-copy{min-width:0}
+    .brand-title{
+      margin:0;
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:.3px;
+      white-space:nowrap;
+    }
+    .brand-sub{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:58vw;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      min-height:38px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      box-shadow:var(--shadow);
+      transition:transform .06s ease, border-color .2s ease, background .2s ease, opacity .2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    .btn:active{transform:scale(.98)}
+    .btn.gold{
+      color:#000;
+      border-color:rgba(212,175,55,.48);
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 14px 34px rgba(212,175,55,.18);
+    }
+    .btn.primary{
+      border-color:rgba(34,197,94,.30);
+      background:rgba(34,197,94,.12);
+    }
+    .btn.danger{
+      border-color:rgba(251,113,133,.28);
+      background:rgba(251,113,133,.12);
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.22);
+    }
+    .btn.small{
+      min-height:38px;
+      padding:8px 12px;
+      font-size:12px;
+      box-shadow:none;
+    }
+    .btn[disabled]{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      margin-top:18px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      background:
+        linear-gradient(45deg, rgba(0,0,0,.70) 0%, rgba(0,0,0,.28) 50%, rgba(0,0,0,.70) 100%),
+        radial-gradient(900px 520px at 14% 12%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 520px at 88% 88%, rgba(34,197,94,.10), transparent 60%);
+    }
+    .hero-in{
+      padding:24px 18px 18px;
+    }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.45);
+      background:rgba(212,175,55,.08);
+      color:#f2d26a;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.4px;
+    }
+    .hero-title{
+      margin:16px 0 0;
+      font-family:'Playfair Display',serif;
+      font-size:36px;
+      line-height:1.08;
       font-weight:900;
     }
-    .t1{font-size:14px;font-weight:1000}
-    .t2{font-size:12px;color:var(--muted);margin-top:2px}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(6,20,18,.55);
-      cursor:pointer;font-size:12px;user-select:none;white-space:nowrap;
-      transition: transform .05s ease, border-color .15s ease, background .15s ease;
-    }
-    .btn:active{transform:scale(.98)}
-    .btn.gold{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.22)}
-    .btn.primary{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22)}
-    .btn.danger{background:rgba(251,113,133,.12);border-color:rgba(251,113,133,.22)}
-    .btn.ghost{background:rgba(0,0,0,.20)}
-    .pill{
-      padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.18);font-size:12px;color:var(--muted)
+    .hero-sub{
+      margin:14px 0 0;
+      max-width:840px;
+      color:rgba(255,255,255,.90);
+      font-size:15px;
+      line-height:1.7;
     }
 
-    .grid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+    /* ===== GRID ===== */
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      align-items:start;
+    }
 
     .panel{
-      border:1px solid var(--line);
-      background: rgba(11,42,31,.55);
-      backdrop-filter: blur(10px);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(12,36,28,.94) 0%, rgba(9,24,20,.98) 100%);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
-    .hd{padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .hd .h1{font-weight:1000;font-size:14px}
-    .hd .h2{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
-    .body{padding:12px}
+    .panel.full{
+      grid-column:1 / -1;
+    }
+    .panel-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .panel-title{
+      margin:0;
+      font-family:'Playfair Display',serif;
+      font-size:26px;
+      color:var(--gold);
+    }
+    .panel-sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+    .panel-body{
+      padding:18px;
+    }
 
     .field{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(6,20,18,.45);
-      border-radius: 16px;
-      padding:10px;
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:7px;
+      padding:12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
     }
-    .label{font-size:12px;color:var(--muted)}
+    .field + .field{margin-top:10px}
+    .label{
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+    }
     .input{
       width:100%;
-      padding:12px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.16);
-      color:var(--text);
+      border:1px solid rgba(255,255,255,.12);
       outline:none;
+      border-radius:14px;
+      background:rgba(0,0,0,.16);
+      color:var(--text);
+      padding:12px 13px;
       font-size:14px;
     }
-    .hint{font-size:12px;color:rgba(234,255,241,.70);line-height:1.35}
+    .hint{
+      font-size:12px;
+      color:var(--muted-2);
+      line-height:1.5;
+    }
 
-    .list{display:grid;gap:10px}
-    .card{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(6,20,18,.45);
-      border-radius: 16px;
-      padding:10px;
+    .login-actions{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .small{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .mono{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+
+    /* ===== STATS ===== */
+    .stats-list{
       display:grid;
+      gap:10px;
+    }
+    .stats-card{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      padding:14px;
+    }
+    .stats-name{
+      font-weight:900;
+      font-size:15px;
+    }
+    .stats-meta{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    /* ===== LIST ===== */
+    .state{
+      display:none;
+      padding:18px;
+      border-radius:20px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      line-height:1.7;
+      text-align:center;
+      margin-bottom:12px;
+    }
+
+    .list{
+      display:grid;
+      gap:12px;
+    }
+    .spot-card{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:20px;
+      background:rgba(255,255,255,.03);
+      padding:14px;
+    }
+    .row1{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+    .nm{
+      font-weight:900;
+      font-size:16px;
+    }
+    .meta{
+      margin-top:4px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .desc{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+    .row2{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .left,
+    .right{
+      display:flex;
       gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
     }
-    .row1{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
-    .nm{font-weight:1000}
-    .meta{font-size:12px;color:var(--muted)}
-    .row2{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center}
-    .left{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     .tag{
-      padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.16);font-size:12px
+      display:inline-flex;
+      align-items:center;
+      min-height:32px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      font-weight:700;
     }
-    .right{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 
     .toast{
-      position:fixed; left:50%; transform:translateX(-50%);
-      bottom:14px; z-index:80;
-      background: rgba(0,0,0,.65);
-      border:1px solid rgba(255,255,255,.18);
-      color:rgba(234,255,241,.92);
-      padding:10px 12px;
-      border-radius: 999px;
-      backdrop-filter: blur(10px);
+      position:fixed;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      z-index:120;
       display:none;
-      max-width:min(94vw, 900px);
-      box-shadow: var(--shadow);
+      max-width:min(94vw, 780px);
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.66);
+      color:rgba(255,255,255,.94);
       font-size:13px;
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
     }
     .toast.show{display:block}
-    .small{font-size:12px;color:var(--muted)}
-    .hr{height:1px;background:rgba(255,255,255,.10);margin:10px 0}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr}
+    }
+    @media (max-width:680px){
+      .brand-sub{max-width:100%}
+      .top-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+      .hero-title{font-size:30px}
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo">♾️</div>
-        <div>
-          <div class="t1">DIGIY EXPLORE</div>
-          <div class="t2">Admin PIN — Harden (lock + logs + session 8h)</div>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="pill" id="who">admin: —</div>
-        <div id="btnGoIndex" class="btn ghost">🏠 Index</div>
-        <div id="btnAudit" class="btn gold">🧾 Audit</div>
-        <div id="btnRefresh" class="btn gold">🔄 Refresh</div>
-        <div id="btnLogout" class="btn danger">🧼 Reset</div>
-      </div>
-    </div>
-
-    <div class="grid">
-      <!-- PIN -->
-      <div class="panel">
-        <div class="hd">
-          <div class="h1">Connexion (Téléphone + PIN)</div>
-          <div class="h2">Anti-bruteforce: 5 échecs → lock 15 min. Session: 8 heures.</div>
-        </div>
-        <div class="body">
-          <div class="field">
-            <div class="label">Téléphone</div>
-            <input id="phone" class="input" placeholder="+22177XXXXXXX" autocomplete="tel"/>
-          </div>
-          <div style="height:10px"></div>
-          <div class="field">
-            <div class="label">PIN</div>
-            <input id="pin" class="input" placeholder="1234" inputmode="numeric" autocomplete="one-time-code"/>
-          </div>
-          <div style="height:10px"></div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center">
-            <div id="btnLogin" class="btn primary">🔐 Activer</div>
-            <div class="hint">Si lock, attends ou change le PIN en base.</div>
-          </div>
-
-          <div class="hr"></div>
-          <div class="small">
-            RPC utilisés: <span class="mono">explore_admin_pin_check</span> & <span class="mono">explore_admin_set_status</span>
+  <div class="topbar-wrap">
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">∞</div>
+          <div class="brand-copy">
+            <div class="brand-title">DIGIY EXPLORE</div>
+            <div class="brand-sub">Admin PIN — accès terrain, validation simple, session locale 8h.</div>
           </div>
         </div>
-      </div>
 
-      <!-- STATS -->
-      <div class="panel">
-        <div class="hd">
-          <div class="h1">Stats rapides</div>
-          <div class="h2">Draft = en attente, Published = visible public, Rejected = refusé.</div>
-        </div>
-        <div class="body">
-          <div class="list" id="stats"></div>
-        </div>
-      </div>
-
-      <!-- DRAFTS -->
-      <div class="panel" style="grid-column:1/-1">
-        <div class="hd">
-          <div class="h1">En attente (draft)</div>
-          <div class="h2">Publier = visible public. Rejeter = refusé.</div>
-        </div>
-        <div class="body">
-          <div class="list" id="drafts"></div>
-          <div id="emptyDrafts" class="small" style="display:none;margin-top:8px">Aucun draft.</div>
-        </div>
-      </div>
-
-      <!-- PUBLISHED -->
-      <div class="panel" style="grid-column:1/-1">
-        <div class="hd">
-          <div class="h1">Derniers publiés (published)</div>
-          <div class="h2">Tu peux aussi rejeter après publication.</div>
-        </div>
-        <div class="body">
-          <div class="list" id="pubs"></div>
-          <div id="emptyPubs" class="small" style="display:none;margin-top:8px">Aucun publié.</div>
+        <div class="top-actions">
+          <div class="pill" id="who">admin: —</div>
+          <button id="btnGoIndex" class="btn ghost" type="button">🏠 Index</button>
+          <button id="btnAudit" class="btn gold" type="button">🧾 Audit</button>
+          <button id="btnRefresh" class="btn gold" type="button">🔄 Refresh</button>
+          <button id="btnLogout" class="btn danger" type="button">🧼 Reset</button>
         </div>
       </div>
     </div>
   </div>
 
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-in">
+        <div class="hero-badge">🔐 Zone admin</div>
+        <h1 class="hero-title">Pilotage et validation des spots</h1>
+        <p class="hero-sub">
+          L’admin entre avec téléphone + PIN. Ensuite il peut lire les drafts, publier, rejeter, et garder la main sur la vitrine EXPLORE.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Connexion admin</h2>
+          <p class="panel-sub">
+            Anti-bruteforce côté RPC : 5 échecs → lock 15 min. Session locale : 8 heures.
+          </p>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label class="label" for="phone">Téléphone</label>
+            <input id="phone" class="input" placeholder="+22177XXXXXXX" autocomplete="tel" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="pin">PIN</label>
+            <input id="pin" class="input" placeholder="1234" inputmode="numeric" autocomplete="one-time-code" />
+          </div>
+
+          <div class="login-actions">
+            <button id="btnLogin" class="btn primary" type="button">🔐 Activer</button>
+            <div class="hint">RPC attendus : <span class="mono">explore_admin_pin_check</span> et <span class="mono">explore_admin_set_status</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Stats rapides</h2>
+          <p class="panel-sub">
+            Draft = en attente, Published = visible public, Rejected = refusé.
+          </p>
+        </div>
+        <div class="panel-body">
+          <div id="stats" class="stats-list">
+            <div class="stats-card">
+              <div class="stats-name">Connexion requise</div>
+              <div class="stats-meta">Active le PIN admin pour charger les données.</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel full">
+        <div class="panel-head">
+          <h2 class="panel-title">En attente (draft)</h2>
+          <p class="panel-sub">Publier = visible public. Rejeter = refusé.</p>
+        </div>
+        <div class="panel-body">
+          <div id="draftsState" class="state"></div>
+          <div id="drafts" class="list"></div>
+        </div>
+      </article>
+
+      <article class="panel full">
+        <div class="panel-head">
+          <h2 class="panel-title">Derniers publiés (published)</h2>
+          <p class="panel-sub">Tu peux aussi rejeter après publication.</p>
+        </div>
+        <div class="panel-body">
+          <div id="pubsState" class="state"></div>
+          <div id="pubs" class="list"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
   <div id="toast" class="toast"></div>
 
-<script>
-/* =========================================================
-   DIGIY EXPLORE — ADMIN PIN HARDEN (DEF)
-   Fix anti-boucle:
-   - URLs ABSOLUES GitHub Pages (/digiy-explore/...)
-   ========================================================= */
+  <script>
+    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
-const BASE = "/digiy-explore";  // ✅ anti-boucle
+    const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
+    const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
-const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-const CFG = window.__DIGIY_SUPABASE__ || {};
-const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
-const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+    const $ = (s) => document.querySelector(s);
 
-let sb = null;
-function ensureSupabase(){
-  if(sb) return sb;
-  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
-    throw new Error("Supabase config missing (anon).");
-  }
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
-  return sb;
-}
+    let sb = null;
 
-const $ = (s)=>document.querySelector(s);
-const toastEl = $("#toast");
-function toast(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add("show");
-  clearTimeout(toastEl._t);
-  toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 2800);
-}
-function esc(s){
-  return (s ?? "").toString()
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-function normalizePhone(p){
-  return (p||"").toString().trim().replace(/[^\d+]/g,"");
-}
-
-/* -------------------------
-   SESSION (8H)
-------------------------- */
-const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
-const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
-
-function getPinSession(){
-  try{
-    const s = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-    if(!s?.phone || !s?.pin || !s?.ts) return null;
-    if((Date.now() - s.ts) > SESSION_TTL_MS){
-      localStorage.removeItem(LS_KEY);
-      return null;
+    function getClient(){
+      if (sb) return sb;
+      if (!window.supabase?.createClient) {
+        throw new Error("Supabase JS non chargé.");
+      }
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: false }
+      });
+      return sb;
     }
-    return s;
-  }catch(e){ return null; }
-}
-function setPinSession(phone, pin){
-  localStorage.setItem(LS_KEY, JSON.stringify({ phone, pin, ts: Date.now() }));
-}
-function clearPinSession(){ localStorage.removeItem(LS_KEY); }
 
-function updateWho(){
-  const s = getPinSession();
-  $("#who").textContent = s?.phone ? ("admin: " + s.phone) : "admin: —";
-}
+    function toast(message){
+      const el = $("#toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.remove("show"), 2800);
+    }
 
-/* -------------------------
-   RPC
-------------------------- */
-async function pinCheck(phone, pin){
-  const sb = ensureSupabase();
-  const { data, error } = await sb.rpc("explore_admin_pin_check", { p_phone: phone, p_pin: pin });
-  if(error) return { ok:false, error };
-  return data || { ok:false };
-}
+    function esc(value){
+      return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
-async function setStatus(spotId, status){
-  const sb = ensureSupabase();
-  const s = getPinSession();
-  if(!s?.phone || !s?.pin){
-    toast("🔐 PIN requis.");
-    return { ok:false };
-  }
-  const { data, error } = await sb.rpc("explore_admin_set_status", {
-    p_phone: s.phone,
-    p_pin: s.pin,
-    p_spot_id: spotId,
-    p_status: status
-  });
-  if(error) return { ok:false, error };
-  return data || { ok:false };
-}
+    function normalizePhone(phone){
+      return String(phone ?? "").trim().replace(/[^\d+]/g, "");
+    }
 
-/* -------------------------
-   UI builders
-------------------------- */
-function fmtSpot(s){
-  const url = `${BASE}/spot.html?id=${encodeURIComponent(s.id)}`; // ✅ ABSOLU
-  const name = s.name || "Spot";
-  const meta = `${s.type || "—"} • ${s.city || "—"} • ${s.zone || "—"}`;
-  const ph = s.photo_url ? `<a href="${esc(s.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`;
-  const ln = s.link_url ? `<a href="${esc(s.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 link</a>` : `<span class="tag">🔗 —</span>`;
-  const tel = s.phone ? `<a href="tel:${esc(s.phone)}" class="tag">📞 ${esc(s.phone)}</a>` : `<span class="tag">📞 —</span>`;
-  const desc = s.description ? esc(String(s.description).slice(0,140)) : "—";
-  return { url, name, meta, ph, ln, tel, desc };
-}
+    function pageUrl(file){
+      const here = window.location.pathname;
+      const i = here.lastIndexOf("/");
+      const base = i >= 0 ? here.slice(0, i + 1) : "/";
+      return new URL(file, window.location.origin + base).href;
+    }
 
-/* -------------------------
-   LOAD
-------------------------- */
-async function refreshStats(){
-  const sb = ensureSupabase();
-  const [d, p, r] = await Promise.all([
-    sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","draft"),
-    sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","published"),
-    sb.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","rejected"),
-  ]);
-  const dd = d.count ?? 0, pp = p.count ?? 0, rr = r.count ?? 0;
-  $("#stats").innerHTML = `
-    <div class="card"><div class="row1"><div><div class="nm">📥 Draft</div><div class="meta">${dd} en attente</div></div><div class="tag">draft</div></div></div>
-    <div class="card"><div class="row1"><div><div class="nm">✅ Published</div><div class="meta">${pp} visibles</div></div><div class="tag">published</div></div></div>
-    <div class="card"><div class="row1"><div><div class="nm">⛔ Rejected</div><div class="meta">${rr} refusés</div></div><div class="tag">rejected</div></div></div>
-  `;
-}
+    function setState(id, message){
+      const el = $(id);
+      el.style.display = "block";
+      el.innerHTML = message;
+    }
 
-async function refreshDrafts(){
-  const sb = ensureSupabase();
-  const { data, error } = await sb
-    .from("digiy_explore_spots")
-    .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status, owner_phone")
-    .eq("status","draft")
-    .order("created_at", { ascending:false })
-    .limit(200);
+    function clearState(id){
+      const el = $(id);
+      el.style.display = "none";
+      el.innerHTML = "";
+    }
 
-  if(error){
-    console.error(error);
-    toast("❌ Lecture drafts refusée (RLS?).");
-    return;
-  }
-
-  $("#emptyDrafts").style.display = (data?.length ? "none" : "block");
-  $("#drafts").innerHTML = (data || []).map(s=>{
-    const f = fmtSpot(s);
-    const created = s.created_at ? new Date(s.created_at).toLocaleString() : "—";
-    return `
-      <div class="card" data-id="${esc(s.id)}">
-        <div class="row1">
-          <div>
-            <div class="nm">${esc(f.name)}</div>
-            <div class="meta">${esc(f.meta)} • <span class="small">${esc(created)}</span></div>
-          </div>
-          <div class="tag">draft</div>
-        </div>
-        <div class="meta">${f.desc}</div>
-        <div class="row2">
-          <div class="left">
-            <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
-            ${f.tel} ${f.ph} ${f.ln}
-            ${s.owner_phone ? `<span class="tag">👤 owner: ${esc(s.owner_phone)}</span>` : ``}
-          </div>
-          <div class="right">
-            <div class="btn primary" data-act="publish">✅ Publier</div>
-            <div class="btn danger" data-act="reject">⛔ Rejeter</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  $("#drafts").querySelectorAll(".card .btn").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      const act = btn.getAttribute("data-act");
-      const card = btn.closest(".card");
-      const id = card?.getAttribute("data-id");
-      if(!id) return;
-
-      toast("⏳ Update…");
-      const res = await setStatus(id, act === "publish" ? "published" : "rejected");
-      if(res?.ok){
-        toast("✅ OK");
-        await refreshAll();
-      }else{
-        toast(res?.error?.message ? "❌ " + res.error.message : ("❌ " + (res?.error || "Refusé")));
+    function getPinSession(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        const s = raw ? JSON.parse(raw) : null;
+        if (!s?.phone || !s?.pin || !s?.ts) return null;
+        if ((Date.now() - s.ts) > SESSION_TTL_MS) {
+          localStorage.removeItem(LS_KEY);
+          return null;
+        }
+        return s;
+      }catch{
+        return null;
       }
-    });
-  });
-}
+    }
 
-async function refreshPublished(){
-  const sb = ensureSupabase();
-  const { data, error } = await sb
-    .from("digiy_explore_spots")
-    .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status")
-    .eq("status","published")
-    .order("created_at", { ascending:false })
-    .limit(60);
+    function setPinSession(phone, pin){
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        phone,
+        pin,
+        ts: Date.now()
+      }));
+    }
 
-  if(error){
-    console.error(error);
-    toast("❌ Lecture published refusée (RLS?).");
-    return;
-  }
+    function clearPinSession(){
+      localStorage.removeItem(LS_KEY);
+    }
 
-  $("#emptyPubs").style.display = (data?.length ? "none" : "block");
-  $("#pubs").innerHTML = (data || []).map(s=>{
-    const f = fmtSpot(s);
-    const created = s.created_at ? new Date(s.created_at).toLocaleString() : "—";
-    return `
-      <div class="card" data-id="${esc(s.id)}">
-        <div class="row1">
-          <div>
-            <div class="nm">${esc(f.name)}</div>
-            <div class="meta">${esc(f.meta)} • <span class="small">${esc(created)}</span></div>
-          </div>
-          <div class="tag">published</div>
-        </div>
-        <div class="meta">${f.desc}</div>
-        <div class="row2">
-          <div class="left">
-            <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
-            ${f.tel} ${f.ph} ${f.ln}
-          </div>
-          <div class="right">
-            <div class="btn danger" data-act="reject">⛔ Rejeter</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
+    function updateWho(){
+      const s = getPinSession();
+      $("#who").textContent = s?.phone ? `admin: ${s.phone}` : "admin: —";
+    }
 
-  $("#pubs").querySelectorAll(".btn.danger").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      const card = btn.closest(".card");
-      const id = card?.getAttribute("data-id");
-      if(!id) return;
+    async function pinCheck(phone, pin){
+      const client = getClient();
+      const { data, error } = await client.rpc("explore_admin_pin_check", {
+        p_phone: phone,
+        p_pin: pin
+      });
 
-      toast("⏳ Update…");
-      const res = await setStatus(id, "rejected");
-      if(res?.ok){
-        toast("✅ OK");
-        await refreshAll();
-      }else{
-        toast(res?.error?.message ? "❌ " + res.error.message : ("❌ " + (res?.error || "Refusé")));
+      if (error) return { ok:false, error };
+      return data || { ok:false };
+    }
+
+    async function setStatus(spotId, status){
+      const s = getPinSession();
+      if (!s?.phone || !s?.pin) {
+        toast("🔐 PIN requis.");
+        return { ok:false };
       }
-    });
-  });
-}
 
-async function refreshAll(){
-  await refreshStats();
-  await refreshDrafts();
-  await refreshPublished();
-}
+      const client = getClient();
+      const { data, error } = await client.rpc("explore_admin_set_status", {
+        p_phone: s.phone,
+        p_pin: s.pin,
+        p_spot_id: spotId,
+        p_status: status
+      });
 
-/* -------------------------
-   LOGIN / ACTIONS
-------------------------- */
-async function login(){
-  const phone = normalizePhone($("#phone").value);
-  const pin = ($("#pin").value || "").trim();
-  if(!phone || !pin){
-    toast("Téléphone + PIN requis.");
-    return;
-  }
+      if (error) return { ok:false, error };
+      return data || { ok:false };
+    }
 
-  toast("🔎 Vérif PIN…");
-  const res = await pinCheck(phone, pin);
+    function fmtSpot(s){
+      const url = pageUrl(`spot.html?id=${encodeURIComponent(s.id)}`);
+      const name = s.name || "Spot";
+      const meta = `${s.type || "—"} • ${s.city || "—"} • ${s.zone || "—"}`;
+      const desc = s.description ? String(s.description).slice(0, 160) : "—";
+      const created = s.created_at ? new Date(s.created_at).toLocaleString("fr-FR") : "—";
 
-  if(!res?.ok){
-    const fc = (res?.fail_count != null) ? (" • essais=" + res.fail_count) : "";
-    const lu = res?.locked_until ? (" • lock=" + res.locked_until) : "";
-    const err = res?.error ? (" • " + res.error) : "";
-    toast("❌ PIN refusé" + err + fc + lu);
-    return;
-  }
+      return {
+        url,
+        name,
+        meta,
+        desc,
+        created
+      };
+    }
 
-  setPinSession(phone, pin);
-  updateWho();
-  toast("✅ Admin OK.");
-  await refreshAll();
-}
+    function notConnectedState(){
+      return `Connecte-toi avec le téléphone + PIN admin pour lire et piloter les spots.`;
+    }
 
-function logout(){
-  clearPinSession();
-  updateWho();
-  toast("🧼 Session effacée.");
-}
+    async function refreshStats(){
+      const s = getPinSession();
+      if (!s) {
+        $("#stats").innerHTML = `
+          <div class="stats-card">
+            <div class="stats-name">Connexion requise</div>
+            <div class="stats-meta">${notConnectedState()}</div>
+          </div>
+        `;
+        return;
+      }
 
-function bind(){
-  $("#btnLogin").onclick = login;
-  $("#btnLogout").onclick = logout;
-  $("#btnRefresh").onclick = refreshAll;
+      const client = getClient();
 
-  // ✅ ABSOLU anti-boucle
-  $("#btnGoIndex").onclick = ()=> location.href = `${BASE}/index.html`;
-  $("#btnAudit").onclick = ()=> location.href = `${BASE}/admin-audit.html`;
+      const [drafts, pubs, rejects] = await Promise.all([
+        client.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","draft"),
+        client.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","published"),
+        client.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","rejected")
+      ]);
 
-  const s = getPinSession();
-  if(s?.phone) $("#phone").value = s.phone;
-  updateWho();
-}
+      const dd = drafts.count ?? 0;
+      const pp = pubs.count ?? 0;
+      const rr = rejects.count ?? 0;
 
-(async function boot(){
-  try{
-    bind();
-    await refreshAll();
-  }catch(e){
-    console.error(e);
-    toast("Erreur boot (config Supabase?).");
-  }
-})();
-</script>
+      $("#stats").innerHTML = `
+        <div class="stats-card">
+          <div class="stats-name">📥 Draft</div>
+          <div class="stats-meta">${dd} en attente</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-name">✅ Published</div>
+          <div class="stats-meta">${pp} visibles publiquement</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-name">⛔ Rejected</div>
+          <div class="stats-meta">${rr} refusés</div>
+        </div>
+      `;
+    }
+
+    async function refreshDrafts(){
+      const s = getPinSession();
+      if (!s) {
+        $("#drafts").innerHTML = "";
+        setState("draftsState", notConnectedState());
+        return;
+      }
+
+      clearState("draftsState");
+
+      const client = getClient();
+      const { data, error } = await client
+        .from("digiy_explore_spots")
+        .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status, owner_phone")
+        .eq("status", "draft")
+        .order("created_at", { ascending: false })
+        .limit(200);
+
+      if (error) {
+        console.error("DRAFTS ERROR:", error);
+        $("#drafts").innerHTML = "";
+        setState("draftsState", `❌ Lecture drafts refusée.<br><span style="opacity:.82">Vérifie la policy RLS ou la config admin.</span>`);
+        toast("Lecture drafts refusée");
+        return;
+      }
+
+      const rows = Array.isArray(data) ? data : [];
+      if (!rows.length) {
+        $("#drafts").innerHTML = "";
+        setState("draftsState", `Aucun draft pour le moment.`);
+        return;
+      }
+
+      $("#drafts").innerHTML = rows.map((spot) => {
+        const f = fmtSpot(spot);
+
+        return `
+          <article class="spot-card" data-id="${esc(spot.id)}">
+            <div class="row1">
+              <div>
+                <div class="nm">${esc(f.name)}</div>
+                <div class="meta">${esc(f.meta)} • ${esc(f.created)}</div>
+              </div>
+              <div class="tag">draft</div>
+            </div>
+
+            <div class="desc">${esc(f.desc)}</div>
+
+            <div class="row2">
+              <div class="left">
+                <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
+                ${spot.phone ? `<a href="tel:${esc(spot.phone)}" class="tag">📞 ${esc(spot.phone)}</a>` : `<span class="tag">📞 —</span>`}
+                ${spot.photo_url ? `<a href="${esc(spot.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`}
+                ${spot.link_url ? `<a href="${esc(spot.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 lien</a>` : `<span class="tag">🔗 —</span>`}
+                ${spot.owner_phone ? `<span class="tag">👤 ${esc(spot.owner_phone)}</span>` : ``}
+              </div>
+
+              <div class="right">
+                <button class="btn small primary" data-act="publish" type="button">✅ Publier</button>
+                <button class="btn small danger" data-act="reject" type="button">⛔ Rejeter</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      $("#drafts").querySelectorAll(".spot-card .btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const card = btn.closest(".spot-card");
+          const id = card?.getAttribute("data-id");
+          const act = btn.getAttribute("data-act");
+          if (!id || !act) return;
+
+          toast("⏳ Mise à jour…");
+          const res = await setStatus(id, act === "publish" ? "published" : "rejected");
+
+          if (res?.ok) {
+            toast("✅ OK");
+            await refreshAll();
+          } else {
+            toast(res?.error?.message ? `❌ ${res.error.message}` : "❌ Refusé");
+          }
+        });
+      });
+    }
+
+    async function refreshPublished(){
+      const s = getPinSession();
+      if (!s) {
+        $("#pubs").innerHTML = "";
+        setState("pubsState", notConnectedState());
+        return;
+      }
+
+      clearState("pubsState");
+
+      const client = getClient();
+      const { data, error } = await client
+        .from("digiy_explore_spots")
+        .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status")
+        .eq("status", "published")
+        .order("created_at", { ascending: false })
+        .limit(60);
+
+      if (error) {
+        console.error("PUBLISHED ERROR:", error);
+        $("#pubs").innerHTML = "";
+        setState("pubsState", `❌ Lecture published refusée.<br><span style="opacity:.82">Vérifie la policy RLS ou la config admin.</span>`);
+        toast("Lecture published refusée");
+        return;
+      }
+
+      const rows = Array.isArray(data) ? data : [];
+      if (!rows.length) {
+        $("#pubs").innerHTML = "";
+        setState("pubsState", `Aucun spot publié pour le moment.`);
+        return;
+      }
+
+      $("#pubs").innerHTML = rows.map((spot) => {
+        const f = fmtSpot(spot);
+
+        return `
+          <article class="spot-card" data-id="${esc(spot.id)}">
+            <div class="row1">
+              <div>
+                <div class="nm">${esc(f.name)}</div>
+                <div class="meta">${esc(f.meta)} • ${esc(f.created)}</div>
+              </div>
+              <div class="tag">published</div>
+            </div>
+
+            <div class="desc">${esc(f.desc)}</div>
+
+            <div class="row2">
+              <div class="left">
+                <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
+                ${spot.phone ? `<a href="tel:${esc(spot.phone)}" class="tag">📞 ${esc(spot.phone)}</a>` : `<span class="tag">📞 —</span>`}
+                ${spot.photo_url ? `<a href="${esc(spot.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`}
+                ${spot.link_url ? `<a href="${esc(spot.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 lien</a>` : `<span class="tag">🔗 —</span>`}
+              </div>
+
+              <div class="right">
+                <button class="btn small danger" data-act="reject" type="button">⛔ Rejeter</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      $("#pubs").querySelectorAll(".spot-card .btn.danger").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const card = btn.closest(".spot-card");
+          const id = card?.getAttribute("data-id");
+          if (!id) return;
+
+          toast("⏳ Mise à jour…");
+          const res = await setStatus(id, "rejected");
+
+          if (res?.ok) {
+            toast("✅ OK");
+            await refreshAll();
+          } else {
+            toast(res?.error?.message ? `❌ ${res.error.message}` : "❌ Refusé");
+          }
+        });
+      });
+    }
+
+    async function refreshAll(){
+      try{
+        await refreshStats();
+        await refreshDrafts();
+        await refreshPublished();
+      }catch(err){
+        console.error("REFRESH ERROR:", err);
+        toast("Erreur pendant le refresh");
+      }
+    }
+
+    async function login(){
+      const phone = normalizePhone($("#phone").value);
+      const pin = ($("#pin").value || "").trim();
+
+      if (!phone || !pin) {
+        toast("Téléphone + PIN requis.");
+        return;
+      }
+
+      const btn = $("#btnLogin");
+      btn.disabled = true;
+      btn.textContent = "⏳ Vérification…";
+
+      try{
+        const res = await pinCheck(phone, pin);
+
+        if (!res?.ok) {
+          const fc = (res?.fail_count != null) ? ` • essais=${res.fail_count}` : "";
+          const lu = res?.locked_until ? ` • lock=${res.locked_until}` : "";
+          const er = res?.error ? ` • ${res.error}` : "";
+          toast(`❌ PIN refusé${er}${fc}${lu}`);
+          return;
+        }
+
+        setPinSession(phone, pin);
+        updateWho();
+        toast("✅ Admin OK");
+        await refreshAll();
+      }catch(err){
+        console.error("LOGIN ERROR:", err);
+        toast("Erreur login");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🔐 Activer";
+      }
+    }
+
+    function logout(){
+      clearPinSession();
+      updateWho();
+      $("#stats").innerHTML = `
+        <div class="stats-card">
+          <div class="stats-name">Connexion requise</div>
+          <div class="stats-meta">${notConnectedState()}</div>
+        </div>
+      `;
+      $("#drafts").innerHTML = "";
+      $("#pubs").innerHTML = "";
+      setState("draftsState", notConnectedState());
+      setState("pubsState", notConnectedState());
+      toast("🧼 Session effacée.");
+    }
+
+    function bind(){
+      $("#btnLogin").addEventListener("click", login);
+      $("#btnLogout").addEventListener("click", logout);
+      $("#btnRefresh").addEventListener("click", refreshAll);
+
+      $("#btnGoIndex").addEventListener("click", () => {
+        location.href = pageUrl("index.html");
+      });
+
+      $("#btnAudit").addEventListener("click", () => {
+        location.href = pageUrl("admin-audit.html");
+      });
+
+      const s = getPinSession();
+      if (s?.phone) {
+        $("#phone").value = s.phone;
+      }
+
+      updateWho();
+    }
+
+    (async function boot(){
+      try{
+        bind();
+
+        const s = getPinSession();
+        if (s) {
+          setState("draftsState", "Chargement…");
+          setState("pubsState", "Chargement…");
+          await refreshAll();
+        } else {
+          setState("draftsState", notConnectedState());
+          setState("pubsState", notConnectedState());
+        }
+      }catch(err){
+        console.error("BOOT ERROR:", err);
+        toast("Erreur boot");
+      }
+    })();
+  </script>
 </body>
 </html>
