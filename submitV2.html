@@ -1,293 +1,657 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#071a13"/>
-  <title>DIGIY EXPLORE — Submit Spot (V2)</title>
-  <meta name="description" content="Proposer un spot terrain (draft) — validation admin DIGIY."/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#06130f" />
+  <title>DIGIY EXPLORE — Proposer un spot</title>
+  <meta
+    name="description"
+    content="Proposer un spot terrain sur DIGIY EXPLORE. Enregistrement en draft, validation admin ensuite."
+  />
 
-  <!-- Supabase -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#071a13; --card:#0b2a1f; --line:rgba(255,255,255,.12);
-      --text:#eafff1; --muted:rgba(234,255,241,.72);
-      --gold:#facc15; --green:#22c55e; --danger:#fb7185;
-      --shadow:0 14px 40px rgba(0,0,0,.35); --r:18px;
+      --bg:#06130f;
+      --bg2:#081b15;
+      --card:#0c241c;
+      --card2:#102d23;
+      --line:rgba(255,255,255,.10);
+      --text:#f2fff8;
+      --muted:rgba(242,255,248,.72);
+      --muted-2:rgba(242,255,248,.56);
+      --gold:#d4af37;
+      --gold-2:#b8941e;
+      --green:#22c55e;
+      --orange:#f59e0b;
+      --danger:#fb7185;
+      --shadow:0 18px 50px rgba(0,0,0,.40);
+      --radius:24px;
+      --radius-sm:18px;
+      --max:980px;
     }
+
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
-      margin:0; color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(900px 480px at 12% 10%, rgba(250,204,21,.12), transparent 60%),
-        radial-gradient(900px 480px at 88% 90%, rgba(34,197,94,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+        radial-gradient(900px 480px at 15% 8%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 480px at 85% 100%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, #020807 100%);
       overflow-x:hidden;
     }
-    .wrap{max-width:980px;margin:0 auto;padding:16px 14px 34px}
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      padding:10px 12px;border:1px solid var(--line);
-      background:rgba(11,42,31,.65);backdrop-filter: blur(10px);
-      border-radius:22px;box-shadow:var(--shadow);
-      position:sticky;top:10px;z-index:20;
+
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+
+    .shell{
+      width:min(var(--max), calc(100vw - 24px));
+      margin:0 auto;
     }
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+
+    /* ===== TOPBAR ===== */
+    .topbar-wrap{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:linear-gradient(180deg, rgba(3,10,8,.82), rgba(3,10,8,.54));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .topbar{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+    .brand-mark{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:#000;
+      font-size:22px;
+      font-weight:900;
       background:
-        radial-gradient(circle at 30% 30%, rgba(250,204,21,.35), transparent 55%),
-        linear-gradient(135deg, rgba(34,197,94,.30), rgba(245,158,11,.25));
-      border:1px solid rgba(255,255,255,.15);
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 35%),
+        linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 12px 30px rgba(212,175,55,.25);
+      flex:0 0 auto;
+    }
+    .brand-copy{min-width:0}
+    .brand-title{
+      margin:0;
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:.3px;
+      white-space:nowrap;
+    }
+    .brand-sub{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:58vw;
+    }
+    .top-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      box-shadow:var(--shadow);
+      transition:transform .06s ease, border-color .2s ease, background .2s ease, opacity .2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    .btn:active{transform:scale(.98)}
+    .btn.gold{
+      color:#000;
+      border-color:rgba(212,175,55,.48);
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      box-shadow:0 14px 34px rgba(212,175,55,.18);
+    }
+    .btn.green{
+      border-color:rgba(34,197,94,.30);
+      background:rgba(34,197,94,.12);
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.22);
+    }
+    .btn[disabled]{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      margin-top:18px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      background:
+        linear-gradient(45deg, rgba(0,0,0,.70) 0%, rgba(0,0,0,.28) 50%, rgba(0,0,0,.70) 100%),
+        radial-gradient(900px 520px at 14% 12%, rgba(212,175,55,.12), transparent 60%),
+        radial-gradient(900px 520px at 88% 88%, rgba(34,197,94,.10), transparent 60%);
+    }
+    .hero-in{
+      padding:24px 18px 18px;
+    }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.45);
+      background:rgba(212,175,55,.08);
+      color:#f2d26a;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.4px;
+    }
+    .hero-title{
+      margin:16px 0 0;
+      font-family:'Playfair Display',serif;
+      font-size:36px;
+      line-height:1.08;
       font-weight:900;
     }
-    .t1{font-size:14px;font-weight:1000}
-    .t2{font-size:12px;color:var(--muted);margin-top:2px}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(6,20,18,.55);
-      cursor:pointer;font-size:12px;user-select:none;white-space:nowrap;
+    .hero-sub{
+      margin:14px 0 0;
+      max-width:820px;
+      color:rgba(255,255,255,.90);
+      font-size:15px;
+      line-height:1.7;
     }
-    .btn.primary{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.22)}
-    .btn.gold{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.22)}
-    .btn.ghost{background:rgba(0,0,0,.20)}
+
+    .hero-points{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+      margin-top:18px;
+    }
+    .point{
+      min-height:92px;
+      padding:14px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+    }
+    .point-title{
+      font-size:13px;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    .point-text{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    /* ===== FORM PANEL ===== */
     .panel{
-      margin-top:14px;
-      border:1px solid var(--line);
-      background: rgba(11,42,31,.55);
-      backdrop-filter: blur(10px);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
+      margin-top:16px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(12,36,28,.94) 0%, rgba(9,24,20,.98) 100%);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
-    .hd{padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .hd .h1{font-weight:1000;font-size:14px}
-    .hd .h2{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
-    .body{padding:12px}
+    .panel-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .panel-title{
+      margin:0;
+      font-family:'Playfair Display',serif;
+      font-size:28px;
+      color:var(--gold);
+    }
+    .panel-sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      max-width:820px;
+    }
+    .panel-body{
+      padding:18px;
+    }
 
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
     .field{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(6,20,18,.45);
-      border-radius:16px;
-      padding:10px;
       display:flex;
       flex-direction:column;
-      gap:6px;
-      margin-bottom:10px;
+      gap:7px;
+      padding:12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
     }
-    .label{font-size:12px;color:var(--muted)}
-    .input, .select{
+    .field.full{
+      grid-column:1 / -1;
+    }
+    .label{
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+      letter-spacing:.2px;
+    }
+    .input,
+    .select,
+    .textarea{
       width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.16);
-      color:var(--text);
+      border:1px solid rgba(255,255,255,.12);
       outline:none;
+      border-radius:14px;
+      background:rgba(0,0,0,.16);
+      color:var(--text);
+      padding:12px 13px;
       font-size:14px;
     }
-    .hint{font-size:12px;color:rgba(234,255,241,.70);line-height:1.35}
+    .textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+    .hint{
+      font-size:12px;
+      color:var(--muted-2);
+      line-height:1.5;
+    }
+
+    .actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .state{
+      display:none;
+      margin-top:14px;
+      padding:16px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      line-height:1.7;
+    }
 
     .toast{
-      position:fixed; left:50%; transform:translateX(-50%);
-      bottom:14px; z-index:80;
-      background: rgba(0,0,0,.65);
-      border:1px solid rgba(255,255,255,.18);
-      color:rgba(234,255,241,.92);
-      padding:10px 12px;
-      border-radius: 999px;
-      backdrop-filter: blur(10px);
+      position:fixed;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      z-index:120;
       display:none;
-      max-width:min(94vw, 900px);
-      box-shadow: var(--shadow);
+      max-width:min(94vw, 780px);
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.66);
+      color:rgba(255,255,255,.94);
       font-size:13px;
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
     }
     .toast.show{display:block}
+
+    @media (max-width:820px){
+      .hero-points{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:680px){
+      .brand-sub{max-width:100%}
+      .top-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+      .hero-title{font-size:30px}
+    }
   </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="topbar-wrap">
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">∞</div>
+          <div class="brand-copy">
+            <div class="brand-title">DIGIY EXPLORE</div>
+            <div class="brand-sub">Faire entrer un spot terrain dans la vitrine — simple, direct, validé ensuite.</div>
+          </div>
+        </div>
 
-  <div class="topbar">
-    <div class="brand">
-      <div class="logo">♾️</div>
-      <div>
-        <div class="t1">DIGIY EXPLORE</div>
-        <div class="t2">Proposer un Spot (Draft → Admin Validate)</div>
+        <div class="top-actions">
+          <a class="btn ghost" href="./index.html">🏠 Retour</a>
+          <a class="btn ghost" href="./explore.html">🧭 Explorer</a>
+          <a class="btn gold" href="./admin-pin.html">🛡️ Admin</a>
+        </div>
       </div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <div class="btn ghost" onclick="location.href='./index.html'">⬅️ Retour</div>
-      <div class="btn gold" onclick="location.href='./admin-pin.html'">🛡️ Admin</div>
     </div>
   </div>
 
-  <div class="panel">
-    <div class="hd">
-      <div class="h1">Soumettre un spot terrain</div>
-      <div class="h2">
-        Ton spot est enregistré en <b>draft</b>. L’équipe DIGIY le publie après validation.
-      </div>
-    </div>
-    <div class="body">
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-in">
+        <div class="hero-badge">📩 Soumission publique</div>
+        <h1 class="hero-title">Proposer un spot terrain à DIGIY EXPLORE</h1>
+        <p class="hero-sub">
+          Le spot entre d’abord en <b>draft</b>, puis l’équipe DIGIY le relit et le valide.
+          L’idée n’est pas de compliquer : on fait simple, propre, visible, et on garde le terrain au centre.
+        </p>
 
-      <div class="field">
-        <div class="label">Nom du spot</div>
-        <input id="name" class="input" placeholder="Chez Astou — Saly"/>
+        <div class="hero-points">
+          <div class="point">
+            <div class="point-title">1) Tu proposes</div>
+            <div class="point-text">Nom, type, zone, contact, photo, quelques infos utiles. Rien de lourd.</div>
+          </div>
+          <div class="point">
+            <div class="point-title">2) DIGIY vérifie</div>
+            <div class="point-text">Le spot reste en draft tant qu’il n’a pas été validé par l’admin.</div>
+          </div>
+          <div class="point">
+            <div class="point-title">3) Le spot entre en vitrine</div>
+            <div class="point-text">Une fois propre, il rejoint la présence premium de la Petite Côte sur le net.</div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="field">
-        <div class="label">Type (obligatoire)</div>
-        <select id="type" class="select">
-          <option value="">— Choisir —</option>
-          <option value="resto">🍽️ Resto</option>
-          <option value="plage">🏖️ Plage</option>
-          <option value="culture">🏛️ Culture</option>
-          <option value="nature">🌿 Nature</option>
-          <option value="hebergement">🏠 Hébergement</option>
-          <option value="activite">🎯 Activité</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <div class="label">Ville</div>
-        <input id="city" class="input" placeholder="Saly"/>
-      </div>
-
-      <div class="field">
-        <div class="label">Zone</div>
-        <input id="zone" class="input" placeholder="Saly Center"/>
+    <section class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">Formulaire de soumission</h2>
+        <p class="panel-sub">
+          Les champs les plus importants sont le <b>nom</b> et le <b>type</b>. Le reste sert à rendre la fiche plus forte dès le départ.
+        </p>
       </div>
 
-      <div class="field">
-        <div class="label">Téléphone WhatsApp</div>
-        <input id="phone" class="input" placeholder="+221778765785"/>
+      <div class="panel-body">
+        <div class="form-grid">
+          <div class="field full">
+            <label class="label" for="name">Nom du spot *</label>
+            <input id="name" class="input" placeholder="Chez Astou — Saly" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="type">Type *</label>
+            <select id="type" class="select">
+              <option value="">— Choisir —</option>
+              <option value="resto">🍽️ Resto</option>
+              <option value="plage">🏖️ Plage</option>
+              <option value="culture">🏛️ Culture</option>
+              <option value="nature">🌿 Nature</option>
+              <option value="hebergement">🏠 Hébergement</option>
+              <option value="activite">🎯 Activité</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="label" for="city">Ville</label>
+            <input id="city" class="input" placeholder="Saly" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="zone">Zone</label>
+            <input id="zone" class="input" placeholder="Saly Center" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="phone">Téléphone WhatsApp</label>
+            <input id="phone" class="input" placeholder="+221778765785" />
+          </div>
+
+          <div class="field full">
+            <label class="label" for="photo_url">Photo principale (URL)</label>
+            <input id="photo_url" class="input" placeholder="https://..." />
+            <div class="hint">Pas de stockage lourd ici : une URL image suffit pour commencer.</div>
+          </div>
+
+          <div class="field full">
+            <label class="label" for="description">Description</label>
+            <textarea id="description" class="textarea" placeholder="Cuisine locale, ambiance simple, accueil direct, spot terrain DIGIY."></textarea>
+          </div>
+
+          <div class="field">
+            <label class="label" for="lat">Latitude</label>
+            <input id="lat" class="input" placeholder="14.4409" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="lng">Longitude</label>
+            <input id="lng" class="input" placeholder="-17.0056" />
+          </div>
+
+          <div class="field full">
+            <label class="label" for="owner_phone">Ton numéro (owner_phone)</label>
+            <input id="owner_phone" class="input" placeholder="+22177XXXXXXX" />
+            <div class="hint">Utilisé si l’équipe DIGIY doit te recontacter avant validation.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="btnSend" class="btn green" type="button">✅ Envoyer en draft</button>
+          <button id="btnReset" class="btn ghost" type="button">🧹 Vider le formulaire</button>
+        </div>
+
+        <div id="stateBox" class="state"></div>
       </div>
+    </section>
+  </main>
 
-      <div class="field">
-        <div class="label">Photo principale (URL)</div>
-        <input id="photo_url" class="input" placeholder="https://...jpg"/>
-        <div class="hint">Pas de stockage lourd : juste une URL.</div>
-      </div>
+  <div id="toast" class="toast"></div>
 
-      <div class="field">
-        <div class="label">Description courte</div>
-        <input id="description" class="input" placeholder="Cuisine locale, accueil simple, spot terrain DIGIY."/>
-      </div>
+  <script>
+    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
 
-      <div class="field">
-        <div class="label">Latitude / Longitude (option)</div>
-        <input id="lat" class="input" placeholder="14.4409"/>
-        <input id="lng" class="input" placeholder="-17.0056" style="margin-top:6px"/>
-      </div>
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false }
+    });
 
-      <div class="field">
-        <div class="label">Ton numéro (owner_phone)</div>
-        <input id="owner_phone" class="input" placeholder="+22177XXXXXXX"/>
-        <div class="hint">Pour contact admin si besoin.</div>
-      </div>
+    const $ = (s) => document.querySelector(s);
 
-      <div class="btn primary" id="btnSend">✅ Envoyer en Draft</div>
+    function toast(message){
+      const el = $("#toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.remove("show"), 2800);
+    }
 
-    </div>
-  </div>
-</div>
+    function setState(message){
+      const box = $("#stateBox");
+      box.style.display = "block";
+      box.innerHTML = message;
+    }
 
-<div id="toast" class="toast"></div>
+    function clearState(){
+      const box = $("#stateBox");
+      box.style.display = "none";
+      box.innerHTML = "";
+    }
 
-<script>
-/* ===============================
-   SUPABASE CONFIG
-================================ */
-const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-const CFG = window.__DIGIY_SUPABASE__ || {};
-const SUPABASE_URL = (CFG.url || DEFAULT_SUPABASE_URL).trim();
-const SUPABASE_ANON_KEY = (CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+    function normalizePhone(phone){
+      return String(phone ?? "").trim().replace(/[^\d+]/g, "");
+    }
 
-let sb=null;
-function ensureSupabase(){
-  if(sb) return sb;
-  if(!SUPABASE_URL || !SUPABASE_ANON_KEY){
-    toast("⚠️ Clé Supabase manquante (DIGIY_SUPABASE_ANON).");
-    throw new Error("Missing anon key");
-  }
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } });
-  return sb;
-}
+    function safeUrl(value){
+      const raw = String(value ?? "").trim();
+      if (!raw) return "";
+      try{
+        const u = new URL(raw);
+        if (u.protocol === "http:" || u.protocol === "https:") return u.href;
+        return "";
+      }catch{
+        return "";
+      }
+    }
 
-const $=(s)=>document.querySelector(s);
-const toastEl=$("#toast");
-function toast(msg){
-  toastEl.textContent=msg;
-  toastEl.classList.add("show");
-  clearTimeout(toastEl._t);
-  toastEl._t=setTimeout(()=>toastEl.classList.remove("show"),2800);
-}
+    function readForm(){
+      const latRaw = ($("#lat").value || "").trim();
+      const lngRaw = ($("#lng").value || "").trim();
+      const lat = parseFloat(latRaw);
+      const lng = parseFloat(lngRaw);
 
-function normalizePhone(p){
-  return (p||"").toString().trim().replace(/[^\d+]/g,"");
-}
+      return {
+        name: ($("#name").value || "").trim(),
+        type: ($("#type").value || "").trim(),
+        city: ($("#city").value || "").trim(),
+        zone: ($("#zone").value || "").trim(),
+        phone: normalizePhone($("#phone").value),
+        photo_url: safeUrl($("#photo_url").value),
+        description: ($("#description").value || "").trim(),
+        owner_phone: normalizePhone($("#owner_phone").value),
+        lat: Number.isFinite(lat) ? lat : null,
+        lng: Number.isFinite(lng) ? lng : null,
+        latRaw,
+        lngRaw
+      };
+    }
 
-async function submitSpot(){
-  const name = ($("#name").value||"").trim();
-  const type = ($("#type").value||"").trim();
-  const city = ($("#city").value||"").trim();
-  const zone = ($("#zone").value||"").trim();
-  const phone = normalizePhone($("#phone").value);
-  const photo_url = ($("#photo_url").value||"").trim();
-  const description = ($("#description").value||"").trim();
-  const owner_phone = normalizePhone($("#owner_phone").value);
-  const lat = parseFloat($("#lat").value||"");
-  const lng = parseFloat($("#lng").value||"");
+    function validateForm(data){
+      if (!data.name) return "Nom requis.";
+      if (!data.type) return "Type obligatoire.";
 
-  if(!name){ toast("Nom requis."); return; }
-  if(!type){ toast("Type obligatoire."); return; }
+      if ((data.latRaw && !Number.isFinite(data.lat)) || (data.lngRaw && !Number.isFinite(data.lng))) {
+        return "Latitude / longitude invalides.";
+      }
 
-  const payload = {
-    name,
-    type,
-    city: city || null,
-    zone: zone || null,
-    phone: phone || null,
-    photo_url: photo_url || null,
-    description: description || null,
-    owner_phone: owner_phone || null,
-    lat: Number.isFinite(lat) ? lat : null,
-    lng: Number.isFinite(lng) ? lng : null,
+      if ($("#photo_url").value.trim() && !data.photo_url) {
+        return "URL image invalide.";
+      }
 
-    status: "draft",   // ✅ toujours draft
-    score: 0
-  };
+      return "";
+    }
 
-  toast("⏳ Envoi…");
+    function resetForm(){
+      ["#name","#type","#city","#zone","#phone","#photo_url","#description","#lat","#lng","#owner_phone"]
+        .forEach((sel) => {
+          const el = $(sel);
+          if (!el) return;
+          if (el.tagName === "SELECT") el.value = "";
+          else el.value = "";
+        });
 
-  const sb = ensureSupabase();
-  const { data, error } = await sb
-    .from("digiy_explore_spots")
-    .insert([payload])
-    .select("id, name, status")
-    .single();
+      clearState();
+      toast("Formulaire vidé.");
+    }
 
-  if(error){
-    console.error(error);
-    toast("❌ Refusé (RLS / contraintes).");
-    return;
-  }
+    async function submitSpot(){
+      clearState();
 
-  toast("✅ Draft envoyé !");
-  setTimeout(()=>{
-    location.href = "./index.html";
-  }, 900);
-}
+      const btn = $("#btnSend");
+      const data = readForm();
+      const errMsg = validateForm(data);
 
-$("#btnSend").onclick = submitSpot;
-</script>
+      if (errMsg) {
+        toast(errMsg);
+        setState(`⚠️ ${errMsg}`);
+        return;
+      }
+
+      const payload = {
+        name: data.name,
+        type: data.type,
+        city: data.city || null,
+        zone: data.zone || null,
+        phone: data.phone || null,
+        photo_url: data.photo_url || null,
+        description: data.description || null,
+        owner_phone: data.owner_phone || null,
+        lat: data.lat,
+        lng: data.lng,
+        status: "draft",
+        score: 0
+      };
+
+      try{
+        btn.disabled = true;
+        btn.textContent = "⏳ Envoi en cours…";
+        toast("Envoi du draft…");
+
+        const { data: inserted, error } = await sb
+          .from("digiy_explore_spots")
+          .insert([payload])
+          .select("id, name, status")
+          .single();
+
+        if (error) {
+          console.error("SUBMIT ERROR:", error);
+          toast("❌ Envoi refusé.");
+          setState(`❌ Envoi refusé.<br><span style="opacity:.82">Vérifie la policy RLS ou les contraintes de la table.</span>`);
+          return;
+        }
+
+        toast("✅ Draft envoyé.");
+        setState(`
+          ✅ Spot enregistré en <b>draft</b>.<br>
+          <span style="opacity:.82">Nom : <b>${String(inserted?.name || data.name)}</b> — Statut : <b>${String(inserted?.status || "draft")}</b></span>
+        `);
+
+        setTimeout(() => {
+          window.location.href = "./index.html";
+        }, 1200);
+      }catch(err){
+        console.error("SUBMIT CRASH:", err);
+        toast("Crash JS pendant l’envoi.");
+        setState(`Crash JS 😵‍💫<br><span style="opacity:.82">Ouvre la console pour voir l’erreur exacte.</span>`);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✅ Envoyer en draft";
+      }
+    }
+
+    $("#btnSend").addEventListener("click", submitSpot);
+    $("#btnReset").addEventListener("click", resetForm);
+  </script>
 </body>
 </html>
