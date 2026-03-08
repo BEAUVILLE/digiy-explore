@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="DIGIY EXPLORE - Mise en relation directe entre voyageurs et professionnels africains. Zéro commission abusive. Paiement direct au pro." />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#00853f" />
   <title>DIGIY EXPLORE ∞ | Saly • Dakar • Petite Côte</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,11 @@
       --card: rgba(0,0,0,.55);
       --line: rgba(255,255,255,.12);
       --shadow: 0 14px 40px rgba(0,0,0,.45);
+
+      --senegal:#00853f;
+      --senegal2:#00a651;
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{
@@ -43,6 +47,7 @@
       border-bottom: 1px solid rgba(255,255,255,.08);
       padding: 14px 0;
     }
+
     .nav-container{
       max-width: 1200px;
       margin: 0 auto;
@@ -52,6 +57,7 @@
       justify-content:space-between;
       gap:12px;
     }
+
     .logo{
       display:flex;
       align-items:center;
@@ -61,13 +67,17 @@
       color: var(--gold);
       user-select:none;
       white-space:nowrap;
+      cursor:pointer;
     }
+
     .logo .inf{font-size:22px}
+
     .nav-links{
       display:none;
       gap:18px;
       align-items:center;
     }
+
     .nav-links a{
       color: rgba(255,255,255,.86);
       font-weight:600;
@@ -76,13 +86,18 @@
       border-radius:999px;
       transition:.2s;
     }
-    .nav-links a:hover{background: rgba(255,255,255,.08); color:#fff}
+
+    .nav-links a:hover{
+      background: rgba(255,255,255,.08);
+      color:#fff;
+    }
 
     .nav-actions{
       display:flex;
       align-items:center;
       gap:10px;
     }
+
     .nav-cta{
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
       color:#000;
@@ -96,17 +111,67 @@
       transition: transform .06s ease;
       white-space:nowrap;
     }
+
     .nav-cta:active{transform:scale(.98)}
+
     .menu-toggle{
-      background:none;border:0;color:#fff;
-      font-size:20px; cursor:pointer;
+      background:none;
+      border:0;
+      color:#fff;
+      font-size:20px;
+      cursor:pointer;
       padding:8px 10px;
       border-radius:12px;
     }
 
+    /* ===== RETURN BAR ===== */
+    .digiy-return-bar{
+      position:fixed;
+      top:64px;
+      left:0;
+      right:0;
+      z-index:998;
+      padding:10px 16px;
+      background:rgba(6,20,14,.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .digiy-return-inner{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .digiy-return-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
+      padding:0 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:1000;
+      color:#fff3cf;
+      border:1px solid rgba(212,175,55,.30);
+      background:rgba(212,175,55,.08);
+      white-space:nowrap;
+    }
+
+    .digiy-return-note{
+      font-size:12px;
+      color:rgba(255,255,255,.70);
+      line-height:1.4;
+    }
+
     /* Mobile menu */
     .drawer{
-      position:fixed; inset:60px 0 0 0;
+      position:fixed;
+      inset:112px 0 0 0;
       background: rgba(0,0,0,.96);
       border-top:1px solid rgba(255,255,255,.08);
       display:none;
@@ -114,7 +179,9 @@
       z-index:999;
       overflow:auto;
     }
+
     .drawer.open{display:block}
+
     .drawer a{
       display:block;
       padding:14px 12px;
@@ -138,10 +205,11 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 110px 16px 40px;
+      padding: 170px 16px 40px;
       position:relative;
       overflow:hidden;
     }
+
     .hero::before{
       content:"";
       position:absolute; inset:0;
@@ -150,6 +218,7 @@
         url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&auto=format&fit=crop&q=70&fm=webp') center/cover;
       transform: scale(1.02);
     }
+
     .hero::after{
       content:"";
       position:absolute; inset:0;
@@ -158,11 +227,13 @@
         radial-gradient(900px 520px at 85% 90%, rgba(34,197,94,.12), transparent 55%);
       pointer-events:none;
     }
+
     .hero-content{
       position:relative; z-index:5;
       max-width: 980px;
       text-align:center;
     }
+
     .badge{
       display:inline-block;
       padding:10px 16px;
@@ -175,6 +246,7 @@
       font-size:13px;
       margin-bottom:18px;
     }
+
     h1{
       font-family:'Playfair Display',serif;
       font-weight:900;
@@ -182,6 +254,7 @@
       line-height:1.1;
       text-shadow: 0 6px 24px rgba(0,0,0,.6);
     }
+
     .sub{
       margin: 14px auto 22px;
       max-width: 820px;
@@ -190,6 +263,7 @@
       line-height:1.6;
       text-shadow: 0 4px 18px rgba(0,0,0,.55);
     }
+
     @media (min-width: 768px){
       h1{font-size:64px}
       .sub{font-size:18px}
@@ -203,6 +277,7 @@
       flex-wrap:wrap;
       margin-top: 10px;
     }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -219,29 +294,39 @@
       transition: transform .06s ease, background .2s ease, border-color .2s ease;
       min-width: 240px;
     }
+
     .btn:active{transform:scale(.98)}
+
     .btn.primary{
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
       color:#000;
       border-color: rgba(212,175,55,.55);
       box-shadow: 0 18px 44px rgba(212,175,55,.22);
     }
+
     .btn.secondary{
       background: rgba(0,0,0,.55);
       border-color: rgba(255,255,255,.16);
     }
+
     .btn.ghost{
       background: rgba(255,255,255,.06);
     }
 
     /* ===== SECTIONS ===== */
-    section{scroll-margin-top:80px}
+    section{scroll-margin-top:136px}
+
     .section{
       padding: 60px 16px;
       background:#000;
       border-top: 1px solid rgba(255,255,255,.06);
     }
-    .container{max-width: 1100px;margin:0 auto}
+
+    .container{
+      max-width: 1100px;
+      margin:0 auto;
+    }
+
     .sec-title{
       font-family:'Playfair Display',serif;
       font-size: 34px;
@@ -249,6 +334,7 @@
       text-align:center;
       margin-bottom: 12px;
     }
+
     .sec-sub{
       text-align:center;
       color: rgba(255,255,255,.78);
@@ -263,9 +349,11 @@
       gap:12px;
       margin-top: 18px;
     }
+
     @media (min-width: 900px){
       .cards{grid-template-columns: repeat(3, 1fr)}
     }
+
     .card{
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
@@ -273,14 +361,24 @@
       padding: 18px;
       box-shadow: var(--shadow);
     }
-    .card h3{font-size:16px;margin-bottom:8px}
-    .card p{color: rgba(255,255,255,.76); line-height:1.7; font-size:14px}
+
+    .card h3{
+      font-size:16px;
+      margin-bottom:8px;
+    }
+
+    .card p{
+      color: rgba(255,255,255,.76);
+      line-height:1.7;
+      font-size:14px;
+    }
 
     .big-cta{
       margin-top: 22px;
       display:flex;
       justify-content:center;
     }
+
     .big-cta .btn{
       min-width: min(560px, 92vw);
       font-size: 16px;
@@ -294,6 +392,21 @@
       text-align:center;
       font-size: 12px;
       background:#000;
+    }
+
+    @media (max-width: 640px){
+      .digiy-return-bar{
+        top:60px;
+      }
+      .hero{
+        padding-top:178px;
+      }
+      .digiy-return-inner{
+        align-items:flex-start;
+      }
+      .digiy-return-note{
+        width:100%;
+      }
     }
   </style>
 </head>
@@ -312,8 +425,8 @@
         <a href="#role">Notre rôle</a>
         <a href="#zones">Zones</a>
         <a href="#vision">Vision</a>
-        <a href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">ACTIVER MON MODULE</a>
-        <a href="./explore.html">Entrer / Explorer</a>
+        <a id="navPayLink" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">ACTIVER MON MODULE</a>
+        <a id="navExploreLink" href="./explore.html">Entrer / Explorer</a>
       </div>
 
       <div class="nav-actions">
@@ -323,13 +436,24 @@
     </div>
   </nav>
 
+  <!-- RETURN BAR -->
+  <div class="digiy-return-bar">
+    <div class="digiy-return-inner">
+      <a id="backToDigiy" class="digiy-return-link" href="http://digiylyfe.com">← Retour DIGIYLYFE</a>
+      <div class="digiy-return-note">
+        Après la visite, tu peux revenir directement sur la vitrine principale DIGIYLYFE.
+      </div>
+    </div>
+  </div>
+
   <!-- MOBILE DRAWER -->
   <div class="drawer" id="drawer">
     <a href="#role">Notre rôle</a>
     <a href="#zones">Zones</a>
     <a href="#vision">Vision</a>
-    <a href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MON MODULE</a>
-   <a href="./explore.html">Entrer / Explorer</a>
+    <a id="drawerPayLink" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MON MODULE</a>
+    <a id="drawerExploreLink" href="./explore.html">Entrer / Explorer</a>
+    <a id="drawerBackLink" href="http://digiylyfe.com">← Retour DIGIYLYFE</a>
   </div>
 
   <!-- HERO -->
@@ -342,7 +466,6 @@
         Zéro commission abusive. Paiement direct au pro.
       </p>
 
-      <!-- Boutons du haut -->
       <div class="cta-grid">
         <button class="btn primary" id="ctaExploreTop">🔥 Entrer dans EXPLORE</button>
         <button class="btn secondary" id="ctaPayMid">💳 ACTIVER MON MODULE (Abonnement)</button>
@@ -384,7 +507,6 @@
         Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine vers d’autres pays africains.
       </div>
 
-      <!-- GROS BOUTON (celui qui bouclait chez toi) -->
       <div class="big-cta">
         <button class="btn primary" id="ctaExploreBottom">🚀 Explorer maintenant</button>
       </div>
@@ -411,42 +533,78 @@
   </footer>
 
   <script>
-    // ========= LIENS ABSOLUS (ANTI-BOUCLE) =========
- const LINKS = {
-  explore: "./explore.html",
-  pay: "https://beauville.github.io/commencer-a-payer/"
-};
+    (function(){
+      const qp = new URLSearchParams(location.search);
+      const RETURN_URL = (qp.get("return") || "http://digiylyfe.com").trim();
 
-    function go(url){
-      // ouvre paiement en nouvel onglet, explore en même onglet
-      if(url === LINKS.pay){
-        window.open(url, "_blank", "noopener,noreferrer");
-      } else {
-        location.href = url;
+      function withReturn(url){
+        try{
+          const u = new URL(url, location.href);
+          u.searchParams.set("return", RETURN_URL);
+          return u.toString();
+        }catch(e){
+          return url;
+        }
       }
-    }
 
-    // CTA
-    document.getElementById("ctaExploreTop").onclick = () => go(LINKS.explore);
-    document.getElementById("ctaExploreBottom").onclick = () => go(LINKS.explore);
-    document.getElementById("ctaEnter").onclick = () => go(LINKS.explore);
+      const LINKS = {
+        explore: withReturn("./explore.html"),
+        pay: withReturn("https://beauville.github.io/commencer-a-payer/")
+      };
 
-    document.getElementById("ctaPayTop").onclick = () => go(LINKS.pay);
-    document.getElementById("ctaPayMid").onclick = () => go(LINKS.pay);
-    document.getElementById("ctaPayBottom").onclick = () => go(LINKS.pay);
+      function go(url, newTab = false){
+        if(newTab){
+          window.open(url, "_blank", "noopener,noreferrer");
+        } else {
+          location.href = url;
+        }
+      }
 
-    // Menu mobile
-    const menuToggle = document.getElementById("menuToggle");
-    const drawer = document.getElementById("drawer");
-    menuToggle.onclick = () => drawer.classList.toggle("open");
+      // Retour DIGIYLYFE
+      const backLinks = [
+        document.getElementById("backToDigiy"),
+        document.getElementById("drawerBackLink")
+      ];
 
-    // ferme drawer quand on clique un lien interne
-    drawer.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener("click", ()=>drawer.classList.remove("open"));
-    });
+      backLinks.forEach(a => {
+        if(a) a.href = RETURN_URL;
+      });
+
+      // Nav links
+      const navPayLink = document.getElementById("navPayLink");
+      const navExploreLink = document.getElementById("navExploreLink");
+      const drawerPayLink = document.getElementById("drawerPayLink");
+      const drawerExploreLink = document.getElementById("drawerExploreLink");
+
+      if(navPayLink) navPayLink.href = LINKS.pay;
+      if(navExploreLink) navExploreLink.href = LINKS.explore;
+      if(drawerPayLink) drawerPayLink.href = LINKS.pay;
+      if(drawerExploreLink) drawerExploreLink.href = LINKS.explore;
+
+      // CTA
+      document.getElementById("ctaExploreTop").onclick = () => go(LINKS.explore, false);
+      document.getElementById("ctaExploreBottom").onclick = () => go(LINKS.explore, false);
+      document.getElementById("ctaEnter").onclick = () => go(LINKS.explore, false);
+
+      document.getElementById("ctaPayTop").onclick = () => go(LINKS.pay, true);
+      document.getElementById("ctaPayMid").onclick = () => go(LINKS.pay, true);
+      document.getElementById("ctaPayBottom").onclick = () => go(LINKS.pay, true);
+
+      // Logo retour haut
+      document.getElementById("homeTop").addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // Menu mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const drawer = document.getElementById("drawer");
+
+      menuToggle.onclick = () => drawer.classList.toggle("open");
+
+      drawer.querySelectorAll('a').forEach(a=>{
+        a.addEventListener("click", ()=>drawer.classList.remove("open"));
+      });
+    })();
   </script>
 </body>
-<div class="digiy-return-bar">
-  <a id="backToDigiy" href="http://digiylyfe.com">← Retour DIGIYLYFE</a>
-</div>  
 </html>
