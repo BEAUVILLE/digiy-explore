@@ -237,6 +237,11 @@
       border-color:rgba(212,175,55,.42);
       background:rgba(212,175,55,.10);
     }
+    .badge.admin{
+      border-color:rgba(212,175,55,.42);
+      background:rgba(212,175,55,.10);
+      color:#f2d26a;
+    }
     .dot{
       width:9px;
       height:9px;
@@ -488,6 +493,8 @@
         <div class="top-actions">
           <a class="btn ghost" href="./index.html">🏠 Accueil</a>
           <a class="btn ghost" href="./explore.html">🧭 Explorer</a>
+          <a id="btnAdminPinTop" class="btn ghost" href="./admin-pin.html" style="display:none">🛡️ Admin PIN</a>
+          <a id="btnAdminAuditTop" class="btn ghost" href="./admin-audit.html" style="display:none">🧾 Audit</a>
           <a class="btn gold" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
         </div>
       </div>
@@ -558,6 +565,10 @@
                 <div id="dureeLine" class="info-value">—</div>
               </div>
               <div class="info-row">
+                <div class="info-label">Statut</div>
+                <div id="statusLine" class="info-value">—</div>
+              </div>
+              <div class="info-row">
                 <div class="info-label">Lien</div>
                 <div id="linkLine" class="info-value">—</div>
               </div>
@@ -617,6 +628,8 @@
       window.DIGIY_PAY_URL ||
       "https://commencer-a-payer.digiylyfe.com/";
 
+    const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
+
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: { persistSession: false }
     });
@@ -647,7 +660,7 @@
 
     function toast(message){
       const el = $("toast");
-      el.textContent = message;
+      el.textContent = String(message || "");
       el.classList.add("show");
       clearTimeout(el._timer);
       el._timer = setTimeout(() => el.classList.remove("show"), 2800);
@@ -655,11 +668,11 @@
 
     function esc(value){
       return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
     }
 
     function normalizePhone(phone){
@@ -723,6 +736,14 @@
       return "✨ Spot";
     }
 
+    function statusLabel(value){
+      const v = String(value || "").toLowerCase().trim();
+      if (v === "published") return "published";
+      if (v === "draft") return "draft";
+      if (v === "rejected") return "rejected";
+      return value || "—";
+    }
+
     function cleanDesc(value){
       const t = String(value || "").trim();
       if (!t) {
@@ -756,6 +777,47 @@
       return [];
     }
 
+    function getPinSession(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        const s = raw ? JSON.parse(raw) : null;
+        if (!s?.phone || !s?.pin) return null;
+        return {
+          phone: String(s.phone),
+          pin: String(s.pin)
+        };
+      }catch{
+        return null;
+      }
+    }
+
+    async function verifyStoredSession(){
+      const s = getPinSession();
+      if (!s?.phone || !s?.pin) return false;
+
+      try{
+        const { data, error } = await sb.rpc("explore_admin_pin_check", {
+          p_phone: s.phone,
+          p_pin: s.pin
+        });
+
+        if (error) {
+          console.warn("ADMIN PIN CHECK ERROR:", error);
+          return false;
+        }
+
+        return !!data?.ok;
+      }catch(err){
+        console.warn("ADMIN PIN CHECK CRASH:", err);
+        return false;
+      }
+    }
+
+    function renderAdminRail(isAdmin){
+      $("btnAdminPinTop").style.display = isAdmin ? "inline-flex" : "none";
+      $("btnAdminAuditTop").style.display = isAdmin ? "inline-flex" : "none";
+    }
+
     async function checkExploreBoost(phone){
       if (!phone) return false;
 
@@ -777,8 +839,9 @@
       }
     }
 
-    function renderHeroBadges(data, boostActive){
+    function renderHeroBadges(data, boostActive, isAdminMode){
       const badges = [];
+
       badges.push(`<span class="badge ${esc(badgeClass(data.badge))}"><span class="dot"></span>${esc(badgeLabel(data.badge))}</span>`);
 
       if (data.type) badges.push(`<span class="badge">${esc("🏷️ " + data.type)}</span>`);
@@ -786,6 +849,7 @@
       if (data.budget) badges.push(`<span class="badge">${esc("💰 " + data.budget)}</span>`);
       if (data.duree) badges.push(`<span class="badge">${esc("⏱️ " + data.duree)}</span>`);
       if (boostActive) badges.push(`<span class="badge gold">🔥 Boost actif</span>`);
+      if (isAdminMode) badges.push(`<span class="badge admin">🛡️ admin • ${esc(statusLabel(data.status))}</span>`);
 
       $("heroBadges").innerHTML = badges.join("");
     }
@@ -837,6 +901,10 @@
 
       const popupHtml = `<strong>${esc(data.name || "Spot")}</strong>`;
       L.marker([lat, lng]).addTo(map).bindPopup(popupHtml);
+
+      setTimeout(() => {
+        try{ map.invalidateSize(); }catch{}
+      }, 120);
     }
 
     function buildBoostUrl(phone){
@@ -856,25 +924,34 @@
         return;
       }
 
+      const isAdminMode = await verifyStoredSession();
+      renderAdminRail(isAdminMode);
+
       let query = sb
         .from("digiy_explore_spots")
         .select("*")
-        .eq("status", "published")
         .limit(1);
 
-      if (slug) query = query.eq("slug", slug);
-      else query = query.eq("id", id);
+      if (!isAdminMode) {
+        query = query.eq("status", "published");
+      }
+
+      if (id) {
+        query = query.eq("id", id);
+      } else {
+        query = query.eq("slug", slug);
+      }
 
       const { data, error } = await query.maybeSingle();
 
       if (error) {
         console.error("LOAD SPOT ERROR:", error);
-        setState(`❌ Impossible de lire ce spot.<br><span style="opacity:.82">Vérifie la table, la policy RLS ou le slug demandé.</span>`);
+        setState(`❌ Impossible de lire ce spot.<br><span style="opacity:.82">${esc(error.message || "Vérifie la table, la policy RLS ou le slug demandé.")}</span>`);
         return;
       }
 
       if (!data) {
-        setState(`Spot introuvable.<br><span style="opacity:.82">Il est peut-être non publié, ou le slug n’existe pas.</span>`);
+        setState(`Spot introuvable.<br><span style="opacity:.82">Il est peut-être non publié, ou l’identifiant demandé n’existe pas.</span>`);
         return;
       }
 
@@ -905,7 +982,7 @@
       $("spotMeta").textContent = [data.zone, data.city].filter(Boolean).join(" • ") || "Petite Côte";
       $("spotDesc").textContent = cleanDesc(data.description);
 
-      renderHeroBadges(data, boostActive);
+      renderHeroBadges(data, boostActive, isAdminMode);
 
       const pills = [];
       const tags = parseTags(data.tags);
@@ -918,6 +995,10 @@
         pills.push(`<span class="pill">${esc("⭐ Score " + Number(data.score))}</span>`);
       }
 
+      if (isAdminMode && data.status && data.status !== "published") {
+        pills.push(`<span class="pill">${esc("🛡️ Vue admin : " + statusLabel(data.status))}</span>`);
+      }
+
       $("spotPills").innerHTML = pills.join("");
 
       $("phoneLine").textContent = phone || "Non renseigné";
@@ -926,6 +1007,7 @@
       $("typeLine").textContent = data.type || "—";
       $("budgetLine").textContent = data.budget || "—";
       $("dureeLine").textContent = data.duree || "—";
+      $("statusLine").textContent = statusLabel(data.status);
 
       if (site) {
         $("linkLine").innerHTML = `<a href="${esc(site)}" target="_blank" rel="noopener noreferrer">${esc(site)}</a>`;
@@ -977,7 +1059,7 @@
 
     loadSpot().catch((err) => {
       console.error("SPOT FATAL:", err);
-      setState(`Crash JS 😵‍💫<br><span style="opacity:.82">Ouvre la console pour voir l’erreur exacte.</span>`);
+      setState(`Crash JS 😵‍💫<br><span style="opacity:.82">${esc(err?.message || "Ouvre la console pour voir l’erreur exacte.")}</span>`);
       toast("Crash JS — voir la console");
     });
   </script>
