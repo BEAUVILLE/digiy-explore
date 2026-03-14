@@ -6,15 +6,16 @@
   <meta name="theme-color" content="#06130f" />
   <meta
     name="description"
-    content="DIGIY EXPLORE — L’empreinte premium de la Petite Côte. Spots, lieux, expériences et pros terrain en contact direct."
+    content="DIGIY EXPLORE — présence tourisme dans l’écosystème DIGIYLYFE. Spots, lieux, expériences et pros terrain en contact direct."
   />
-  <title>DIGIY EXPLORE ∞ — Petite Côte</title>
+  <title>DIGIY EXPLORE ∞ — Présence tourisme • Petite Côte</title>
 
   <script>
     window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
     window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
     window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
     window.DIGIY_MODULE = "EXPLORE";
+    window.DIGIY_PAY_URL = "https://commencer-a-payer.digiylyfe.com/";
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -227,6 +228,13 @@
       font-size:15px;
       line-height:1.7;
       text-shadow:0 4px 18px rgba(0,0,0,.45);
+    }
+    .hero-note{
+      margin:12px 0 0;
+      max-width:860px;
+      color:rgba(255,255,255,.82);
+      font-size:14px;
+      line-height:1.7;
     }
     .hero-cta{
       display:flex;
@@ -561,14 +569,14 @@
           <div class="brand-mark">∞</div>
           <div class="brand-copy">
             <div class="brand-title">DIGIY EXPLORE</div>
-            <div class="brand-sub">La Petite Côte signe sa présence sur le net — version terrain, premium, directe.</div>
+            <div class="brand-sub">Présence tourisme DIGIYLYFE — terrain, contact direct, visibilité claire.</div>
           </div>
         </div>
 
         <div class="top-actions">
-          <a class="btn ghost" href="https://digiylyfe.com/" target="_blank" rel="noopener noreferrer">← DIGIYLYFE</a>
+          <a id="btnBackDigiy" class="btn ghost" href="https://digiylyfe.com/" target="_blank" rel="noopener noreferrer">← DIGIYLYFE</a>
           <a class="btn green" href="./submitV2.html">➕ Proposer mon spot</a>
-          <a class="btn gold" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
+          <a id="btnPayTop" class="btn gold" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Activer ma présence</a>
         </div>
       </div>
     </div>
@@ -577,16 +585,19 @@
   <main class="shell">
     <section class="hero">
       <div class="hero-in">
-        <div class="hero-badge">🇸🇳 Saly • Somone • Ngaparou • Mbour • Dakar</div>
-        <h1 class="hero-title">L’empreinte premium de la Petite Côte.</h1>
+        <div class="hero-badge">🇸🇳 Saly • Somone • Ngaparou • Mbour • Dakar • Abonnement principal</div>
+        <h1 class="hero-title">Les spots visibles d’une vraie présence tourisme.</h1>
         <p class="hero-sub">
           DIGIY EXPLORE met en lumière les spots, les lieux, les pros et les expériences du terrain.
           Découverte simple, contact direct, itinéraire clair, présence forte. Le monde voit. Le pro garde sa valeur.
         </p>
+        <p class="hero-note">
+          EXPLORE n’est pas un simple boost. C’est le socle principal de présence tourisme dans l’écosystème DIGIYLYFE. Le boost vient ensuite, en renfort.
+        </p>
 
         <div class="hero-cta">
-          <a class="btn gold" href="#spots">🔥 Voir les spots</a>
-          <a class="btn ghost" href="./submitV2.html">📩 Faire entrer un pro</a>
+          <a class="btn gold" href="#spots">🧭 Voir les spots</a>
+          <a id="btnPayHero" class="btn ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Activer ma présence EXPLORE</a>
         </div>
 
         <div class="filters">
@@ -658,21 +669,16 @@
     </section>
 
     <footer class="footer">
-      © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Mise en relation directe • Paiement direct au pro
+      © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Présence tourisme • Contact direct • Paiement direct au pro
     </footer>
   </main>
 
   <div id="toast" class="toast"></div>
 
   <script>
-    /* ===============================
-       DIGIY EXPLORE — index.html
-       Listing public premium / direct
-    =============================== */
-
     const SUPABASE_URL = window.DIGIY_SUPABASE_URL;
     const SUPABASE_ANON_KEY = window.DIGIY_SUPABASE_ANON_KEY || window.DIGIY_SUPABASE_ANON;
-    const PAY_URL = "https://commencer-a-payer.digiylyfe.com/";
+    const PAY_URL = window.DIGIY_PAY_URL || "https://commencer-a-payer.digiylyfe.com/";
 
     const $ = (s) => document.querySelector(s);
 
@@ -771,6 +777,27 @@
       history.replaceState({}, "", u.toString());
     }
 
+    function buildPayUrl(plan = "essentiel", source = "digiy-explore-listing"){
+      const u = new URL(PAY_URL, window.location.href);
+      u.searchParams.set("module", "EXPLORE");
+      u.searchParams.set("plan", plan);
+      u.searchParams.set("source", source);
+      u.searchParams.set("return", window.location.href);
+      return u.toString();
+    }
+
+    function buildSpotHref(spot){
+      const slug = String(spot?.slug || "").trim();
+      const id = String(spot?.id || "").trim();
+      const u = new URL("./spot.html", window.location.href);
+
+      if (slug) u.searchParams.set("slug", slug);
+      else if (id) u.searchParams.set("id", id);
+
+      u.searchParams.set("return", window.location.href);
+      return u.toString();
+    }
+
     function getClient(){
       if (!window.supabase?.createClient) {
         throw new Error("Supabase JS v2 non chargé.");
@@ -843,6 +870,31 @@
       applyFilters(true);
     }
 
+    function parseTags(value){
+      if (Array.isArray(value)) {
+        return value.map(v => String(v).trim()).filter(Boolean);
+      }
+
+      if (typeof value === "string") {
+        const trimmed = value.trim();
+        if (!trimmed) return [];
+
+        try{
+          const parsed = JSON.parse(trimmed);
+          if (Array.isArray(parsed)) {
+            return parsed.map(v => String(v).trim()).filter(Boolean);
+          }
+        }catch{}
+
+        return trimmed
+          .split(",")
+          .map(v => v.trim())
+          .filter(Boolean);
+      }
+
+      return [];
+    }
+
     async function loadSpots(){
       $("#statLine").textContent = "Chargement des spots…";
 
@@ -890,7 +942,7 @@
     }
 
     function spotText(s){
-      const tags = Array.isArray(s.tags) ? s.tags.join(" ") : "";
+      const tags = parseTags(s.tags).join(" ");
       return `${s.name || ""} ${s.type || ""} ${s.zone || ""} ${s.city || ""} ${tags}`.toLowerCase();
     }
 
@@ -968,10 +1020,7 @@
 
       grid.innerHTML = filtered.map((s) => {
         const title = s.name || "Spot";
-        const slug = String(s.slug || "").trim();
-        const href = slug
-          ? `./spot.html?slug=${encodeURIComponent(slug)}`
-          : (s.id ? `./spot.html?id=${encodeURIComponent(s.id)}` : "#");
+        const href = buildSpotHref(s);
 
         const statusClass = badgeClass(s.badge);
         const statusLabel = badgeLabel(s.badge);
@@ -1051,8 +1100,24 @@
       });
     }
 
+    function bindGlobalLinks(){
+      const backUrl = safeUrl(qs("return")) || "https://digiylyfe.com/";
+      const payTop = buildPayUrl("essentiel", "digiy-explore-top");
+      const payHero = buildPayUrl("essentiel", "digiy-explore-hero");
+
+      const backBtn = $("#btnBackDigiy");
+      if (backBtn) backBtn.href = backUrl;
+
+      const btnPayTop = $("#btnPayTop");
+      const btnPayHero = $("#btnPayHero");
+
+      if (btnPayTop) btnPayTop.href = payTop;
+      if (btnPayHero) btnPayHero.href = payHero;
+    }
+
     (function boot(){
       try{
+        bindGlobalLinks();
         sb = getClient();
         renderQuickChips();
         readUrlFilters();
