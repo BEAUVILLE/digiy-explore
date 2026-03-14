@@ -17,6 +17,12 @@
     rel="stylesheet"
   />
 
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -295,6 +301,10 @@
       padding:12px 13px;
       font-size:14px;
     }
+    .input::placeholder,
+    .textarea::placeholder{
+      color:rgba(242,255,248,.38);
+    }
     .textarea{
       min-height:110px;
       resize:vertical;
@@ -414,84 +424,91 @@
       </div>
 
       <div class="panel-body">
-        <div class="form-grid">
-          <div class="field full">
-            <label class="label" for="name">Nom du spot *</label>
-            <input id="name" class="input" placeholder="Chez Astou — Saly" />
+        <form id="spotForm" novalidate>
+          <div class="form-grid">
+            <div class="field full">
+              <label class="label" for="name">Nom du spot *</label>
+              <input id="name" class="input" placeholder="Chez Astou — Saly" maxlength="140" autocomplete="organization" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="type">Type *</label>
+              <select id="type" class="select">
+                <option value="">— Choisir —</option>
+                <option value="resto">🍽️ Resto</option>
+                <option value="plage">🏖️ Plage</option>
+                <option value="culture">🏛️ Culture</option>
+                <option value="nature">🌿 Nature</option>
+                <option value="hebergement">🏠 Hébergement</option>
+                <option value="activite">🎯 Activité</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="label" for="city">Ville</label>
+              <input id="city" class="input" placeholder="Saly" maxlength="80" autocomplete="address-level2" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="zone">Zone</label>
+              <input id="zone" class="input" placeholder="Saly Center" maxlength="120" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="phone">Téléphone WhatsApp</label>
+              <input id="phone" class="input" type="tel" placeholder="+221778765785" autocomplete="tel" />
+            </div>
+
+            <div class="field full">
+              <label class="label" for="photo_url">Photo principale (URL)</label>
+              <input id="photo_url" class="input" type="url" placeholder="https://..." inputmode="url" />
+              <div class="hint">Pas de stockage lourd ici : une URL image suffit pour commencer.</div>
+            </div>
+
+            <div class="field full">
+              <label class="label" for="description">Description</label>
+              <textarea id="description" class="textarea" placeholder="Cuisine locale, ambiance simple, accueil direct, spot terrain DIGIY." maxlength="1200"></textarea>
+            </div>
+
+            <div class="field">
+              <label class="label" for="lat">Latitude</label>
+              <input id="lat" class="input" type="number" step="any" placeholder="14.4409" inputmode="decimal" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="lng">Longitude</label>
+              <input id="lng" class="input" type="number" step="any" placeholder="-17.0056" inputmode="decimal" />
+            </div>
+
+            <div class="field full">
+              <label class="label" for="owner_phone">Ton numéro (owner_phone)</label>
+              <input id="owner_phone" class="input" type="tel" placeholder="+22177XXXXXXX" autocomplete="tel" />
+              <div class="hint">Utilisé si l’équipe DIGIY doit te recontacter avant validation.</div>
+            </div>
           </div>
 
-          <div class="field">
-            <label class="label" for="type">Type *</label>
-            <select id="type" class="select">
-              <option value="">— Choisir —</option>
-              <option value="resto">🍽️ Resto</option>
-              <option value="plage">🏖️ Plage</option>
-              <option value="culture">🏛️ Culture</option>
-              <option value="nature">🌿 Nature</option>
-              <option value="hebergement">🏠 Hébergement</option>
-              <option value="activite">🎯 Activité</option>
-            </select>
+          <div class="actions">
+            <button id="btnSend" class="btn green" type="submit">✅ Envoyer en draft</button>
+            <button id="btnReset" class="btn ghost" type="button">🧹 Vider le formulaire</button>
           </div>
+        </form>
 
-          <div class="field">
-            <label class="label" for="city">Ville</label>
-            <input id="city" class="input" placeholder="Saly" />
-          </div>
-
-          <div class="field">
-            <label class="label" for="zone">Zone</label>
-            <input id="zone" class="input" placeholder="Saly Center" />
-          </div>
-
-          <div class="field">
-            <label class="label" for="phone">Téléphone WhatsApp</label>
-            <input id="phone" class="input" placeholder="+221778765785" />
-          </div>
-
-          <div class="field full">
-            <label class="label" for="photo_url">Photo principale (URL)</label>
-            <input id="photo_url" class="input" placeholder="https://..." />
-            <div class="hint">Pas de stockage lourd ici : une URL image suffit pour commencer.</div>
-          </div>
-
-          <div class="field full">
-            <label class="label" for="description">Description</label>
-            <textarea id="description" class="textarea" placeholder="Cuisine locale, ambiance simple, accueil direct, spot terrain DIGIY."></textarea>
-          </div>
-
-          <div class="field">
-            <label class="label" for="lat">Latitude</label>
-            <input id="lat" class="input" placeholder="14.4409" />
-          </div>
-
-          <div class="field">
-            <label class="label" for="lng">Longitude</label>
-            <input id="lng" class="input" placeholder="-17.0056" />
-          </div>
-
-          <div class="field full">
-            <label class="label" for="owner_phone">Ton numéro (owner_phone)</label>
-            <input id="owner_phone" class="input" placeholder="+22177XXXXXXX" />
-            <div class="hint">Utilisé si l’équipe DIGIY doit te recontacter avant validation.</div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button id="btnSend" class="btn green" type="button">✅ Envoyer en draft</button>
-          <button id="btnReset" class="btn ghost" type="button">🧹 Vider le formulaire</button>
-        </div>
-
-        <div id="stateBox" class="state"></div>
+        <div id="stateBox" class="state" aria-live="polite"></div>
       </div>
     </section>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" aria-live="polite"></div>
 
   <script>
-    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_URL =
+      window.DIGIY_SUPABASE_URL ||
+      "https://wesqmwjjtsefyjnluosj.supabase.co";
+
     const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+      window.DIGIY_SUPABASE_ANON_KEY ||
+      window.DIGIY_SUPABASE_ANON ||
+      "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
 
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: { persistSession: false }
@@ -499,18 +516,27 @@
 
     const $ = (s) => document.querySelector(s);
 
+    function escapeHtml(value){
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
     function toast(message){
       const el = $("#toast");
-      el.textContent = message;
+      el.textContent = String(message || "");
       el.classList.add("show");
       clearTimeout(el._timer);
       el._timer = setTimeout(() => el.classList.remove("show"), 2800);
     }
 
-    function setState(message){
+    function setState(html){
       const box = $("#stateBox");
       box.style.display = "block";
-      box.innerHTML = message;
+      box.innerHTML = html;
     }
 
     function clearState(){
@@ -519,8 +545,17 @@
       box.innerHTML = "";
     }
 
+    function setBusy(isBusy){
+      const btn = $("#btnSend");
+      btn.disabled = !!isBusy;
+      btn.textContent = isBusy ? "⏳ Envoi en cours…" : "✅ Envoyer en draft";
+    }
+
     function normalizePhone(phone){
-      return String(phone ?? "").trim().replace(/[^\d+]/g, "");
+      return String(phone ?? "")
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/[^\d+]/g, "");
     }
 
     function safeUrl(value){
@@ -535,11 +570,19 @@
       }
     }
 
+    function parseMaybeFloat(value){
+      const raw = String(value ?? "").trim();
+      if (!raw) return { raw, value: null };
+      const parsed = Number(raw.replace(",", "."));
+      return {
+        raw,
+        value: Number.isFinite(parsed) ? parsed : NaN
+      };
+    }
+
     function readForm(){
-      const latRaw = ($("#lat").value || "").trim();
-      const lngRaw = ($("#lng").value || "").trim();
-      const lat = parseFloat(latRaw);
-      const lng = parseFloat(lngRaw);
+      const latObj = parseMaybeFloat($("#lat").value);
+      const lngObj = parseMaybeFloat($("#lng").value);
 
       return {
         name: ($("#name").value || "").trim(),
@@ -550,10 +593,10 @@
         photo_url: safeUrl($("#photo_url").value),
         description: ($("#description").value || "").trim(),
         owner_phone: normalizePhone($("#owner_phone").value),
-        lat: Number.isFinite(lat) ? lat : null,
-        lng: Number.isFinite(lng) ? lng : null,
-        latRaw,
-        lngRaw
+        lat: latObj.value,
+        lng: lngObj.value,
+        latRaw: latObj.raw,
+        lngRaw: lngObj.raw
       };
     }
 
@@ -561,8 +604,12 @@
       if (!data.name) return "Nom requis.";
       if (!data.type) return "Type obligatoire.";
 
-      if ((data.latRaw && !Number.isFinite(data.lat)) || (data.lngRaw && !Number.isFinite(data.lng))) {
-        return "Latitude / longitude invalides.";
+      if (data.latRaw && !Number.isFinite(data.lat)) {
+        return "Latitude invalide.";
+      }
+
+      if (data.lngRaw && !Number.isFinite(data.lng)) {
+        return "Longitude invalide.";
       }
 
       if ($("#photo_url").value.trim() && !data.photo_url) {
@@ -573,28 +620,21 @@
     }
 
     function resetForm(){
-      ["#name","#type","#city","#zone","#phone","#photo_url","#description","#lat","#lng","#owner_phone"]
-        .forEach((sel) => {
-          const el = $(sel);
-          if (!el) return;
-          if (el.tagName === "SELECT") el.value = "";
-          else el.value = "";
-        });
-
+      $("#spotForm").reset();
       clearState();
       toast("Formulaire vidé.");
+      $("#name")?.focus();
     }
 
     async function submitSpot(){
       clearState();
 
-      const btn = $("#btnSend");
       const data = readForm();
       const errMsg = validateForm(data);
 
       if (errMsg) {
         toast(errMsg);
-        setState(`⚠️ ${errMsg}`);
+        setState(`⚠️ ${escapeHtml(errMsg)}`);
         return;
       }
 
@@ -607,35 +647,37 @@
         photo_url: data.photo_url || null,
         description: data.description || null,
         owner_phone: data.owner_phone || null,
-        lat: data.lat,
-        lng: data.lng,
+        lat: Number.isFinite(data.lat) ? data.lat : null,
+        lng: Number.isFinite(data.lng) ? data.lng : null,
         status: "draft",
         score: 0
       };
 
       try{
-        btn.disabled = true;
-        btn.textContent = "⏳ Envoi en cours…";
+        setBusy(true);
         toast("Envoi du draft…");
 
-        const { data: inserted, error } = await sb
+        const { error } = await sb
           .from("digiy_explore_spots")
-          .insert([payload])
-          .select("id, name, status")
-          .single();
+          .insert([payload]);
 
         if (error) {
           console.error("SUBMIT ERROR:", error);
           toast("❌ Envoi refusé.");
-          setState(`❌ Envoi refusé.<br><span style="opacity:.82">Vérifie la policy RLS ou les contraintes de la table.</span>`);
+          setState(
+            `❌ Envoi refusé.<br>` +
+            `<span style="opacity:.82">` +
+            `${escapeHtml(error.message || "Vérifie la policy RLS ou les contraintes de la table.")}` +
+            `</span>`
+          );
           return;
         }
 
         toast("✅ Draft envoyé.");
-        setState(`
-          ✅ Spot enregistré en <b>draft</b>.<br>
-          <span style="opacity:.82">Nom : <b>${String(inserted?.name || data.name)}</b> — Statut : <b>${String(inserted?.status || "draft")}</b></span>
-        `);
+        setState(
+          `✅ Spot enregistré en <b>draft</b>.<br>` +
+          `<span style="opacity:.82">Nom : <b>${escapeHtml(data.name)}</b> — Statut : <b>draft</b></span>`
+        );
 
         setTimeout(() => {
           window.location.href = "./index.html";
@@ -643,14 +685,20 @@
       }catch(err){
         console.error("SUBMIT CRASH:", err);
         toast("Crash JS pendant l’envoi.");
-        setState(`Crash JS 😵‍💫<br><span style="opacity:.82">Ouvre la console pour voir l’erreur exacte.</span>`);
+        setState(
+          `Crash JS 😵‍💫<br>` +
+          `<span style="opacity:.82">${escapeHtml(err?.message || "Erreur inconnue côté navigateur.")}</span>`
+        );
       } finally {
-        btn.disabled = false;
-        btn.textContent = "✅ Envoyer en draft";
+        setBusy(false);
       }
     }
 
-    $("#btnSend").addEventListener("click", submitSpot);
+    $("#spotForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await submitSpot();
+    });
+
     $("#btnReset").addEventListener("click", resetForm);
   </script>
 </body>
