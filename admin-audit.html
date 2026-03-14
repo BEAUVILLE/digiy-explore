@@ -13,6 +13,12 @@
     rel="stylesheet"
   />
 
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -57,7 +63,6 @@
       margin:0 auto;
     }
 
-    /* ===== TOPBAR ===== */
     .topbar-wrap{
       position:sticky;
       top:0;
@@ -119,9 +124,22 @@
       gap:8px;
       flex-wrap:wrap;
       justify-content:flex-end;
+      align-items:center;
     }
 
-    /* ===== BUTTONS ===== */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      min-height:38px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -151,6 +169,10 @@
     .btn.ghost{
       background:rgba(0,0,0,.22);
     }
+    .btn.danger{
+      border-color:rgba(251,113,133,.28);
+      background:rgba(251,113,133,.12);
+    }
     .btn.small{
       min-height:38px;
       padding:8px 12px;
@@ -158,7 +180,6 @@
       box-shadow:none;
     }
 
-    /* ===== HERO ===== */
     .hero{
       margin-top:18px;
       border:1px solid rgba(255,255,255,.08);
@@ -221,7 +242,6 @@
       font-weight:700;
     }
 
-    /* ===== PANEL ===== */
     .panel{
       margin-top:16px;
       border:1px solid rgba(255,255,255,.10);
@@ -251,7 +271,6 @@
       padding:18px;
     }
 
-    /* ===== LIST ===== */
     .list{
       display:grid;
       gap:12px;
@@ -346,7 +365,6 @@
       font-size:13px;
     }
 
-    /* ===== STATES ===== */
     .state{
       display:none;
       padding:22px 16px;
@@ -403,9 +421,11 @@
         </div>
 
         <div class="top-actions">
+          <div class="pill" id="who">admin: —</div>
           <button id="btnBack" class="btn ghost" type="button">⬅️ Admin PIN</button>
           <button id="btnIndex" class="btn ghost" type="button">🏠 Index</button>
           <button id="btnRefresh" class="btn gold" type="button">🔄 Refresh</button>
+          <button id="btnReset" class="btn danger" type="button">🧼 Reset</button>
         </div>
       </div>
     </div>
@@ -431,7 +451,7 @@
       <div class="panel-head">
         <h2 class="panel-title">Journal d’audit</h2>
         <p class="panel-sub">
-          Lecture brute mais propre des entrées stockées dans <span class="mono">digiy_explore_admin_audit</span>.
+          Lecture propre des entrées stockées dans <span class="mono">digiy_explore_admin_audit</span>.
         </p>
       </div>
 
@@ -442,15 +462,19 @@
     </section>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" aria-live="polite"></div>
 
   <script>
-    const DEFAULT_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-    const DEFAULT_SUPABASE_ANON = (localStorage.getItem("DIGIY_SUPABASE_ANON") || "").trim();
-    const CFG = window.__DIGIY_SUPABASE__ || {};
+    const SUPABASE_URL =
+      window.DIGIY_SUPABASE_URL ||
+      "https://wesqmwjjtsefyjnluosj.supabase.co";
 
-    const SUPABASE_URL = String(CFG.url || DEFAULT_SUPABASE_URL).trim();
-    const SUPABASE_ANON_KEY = String(CFG.anon || DEFAULT_SUPABASE_ANON).trim();
+    const SUPABASE_ANON_KEY =
+      window.DIGIY_SUPABASE_ANON_KEY ||
+      window.DIGIY_SUPABASE_ANON ||
+      "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+
+    const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
 
     let sb = null;
 
@@ -458,7 +482,7 @@
 
     function toast(message){
       const el = $("#toast");
-      el.textContent = message;
+      el.textContent = String(message || "");
       el.classList.add("show");
       clearTimeout(el._timer);
       el._timer = setTimeout(() => el.classList.remove("show"), 2800);
@@ -466,24 +490,18 @@
 
     function esc(value){
       return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    function ensureSupabase(){
+    function getClient(){
       if (sb) return sb;
 
       if (!window.supabase?.createClient) {
-        toast("Supabase JS non chargé.");
-        throw new Error("Supabase JS not loaded.");
-      }
-
-      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-        toast("⚠️ Clé Supabase manquante. Mets DIGIY_SUPABASE_ANON dans localStorage.");
-        throw new Error("Supabase config missing.");
+        throw new Error("Supabase JS non chargé.");
       }
 
       sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -493,20 +511,28 @@
       return sb;
     }
 
-    function formatDate(value){
-      if (!value) return "—";
-      const d = new Date(value);
-      if (Number.isNaN(d.getTime())) return "—";
-      return d.toLocaleString("fr-FR");
+    function getPinSession(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        const s = raw ? JSON.parse(raw) : null;
+        if (!s?.phone || !s?.pin || !s?.ts) return null;
+        return {
+          phone: String(s.phone),
+          pin: String(s.pin),
+          ts: Number(s.ts)
+        };
+      }catch{
+        return null;
+      }
     }
 
-    function actionClass(action){
-      const a = String(action || "").trim().toLowerCase();
-      if (["publish"].includes(a)) return "publish";
-      if (["reject"].includes(a)) return "reject";
-      if (["pin_ok"].includes(a)) return "pin_ok";
-      if (["pin_fail"].includes(a)) return "pin_fail";
-      return "";
+    function clearPinSession(){
+      localStorage.removeItem(LS_KEY);
+    }
+
+    function updateWho(){
+      const s = getPinSession();
+      $("#who").textContent = s?.phone ? `admin: ${s.phone}` : "admin: —";
     }
 
     function setState(message){
@@ -519,6 +545,58 @@
       const box = $("#stateBox");
       box.style.display = "none";
       box.innerHTML = "";
+    }
+
+    function formatDate(value){
+      if (!value) return "—";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return "—";
+      return d.toLocaleString("fr-FR");
+    }
+
+    function actionClass(action){
+      const a = String(action || "").trim().toLowerCase();
+      if (a === "publish") return "publish";
+      if (a === "reject") return "reject";
+      if (a === "pin_ok") return "pin_ok";
+      if (a === "pin_fail") return "pin_fail";
+      return "";
+    }
+
+    function pageUrl(file){
+      return new URL(file, window.location.href).href;
+    }
+
+    async function pinCheck(phone, pin){
+      const client = getClient();
+      const { data, error } = await client.rpc("explore_admin_pin_check", {
+        p_phone: phone,
+        p_pin: pin
+      });
+
+      if (error) {
+        return {
+          ok: false,
+          error_message: error.message || "RPC explore_admin_pin_check refusée."
+        };
+      }
+
+      if (data && typeof data === "object") return data;
+      return { ok:false };
+    }
+
+    async function verifyStoredSession(){
+      const s = getPinSession();
+      if (!s?.phone || !s?.pin) return false;
+
+      const res = await pinCheck(s.phone, s.pin);
+      if (!res?.ok) {
+        clearPinSession();
+        updateWho();
+        return false;
+      }
+
+      return true;
     }
 
     function renderStats(rows){
@@ -580,13 +658,21 @@
 
     async function loadAudit(){
       try{
-        const client = ensureSupabase();
-
         $("#statCount").textContent = "Chargement…";
         $("#statLatest").textContent = "Dernière action : …";
         $("#list").innerHTML = "";
         clearState();
 
+        updateWho();
+
+        const ok = await verifyStoredSession();
+        if (!ok) {
+          renderStats([]);
+          setState(`🔐 Session admin requise.<br><span style="opacity:.82">Retourne sur Admin PIN pour activer la session avant de lire l’audit.</span>`);
+          return;
+        }
+
+        const client = getClient();
         const { data, error } = await client
           .from("digiy_explore_admin_audit")
           .select("created_at, admin_phone, action, spot_id, old_status, new_status, note")
@@ -596,7 +682,7 @@
         if (error) {
           console.error("AUDIT ERROR:", error);
           renderStats([]);
-          setState(`❌ Lecture audit refusée.<br><span style="opacity:.82">Vérifie la policy RLS ou la configuration Supabase.</span>`);
+          setState(`❌ Lecture audit refusée.<br><span style="opacity:.82">${esc(error.message || "Vérifie la policy RLS ou la configuration Supabase.")}</span>`);
           toast("Lecture audit refusée");
           return;
         }
@@ -607,21 +693,30 @@
       }catch(err){
         console.error("AUDIT CRASH:", err);
         renderStats([]);
-        setState(`Crash JS 😵‍💫<br><span style="opacity:.82">Vérifie la console ou la config Supabase.</span>`);
+        setState(`Crash JS 😵‍💫<br><span style="opacity:.82">${esc(err?.message || "Vérifie la console ou la config Supabase.")}</span>`);
         toast("Crash JS — voir la console");
       }
     }
 
     $("#btnBack").addEventListener("click", () => {
-      location.href = "./admin-pin.html";
+      location.href = pageUrl("admin-pin.html");
     });
 
     $("#btnIndex").addEventListener("click", () => {
-      location.href = "./index.html";
+      location.href = pageUrl("index.html");
     });
 
     $("#btnRefresh").addEventListener("click", () => {
       loadAudit();
+    });
+
+    $("#btnReset").addEventListener("click", () => {
+      clearPinSession();
+      updateWho();
+      $("#list").innerHTML = "";
+      renderStats([]);
+      setState(`🧼 Session effacée.<br><span style="opacity:.82">Reconnecte-toi via Admin PIN.</span>`);
+      toast("Session admin effacée");
     });
 
     loadAudit();
