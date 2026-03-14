@@ -576,6 +576,8 @@
         <div class="top-actions">
           <a id="btnBackDigiy" class="btn ghost" href="https://digiylyfe.com/" target="_blank" rel="noopener noreferrer">← DIGIYLYFE</a>
           <a class="btn green" href="./submitV2.html">➕ Proposer mon spot</a>
+          <a id="btnAdminPinTop" class="btn ghost" href="./admin-pin.html" style="display:none">🛡️ Admin PIN</a>
+          <a id="btnAdminAuditTop" class="btn ghost" href="./admin-audit.html" style="display:none">🧾 Audit</a>
           <a id="btnPayTop" class="btn gold" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Activer ma présence</a>
         </div>
       </div>
@@ -676,9 +678,18 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const SUPABASE_URL = window.DIGIY_SUPABASE_URL;
-    const SUPABASE_ANON_KEY = window.DIGIY_SUPABASE_ANON_KEY || window.DIGIY_SUPABASE_ANON;
+    const SUPABASE_URL =
+      window.DIGIY_SUPABASE_URL ||
+      "https://wesqmwjjtsefyjnluosj.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      window.DIGIY_SUPABASE_ANON_KEY ||
+      window.DIGIY_SUPABASE_ANON ||
+      "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+
     const PAY_URL = window.DIGIY_PAY_URL || "https://commencer-a-payer.digiylyfe.com/";
+    const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
+    const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
     const $ = (s) => document.querySelector(s);
 
@@ -715,16 +726,16 @@
 
     function esc(value){
       return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
     function toast(message){
       const el = $("#toast");
-      el.textContent = message;
+      el.textContent = String(message || "");
       el.classList.add("show");
       clearTimeout(el._timer);
       el._timer = setTimeout(() => el.classList.remove("show"), 2800);
@@ -799,12 +810,75 @@
     }
 
     function getClient(){
+      if (sb) return sb;
+
       if (!window.supabase?.createClient) {
         throw new Error("Supabase JS v2 non chargé.");
       }
-      return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+        }
       });
+
+      return sb;
+    }
+
+    function getPinSession(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        const s = raw ? JSON.parse(raw) : null;
+        if (!s?.phone || !s?.pin || !s?.ts) return null;
+        if ((Date.now() - Number(s.ts)) > SESSION_TTL_MS) {
+          localStorage.removeItem(LS_KEY);
+          return null;
+        }
+        return {
+          phone: String(s.phone),
+          pin: String(s.pin),
+          ts: Number(s.ts)
+        };
+      }catch{
+        localStorage.removeItem(LS_KEY);
+        return null;
+      }
+    }
+
+    function clearPinSession(){
+      localStorage.removeItem(LS_KEY);
+    }
+
+    async function verifyStoredSession(){
+      const s = getPinSession();
+      if (!s?.phone || !s?.pin) return false;
+
+      try{
+        const client = getClient();
+        const { data, error } = await client.rpc("explore_admin_pin_check", {
+          p_phone: s.phone,
+          p_pin: s.pin
+        });
+
+        if (error || !data?.ok) {
+          clearPinSession();
+          return false;
+        }
+
+        return true;
+      }catch{
+        clearPinSession();
+        return false;
+      }
+    }
+
+    function renderAdminRail(show){
+      const btnPin = $("#btnAdminPinTop");
+      const btnAudit = $("#btnAdminAuditTop");
+      if (btnPin) btnPin.style.display = show ? "inline-flex" : "none";
+      if (btnAudit) btnAudit.style.display = show ? "inline-flex" : "none";
     }
 
     function renderQuickChips(){
@@ -897,8 +971,12 @@
 
     async function loadSpots(){
       $("#statLine").textContent = "Chargement des spots…";
+      $("#grid").innerHTML = "";
+      $("#empty").style.display = "none";
 
-      const { data, error } = await sb
+      const client = getClient();
+
+      const { data, error } = await client
         .from("digiy_explore_spots")
         .select(`
           id,
@@ -926,11 +1004,13 @@
 
       if (error) {
         console.error("SUPABASE ERROR:", error);
+        ALL = [];
+        filtered = [];
         $("#grid").innerHTML = "";
         $("#empty").style.display = "block";
         $("#empty").innerHTML = `
           ❌ Impossible de lire les spots pour le moment.<br>
-          <span style="opacity:.82">Vérifie la table, la policy RLS, ou la requête Supabase.</span>
+          <span style="opacity:.82">${esc(error.message || "Vérifie la table, la policy RLS, ou la requête Supabase.")}</span>
         `;
         $("#statLine").textContent = "Erreur lecture";
         toast("Erreur lecture Supabase / RLS");
@@ -943,7 +1023,16 @@
 
     function spotText(s){
       const tags = parseTags(s.tags).join(" ");
-      return `${s.name || ""} ${s.type || ""} ${s.zone || ""} ${s.city || ""} ${tags}`.toLowerCase();
+      return `
+        ${s.name || ""}
+        ${s.type || ""}
+        ${s.zone || ""}
+        ${s.city || ""}
+        ${s.budget || ""}
+        ${s.duree || ""}
+        ${s.description || ""}
+        ${tags}
+      `.toLowerCase();
     }
 
     function badgeClass(value){
@@ -993,7 +1082,12 @@
       } else if (sort === "new_desc") {
         filtered.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
       } else {
-        filtered.sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+        filtered.sort((a, b) => {
+          const sa = Number(a.score) || 0;
+          const sbv = Number(b.score) || 0;
+          if (sbv !== sa) return sbv - sa;
+          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        });
       }
 
       render();
@@ -1023,7 +1117,7 @@
         const href = buildSpotHref(s);
 
         const statusClass = badgeClass(s.badge);
-        const statusLabel = badgeLabel(s.badge);
+        const statusText = badgeLabel(s.badge);
         const cover = pickCover(s);
         const wa = buildWhatsAppLink(s.phone, title);
         const call = buildCallLink(s.phone);
@@ -1051,7 +1145,7 @@
               <div class="card-top">
                 <div class="status-badge ${esc(statusClass)}">
                   <span class="dot"></span>
-                  <span>${esc(statusLabel)}</span>
+                  <span>${esc(statusText)}</span>
                 </div>
                 ${scoreLabel ? `<div class="score-badge">${esc(scoreLabel)}</div>` : ``}
               </div>
@@ -1091,10 +1185,11 @@
       $("#btnReset").addEventListener("click", resetFilters);
 
       $("#btnCopyUrl").addEventListener("click", async () => {
-        try {
+        try{
+          if (!navigator.clipboard?.writeText) throw new Error("clipboard_unavailable");
           await navigator.clipboard.writeText(window.location.href);
           toast("✅ Lien copié.");
-        } catch {
+        }catch{
           toast("Copie impossible depuis ce navigateur.");
         }
       });
@@ -1115,21 +1210,25 @@
       if (btnPayHero) btnPayHero.href = payHero;
     }
 
-    (function boot(){
+    (async function boot(){
       try{
         bindGlobalLinks();
-        sb = getClient();
+        getClient();
         renderQuickChips();
         readUrlFilters();
         bindEvents();
-        loadSpots();
+
+        const isAdmin = await verifyStoredSession();
+        renderAdminRail(isAdmin);
+
+        await loadSpots();
       }catch(err){
         console.error("BOOT ERROR:", err);
         $("#grid").innerHTML = "";
         $("#empty").style.display = "block";
         $("#empty").innerHTML = `
           Crash JS 😵‍💫<br>
-          <span style="opacity:.82">Vérifie la console et la présence de Supabase JS.</span>
+          <span style="opacity:.82">${esc(err?.message || "Vérifie la console et la présence de Supabase JS.")}</span>
         `;
         $("#statLine").textContent = "Crash";
         toast("Crash JS — voir la console");
