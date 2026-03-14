@@ -13,6 +13,12 @@
     rel="stylesheet"
   />
 
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -57,7 +63,6 @@
       margin:0 auto;
     }
 
-    /* ===== TOPBAR ===== */
     .topbar-wrap{
       position:sticky;
       top:0;
@@ -135,7 +140,6 @@
       font-weight:700;
     }
 
-    /* ===== BUTTONS ===== */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -184,7 +188,6 @@
       cursor:not-allowed;
     }
 
-    /* ===== HERO ===== */
     .hero{
       margin-top:18px;
       border:1px solid rgba(255,255,255,.08);
@@ -227,7 +230,6 @@
       line-height:1.7;
     }
 
-    /* ===== GRID ===== */
     .grid{
       margin-top:16px;
       display:grid;
@@ -291,6 +293,9 @@
       padding:12px 13px;
       font-size:14px;
     }
+    .input::placeholder{
+      color:rgba(242,255,248,.40);
+    }
     .hint{
       font-size:12px;
       color:var(--muted-2);
@@ -315,7 +320,6 @@
       font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     }
 
-    /* ===== STATS ===== */
     .stats-list{
       display:grid;
       gap:10px;
@@ -337,7 +341,6 @@
       line-height:1.6;
     }
 
-    /* ===== LIST ===== */
     .state{
       display:none;
       padding:18px;
@@ -382,6 +385,7 @@
       color:var(--muted);
       font-size:13px;
       line-height:1.7;
+      white-space:pre-wrap;
     }
     .row2{
       margin-top:12px;
@@ -486,20 +490,22 @@
           </p>
         </div>
         <div class="panel-body">
-          <div class="field">
-            <label class="label" for="phone">Téléphone</label>
-            <input id="phone" class="input" placeholder="+22177XXXXXXX" autocomplete="tel" />
-          </div>
+          <form id="loginForm" novalidate>
+            <div class="field">
+              <label class="label" for="phone">Téléphone</label>
+              <input id="phone" class="input" type="tel" placeholder="+22177XXXXXXX" autocomplete="tel" />
+            </div>
 
-          <div class="field">
-            <label class="label" for="pin">PIN</label>
-            <input id="pin" class="input" placeholder="1234" inputmode="numeric" autocomplete="one-time-code" />
-          </div>
+            <div class="field">
+              <label class="label" for="pin">PIN</label>
+              <input id="pin" class="input" type="password" placeholder="1234" inputmode="numeric" autocomplete="current-password" maxlength="12" />
+            </div>
 
-          <div class="login-actions">
-            <button id="btnLogin" class="btn primary" type="button">🔐 Activer</button>
-            <div class="hint">RPC attendus : <span class="mono">explore_admin_pin_check</span> et <span class="mono">explore_admin_set_status</span></div>
-          </div>
+            <div class="login-actions">
+              <button id="btnLogin" class="btn primary" type="submit">🔐 Activer</button>
+              <div class="hint">RPC attendus : <span class="mono">explore_admin_pin_check</span> et <span class="mono">explore_admin_set_status</span></div>
+            </div>
+          </form>
         </div>
       </article>
 
@@ -544,12 +550,17 @@
     </section>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" aria-live="polite"></div>
 
   <script>
-    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_URL =
+      window.DIGIY_SUPABASE_URL ||
+      "https://wesqmwjjtsefyjnluosj.supabase.co";
+
     const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+      window.DIGIY_SUPABASE_ANON_KEY ||
+      window.DIGIY_SUPABASE_ANON ||
+      "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
 
     const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
     const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
@@ -557,6 +568,7 @@
     const $ = (s) => document.querySelector(s);
 
     let sb = null;
+    let actionBusy = false;
 
     function getClient(){
       if (sb) return sb;
@@ -571,7 +583,7 @@
 
     function toast(message){
       const el = $("#toast");
-      el.textContent = message;
+      el.textContent = String(message || "");
       el.classList.add("show");
       clearTimeout(el._timer);
       el._timer = setTimeout(() => el.classList.remove("show"), 2800);
@@ -579,32 +591,34 @@
 
     function esc(value){
       return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
     function normalizePhone(phone){
-      return String(phone ?? "").trim().replace(/[^\d+]/g, "");
+      return String(phone ?? "")
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/[^\d+]/g, "");
     }
 
     function pageUrl(file){
-      const here = window.location.pathname;
-      const i = here.lastIndexOf("/");
-      const base = i >= 0 ? here.slice(0, i + 1) : "/";
-      return new URL(file, window.location.origin + base).href;
+      return new URL(file, window.location.href).href;
     }
 
     function setState(id, message){
       const el = $(id);
+      if (!el) return;
       el.style.display = "block";
       el.innerHTML = message;
     }
 
     function clearState(id){
       const el = $(id);
+      if (!el) return;
       el.style.display = "none";
       el.innerHTML = "";
     }
@@ -614,20 +628,27 @@
         const raw = localStorage.getItem(LS_KEY);
         const s = raw ? JSON.parse(raw) : null;
         if (!s?.phone || !s?.pin || !s?.ts) return null;
-        if ((Date.now() - s.ts) > SESSION_TTL_MS) {
+
+        if ((Date.now() - Number(s.ts)) > SESSION_TTL_MS) {
           localStorage.removeItem(LS_KEY);
           return null;
         }
-        return s;
+
+        return {
+          phone: String(s.phone),
+          pin: String(s.pin),
+          ts: Number(s.ts)
+        };
       }catch{
+        localStorage.removeItem(LS_KEY);
         return null;
       }
     }
 
     function setPinSession(phone, pin){
       localStorage.setItem(LS_KEY, JSON.stringify({
-        phone,
-        pin,
+        phone: String(phone || ""),
+        pin: String(pin || ""),
         ts: Date.now()
       }));
     }
@@ -641,6 +662,14 @@
       $("#who").textContent = s?.phone ? `admin: ${s.phone}` : "admin: —";
     }
 
+    function notConnectedState(){
+      return `Connecte-toi avec le téléphone + PIN admin pour lire et piloter les spots.`;
+    }
+
+    function loadingState(){
+      return `Chargement…`;
+    }
+
     async function pinCheck(phone, pin){
       const client = getClient();
       const { data, error } = await client.rpc("explore_admin_pin_check", {
@@ -648,15 +677,22 @@
         p_pin: pin
       });
 
-      if (error) return { ok:false, error };
-      return data || { ok:false };
+      if (error) {
+        return {
+          ok: false,
+          error_message: error.message || "RPC explore_admin_pin_check refusée."
+        };
+      }
+
+      if (data && typeof data === "object") return data;
+      return { ok:false };
     }
 
     async function setStatus(spotId, status){
       const s = getPinSession();
       if (!s?.phone || !s?.pin) {
         toast("🔐 PIN requis.");
-        return { ok:false };
+        return { ok:false, error_message:"PIN requis." };
       }
 
       const client = getClient();
@@ -667,28 +703,60 @@
         p_status: status
       });
 
-      if (error) return { ok:false, error };
-      return data || { ok:false };
+      if (error) {
+        return {
+          ok: false,
+          error_message: error.message || "RPC explore_admin_set_status refusée."
+        };
+      }
+
+      if (data && typeof data === "object") return data;
+      return { ok:false };
     }
 
-    function fmtSpot(s){
-      const url = pageUrl(`spot.html?id=${encodeURIComponent(s.id)}`);
-      const name = s.name || "Spot";
-      const meta = `${s.type || "—"} • ${s.city || "—"} • ${s.zone || "—"}`;
-      const desc = s.description ? String(s.description).slice(0, 160) : "—";
-      const created = s.created_at ? new Date(s.created_at).toLocaleString("fr-FR") : "—";
+    function formatDate(value){
+      try{
+        if (!value) return "—";
+        return new Date(value).toLocaleString("fr-FR");
+      }catch{
+        return "—";
+      }
+    }
 
+    function fmtSpot(spot){
       return {
-        url,
-        name,
-        meta,
-        desc,
-        created
+        url: pageUrl(`spot.html?id=${encodeURIComponent(spot.id)}`),
+        name: spot?.name || "Spot",
+        meta: `${spot?.type || "—"} • ${spot?.city || "—"} • ${spot?.zone || "—"}`,
+        desc: spot?.description ? String(spot.description).slice(0, 220) : "—",
+        created: formatDate(spot?.created_at)
       };
     }
 
-    function notConnectedState(){
-      return `Connecte-toi avec le téléphone + PIN admin pour lire et piloter les spots.`;
+    function renderStatsCards(draftCount, publishedCount, rejectedCount){
+      $("#stats").innerHTML = `
+        <div class="stats-card">
+          <div class="stats-name">📥 Draft</div>
+          <div class="stats-meta">${Number(draftCount || 0)} en attente</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-name">✅ Published</div>
+          <div class="stats-meta">${Number(publishedCount || 0)} visibles publiquement</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-name">⛔ Rejected</div>
+          <div class="stats-meta">${Number(rejectedCount || 0)} refusés</div>
+        </div>
+      `;
+    }
+
+    function renderStatsError(message){
+      $("#stats").innerHTML = `
+        <div class="stats-card">
+          <div class="stats-name">Lecture bloquée</div>
+          <div class="stats-meta">${esc(message || "Impossible de charger les stats.")}</div>
+        </div>
+      `;
     }
 
     async function refreshStats(){
@@ -711,24 +779,53 @@
         client.from("digiy_explore_spots").select("id", { count:"exact", head:true }).eq("status","rejected")
       ]);
 
-      const dd = drafts.count ?? 0;
-      const pp = pubs.count ?? 0;
-      const rr = rejects.count ?? 0;
+      const firstError = drafts.error || pubs.error || rejects.error;
+      if (firstError) {
+        renderStatsError(firstError.message || "Vérifie la policy RLS ou la config admin.");
+        return;
+      }
 
-      $("#stats").innerHTML = `
-        <div class="stats-card">
-          <div class="stats-name">📥 Draft</div>
-          <div class="stats-meta">${dd} en attente</div>
-        </div>
-        <div class="stats-card">
-          <div class="stats-name">✅ Published</div>
-          <div class="stats-meta">${pp} visibles publiquement</div>
-        </div>
-        <div class="stats-card">
-          <div class="stats-name">⛔ Rejected</div>
-          <div class="stats-meta">${rr} refusés</div>
-        </div>
-      `;
+      renderStatsCards(drafts.count, pubs.count, rejects.count);
+    }
+
+    function renderSpotList(targetId, rows, kind){
+      const host = $(targetId);
+      host.innerHTML = rows.map((spot) => {
+        const f = fmtSpot(spot);
+        const statusTag = kind === "draft" ? "draft" : "published";
+
+        return `
+          <article class="spot-card" data-id="${esc(spot.id)}" data-kind="${esc(kind)}">
+            <div class="row1">
+              <div>
+                <div class="nm">${esc(f.name)}</div>
+                <div class="meta">${esc(f.meta)} • ${esc(f.created)}</div>
+              </div>
+              <div class="tag">${esc(statusTag)}</div>
+            </div>
+
+            <div class="desc">${esc(f.desc)}</div>
+
+            <div class="row2">
+              <div class="left">
+                <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
+                ${spot.phone ? `<a href="tel:${esc(spot.phone)}" class="tag">📞 ${esc(spot.phone)}</a>` : `<span class="tag">📞 —</span>`}
+                ${spot.photo_url ? `<a href="${esc(spot.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`}
+                ${spot.link_url ? `<a href="${esc(spot.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 lien</a>` : `<span class="tag">🔗 —</span>`}
+                ${spot.owner_phone ? `<span class="tag">👤 ${esc(spot.owner_phone)}</span>` : ``}
+              </div>
+
+              <div class="right">
+                ${kind === "draft"
+                  ? `<button class="btn small primary" data-act="publish" type="button">✅ Publier</button>
+                     <button class="btn small danger" data-act="reject" type="button">⛔ Rejeter</button>`
+                  : `<button class="btn small danger" data-act="reject" type="button">⛔ Rejeter</button>`
+                }
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
     }
 
     async function refreshDrafts(){
@@ -752,8 +849,10 @@
       if (error) {
         console.error("DRAFTS ERROR:", error);
         $("#drafts").innerHTML = "";
-        setState("draftsState", `❌ Lecture drafts refusée.<br><span style="opacity:.82">Vérifie la policy RLS ou la config admin.</span>`);
-        toast("Lecture drafts refusée");
+        setState(
+          "draftsState",
+          `❌ Lecture drafts refusée.<br><span style="opacity:.82">${esc(error.message || "Vérifie la policy RLS ou la config admin.")}</span>`
+        );
         return;
       }
 
@@ -764,57 +863,7 @@
         return;
       }
 
-      $("#drafts").innerHTML = rows.map((spot) => {
-        const f = fmtSpot(spot);
-
-        return `
-          <article class="spot-card" data-id="${esc(spot.id)}">
-            <div class="row1">
-              <div>
-                <div class="nm">${esc(f.name)}</div>
-                <div class="meta">${esc(f.meta)} • ${esc(f.created)}</div>
-              </div>
-              <div class="tag">draft</div>
-            </div>
-
-            <div class="desc">${esc(f.desc)}</div>
-
-            <div class="row2">
-              <div class="left">
-                <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
-                ${spot.phone ? `<a href="tel:${esc(spot.phone)}" class="tag">📞 ${esc(spot.phone)}</a>` : `<span class="tag">📞 —</span>`}
-                ${spot.photo_url ? `<a href="${esc(spot.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`}
-                ${spot.link_url ? `<a href="${esc(spot.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 lien</a>` : `<span class="tag">🔗 —</span>`}
-                ${spot.owner_phone ? `<span class="tag">👤 ${esc(spot.owner_phone)}</span>` : ``}
-              </div>
-
-              <div class="right">
-                <button class="btn small primary" data-act="publish" type="button">✅ Publier</button>
-                <button class="btn small danger" data-act="reject" type="button">⛔ Rejeter</button>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      $("#drafts").querySelectorAll(".spot-card .btn").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const card = btn.closest(".spot-card");
-          const id = card?.getAttribute("data-id");
-          const act = btn.getAttribute("data-act");
-          if (!id || !act) return;
-
-          toast("⏳ Mise à jour…");
-          const res = await setStatus(id, act === "publish" ? "published" : "rejected");
-
-          if (res?.ok) {
-            toast("✅ OK");
-            await refreshAll();
-          } else {
-            toast(res?.error?.message ? `❌ ${res.error.message}` : "❌ Refusé");
-          }
-        });
-      });
+      renderSpotList("drafts", rows, "draft");
     }
 
     async function refreshPublished(){
@@ -830,7 +879,7 @@
       const client = getClient();
       const { data, error } = await client
         .from("digiy_explore_spots")
-        .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status")
+        .select("id, created_at, name, type, zone, city, phone, description, photo_url, link_url, status, owner_phone")
         .eq("status", "published")
         .order("created_at", { ascending: false })
         .limit(60);
@@ -838,8 +887,10 @@
       if (error) {
         console.error("PUBLISHED ERROR:", error);
         $("#pubs").innerHTML = "";
-        setState("pubsState", `❌ Lecture published refusée.<br><span style="opacity:.82">Vérifie la policy RLS ou la config admin.</span>`);
-        toast("Lecture published refusée");
+        setState(
+          "pubsState",
+          `❌ Lecture published refusée.<br><span style="opacity:.82">${esc(error.message || "Vérifie la policy RLS ou la config admin.")}</span>`
+        );
         return;
       }
 
@@ -850,54 +901,7 @@
         return;
       }
 
-      $("#pubs").innerHTML = rows.map((spot) => {
-        const f = fmtSpot(spot);
-
-        return `
-          <article class="spot-card" data-id="${esc(spot.id)}">
-            <div class="row1">
-              <div>
-                <div class="nm">${esc(f.name)}</div>
-                <div class="meta">${esc(f.meta)} • ${esc(f.created)}</div>
-              </div>
-              <div class="tag">published</div>
-            </div>
-
-            <div class="desc">${esc(f.desc)}</div>
-
-            <div class="row2">
-              <div class="left">
-                <a href="${esc(f.url)}" class="tag">👁️ ouvrir</a>
-                ${spot.phone ? `<a href="tel:${esc(spot.phone)}" class="tag">📞 ${esc(spot.phone)}</a>` : `<span class="tag">📞 —</span>`}
-                ${spot.photo_url ? `<a href="${esc(spot.photo_url)}" target="_blank" rel="noreferrer" class="tag">📷 photo</a>` : `<span class="tag">📷 —</span>`}
-                ${spot.link_url ? `<a href="${esc(spot.link_url)}" target="_blank" rel="noreferrer" class="tag">🔗 lien</a>` : `<span class="tag">🔗 —</span>`}
-              </div>
-
-              <div class="right">
-                <button class="btn small danger" data-act="reject" type="button">⛔ Rejeter</button>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      $("#pubs").querySelectorAll(".spot-card .btn.danger").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const card = btn.closest(".spot-card");
-          const id = card?.getAttribute("data-id");
-          if (!id) return;
-
-          toast("⏳ Mise à jour…");
-          const res = await setStatus(id, "rejected");
-
-          if (res?.ok) {
-            toast("✅ OK");
-            await refreshAll();
-          } else {
-            toast(res?.error?.message ? `❌ ${res.error.message}` : "❌ Refusé");
-          }
-        });
-      });
+      renderSpotList("pubs", rows, "published");
     }
 
     async function refreshAll(){
@@ -907,8 +911,31 @@
         await refreshPublished();
       }catch(err){
         console.error("REFRESH ERROR:", err);
-        toast("Erreur pendant le refresh");
+        toast(err?.message || "Erreur pendant le refresh");
       }
+    }
+
+    async function verifyStoredSession(){
+      const s = getPinSession();
+      if (!s) return false;
+
+      const res = await pinCheck(s.phone, s.pin);
+      if (!res?.ok) {
+        clearPinSession();
+        updateWho();
+        $("#pin").value = "";
+        setState("draftsState", "Session admin expirée ou PIN non valide. Reconnecte-toi.");
+        setState("pubsState", "Session admin expirée ou PIN non valide. Reconnecte-toi.");
+        $("#stats").innerHTML = `
+          <div class="stats-card">
+            <div class="stats-name">Connexion requise</div>
+            <div class="stats-meta">${notConnectedState()}</div>
+          </div>
+        `;
+        return false;
+      }
+
+      return true;
     }
 
     async function login(){
@@ -930,8 +957,8 @@
         if (!res?.ok) {
           const fc = (res?.fail_count != null) ? ` • essais=${res.fail_count}` : "";
           const lu = res?.locked_until ? ` • lock=${res.locked_until}` : "";
-          const er = res?.error ? ` • ${res.error}` : "";
-          toast(`❌ PIN refusé${er}${fc}${lu}`);
+          const er = res?.error_message || res?.error || "PIN refusé";
+          toast(`❌ ${er}${fc}${lu}`);
           return;
         }
 
@@ -941,7 +968,7 @@
         await refreshAll();
       }catch(err){
         console.error("LOGIN ERROR:", err);
-        toast("Erreur login");
+        toast(err?.message || "Erreur login");
       } finally {
         btn.disabled = false;
         btn.textContent = "🔐 Activer";
@@ -951,6 +978,7 @@
     function logout(){
       clearPinSession();
       updateWho();
+      $("#pin").value = "";
       $("#stats").innerHTML = `
         <div class="stats-card">
           <div class="stats-name">Connexion requise</div>
@@ -964,8 +992,45 @@
       toast("🧼 Session effacée.");
     }
 
+    async function handleListAction(event){
+      const btn = event.target.closest("button[data-act]");
+      if (!btn || actionBusy) return;
+
+      const card = btn.closest(".spot-card");
+      const id = card?.getAttribute("data-id");
+      const act = btn.getAttribute("data-act");
+
+      if (!id || !act) return;
+
+      actionBusy = true;
+      btn.disabled = true;
+
+      try{
+        toast("⏳ Mise à jour…");
+        const nextStatus = act === "publish" ? "published" : "rejected";
+        const res = await setStatus(id, nextStatus);
+
+        if (res?.ok) {
+          toast("✅ OK");
+          await refreshAll();
+        } else {
+          toast(`❌ ${res?.error_message || res?.error || "Refusé"}`);
+        }
+      }catch(err){
+        console.error("ACTION ERROR:", err);
+        toast(err?.message || "Erreur action admin");
+      } finally {
+        actionBusy = false;
+        btn.disabled = false;
+      }
+    }
+
     function bind(){
-      $("#btnLogin").addEventListener("click", login);
+      $("#loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await login();
+      });
+
       $("#btnLogout").addEventListener("click", logout);
       $("#btnRefresh").addEventListener("click", refreshAll);
 
@@ -976,6 +1041,9 @@
       $("#btnAudit").addEventListener("click", () => {
         location.href = pageUrl("admin-audit.html");
       });
+
+      $("#drafts").addEventListener("click", handleListAction);
+      $("#pubs").addEventListener("click", handleListAction);
 
       const s = getPinSession();
       if (s?.phone) {
@@ -990,17 +1058,22 @@
         bind();
 
         const s = getPinSession();
-        if (s) {
-          setState("draftsState", "Chargement…");
-          setState("pubsState", "Chargement…");
-          await refreshAll();
-        } else {
+        if (!s) {
           setState("draftsState", notConnectedState());
           setState("pubsState", notConnectedState());
+          return;
         }
+
+        setState("draftsState", loadingState());
+        setState("pubsState", loadingState());
+
+        const ok = await verifyStoredSession();
+        if (!ok) return;
+
+        await refreshAll();
       }catch(err){
         console.error("BOOT ERROR:", err);
-        toast("Erreur boot");
+        toast(err?.message || "Erreur boot");
       }
     })();
   </script>
