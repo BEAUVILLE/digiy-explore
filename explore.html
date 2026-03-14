@@ -10,6 +10,13 @@
   />
   <title>DIGIY EXPLORE ∞ — Petite Côte</title>
 
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -62,7 +69,6 @@
       margin:0 auto;
     }
 
-    /* ===== TOPBAR ===== */
     .topbar-wrap{
       position:sticky;
       top:0;
@@ -127,7 +133,6 @@
       justify-content:flex-end;
     }
 
-    /* ===== BUTTONS ===== */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -169,7 +174,6 @@
       box-shadow:none;
     }
 
-    /* ===== HERO ===== */
     .hero{
       position:relative;
       overflow:hidden;
@@ -231,7 +235,6 @@
       margin-top:18px;
     }
 
-    /* ===== FILTERS ===== */
     .filters{
       margin-top:16px;
       padding:14px;
@@ -325,7 +328,6 @@
       flex-wrap:wrap;
     }
 
-    /* ===== SECTION HEAD ===== */
     .section-head{
       margin-top:20px;
       display:flex;
@@ -348,7 +350,6 @@
       max-width:760px;
     }
 
-    /* ===== GRID ===== */
     .grid{
       margin-top:16px;
       display:grid;
@@ -488,7 +489,6 @@
       flex-wrap:wrap;
     }
 
-    /* ===== EMPTY ===== */
     .empty{
       display:none;
       margin-top:16px;
@@ -502,7 +502,6 @@
       box-shadow:var(--shadow);
     }
 
-    /* ===== FOOTER ===== */
     .footer{
       margin-top:30px;
       padding:22px 0 36px;
@@ -513,7 +512,6 @@
       line-height:1.7;
     }
 
-    /* ===== TOAST ===== */
     .toast{
       position:fixed;
       left:50%;
@@ -568,9 +566,9 @@
         </div>
 
         <div class="top-actions">
-          <a class="btn ghost" href="./index.html">🏠 Accueil</a>
+          <a class="btn ghost" href="https://digiylyfe.com/" target="_blank" rel="noopener noreferrer">← DIGIYLYFE</a>
           <a class="btn green" href="./submitV2.html">➕ Proposer mon spot</a>
-          <a class="btn gold" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
+          <a class="btn gold" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
         </div>
       </div>
     </div>
@@ -668,13 +666,13 @@
 
   <script>
     /* ===============================
-       DIGIY EXPLORE — explore.html
+       DIGIY EXPLORE — index.html
        Listing public premium / direct
     =============================== */
 
-    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+    const SUPABASE_URL = window.DIGIY_SUPABASE_URL;
+    const SUPABASE_ANON_KEY = window.DIGIY_SUPABASE_ANON_KEY || window.DIGIY_SUPABASE_ANON;
+    const PAY_URL = "https://commencer-a-payer.digiylyfe.com/";
 
     const $ = (s) => document.querySelector(s);
 
@@ -778,7 +776,7 @@
         throw new Error("Supabase JS v2 non chargé.");
       }
       return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth: { persistSession: false }
+        auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
       });
     }
 
@@ -919,7 +917,7 @@
     }
 
     function pickCover(s){
-      const u = String(s?.photo_url || "").trim();
+      const u = safeUrl(s?.photo_url || "");
       return u || IMG_FALLBACK;
     }
 
