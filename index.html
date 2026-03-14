@@ -3,55 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="DIGIY EXPLORE - Mise en relation directe entre voyageurs et professionnels africains. Zéro commission abusive. Paiement direct au pro." />
-  <meta name="theme-color" content="#00853f" />
-  <title>DIGIY EXPLORE ∞ | Saly • Dakar • Petite Côte</title>
+  <meta
+    name="description"
+    content="DIGIY EXPLORE — abonnement principal de présence tourisme dans l’écosystème DIGIYLYFE. Visibilité locale, contact direct, paiement direct au pro."
+  />
+  <meta name="theme-color" content="#06130f" />
+  <title>DIGIY EXPLORE ∞ | Présence tourisme • Petite Côte • Dakar</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
   <style>
     :root{
       --gold:#D4AF37;
       --gold2:#B8941E;
-      --black:#000;
-      --dark:#111;
+      --bg:#000;
+      --bg2:#06130f;
+      --card:rgba(255,255,255,.05);
+      --card2:rgba(12,36,28,.92);
+      --line:rgba(255,255,255,.12);
       --white:#fff;
       --muted:rgba(255,255,255,.78);
-      --card: rgba(0,0,0,.55);
-      --line: rgba(255,255,255,.12);
-      --shadow: 0 14px 40px rgba(0,0,0,.45);
-
-      --senegal:#00853f;
-      --senegal2:#00a651;
+      --muted2:rgba(255,255,255,.64);
+      --shadow:0 18px 44px rgba(0,0,0,.45);
+      --green:#22c55e;
+      --green2:#16a34a;
+      --orange:#f59e0b;
+      --radius:22px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{
-      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:#000;
-      color:#fff;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--white);
       overflow-x:hidden;
     }
     a{color:inherit;text-decoration:none}
+    button{font:inherit}
 
-    /* ===== NAV ===== */
     nav{
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      background: rgba(0,0,0,.92);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      padding: 14px 0;
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:1000;
+      background:rgba(0,0,0,.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      padding:14px 0;
     }
 
     .nav-container{
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 16px;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -64,12 +78,11 @@
       gap:10px;
       font-weight:800;
       letter-spacing:.3px;
-      color: var(--gold);
+      color:var(--gold);
       user-select:none;
       white-space:nowrap;
       cursor:pointer;
     }
-
     .logo .inf{font-size:22px}
 
     .nav-links{
@@ -77,18 +90,16 @@
       gap:18px;
       align-items:center;
     }
-
     .nav-links a{
-      color: rgba(255,255,255,.86);
-      font-weight:600;
+      color:rgba(255,255,255,.86);
+      font-weight:700;
       font-size:14px;
       padding:8px 10px;
       border-radius:999px;
       transition:.2s;
     }
-
     .nav-links a:hover{
-      background: rgba(255,255,255,.08);
+      background:rgba(255,255,255,.08);
       color:#fff;
     }
 
@@ -99,7 +110,7 @@
     }
 
     .nav-cta{
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
       color:#000;
       border:0;
       padding:10px 14px;
@@ -107,11 +118,10 @@
       font-weight:800;
       font-size:13px;
       cursor:pointer;
-      box-shadow: 0 10px 24px rgba(212,175,55,.25);
-      transition: transform .06s ease;
+      box-shadow:0 10px 24px rgba(212,175,55,.25);
+      transition:transform .06s ease;
       white-space:nowrap;
     }
-
     .nav-cta:active{transform:scale(.98)}
 
     .menu-toggle{
@@ -124,7 +134,6 @@
       border-radius:12px;
     }
 
-    /* ===== RETURN BAR ===== */
     .digiy-return-bar{
       position:fixed;
       top:64px;
@@ -155,7 +164,7 @@
       padding:0 12px;
       border-radius:999px;
       font-size:12px;
-      font-weight:1000;
+      font-weight:900;
       color:#fff3cf;
       border:1px solid rgba(212,175,55,.30);
       background:rgba(212,175,55,.08);
@@ -168,18 +177,16 @@
       line-height:1.4;
     }
 
-    /* Mobile menu */
     .drawer{
       position:fixed;
       inset:112px 0 0 0;
-      background: rgba(0,0,0,.96);
+      background:rgba(0,0,0,.96);
       border-top:1px solid rgba(255,255,255,.08);
       display:none;
       padding:18px 16px;
       z-index:999;
       overflow:auto;
     }
-
     .drawer.open{display:block}
 
     .drawer a{
@@ -188,40 +195,41 @@
       border:1px solid rgba(255,255,255,.10);
       border-radius:14px;
       margin-bottom:10px;
-      background: rgba(255,255,255,.04);
+      background:rgba(255,255,255,.04);
       font-weight:700;
-      color: rgba(255,255,255,.92);
+      color:rgba(255,255,255,.92);
     }
 
-    @media (min-width: 880px){
+    @media (min-width:880px){
       .menu-toggle{display:none}
       .nav-links{display:flex}
       .drawer{display:none !important}
     }
 
-    /* ===== HERO ===== */
     .hero{
-      min-height: 100vh;
+      min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 170px 16px 40px;
+      padding:170px 16px 44px;
       position:relative;
       overflow:hidden;
     }
 
     .hero::before{
       content:"";
-      position:absolute; inset:0;
+      position:absolute;
+      inset:0;
       background:
-        linear-gradient(45deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.25) 50%, rgba(0,0,0,.72) 100%),
+        linear-gradient(45deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.28) 50%, rgba(0,0,0,.74) 100%),
         url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&auto=format&fit=crop&q=70&fm=webp') center/cover;
-      transform: scale(1.02);
+      transform:scale(1.02);
     }
 
     .hero::after{
       content:"";
-      position:absolute; inset:0;
+      position:absolute;
+      inset:0;
       background:
         radial-gradient(900px 520px at 15% 12%, rgba(212,175,55,.18), transparent 55%),
         radial-gradient(900px 520px at 85% 90%, rgba(34,197,94,.12), transparent 55%);
@@ -229,8 +237,9 @@
     }
 
     .hero-content{
-      position:relative; z-index:5;
-      max-width: 980px;
+      position:relative;
+      z-index:5;
+      max-width:1020px;
       text-align:center;
     }
 
@@ -239,8 +248,8 @@
       padding:10px 16px;
       border-radius:999px;
       border:1px solid rgba(212,175,55,.55);
-      background: rgba(212,175,55,.10);
-      color: var(--gold);
+      background:rgba(212,175,55,.10);
+      color:var(--gold);
       font-weight:800;
       letter-spacing:.6px;
       font-size:13px;
@@ -250,32 +259,39 @@
     h1{
       font-family:'Playfair Display',serif;
       font-weight:900;
-      font-size: 40px;
-      line-height:1.1;
-      text-shadow: 0 6px 24px rgba(0,0,0,.6);
+      font-size:40px;
+      line-height:1.08;
+      text-shadow:0 6px 24px rgba(0,0,0,.6);
     }
 
     .sub{
-      margin: 14px auto 22px;
-      max-width: 820px;
-      color: rgba(255,255,255,.90);
-      font-size: 16px;
-      line-height:1.6;
-      text-shadow: 0 4px 18px rgba(0,0,0,.55);
+      margin:16px auto 12px;
+      max-width:850px;
+      color:rgba(255,255,255,.92);
+      font-size:16px;
+      line-height:1.75;
+      text-shadow:0 4px 18px rgba(0,0,0,.55);
     }
 
-    @media (min-width: 768px){
+    .hero-note{
+      margin:0 auto 24px;
+      max-width:780px;
+      color:rgba(255,255,255,.82);
+      font-size:14px;
+      line-height:1.75;
+    }
+
+    @media (min-width:768px){
       h1{font-size:64px}
       .sub{font-size:18px}
     }
 
-    /* ===== CTA GRID ===== */
     .cta-grid{
       display:flex;
       gap:12px;
       justify-content:center;
       flex-wrap:wrap;
-      margin-top: 10px;
+      margin-top:14px;
     }
 
     .btn{
@@ -283,83 +299,82 @@
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding: 14px 18px;
-      border-radius: 999px;
+      padding:14px 18px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.45);
+      background:rgba(0,0,0,.45);
       color:#fff;
       font-weight:800;
       cursor:pointer;
-      box-shadow: var(--shadow);
-      transition: transform .06s ease, background .2s ease, border-color .2s ease;
-      min-width: 240px;
+      box-shadow:var(--shadow);
+      transition:transform .06s ease, background .2s ease, border-color .2s ease;
+      min-width:240px;
     }
-
     .btn:active{transform:scale(.98)}
-
     .btn.primary{
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
       color:#000;
-      border-color: rgba(212,175,55,.55);
-      box-shadow: 0 18px 44px rgba(212,175,55,.22);
+      border-color:rgba(212,175,55,.55);
+      box-shadow:0 18px 44px rgba(212,175,55,.22);
     }
-
     .btn.secondary{
-      background: rgba(0,0,0,.55);
-      border-color: rgba(255,255,255,.16);
+      background:rgba(0,0,0,.58);
+      border-color:rgba(255,255,255,.16);
     }
-
     .btn.ghost{
-      background: rgba(255,255,255,.06);
+      background:rgba(255,255,255,.06);
     }
 
-    /* ===== SECTIONS ===== */
     section{scroll-margin-top:136px}
 
     .section{
-      padding: 60px 16px;
+      padding:64px 16px;
       background:#000;
-      border-top: 1px solid rgba(255,255,255,.06);
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    .section.alt{
+      background:linear-gradient(180deg, #05110d 0%, #000 100%);
     }
 
     .container{
-      max-width: 1100px;
+      max-width:1120px;
       margin:0 auto;
     }
 
     .sec-title{
       font-family:'Playfair Display',serif;
-      font-size: 34px;
-      color: var(--gold);
+      font-size:34px;
+      color:var(--gold);
       text-align:center;
-      margin-bottom: 12px;
+      margin-bottom:12px;
     }
 
     .sec-sub{
       text-align:center;
-      color: rgba(255,255,255,.78);
-      max-width: 860px;
-      margin: 0 auto 26px;
-      line-height:1.7;
+      color:rgba(255,255,255,.78);
+      max-width:880px;
+      margin:0 auto 26px;
+      line-height:1.8;
     }
 
     .cards{
       display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns:1fr;
       gap:12px;
-      margin-top: 18px;
+      margin-top:18px;
     }
 
-    @media (min-width: 900px){
-      .cards{grid-template-columns: repeat(3, 1fr)}
+    @media (min-width:900px){
+      .cards{grid-template-columns:repeat(3,1fr)}
     }
 
     .card{
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: var(--shadow);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
     }
 
     .card h3{
@@ -368,52 +383,163 @@
     }
 
     .card p{
-      color: rgba(255,255,255,.76);
-      line-height:1.7;
+      color:rgba(255,255,255,.76);
+      line-height:1.75;
+      font-size:14px;
+    }
+
+    .pricing-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-top:22px;
+    }
+
+    @media (min-width:760px){
+      .pricing-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (min-width:1080px){
+      .pricing-grid{grid-template-columns:repeat(4,1fr)}
+    }
+
+    .price-card{
+      position:relative;
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(12,36,28,.96) 0%, rgba(0,0,0,.92) 100%);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .price-card.featured{
+      border-color:rgba(212,175,55,.35);
+      box-shadow:0 22px 50px rgba(212,175,55,.12);
+    }
+
+    .price-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:34px;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      margin-bottom:12px;
+    }
+
+    .price-name{
+      font-size:18px;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .price-amount{
+      font-size:28px;
+      font-weight:900;
+      line-height:1.1;
+      margin-bottom:4px;
+    }
+
+    .price-amount small{
+      font-size:13px;
+      color:var(--muted2);
+      font-weight:700;
+    }
+
+    .price-copy{
+      color:var(--muted);
+      line-height:1.75;
+      font-size:14px;
+      margin-top:12px;
+      min-height:72px;
+    }
+
+    .price-features{
+      display:grid;
+      gap:8px;
+      margin-top:14px;
+    }
+
+    .price-features div{
+      color:rgba(255,255,255,.84);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .agency-note{
+      margin-top:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:16px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .stack{
+      display:grid;
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .highlight{
+      border:1px solid rgba(212,175,55,.18);
+      background:linear-gradient(180deg, rgba(212,175,55,.08) 0%, rgba(8,27,21,.92) 100%);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .highlight h3{
+      font-size:18px;
+      color:#f2d26a;
+      margin-bottom:8px;
+    }
+
+    .highlight p{
+      color:var(--muted);
+      line-height:1.8;
       font-size:14px;
     }
 
     .big-cta{
-      margin-top: 22px;
+      margin-top:24px;
       display:flex;
       justify-content:center;
     }
 
     .big-cta .btn{
-      min-width: min(560px, 92vw);
-      font-size: 16px;
-      padding: 16px 18px;
+      min-width:min(580px, 92vw);
+      font-size:16px;
+      padding:16px 18px;
     }
 
     footer{
-      padding: 28px 16px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      color: rgba(255,255,255,.55);
+      padding:28px 16px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color:rgba(255,255,255,.55);
       text-align:center;
-      font-size: 12px;
+      font-size:12px;
       background:#000;
     }
 
-    @media (max-width: 640px){
-      .digiy-return-bar{
-        top:60px;
-      }
-      .hero{
-        padding-top:178px;
-      }
-      .digiy-return-inner{
-        align-items:flex-start;
-      }
-      .digiy-return-note{
-        width:100%;
-      }
+    @media (max-width:640px){
+      .digiy-return-bar{top:60px}
+      .hero{padding-top:178px}
+      .digiy-return-inner{align-items:flex-start}
+      .digiy-return-note{width:100%}
     }
   </style>
 </head>
 
 <body>
 
-  <!-- NAV -->
   <nav>
     <div class="nav-container">
       <div class="logo" id="homeTop">
@@ -423,119 +549,234 @@
 
       <div class="nav-links">
         <a href="#role">Notre rôle</a>
+        <a href="#agence">Agence</a>
         <a href="#zones">Zones</a>
         <a href="#vision">Vision</a>
-        <a id="navPayLink" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">ACTIVER MON MODULE</a>
+        <a id="navPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">ACTIVER MA PRÉSENCE</a>
         <a id="navExploreLink" href="./explore.html">Entrer / Explorer</a>
       </div>
 
       <div class="nav-actions">
-        <button class="nav-cta" id="ctaPayTop">💳 ACTIVER MON MODULE</button>
+        <button class="nav-cta" id="ctaPayTop">💳 ACTIVER MA PRÉSENCE</button>
         <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </nav>
 
-  <!-- RETURN BAR -->
   <div class="digiy-return-bar">
     <div class="digiy-return-inner">
-      <a id="backToDigiy" class="digiy-return-link" href="http://digiylyfe.com">← Retour DIGIYLYFE</a>
+      <a id="backToDigiy" class="digiy-return-link" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
       <div class="digiy-return-note">
-        Après la visite, tu peux revenir directement sur la vitrine principale DIGIYLYFE.
+        EXPLORE est la porte tourisme de l’écosystème DIGIYLYFE : présence visible, contact direct, terrain réel.
       </div>
     </div>
   </div>
 
-  <!-- MOBILE DRAWER -->
   <div class="drawer" id="drawer">
     <a href="#role">Notre rôle</a>
+    <a href="#agence">Agence</a>
     <a href="#zones">Zones</a>
     <a href="#vision">Vision</a>
-    <a id="drawerPayLink" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MON MODULE</a>
+    <a id="drawerPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MA PRÉSENCE</a>
     <a id="drawerExploreLink" href="./explore.html">Entrer / Explorer</a>
-    <a id="drawerBackLink" href="http://digiylyfe.com">← Retour DIGIYLYFE</a>
+    <a id="drawerBackLink" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
   </div>
 
-  <!-- HERO -->
   <header class="hero" id="top">
     <div class="hero-content">
-      <div class="badge">🇸🇳 Saly • Dakar • Petite Côte</div>
-      <h1>L’Afrique Authentique<br/>Accessible au Monde</h1>
+      <div class="badge">🇸🇳 Saly • Dakar • Petite Côte • Abonnement principal</div>
+      <h1>Une vraie présence tourisme<br />dans l’écosystème DIGIYLYFE</h1>
       <p class="sub">
-        Mise en relation directe entre voyageurs et professionnels africains.<br/>
-        Zéro commission abusive. Paiement direct au pro.
+        DIGIY EXPLORE donne une visibilité claire aux activités tourisme, hébergements, expériences, guides et pros terrain.
+        Le voyageur découvre, contacte directement, puis traite sans commission abusive.
+      </p>
+      <p class="hero-note">
+        Ici, on ne vend pas un simple encart. On pose une présence réelle dans l’univers DIGIY : vitrine, zone, contact WhatsApp, lecture claire et futur accès pro.
       </p>
 
       <div class="cta-grid">
-        <button class="btn primary" id="ctaExploreTop">🔥 Entrer dans EXPLORE</button>
-        <button class="btn secondary" id="ctaPayMid">💳 ACTIVER MON MODULE (Abonnement)</button>
+        <button class="btn primary" id="ctaPayMid">💳 Activer ma présence EXPLORE</button>
+        <button class="btn secondary" id="ctaExploreTop">🧭 Découvrir les spots</button>
       </div>
     </div>
   </header>
 
-  <!-- ROLE -->
   <section class="section" id="role">
     <div class="container">
       <div class="sec-title">Notre rôle</div>
       <div class="sec-sub">
-        DIGIY EXPLORE facilite la mise en relation : tu découvres un pro terrain, tu le contactes directement.
-        Les prix et paiements se font sans intermédiaire.
+        DIGIY EXPLORE facilite la rencontre entre voyageurs et professionnels africains. On apporte la visibilité, le pro reçoit directement le contact, et la valeur reste sur le terrain.
       </div>
 
       <div class="cards">
         <div class="card">
-          <h3>1) Visibilité</h3>
-          <p>On donne une vitrine propre et internationale aux pros africains.</p>
+          <h3>1) Présence visible</h3>
+          <p>Une vitrine claire, mobile, élégante et compréhensible pour présenter le lieu, l’activité ou l’expérience.</p>
         </div>
         <div class="card">
           <h3>2) Contact direct</h3>
-          <p>WhatsApp / téléphone / lien — le voyageur parle au pro, pas à une plateforme.</p>
+          <p>WhatsApp, téléphone, itinéraire, lien utile : le visiteur parle au pro, pas à une plateforme gourmande au milieu.</p>
         </div>
         <div class="card">
-          <h3>3) Valeur en Afrique</h3>
-          <p>Zéro commission abusive : l’essentiel reste chez le pro terrain.</p>
+          <h3>3) Écosystème DIGIY</h3>
+          <p>EXPLORE n’est pas une page isolée. C’est une présence intégrée dans DIGIYLYFE, pensée pour durer et s’étendre.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ZONES -->
+  <section class="section alt" id="agence">
+    <div class="container">
+      <div class="sec-title">DIGIY EXPLORE — AGENCE</div>
+      <div class="sec-sub">
+        Abonnement principal de présence tourisme. Pour agences, hébergements, activités, expériences, guides et structures qui veulent une place claire dans l’écosystème DIGIYLYFE.
+      </div>
+
+      <div class="pricing-grid">
+        <article class="price-card">
+          <div class="price-tag">🟢 ESSENTIEL</div>
+          <div class="price-name">Présence locale</div>
+          <div class="price-amount">30 000 FCFA <small>/ mois</small></div>
+          <div class="price-copy">
+            Entrée propre dans EXPLORE avec fiche claire, visibilité de zone, contact direct et présence tourisme dans la vitrine.
+          </div>
+          <div class="price-features">
+            <div>✅ Fiche visible</div>
+            <div>✅ Zone / ville / contact</div>
+            <div>✅ WhatsApp direct</div>
+          </div>
+        </article>
+
+        <article class="price-card featured">
+          <div class="price-tag">🔵 PRO</div>
+          <div class="price-name">Présence renforcée</div>
+          <div class="price-amount">60 000 FCFA <small>/ mois</small></div>
+          <div class="price-copy">
+            Pour les structures qui veulent plus d’impact, une meilleure lecture commerciale et une présence plus affirmée dans la vitrine.
+          </div>
+          <div class="price-features">
+            <div>✅ Présence renforcée</div>
+            <div>✅ Lecture plus premium</div>
+            <div>✅ Visibilité élargie</div>
+          </div>
+        </article>
+
+        <article class="price-card">
+          <div class="price-tag">🟣 PREMIUM</div>
+          <div class="price-name">Présence maximale</div>
+          <div class="price-amount">120 000 FCFA <small>/ mois</small></div>
+          <div class="price-copy">
+            Niveau fort pour les activités qui veulent marquer le terrain, monter en image et occuper une place plus visible dans EXPLORE.
+          </div>
+          <div class="price-features">
+            <div>✅ Positionnement plus fort</div>
+            <div>✅ Présence premium</div>
+            <div>✅ Écosystème DIGIYLYFE</div>
+          </div>
+        </article>
+
+        <article class="price-card">
+          <div class="price-tag">🎫 SETUP &amp; ONBOARDING</div>
+          <div class="price-name">Entrée one-shot</div>
+          <div class="price-amount">150 000 FCFA <small>une fois</small></div>
+          <div class="price-copy">
+            Mise en route, préparation, cadrage et intégration initiale. C’est l’entrée propre pour poser la présence dans l’écosystème.
+          </div>
+          <div class="price-features">
+            <div>✅ Cadrage DIGIY</div>
+            <div>✅ Préparation initiale</div>
+            <div>✅ Mise en place terrain</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="agency-note">
+        ✅ 0% commission abusive • 📍 présence tourisme dans la Super App • 💬 contact direct • paiement direct au pro.<br />
+        Le Boost Tourisme vient ensuite comme supplément optionnel. Il ne remplace pas l’abonnement principal EXPLORE.
+      </div>
+
+      <div class="big-cta">
+        <button class="btn primary" id="ctaAgency">💳 Activer ma présence EXPLORE</button>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="zones">
     <div class="container">
       <div class="sec-title">Zones actives</div>
       <div class="sec-sub">
-        Saly, Somone, Ngaparou, Mbour, Dakar… Expansion prochaine vers d’autres pays africains.
+        Saly, Somone, Ngaparou, Mbour, Dakar… puis extension progressive vers d’autres territoires africains. DIGIY EXPLORE commence ancré, puis élargit proprement.
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Petite Côte</h3>
+          <p>Spots, lieux, hébergements, expériences, services utiles, repères terrain et accès directs.</p>
+        </div>
+        <div class="card">
+          <h3>Dakar</h3>
+          <p>Présence urbaine, découverte, mobilité, adresses sélectionnées et connexion directe avec le pro.</p>
+        </div>
+        <div class="card">
+          <h3>Expansion Afrique</h3>
+          <p>Le rail est pensé pour s’étendre sans perdre l’ADN : visibilité juste, relation directe, racines locales.</p>
+        </div>
       </div>
 
       <div class="big-cta">
-        <button class="btn primary" id="ctaExploreBottom">🚀 Explorer maintenant</button>
+        <button class="btn secondary" id="ctaExploreBottom">🚀 Explorer maintenant</button>
       </div>
     </div>
   </section>
 
-  <!-- VISION -->
-  <section class="section" id="vision">
+  <section class="section alt" id="vision">
     <div class="container">
       <div class="sec-title">Vision</div>
       <div class="sec-sub">
-        Construire un écosystème enraciné, simple et juste : découverte + contact direct + paiement direct.
+        Construire un tourisme digital enraciné : découverte claire, lien humain direct, valeur qui reste en Afrique, et montée en puissance progressive des pros dans l’écosystème DIGIYLYFE.
       </div>
 
-      <div class="cta-grid" style="margin-top:18px">
-        <button class="btn ghost" id="ctaPayBottom">💳 ACTIVER MON MODULE</button>
-        <button class="btn secondary" id="ctaEnter">🔥 Entrer / Explorer</button>
+      <div class="stack">
+        <div class="highlight">
+          <h3>EXPLORE = socle principal</h3>
+          <p>
+            L’abonnement EXPLORE pose la vraie présence dans l’écosystème. C’est le rail principal : visibilité, contact, lecture publique et futur accès pro.
+          </p>
+        </div>
+
+        <div class="highlight">
+          <h3>BOOST = supplément ensuite</h3>
+          <p>
+            Le Boost Tourisme vient après, comme renfort de visibilité. D’abord la présence réelle, ensuite la mise en avant supplémentaire.
+          </p>
+        </div>
+
+        <div class="highlight">
+          <h3>Terrain avant cinéma</h3>
+          <p>
+            DIGIY EXPLORE ne vend pas un décor vide. L’objectif est de montrer des activités, des lieux et des professionnels réels, joignables, lisibles et crédibles.
+          </p>
+        </div>
+      </div>
+
+      <div class="cta-grid" style="margin-top:22px">
+        <button class="btn primary" id="ctaPayBottom">💳 Activer ma présence</button>
+        <button class="btn ghost" id="ctaEnter">🧭 Entrer / Explorer</button>
       </div>
     </div>
   </section>
 
   <footer>
-    © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Mise en relation directe • Paiement direct au pro
+    © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Présence tourisme • Contact direct • Paiement direct au pro
   </footer>
 
   <script>
     (function(){
       const qp = new URLSearchParams(location.search);
-      const RETURN_URL = (qp.get("return") || "http://digiylyfe.com").trim();
+
+      const RETURN_URL = (qp.get("return") || "https://digiylyfe.com/").trim();
+      const EXPLORE_URL = "./explore.html";
+      const PAY_BASE = "https://commencer-a-payer.digiylyfe.com/";
 
       function withReturn(url){
         try{
@@ -547,30 +788,35 @@
         }
       }
 
+      function buildPayUrl(extra = {}){
+        const u = new URL(PAY_BASE, location.href);
+        u.searchParams.set("module", "EXPLORE");
+        u.searchParams.set("plan", extra.plan || "essentiel");
+        u.searchParams.set("source", extra.source || "digiy-explore-index");
+        u.searchParams.set("return", RETURN_URL);
+        return u.toString();
+      }
+
       const LINKS = {
-        explore: withReturn("./explore.html"),
-        pay: withReturn("https://beauville.github.io/commencer-a-payer/")
+        explore: withReturn(EXPLORE_URL),
+        pay: buildPayUrl()
       };
 
       function go(url, newTab = false){
         if(newTab){
           window.open(url, "_blank", "noopener,noreferrer");
-        } else {
+        }else{
           location.href = url;
         }
       }
 
-      // Retour DIGIYLYFE
-      const backLinks = [
+      [
         document.getElementById("backToDigiy"),
         document.getElementById("drawerBackLink")
-      ];
-
-      backLinks.forEach(a => {
+      ].forEach(a => {
         if(a) a.href = RETURN_URL;
       });
 
-      // Nav links
       const navPayLink = document.getElementById("navPayLink");
       const navExploreLink = document.getElementById("navExploreLink");
       const drawerPayLink = document.getElementById("drawerPayLink");
@@ -581,28 +827,26 @@
       if(drawerPayLink) drawerPayLink.href = LINKS.pay;
       if(drawerExploreLink) drawerExploreLink.href = LINKS.explore;
 
-      // CTA
       document.getElementById("ctaExploreTop").onclick = () => go(LINKS.explore, false);
       document.getElementById("ctaExploreBottom").onclick = () => go(LINKS.explore, false);
       document.getElementById("ctaEnter").onclick = () => go(LINKS.explore, false);
 
       document.getElementById("ctaPayTop").onclick = () => go(LINKS.pay, true);
       document.getElementById("ctaPayMid").onclick = () => go(LINKS.pay, true);
+      document.getElementById("ctaAgency").onclick = () => go(LINKS.pay, true);
       document.getElementById("ctaPayBottom").onclick = () => go(LINKS.pay, true);
 
-      // Logo retour haut
       document.getElementById("homeTop").addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
-      // Menu mobile
       const menuToggle = document.getElementById("menuToggle");
       const drawer = document.getElementById("drawer");
 
       menuToggle.onclick = () => drawer.classList.toggle("open");
 
-      drawer.querySelectorAll('a').forEach(a=>{
-        a.addEventListener("click", ()=>drawer.classList.remove("open"));
+      drawer.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => drawer.classList.remove("open"));
       });
     })();
   </script>
