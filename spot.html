@@ -10,6 +10,14 @@
     content="Fiche spot DIGIY EXPLORE — contact direct, itinéraire, lien utile, présence premium de la Petite Côte."
   />
 
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+    window.DIGIY_PAY_URL = "https://commencer-a-payer.digiylyfe.com/";
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -66,7 +74,6 @@
       margin:0 auto;
     }
 
-    /* ===== TOPBAR ===== */
     .topbar-wrap{
       position:sticky;
       top:0;
@@ -130,7 +137,6 @@
       justify-content:flex-end;
     }
 
-    /* ===== BUTTONS ===== */
     .btn{
       display:inline-flex;
       align-items:center;
@@ -171,7 +177,6 @@
       box-shadow:none;
     }
 
-    /* ===== HERO ===== */
     .hero{
       margin-top:18px;
       overflow:hidden;
@@ -265,7 +270,6 @@
       flex-wrap:wrap;
     }
 
-    /* ===== GRID ===== */
     .grid{
       display:grid;
       grid-template-columns:1.2fr .8fr;
@@ -364,7 +368,6 @@
       margin-top:16px;
     }
 
-    /* ===== MAP ===== */
     .map-head{
       display:flex;
       align-items:center;
@@ -391,7 +394,6 @@
       line-height:1.7;
     }
 
-    /* ===== BOOST ===== */
     .boost-box{
       display:none;
       margin-top:16px;
@@ -418,7 +420,6 @@
       margin-top:14px;
     }
 
-    /* ===== STATES ===== */
     .state{
       padding:18px;
       border-radius:22px;
@@ -487,7 +488,7 @@
         <div class="top-actions">
           <a class="btn ghost" href="./index.html">🏠 Accueil</a>
           <a class="btn ghost" href="./explore.html">🧭 Explorer</a>
-          <a class="btn gold" href="https://beauville.github.io/commencer-a-payer/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
+          <a class="btn gold" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 Passer premium</a>
         </div>
       </div>
     </div>
@@ -603,9 +604,18 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    const SUPABASE_URL =
+      window.DIGIY_SUPABASE_URL ||
+      "https://wesqmwjjtsefyjnluosj.supabase.co";
+
     const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc3Ftd2pqdHNlZnlqbmx1b3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxNzg4ODIsImV4cCI6MjA4MDc1NDg4Mn0.dZfYOc2iL2_wRYL3zExZFsFSBK6AbMeOid2LrIjcTdA";
+      window.DIGIY_SUPABASE_ANON_KEY ||
+      window.DIGIY_SUPABASE_ANON ||
+      "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+
+    const DIGIY_PAY_URL =
+      window.DIGIY_PAY_URL ||
+      "https://commencer-a-payer.digiylyfe.com/";
 
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: { persistSession: false }
@@ -689,6 +699,7 @@
     function setState(message){
       $("stateBox").style.display = "block";
       $("stateBox").innerHTML = message;
+      $("contentGrid").style.display = "none";
     }
 
     function clearState(){
@@ -720,17 +731,45 @@
       return t;
     }
 
+    function parseTags(value){
+      if (Array.isArray(value)) {
+        return value.map(v => String(v).trim()).filter(Boolean);
+      }
+
+      if (typeof value === "string") {
+        const trimmed = value.trim();
+        if (!trimmed) return [];
+
+        try{
+          const parsed = JSON.parse(trimmed);
+          if (Array.isArray(parsed)) {
+            return parsed.map(v => String(v).trim()).filter(Boolean);
+          }
+        }catch{}
+
+        return trimmed
+          .split(",")
+          .map(v => v.trim())
+          .filter(Boolean);
+      }
+
+      return [];
+    }
+
     async function checkExploreBoost(phone){
       if (!phone) return false;
+
       try{
         const { data, error } = await sb.rpc("digiy_has_access", {
           p_phone: phone,
           p_module: "EXPLORE_BOOST"
         });
+
         if (error) {
           console.warn("BOOST CHECK ERROR:", error);
           return false;
         }
+
         return !!data;
       }catch(err){
         console.warn("BOOST CHECK CRASH:", err);
@@ -754,6 +793,7 @@
     function setButtonLink(id, href, show){
       const el = $(id);
       if (!el) return;
+
       if (show && href) {
         el.href = href;
         el.style.display = "inline-flex";
@@ -771,6 +811,10 @@
       if (!hasCoords) {
         $("map").style.display = "none";
         $("mapEmpty").style.display = "block";
+        if (map) {
+          map.remove();
+          map = null;
+        }
         return;
       }
 
@@ -791,7 +835,16 @@
         attribution: "&copy; OpenStreetMap"
       }).addTo(map);
 
-      L.marker([lat, lng]).addTo(map).bindPopup(esc(data.name || "Spot"));
+      const popupHtml = `<strong>${esc(data.name || "Spot")}</strong>`;
+      L.marker([lat, lng]).addTo(map).bindPopup(popupHtml);
+    }
+
+    function buildBoostUrl(phone){
+      const url = new URL(DIGIY_PAY_URL, window.location.href);
+      url.searchParams.set("module", "EXPLORE_BOOST");
+      if (phone) url.searchParams.set("phone", phone);
+      url.searchParams.set("plan", "local");
+      return url.toString();
     }
 
     async function loadSpot(){
@@ -828,22 +881,23 @@
       clearState();
       $("contentGrid").style.display = "grid";
 
-      const title = data.name || "Spot";
+      const title = String(data.name || "Spot").trim() || "Spot";
       const phone = normalizePhone(data.phone);
       const wa = buildWhatsAppLink(phone, title);
       const call = buildCallLink(phone);
       const maps = buildMapsLink(Number(data.lat), Number(data.lng), title);
       const site = safeUrl(data.link_url);
+      const cover = safeUrl(data.photo_url) || IMG_FALLBACK;
       const boostActive = await checkExploreBoost(phone);
       const isProMode = qs("pro") === "1";
 
       document.title = `${title} — DIGIY EXPLORE`;
+
       const descMeta = document.querySelector('meta[name="description"]');
       if (descMeta) {
         descMeta.setAttribute("content", `${title} — fiche spot DIGIY EXPLORE. Contact direct, itinéraire, présence premium.`);
       }
 
-      const cover = String(data.photo_url || "").trim() || IMG_FALLBACK;
       $("heroCover").style.backgroundImage =
         `linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,.32) 42%, rgba(0,0,0,.78) 100%), url("${cover.replace(/"/g, '\\"')}")`;
 
@@ -854,12 +908,16 @@
       renderHeroBadges(data, boostActive);
 
       const pills = [];
-      if (data.tags && Array.isArray(data.tags)) {
-        data.tags.forEach(tag => pills.push(`<span class="pill">${esc(tag)}</span>`));
-      }
+      const tags = parseTags(data.tags);
+
+      tags.forEach(tag => {
+        pills.push(`<span class="pill">${esc(tag)}</span>`);
+      });
+
       if (Number.isFinite(Number(data.score))) {
         pills.push(`<span class="pill">${esc("⭐ Score " + Number(data.score))}</span>`);
       }
+
       $("spotPills").innerHTML = pills.join("");
 
       $("phoneLine").textContent = phone || "Non renseigné";
@@ -885,26 +943,35 @@
 
       renderMap(data);
 
+      const boostBox = $("boostBox");
+      const boostText = $("boostBoxText");
+      const boostBtn = $("btnBoost");
+
       if (boostActive) {
-        $("boostBox").style.display = "block";
-        $("boostBoxText").textContent = "Ce spot dispose déjà d’un boost actif. Il bénéficie d’une mise en avant renforcée dans la vitrine.";
-        $("btnBoost").style.display = "none";
+        boostBox.style.display = "block";
+        boostText.textContent = "Ce spot dispose déjà d’un boost actif. Il bénéficie d’une mise en avant renforcée dans la vitrine.";
+        boostBtn.style.display = "none";
+        boostBtn.onclick = null;
       } else if (isProMode) {
-        $("boostBox").style.display = "block";
-        $("boostBoxText").textContent = "Aucun boost actif pour ce spot. Active un niveau pour renforcer sa présence en vitrine.";
+        boostBox.style.display = "block";
+        boostText.textContent = "Aucun boost actif pour ce spot. Active un niveau pour renforcer sa présence en vitrine.";
         if (phone) {
-          const btn = $("btnBoost");
-          btn.style.display = "inline-flex";
-          btn.onclick = () => {
+          boostBtn.style.display = "inline-flex";
+          boostBtn.onclick = () => {
             window.open(
-              `https://beauville.github.io/abos/?module=EXPLORE_BOOST&phone=${encodeURIComponent(phone)}&plan=local`,
+              buildBoostUrl(phone),
               "_blank",
               "noopener,noreferrer"
             );
           };
+        } else {
+          boostBtn.style.display = "none";
+          boostBtn.onclick = null;
         }
       } else {
-        $("boostBox").style.display = "none";
+        boostBox.style.display = "none";
+        boostBtn.style.display = "none";
+        boostBtn.onclick = null;
       }
     }
 
