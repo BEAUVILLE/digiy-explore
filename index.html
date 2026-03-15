@@ -10,6 +10,14 @@
   <meta name="theme-color" content="#06130f" />
   <title>DIGIY EXPLORE ∞ | Présence tourisme • Petite Côte • Dakar</title>
 
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+    window.DIGIY_PAY_URL = "https://commencer-a-payer.digiylyfe.com/";
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -21,6 +29,7 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
@@ -89,6 +98,7 @@
       display:none;
       gap:18px;
       align-items:center;
+      flex-wrap:wrap;
     }
     .nav-links a{
       color:rgba(255,255,255,.86);
@@ -552,8 +562,11 @@
         <a href="#agence">Agence</a>
         <a href="#zones">Zones</a>
         <a href="#vision">Vision</a>
+        <a id="navSubmitLink" href="./submitV2.html">Proposer un spot</a>
         <a id="navPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">ACTIVER MA PRÉSENCE</a>
         <a id="navExploreLink" href="./explore.html">Entrer / Explorer</a>
+        <a id="navAdminPinLink" href="./admin-pin.html" style="display:none">Admin PIN</a>
+        <a id="navAdminAuditLink" href="./admin-audit.html" style="display:none">Audit</a>
       </div>
 
       <div class="nav-actions">
@@ -577,8 +590,11 @@
     <a href="#agence">Agence</a>
     <a href="#zones">Zones</a>
     <a href="#vision">Vision</a>
+    <a id="drawerSubmitLink" href="./submitV2.html">➕ Proposer mon spot</a>
     <a id="drawerPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MA PRÉSENCE</a>
     <a id="drawerExploreLink" href="./explore.html">Entrer / Explorer</a>
+    <a id="drawerAdminPinLink" href="./admin-pin.html" style="display:none">🛡️ Admin PIN</a>
+    <a id="drawerAdminAuditLink" href="./admin-audit.html" style="display:none">🧾 Audit</a>
     <a id="drawerBackLink" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
   </div>
 
@@ -771,19 +787,60 @@
   </footer>
 
   <script>
-    (function(){
+    (async function(){
       const qp = new URLSearchParams(location.search);
 
-      const RETURN_URL = (qp.get("return") || "https://digiylyfe.com/").trim();
+      const SUPABASE_URL =
+        window.DIGIY_SUPABASE_URL ||
+        "https://wesqmwjjtsefyjnluosj.supabase.co";
+
+      const SUPABASE_ANON_KEY =
+        window.DIGIY_SUPABASE_ANON_KEY ||
+        window.DIGIY_SUPABASE_ANON ||
+        "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+
+      const PAY_BASE = window.DIGIY_PAY_URL || "https://commencer-a-payer.digiylyfe.com/";
       const EXPLORE_URL = "./explore.html";
-      const PAY_BASE = "https://commencer-a-payer.digiylyfe.com/";
+      const SUBMIT_URL = "./submitV2.html";
+      const ADMIN_PIN_URL = "./admin-pin.html";
+      const ADMIN_AUDIT_URL = "./admin-audit.html";
+      const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
+      const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
+
+      let sb = null;
+
+      function safeUrl(raw, fallback){
+        const value = String(raw || "").trim();
+        try{
+          const u = new URL(value || fallback, location.href);
+          if (u.protocol === "http:" || u.protocol === "https:") return u.toString();
+          return fallback;
+        }catch{
+          return fallback;
+        }
+      }
+
+      const RETURN_URL = safeUrl(qp.get("return"), "https://digiylyfe.com/");
+
+      function getClient(){
+        if (sb) return sb;
+        if (!window.supabase?.createClient) throw new Error("Supabase JS non chargé.");
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false
+          }
+        });
+        return sb;
+      }
 
       function withReturn(url){
         try{
           const u = new URL(url, location.href);
           u.searchParams.set("return", RETURN_URL);
           return u.toString();
-        }catch(e){
+        }catch{
           return url;
         }
       }
@@ -797,15 +854,76 @@
         return u.toString();
       }
 
+      function getPinSession(){
+        try{
+          const raw = localStorage.getItem(LS_KEY);
+          const s = raw ? JSON.parse(raw) : null;
+          if (!s?.phone || !s?.pin || !s?.ts) return null;
+          if ((Date.now() - Number(s.ts)) > SESSION_TTL_MS) {
+            localStorage.removeItem(LS_KEY);
+            return null;
+          }
+          return {
+            phone: String(s.phone),
+            pin: String(s.pin),
+            ts: Number(s.ts)
+          };
+        }catch{
+          localStorage.removeItem(LS_KEY);
+          return null;
+        }
+      }
+
+      function clearPinSession(){
+        localStorage.removeItem(LS_KEY);
+      }
+
+      async function verifyStoredSession(){
+        const s = getPinSession();
+        if (!s?.phone || !s?.pin) return false;
+
+        try{
+          const client = getClient();
+          const { data, error } = await client.rpc("explore_admin_pin_check", {
+            p_phone: s.phone,
+            p_pin: s.pin
+          });
+
+          if (error || !data?.ok) {
+            clearPinSession();
+            return false;
+          }
+
+          return true;
+        }catch{
+          clearPinSession();
+          return false;
+        }
+      }
+
+      function renderAdminRail(show){
+        [
+          document.getElementById("navAdminPinLink"),
+          document.getElementById("navAdminAuditLink"),
+          document.getElementById("drawerAdminPinLink"),
+          document.getElementById("drawerAdminAuditLink")
+        ].forEach((el) => {
+          if (el) el.style.display = show ? "" : "none";
+        });
+      }
+
       const LINKS = {
         explore: withReturn(EXPLORE_URL),
-        pay: buildPayUrl()
+        submit: withReturn(SUBMIT_URL),
+        pay: buildPayUrl(),
+        adminPin: withReturn(ADMIN_PIN_URL),
+        adminAudit: withReturn(ADMIN_AUDIT_URL)
       };
 
       function go(url, newTab = false){
-        if(newTab){
+        if (newTab) {
           window.open(url, "_blank", "noopener,noreferrer");
-        }else{
+        } else {
           location.href = url;
         }
       }
@@ -813,19 +931,33 @@
       [
         document.getElementById("backToDigiy"),
         document.getElementById("drawerBackLink")
-      ].forEach(a => {
-        if(a) a.href = RETURN_URL;
+      ].forEach((a) => {
+        if (a) a.href = RETURN_URL;
       });
 
       const navPayLink = document.getElementById("navPayLink");
       const navExploreLink = document.getElementById("navExploreLink");
+      const navSubmitLink = document.getElementById("navSubmitLink");
+      const navAdminPinLink = document.getElementById("navAdminPinLink");
+      const navAdminAuditLink = document.getElementById("navAdminAuditLink");
+
       const drawerPayLink = document.getElementById("drawerPayLink");
       const drawerExploreLink = document.getElementById("drawerExploreLink");
+      const drawerSubmitLink = document.getElementById("drawerSubmitLink");
+      const drawerAdminPinLink = document.getElementById("drawerAdminPinLink");
+      const drawerAdminAuditLink = document.getElementById("drawerAdminAuditLink");
 
-      if(navPayLink) navPayLink.href = LINKS.pay;
-      if(navExploreLink) navExploreLink.href = LINKS.explore;
-      if(drawerPayLink) drawerPayLink.href = LINKS.pay;
-      if(drawerExploreLink) drawerExploreLink.href = LINKS.explore;
+      if (navPayLink) navPayLink.href = LINKS.pay;
+      if (navExploreLink) navExploreLink.href = LINKS.explore;
+      if (navSubmitLink) navSubmitLink.href = LINKS.submit;
+      if (navAdminPinLink) navAdminPinLink.href = LINKS.adminPin;
+      if (navAdminAuditLink) navAdminAuditLink.href = LINKS.adminAudit;
+
+      if (drawerPayLink) drawerPayLink.href = LINKS.pay;
+      if (drawerExploreLink) drawerExploreLink.href = LINKS.explore;
+      if (drawerSubmitLink) drawerSubmitLink.href = LINKS.submit;
+      if (drawerAdminPinLink) drawerAdminPinLink.href = LINKS.adminPin;
+      if (drawerAdminAuditLink) drawerAdminAuditLink.href = LINKS.adminAudit;
 
       document.getElementById("ctaExploreTop").onclick = () => go(LINKS.explore, false);
       document.getElementById("ctaExploreBottom").onclick = () => go(LINKS.explore, false);
@@ -845,10 +977,15 @@
 
       menuToggle.onclick = () => drawer.classList.toggle("open");
 
-      drawer.querySelectorAll("a").forEach(a => {
+      drawer.querySelectorAll("a").forEach((a) => {
         a.addEventListener("click", () => drawer.classList.remove("open"));
       });
-    })();
+
+      const isAdmin = await verifyStoredSession();
+      renderAdminRail(isAdmin);
+    })().catch((err) => {
+      console.error("INDEX BOOT ERROR:", err);
+    });
   </script>
 </body>
 </html>
