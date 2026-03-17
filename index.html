@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="DIGIY EXPLORE — abonnement principal de présence tourisme dans l’écosystème DIGIYLYFE. Visibilité locale, contact direct, paiement direct au pro."
+    content="DIGIY EXPLORE — présence tourisme dans l’écosystème DIGIYLYFE. Visibilité locale, spots publiés, contact direct, paiement direct au pro."
   />
   <meta name="theme-color" content="#06130f" />
-  <title>DIGIY EXPLORE ∞ | Présence tourisme • Petite Côte • Dakar</title>
+  <title>DIGIY EXPLORE ∞ | Présence tourisme • Spots • Petite Côte • Dakar</title>
 
   <script>
     window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
@@ -47,6 +47,7 @@
       --green:#22c55e;
       --green2:#16a34a;
       --orange:#f59e0b;
+      --bad:#ef4444;
       --radius:22px;
     }
 
@@ -59,7 +60,7 @@
       overflow-x:hidden;
     }
     a{color:inherit;text-decoration:none}
-    button{font:inherit}
+    button,input,select{font:inherit}
 
     nav{
       position:fixed;
@@ -530,13 +531,225 @@
       padding:16px 18px;
     }
 
-    footer{
-      padding:28px 16px;
-      border-top:1px solid rgba(255,255,255,.08);
-      color:rgba(255,255,255,.55);
-      text-align:center;
+    /* LIVE SPOTS */
+    .live-toolbar{
+      display:grid;
+      grid-template-columns:1.2fr .9fr .9fr .9fr auto;
+      gap:12px;
+      margin-top:18px;
+      margin-bottom:18px;
+    }
+
+    .control{
+      min-height:52px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      padding:0 14px;
+      outline:none;
+    }
+
+    .control option{
+      background:#0c1d17;
+      color:#fff;
+    }
+
+    .reload-btn{
+      min-height:52px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      padding:0 16px;
+    }
+
+    .live-msg{
+      margin:0 auto 14px;
+      max-width:1120px;
+      border-radius:18px;
+      padding:14px 16px;
+      font-size:14px;
+      line-height:1.5;
+      font-weight:700;
+      display:none;
+    }
+    .live-msg.show{display:block}
+    .live-msg.info{
+      color:#dbeafe;
+      border:1px solid rgba(96,165,250,.18);
+      background:rgba(59,130,246,.08);
+    }
+    .live-msg.bad{
+      color:#fecaca;
+      border:1px solid rgba(239,68,68,.18);
+      background:rgba(239,68,68,.08);
+    }
+    .live-msg.ok{
+      color:#bbf7d0;
+      border:1px solid rgba(34,197,94,.18);
+      background:rgba(34,197,94,.08);
+    }
+
+    .spots-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-top:16px;
+    }
+
+    @media (min-width:760px){
+      .spots-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (min-width:1080px){
+      .spots-grid{grid-template-columns:repeat(3,1fr)}
+    }
+
+    .spot-card{
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(12,36,28,.96) 0%, rgba(0,0,0,.92) 100%);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    .spot-cover{
+      min-height:220px;
+      background:#102019 center/cover no-repeat;
+      position:relative;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .spot-cover.fallback{
+      display:grid;
+      place-items:center;
+      color:rgba(255,255,255,.72);
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,.08), transparent 30%),
+        linear-gradient(180deg, #10231b, #0a1712);
+    }
+
+    .spot-badge{
+      position:absolute;
+      left:14px;
+      top:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:30px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(212,175,55,.14);
+      border:1px solid rgba(212,175,55,.32);
+      color:#f4d978;
       font-size:12px;
-      background:#000;
+      font-weight:900;
+      letter-spacing:.04em;
+      backdrop-filter:blur(8px);
+    }
+
+    .spot-body{
+      padding:18px;
+      display:grid;
+      gap:12px;
+      flex:1 1 auto;
+    }
+
+    .spot-title{
+      font-size:20px;
+      font-weight:900;
+      line-height:1.2;
+      letter-spacing:-.02em;
+    }
+
+    .spot-meta{
+      color:rgba(255,255,255,.76);
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .spot-desc{
+      color:rgba(255,255,255,.84);
+      font-size:14px;
+      line-height:1.75;
+      min-height:72px;
+    }
+
+    .spot-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .spot-tag{
+      min-height:30px;
+      padding:0 10px;
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      background:rgba(212,175,55,.08);
+      border:1px solid rgba(212,175,55,.18);
+      color:#f4d978;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .spot-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:4px;
+    }
+
+    .spot-btn{
+      flex:1 1 180px;
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:0 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:900;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:#fff;
+    }
+
+    .spot-btn.primary{
+      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      color:#000;
+      border-color:rgba(212,175,55,.45);
+    }
+
+    .spot-btn.whatsapp{
+      background:linear-gradient(135deg, rgba(34,197,94,.18) 0%, rgba(22,163,74,.22) 100%);
+      border-color:rgba(34,197,94,.28);
+      color:#dcfce7;
+    }
+
+    .empty-state{
+      border:1px dashed rgba(255,255,255,.12);
+      border-radius:20px;
+      padding:22px;
+      color:rgba(255,255,255,.72);
+      font-size:14px;
+      line-height:1.75;
+      background:rgba(255,255,255,.03);
+      text-align:center;
+    }
+
+    @media (max-width:980px){
+      .live-toolbar{
+        grid-template-columns:1fr 1fr;
+      }
     }
 
     @media (max-width:640px){
@@ -544,6 +757,18 @@
       .hero{padding-top:178px}
       .digiy-return-inner{align-items:flex-start}
       .digiy-return-note{width:100%}
+      .live-toolbar{
+        grid-template-columns:1fr;
+      }
+    }
+
+    footer{
+      padding:28px 16px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color:rgba(255,255,255,.55);
+      text-align:center;
+      font-size:12px;
+      background:#000;
     }
   </style>
 </head>
@@ -559,14 +784,13 @@
 
       <div class="nav-links">
         <a href="#role">Notre rôle</a>
+        <a href="#spots">Spots</a>
         <a href="#agence">Agence</a>
         <a href="#zones">Zones</a>
         <a href="#vision">Vision</a>
-        <a id="navSubmitLink" href="./submitV2.html">Proposer un spot</a>
+        <a id="navSubmitLink" href="./submit.html">Proposer un spot</a>
+        <a id="navPinLink" href="./pin.html">Entrée PIN</a>
         <a id="navPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">ACTIVER MA PRÉSENCE</a>
-        <a id="navExploreLink" href="./explore.html">Entrer / Explorer</a>
-        <a id="navAdminPinLink" href="./admin-pin.html" style="display:none">Admin PIN</a>
-        <a id="navAdminAuditLink" href="./admin-audit.html" style="display:none">Audit</a>
       </div>
 
       <div class="nav-actions">
@@ -580,39 +804,39 @@
     <div class="digiy-return-inner">
       <a id="backToDigiy" class="digiy-return-link" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
       <div class="digiy-return-note">
-        EXPLORE est la porte tourisme de l’écosystème DIGIYLYFE : présence visible, contact direct, terrain réel.
+        EXPLORE est la porte tourisme de l’écosystème DIGIYLYFE : présence visible, spots publiés, contact direct, terrain réel.
       </div>
     </div>
   </div>
 
   <div class="drawer" id="drawer">
     <a href="#role">Notre rôle</a>
+    <a href="#spots">Spots publiés</a>
     <a href="#agence">Agence</a>
     <a href="#zones">Zones</a>
     <a href="#vision">Vision</a>
-    <a id="drawerSubmitLink" href="./submitV2.html">➕ Proposer mon spot</a>
+    <a id="drawerSubmitLink" href="./submit.html">➕ Proposer mon spot</a>
+    <a id="drawerPinLink" href="./pin.html">🔐 Entrée PIN</a>
     <a id="drawerPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MA PRÉSENCE</a>
-    <a id="drawerExploreLink" href="./explore.html">Entrer / Explorer</a>
-    <a id="drawerAdminPinLink" href="./admin-pin.html" style="display:none">🛡️ Admin PIN</a>
-    <a id="drawerAdminAuditLink" href="./admin-audit.html" style="display:none">🧾 Audit</a>
     <a id="drawerBackLink" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
   </div>
 
   <header class="hero" id="top">
     <div class="hero-content">
-      <div class="badge">🇸🇳 Saly • Dakar • Petite Côte • Abonnement principal</div>
+      <div class="badge">🇸🇳 Saly • Dakar • Petite Côte • Présence tourisme</div>
       <h1>Une vraie présence tourisme<br />dans l’écosystème DIGIYLYFE</h1>
       <p class="sub">
         DIGIY EXPLORE donne une visibilité claire aux activités tourisme, hébergements, expériences, guides et pros terrain.
-        Le voyageur découvre, contacte directement, puis traite sans commission abusive.
+        Le voyageur découvre, lit la fiche, contacte directement, puis traite sans commission abusive.
       </p>
       <p class="hero-note">
-        Ici, on ne vend pas un simple encart. On pose une présence réelle dans l’univers DIGIY : vitrine, zone, contact WhatsApp, lecture claire et futur accès pro.
+        Ici, on ne vend pas un simple encart. On pose une présence réelle dans l’univers DIGIY :
+        vitrine, zone, contact WhatsApp, lecture claire et futur accès pro.
       </p>
 
       <div class="cta-grid">
         <button class="btn primary" id="ctaPayMid">💳 Activer ma présence EXPLORE</button>
-        <button class="btn secondary" id="ctaExploreTop">🧭 Découvrir les spots</button>
+        <button class="btn secondary" id="ctaScrollSpots">🧭 Voir les spots publiés</button>
       </div>
     </div>
   </header>
@@ -637,6 +861,35 @@
           <h3>3) Écosystème DIGIY</h3>
           <p>EXPLORE n’est pas une page isolée. C’est une présence intégrée dans DIGIYLYFE, pensée pour durer et s’étendre.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="spots">
+    <div class="container">
+      <div class="sec-title">Spots publiés</div>
+      <div class="sec-sub">
+        Lecture publique réelle des lieux déjà publiés dans PRO-EXPLORE. Filtre, cherche, ouvre la fiche, contacte le pro.
+      </div>
+
+      <div id="liveMsg" class="live-msg info"></div>
+
+      <div class="live-toolbar">
+        <input id="searchInput" class="control" type="text" placeholder="Rechercher un lieu, une zone, un repère…" />
+        <input id="cityInput" class="control" type="text" placeholder="Ville (ex: Saly)" />
+        <input id="zoneInput" class="control" type="text" placeholder="Zone (ex: Centre)" />
+        <select id="categorySelect" class="control">
+          <option value="">Toutes les catégories</option>
+        </select>
+        <button id="reloadBtn" class="reload-btn" type="button">Actualiser</button>
+      </div>
+
+      <div id="spotsGrid" class="spots-grid">
+        <div class="empty-state">Chargement des spots publiés…</div>
+      </div>
+
+      <div class="big-cta">
+        <button class="btn secondary" id="ctaSubmitSpot">➕ Proposer un spot</button>
       </div>
     </div>
   </section>
@@ -707,7 +960,7 @@
       </div>
 
       <div class="agency-note">
-        ✅ 0% commission abusive • 📍 présence tourisme dans la Super App • 💬 contact direct • paiement direct au pro.<br />
+        ✅ 0% commission abusive • 📍 présence tourisme dans la vitrine DIGIY • 💬 contact direct • paiement direct au pro.<br />
         Le Boost Tourisme vient ensuite comme supplément optionnel. Il ne remplace pas l’abonnement principal EXPLORE.
       </div>
 
@@ -740,7 +993,7 @@
       </div>
 
       <div class="big-cta">
-        <button class="btn secondary" id="ctaExploreBottom">🚀 Explorer maintenant</button>
+        <button class="btn secondary" id="ctaSpotsBottom">🚀 Voir les spots</button>
       </div>
     </div>
   </section>
@@ -777,13 +1030,13 @@
 
       <div class="cta-grid" style="margin-top:22px">
         <button class="btn primary" id="ctaPayBottom">💳 Activer ma présence</button>
-        <button class="btn ghost" id="ctaEnter">🧭 Entrer / Explorer</button>
+        <button class="btn ghost" id="ctaPin">🔐 Entrée PIN PRO</button>
       </div>
     </div>
   </section>
 
   <footer>
-    © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Présence tourisme • Contact direct • Paiement direct au pro
+    © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Présence tourisme • Spots publiés • Contact direct • Paiement direct au pro
   </footer>
 
   <script>
@@ -800,14 +1053,24 @@
         "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
 
       const PAY_BASE = window.DIGIY_PAY_URL || "https://commencer-a-payer.digiylyfe.com/";
-      const EXPLORE_URL = "./explore.html";
-      const SUBMIT_URL = "./submitV2.html";
-      const ADMIN_PIN_URL = "./admin-pin.html";
-      const ADMIN_AUDIT_URL = "./admin-audit.html";
-      const LS_KEY = "DIGIY_EXPLORE_ADMIN_PIN_V1";
-      const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
+      const SUBMIT_URL = "./submit.html";
+      const PIN_URL = "./pin.html";
+      const FICHE_URL = "./fiche.html";
 
       let sb = null;
+
+      const RETURN_URL = safeUrl(qp.get("return"), "https://digiylyfe.com/");
+
+      const liveMsg = document.getElementById("liveMsg");
+      const searchInput = document.getElementById("searchInput");
+      const cityInput = document.getElementById("cityInput");
+      const zoneInput = document.getElementById("zoneInput");
+      const categorySelect = document.getElementById("categorySelect");
+      const reloadBtn = document.getElementById("reloadBtn");
+      const spotsGrid = document.getElementById("spotsGrid");
+
+      let CURRENT_ITEMS = [];
+      let CATEGORIES = [];
 
       function safeUrl(raw, fallback){
         const value = String(raw || "").trim();
@@ -819,8 +1082,6 @@
           return fallback;
         }
       }
-
-      const RETURN_URL = safeUrl(qp.get("return"), "https://digiylyfe.com/");
 
       function getClient(){
         if (sb) return sb;
@@ -854,79 +1115,193 @@
         return u.toString();
       }
 
-      function getPinSession(){
-        try{
-          const raw = localStorage.getItem(LS_KEY);
-          const s = raw ? JSON.parse(raw) : null;
-          if (!s?.phone || !s?.pin || !s?.ts) return null;
-          if ((Date.now() - Number(s.ts)) > SESSION_TTL_MS) {
-            localStorage.removeItem(LS_KEY);
-            return null;
-          }
-          return {
-            phone: String(s.phone),
-            pin: String(s.pin),
-            ts: Number(s.ts)
-          };
-        }catch{
-          localStorage.removeItem(LS_KEY);
-          return null;
+      function escapeHtml(value){
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function normalizePhone(v){
+        return String(v || "").replace(/[^\d]/g, "");
+      }
+
+      function setLiveMsg(text, type){
+        if(!text){
+          liveMsg.className = "live-msg";
+          liveMsg.textContent = "";
+          return;
         }
+        liveMsg.className = "live-msg show " + (type || "info");
+        liveMsg.textContent = text;
       }
 
-      function clearPinSession(){
-        localStorage.removeItem(LS_KEY);
+      function ficheHref(slug){
+        const u = new URL(FICHE_URL, location.href);
+        u.searchParams.set("slug", slug);
+        return u.toString();
       }
 
-      async function verifyStoredSession(){
-        const s = getPinSession();
-        if (!s?.phone || !s?.pin) return false;
+      function waHref(phone, label){
+        const clean = normalizePhone(phone);
+        if(!clean) return "#";
+        const text = encodeURIComponent("Bonjour, je vous contacte depuis DIGIY EXPLORE pour : " + (label || "ce lieu"));
+        return "https://wa.me/" + clean + "?text=" + text;
+      }
 
-        try{
-          const client = getClient();
-          const { data, error } = await client.rpc("explore_admin_pin_check", {
-            p_phone: s.phone,
-            p_pin: s.pin
-          });
-
-          if (error || !data?.ok) {
-            clearPinSession();
-            return false;
-          }
-
-          return true;
-        }catch{
-          clearPinSession();
-          return false;
+      function mapsHref(item){
+        const lat = item?.latitude;
+        const lng = item?.longitude;
+        const address = item?.address_text || "";
+        const hasCoords = lat !== null && lat !== undefined && lng !== null && lng !== undefined && lat !== "" && lng !== "";
+        if (hasCoords) {
+          return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
         }
+        if (address) {
+          return "https://www.google.com/maps?q=" + encodeURIComponent(address);
+        }
+        return "#";
       }
 
-      function renderAdminRail(show){
-        [
-          document.getElementById("navAdminPinLink"),
-          document.getElementById("navAdminAuditLink"),
-          document.getElementById("drawerAdminPinLink"),
-          document.getElementById("drawerAdminAuditLink")
-        ].forEach((el) => {
-          if (el) el.style.display = show ? "" : "none";
+      function renderCategoryOptions(items){
+        categorySelect.innerHTML = '<option value="">Toutes les catégories</option>';
+        items.forEach((item) => {
+          const opt = document.createElement("option");
+          opt.value = item.code;
+          opt.textContent = (item.icon ? item.icon + " " : "") + item.label;
+          categorySelect.appendChild(opt);
         });
       }
 
-      const LINKS = {
-        explore: withReturn(EXPLORE_URL),
-        submit: withReturn(SUBMIT_URL),
-        pay: buildPayUrl(),
-        adminPin: withReturn(ADMIN_PIN_URL),
-        adminAudit: withReturn(ADMIN_AUDIT_URL)
-      };
+      async function loadCategories(){
+        const client = getClient();
+        const { data, error } = await client
+          .from("digiy_explore_categories")
+          .select("code,label,icon,sort_order")
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true });
 
-      function go(url, newTab = false){
-        if (newTab) {
-          window.open(url, "_blank", "noopener,noreferrer");
-        } else {
-          location.href = url;
+        if (error) throw error;
+        return Array.isArray(data) ? data : [];
+      }
+
+      async function loadPublicList(){
+        const client = getClient();
+        const city = String(cityInput.value || "").trim() || null;
+        const zone = String(zoneInput.value || "").trim() || null;
+        const category = String(categorySelect.value || "").trim() || null;
+        const search = String(searchInput.value || "").trim() || null;
+
+        const { data, error } = await client.rpc("digiy_explore_public_list", {
+          p_city: city,
+          p_zone: zone,
+          p_category_code: category,
+          p_search: search,
+          p_limit: 60
+        });
+
+        if (error) throw error;
+        return Array.isArray(data?.items) ? data.items : [];
+      }
+
+      function renderSpots(items){
+        CURRENT_ITEMS = items;
+
+        if (!items.length) {
+          spotsGrid.innerHTML = `
+            <div class="empty-state">
+              Aucun spot publié ne correspond au filtre actuel.<br>
+              Essaie un autre mot-clé, une autre ville, ou propose un nouveau spot.
+            </div>
+          `;
+          return;
+        }
+
+        spotsGrid.innerHTML = items.map((item) => {
+          const cover = item?.cover_url || (Array.isArray(item?.photo_urls) && item.photo_urls[0]) || "";
+          const title = item?.public_name || "Lieu";
+          const category = [item?.category_icon, item?.category_label || item?.category_code].filter(Boolean).join(" ");
+          const location = [item?.city, item?.zone].filter(Boolean).join(" — ");
+          const desc = item?.short_description || "Lecture publique d’un lieu DIGIY EXPLORE.";
+          const tags = Array.isArray(item?.tags) ? item.tags.slice(0, 4) : [];
+          const contact = item?.whatsapp || item?.phone || "";
+          const price = item?.price_hint || "";
+          const mapUrl = mapsHref(item);
+          const ficheUrl = ficheHref(item?.slug || "");
+          const waUrl = waHref(contact, title);
+
+          return `
+            <article class="spot-card">
+              <div class="spot-cover ${cover ? "" : "fallback"}" ${cover ? `style="background-image:url('${escapeHtml(cover)}')"` : ""}>
+                <div class="spot-badge">${escapeHtml(category || "Lieu")}</div>
+                ${cover ? "" : '<div>Image non renseignée</div>'}
+              </div>
+
+              <div class="spot-body">
+                <div class="spot-title">${escapeHtml(title)}</div>
+
+                <div class="spot-meta">
+                  ${escapeHtml(location || "Zone non précisée")}
+                  ${price ? " • " + escapeHtml(price) : ""}
+                </div>
+
+                <div class="spot-desc">${escapeHtml(desc)}</div>
+
+                <div class="spot-tags">
+                  ${tags.length
+                    ? tags.map(tag => `<span class="spot-tag">${escapeHtml(tag)}</span>`).join("")
+                    : `<span class="spot-tag">DIGIY EXPLORE</span>`
+                  }
+                </div>
+
+                <div class="spot-actions">
+                  <a class="spot-btn primary" href="${escapeHtml(ficheUrl)}">Voir la fiche</a>
+                  ${
+                    contact
+                      ? `<a class="spot-btn whatsapp" href="${escapeHtml(waUrl)}" target="_blank" rel="noopener">WhatsApp</a>`
+                      : `<span class="spot-btn">Pas de contact</span>`
+                  }
+                  ${
+                    mapUrl !== "#"
+                      ? `<a class="spot-btn" href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener">Carte</a>`
+                      : `<span class="spot-btn">Pas de repère</span>`
+                  }
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      async function refreshSpots(){
+        setLiveMsg("Chargement des spots publiés…", "info");
+        reloadBtn.disabled = true;
+
+        try{
+          const items = await loadPublicList();
+          renderSpots(items);
+          setLiveMsg(items.length ? items.length + " spot(s) publié(s) chargés." : "Aucun spot publié pour ce filtre.", items.length ? "ok" : "info");
+        }catch(err){
+          console.error("EXPLORE PUBLIC LIST ERROR:", err);
+          spotsGrid.innerHTML = `
+            <div class="empty-state">
+              Impossible de charger les spots publiés pour le moment.<br>
+              Vérifie la RPC <b>digiy_explore_public_list</b> ou réessaie plus tard.
+            </div>
+          `;
+          setLiveMsg("Le chargement des spots a échoué.", "bad");
+        }finally{
+          reloadBtn.disabled = false;
         }
       }
+
+      const LINKS = {
+        submit: withReturn(SUBMIT_URL),
+        pin: withReturn(PIN_URL),
+        pay: buildPayUrl(),
+      };
 
       [
         document.getElementById("backToDigiy"),
@@ -936,37 +1311,38 @@
       });
 
       const navPayLink = document.getElementById("navPayLink");
-      const navExploreLink = document.getElementById("navExploreLink");
       const navSubmitLink = document.getElementById("navSubmitLink");
-      const navAdminPinLink = document.getElementById("navAdminPinLink");
-      const navAdminAuditLink = document.getElementById("navAdminAuditLink");
+      const navPinLink = document.getElementById("navPinLink");
 
       const drawerPayLink = document.getElementById("drawerPayLink");
-      const drawerExploreLink = document.getElementById("drawerExploreLink");
       const drawerSubmitLink = document.getElementById("drawerSubmitLink");
-      const drawerAdminPinLink = document.getElementById("drawerAdminPinLink");
-      const drawerAdminAuditLink = document.getElementById("drawerAdminAuditLink");
+      const drawerPinLink = document.getElementById("drawerPinLink");
 
       if (navPayLink) navPayLink.href = LINKS.pay;
-      if (navExploreLink) navExploreLink.href = LINKS.explore;
       if (navSubmitLink) navSubmitLink.href = LINKS.submit;
-      if (navAdminPinLink) navAdminPinLink.href = LINKS.adminPin;
-      if (navAdminAuditLink) navAdminAuditLink.href = LINKS.adminAudit;
+      if (navPinLink) navPinLink.href = LINKS.pin;
 
       if (drawerPayLink) drawerPayLink.href = LINKS.pay;
-      if (drawerExploreLink) drawerExploreLink.href = LINKS.explore;
       if (drawerSubmitLink) drawerSubmitLink.href = LINKS.submit;
-      if (drawerAdminPinLink) drawerAdminPinLink.href = LINKS.adminPin;
-      if (drawerAdminAuditLink) drawerAdminAuditLink.href = LINKS.adminAudit;
+      if (drawerPinLink) drawerPinLink.href = LINKS.pin;
 
-      document.getElementById("ctaExploreTop").onclick = () => go(LINKS.explore, false);
-      document.getElementById("ctaExploreBottom").onclick = () => go(LINKS.explore, false);
-      document.getElementById("ctaEnter").onclick = () => go(LINKS.explore, false);
+      document.getElementById("ctaScrollSpots").onclick = () => {
+        document.getElementById("spots").scrollIntoView({ behavior: "smooth" });
+      };
+      document.getElementById("ctaSpotsBottom").onclick = () => {
+        document.getElementById("spots").scrollIntoView({ behavior: "smooth" });
+      };
+      document.getElementById("ctaSubmitSpot").onclick = () => {
+        location.href = LINKS.submit;
+      };
+      document.getElementById("ctaPin").onclick = () => {
+        location.href = LINKS.pin;
+      };
 
-      document.getElementById("ctaPayTop").onclick = () => go(LINKS.pay, true);
-      document.getElementById("ctaPayMid").onclick = () => go(LINKS.pay, true);
-      document.getElementById("ctaAgency").onclick = () => go(LINKS.pay, true);
-      document.getElementById("ctaPayBottom").onclick = () => go(LINKS.pay, true);
+      document.getElementById("ctaPayTop").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
+      document.getElementById("ctaPayMid").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
+      document.getElementById("ctaAgency").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
+      document.getElementById("ctaPayBottom").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
 
       document.getElementById("homeTop").addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -976,13 +1352,24 @@
       const drawer = document.getElementById("drawer");
 
       menuToggle.onclick = () => drawer.classList.toggle("open");
-
       drawer.querySelectorAll("a").forEach((a) => {
         a.addEventListener("click", () => drawer.classList.remove("open"));
       });
 
-      const isAdmin = await verifyStoredSession();
-      renderAdminRail(isAdmin);
+      reloadBtn.addEventListener("click", refreshSpots);
+      searchInput.addEventListener("input", refreshSpots);
+      cityInput.addEventListener("input", refreshSpots);
+      zoneInput.addEventListener("input", refreshSpots);
+      categorySelect.addEventListener("change", refreshSpots);
+
+      try{
+        CATEGORIES = await loadCategories();
+        renderCategoryOptions(CATEGORIES);
+      }catch(err){
+        console.error("EXPLORE CATEGORIES ERROR:", err);
+      }
+
+      await refreshSpots();
     })().catch((err) => {
       console.error("INDEX BOOT ERROR:", err);
     });
