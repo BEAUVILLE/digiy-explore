@@ -531,7 +531,7 @@
       padding:16px 18px;
     }
 
-    /* LIVE SPOTS */
+    /* LIVE SPOTS + SHOWCASE */
     .live-toolbar{
       display:grid;
       grid-template-columns:1.2fr .9fr .9fr .9fr auto;
@@ -784,12 +784,13 @@
 
       <div class="nav-links">
         <a href="#role">Notre rôle</a>
+        <a href="#gateaux">Expériences</a>
         <a href="#spots">Spots</a>
         <a href="#agence">Agence</a>
         <a href="#zones">Zones</a>
         <a href="#vision">Vision</a>
-        <a id="navSubmitLink" href="./submit.html">Proposer un spot</a>
-        <a id="navPinLink" href="./pin.html">Entrée PIN</a>
+        <a id="navSubmitLink" href="https://pro-explore.digiylyfe.com/">Présenter mon lieu</a>
+        <a id="navPinLink" href="https://pro-explore.digiylyfe.com/">Je suis un professionnel</a>
         <a id="navPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">ACTIVER MA PRÉSENCE</a>
       </div>
 
@@ -811,12 +812,13 @@
 
   <div class="drawer" id="drawer">
     <a href="#role">Notre rôle</a>
+    <a href="#gateaux">Expériences terrain</a>
     <a href="#spots">Spots publiés</a>
     <a href="#agence">Agence</a>
     <a href="#zones">Zones</a>
     <a href="#vision">Vision</a>
-    <a id="drawerSubmitLink" href="./submit.html">➕ Proposer mon spot</a>
-    <a id="drawerPinLink" href="./pin.html">🔐 Entrée PIN</a>
+    <a id="drawerSubmitLink" href="https://pro-explore.digiylyfe.com/">🍰 Présenter mon lieu</a>
+    <a id="drawerPinLink" href="https://pro-explore.digiylyfe.com/">🧭 Je suis un professionnel</a>
     <a id="drawerPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MA PRÉSENCE</a>
     <a id="drawerBackLink" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
   </div>
@@ -865,6 +867,21 @@
     </div>
   </section>
 
+  <section class="section alt" id="gateaux">
+    <div class="container">
+      <div class="sec-title">Nos expériences terrain</div>
+      <div class="sec-sub">
+        Avant même l’ouverture complète de tous les rails, DIGIY EXPLORE montre déjà le type d’expériences, de sorties et de lieux que nous pouvons mettre en avant. Pour réserver, demander ou organiser, contacte directement la conciergerie.
+      </div>
+
+      <div id="showcaseGrid" class="spots-grid"></div>
+
+      <div class="big-cta">
+        <button class="btn secondary" id="ctaShowcasePro">🍰 Présenter mon lieu</button>
+      </div>
+    </div>
+  </section>
+
   <section class="section alt" id="spots">
     <div class="container">
       <div class="sec-title">Spots publiés</div>
@@ -889,7 +906,7 @@
       </div>
 
       <div class="big-cta">
-        <button class="btn secondary" id="ctaSubmitSpot">➕ Proposer un spot</button>
+        <button class="btn secondary" id="ctaSubmitSpot">🍰 Présenter mon lieu</button>
       </div>
     </div>
   </section>
@@ -1030,7 +1047,7 @@
 
       <div class="cta-grid" style="margin-top:22px">
         <button class="btn primary" id="ctaPayBottom">💳 Activer ma présence</button>
-        <button class="btn ghost" id="ctaPin">🔐 Entrée PIN PRO</button>
+        <button class="btn ghost" id="ctaPin">🍰 Je suis un professionnel</button>
       </div>
     </div>
   </section>
@@ -1053,9 +1070,11 @@
         "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
 
       const PAY_BASE = window.DIGIY_PAY_URL || "https://commencer-a-payer.digiylyfe.com/";
-      const SUBMIT_URL = "https://pro-explore.digiylyfe.com/submit.html";
+      const PRO_PORTAL_URL = "https://pro-explore.digiylyfe.com/";
+      const SUBMIT_URL = "https://pro-explore.digiylyfe.com/";
       const PIN_URL = "https://pro-explore.digiylyfe.com/pin.html";
       const FICHE_URL = "./fiche.html";
+      const CONCIERGE_PHONE = "221771342889";
 
       let sb = null;
 
@@ -1068,6 +1087,7 @@
       const categorySelect = document.getElementById("categorySelect");
       const reloadBtn = document.getElementById("reloadBtn");
       const spotsGrid = document.getElementById("spotsGrid");
+      const showcaseGrid = document.getElementById("showcaseGrid");
 
       let CURRENT_ITEMS = [];
       let CATEGORIES = [];
@@ -1206,6 +1226,146 @@
         return Array.isArray(data?.items) ? data.items : [];
       }
 
+      const SHOWCASE_SPOTS = [
+        {
+          title: "Sortie en pêche — Petite Côte",
+          category: "🎣 Expérience",
+          city: "Saly",
+          zone: "Petite Côte",
+          price: "Sur demande",
+          desc: "Sortie en pêche encadrée avec départ côtier, ambiance locale, mer, lever tôt et retour avec souvenirs solides.",
+          tags: ["pêche", "mer", "sortie", "conciergerie"],
+          cover: "https://images.unsplash.com/photo-1513553404607-988d4c4de6bd?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Journée plage privée",
+          category: "🏖️ Détente",
+          city: "Saly",
+          zone: "Bord de mer",
+          price: "Sur demande",
+          desc: "Installation simple et confortable pour profiter de la plage, du calme, du soleil et d’un moment proprement organisé.",
+          tags: ["plage", "relax", "famille"],
+          cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Balade coucher de soleil",
+          category: "🌅 Expérience",
+          city: "Ngaparou",
+          zone: "Côte",
+          price: "Sur demande",
+          desc: "Sortie douce en fin de journée pour profiter des couleurs, de l’air marin et d’un moment simple à partager.",
+          tags: ["sunset", "balade", "couple"],
+          cover: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Découverte artisanat local",
+          category: "🛍️ Découverte",
+          city: "Mbour",
+          zone: "Centre",
+          price: "Sur demande",
+          desc: "Parcours orienté artisanat et savoir-faire local pour découvrir des mains, des matières et des histoires vraies.",
+          tags: ["artisanat", "local", "culture"],
+          cover: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Déjeuner terrasse bord mer",
+          category: "🍽️ Restaurant",
+          city: "Somone",
+          zone: "Lagune",
+          price: "Sur demande",
+          desc: "Pause déjeuner avec vue, respiration, service agréable et atmosphère calme pour profiter du lieu.",
+          tags: ["restaurant", "terrasse", "vue mer"],
+          cover: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Sortie famille à la lagune",
+          category: "👨‍👩‍👧 Famille",
+          city: "Somone",
+          zone: "Lagune",
+          price: "Sur demande",
+          desc: "Moment famille avec découverte douce, coin agréable, rythme tranquille et accompagnement simple.",
+          tags: ["famille", "lagune", "nature"],
+          cover: "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Circuit découverte Dakar",
+          category: "🚗 Ville",
+          city: "Dakar",
+          zone: "Centre & corniche",
+          price: "Sur demande",
+          desc: "Lecture rapide de Dakar avec arrêts choisis, ambiance urbaine, repères utiles et accompagnement terrain.",
+          tags: ["dakar", "visite", "ville"],
+          cover: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Matin calme en bord de mer",
+          category: "☀️ Détente",
+          city: "Saly",
+          zone: "Plage",
+          price: "Sur demande",
+          desc: "Un format léger pour respirer, marcher, prendre le temps et démarrer la journée dans une belle énergie.",
+          tags: ["matin", "mer", "calme"],
+          cover: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Expérience locale sur mesure",
+          category: "✨ Conciergerie",
+          city: "Petite Côte",
+          zone: "Sur demande",
+          price: "Sur demande",
+          desc: "Tu nous dis ce que tu cherches, on t’oriente vers le bon terrain : sortie, lieu, ambiance, besoin pratique.",
+          tags: ["sur mesure", "conciergerie", "terrain"],
+          cover: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1200&auto=format&fit=crop&q=70"
+        },
+        {
+          title: "Week-end respiration & découverte",
+          category: "🧭 Escapade",
+          city: "Petite Côte",
+          zone: "Multi-zones",
+          price: "Sur demande",
+          desc: "Combinaison de lieux, moments et découvertes pour donner une vraie respiration à un séjour court.",
+          tags: ["week-end", "escapade", "découverte"],
+          cover: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&auto=format&fit=crop&q=70"
+        }
+      ];
+
+      function renderShowcaseSpots(){
+        if(!showcaseGrid) return;
+
+        showcaseGrid.innerHTML = SHOWCASE_SPOTS.map((item) => {
+          const waUrl = waHref(CONCIERGE_PHONE, item.title);
+
+          return `
+            <article class="spot-card">
+              <div class="spot-cover ${item.cover ? "" : "fallback"}" ${item.cover ? `style="background-image:url('${escapeHtml(item.cover)}')"` : ""}>
+                <div class="spot-badge">${escapeHtml(item.category)}</div>
+                ${item.cover ? "" : '<div>Image non renseignée</div>'}
+              </div>
+
+              <div class="spot-body">
+                <div class="spot-title">${escapeHtml(item.title)}</div>
+
+                <div class="spot-meta">
+                  ${escapeHtml(item.city)} • ${escapeHtml(item.zone)}
+                  ${item.price ? " • " + escapeHtml(item.price) : ""}
+                </div>
+
+                <div class="spot-desc">${escapeHtml(item.desc)}</div>
+
+                <div class="spot-tags">
+                  ${item.tags.map(tag => `<span class="spot-tag">${escapeHtml(tag)}</span>`).join("")}
+                </div>
+
+                <div class="spot-actions">
+                  <a class="spot-btn whatsapp" href="${escapeHtml(waUrl)}" target="_blank" rel="noopener">WhatsApp conciergerie</a>
+                  <a class="spot-btn" href="${escapeHtml(PRO_PORTAL_URL)}">Présenter mon lieu</a>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
       function renderSpots(items){
         CURRENT_ITEMS = items;
 
@@ -1213,7 +1373,7 @@
           spotsGrid.innerHTML = `
             <div class="empty-state">
               Aucun spot publié ne correspond au filtre actuel.<br>
-              Essaie un autre mot-clé, une autre ville, ou propose un nouveau spot.
+              Essaie un autre mot-clé, une autre ville, ou présente ton lieu.
             </div>
           `;
           return;
@@ -1301,6 +1461,7 @@
         submit: withReturn(SUBMIT_URL),
         pin: withReturn(PIN_URL),
         pay: buildPayUrl(),
+        portal: withReturn(PRO_PORTAL_URL),
       };
 
       [
@@ -1319,12 +1480,24 @@
       const drawerPinLink = document.getElementById("drawerPinLink");
 
       if (navPayLink) navPayLink.href = LINKS.pay;
-      if (navSubmitLink) navSubmitLink.href = LINKS.submit;
-      if (navPinLink) navPinLink.href = LINKS.pin;
+      if (navSubmitLink) {
+        navSubmitLink.href = LINKS.portal;
+        navSubmitLink.textContent = "Présenter mon lieu";
+      }
+      if (navPinLink) {
+        navPinLink.href = LINKS.portal;
+        navPinLink.textContent = "Je suis un professionnel";
+      }
 
       if (drawerPayLink) drawerPayLink.href = LINKS.pay;
-      if (drawerSubmitLink) drawerSubmitLink.href = LINKS.submit;
-      if (drawerPinLink) drawerPinLink.href = LINKS.pin;
+      if (drawerSubmitLink) {
+        drawerSubmitLink.href = LINKS.portal;
+        drawerSubmitLink.textContent = "🍰 Présenter mon lieu";
+      }
+      if (drawerPinLink) {
+        drawerPinLink.href = LINKS.portal;
+        drawerPinLink.textContent = "🧭 Je suis un professionnel";
+      }
 
       document.getElementById("ctaScrollSpots").onclick = () => {
         document.getElementById("spots").scrollIntoView({ behavior: "smooth" });
@@ -1333,11 +1506,18 @@
         document.getElementById("spots").scrollIntoView({ behavior: "smooth" });
       };
       document.getElementById("ctaSubmitSpot").onclick = () => {
-        location.href = LINKS.submit;
+        location.href = LINKS.portal;
       };
       document.getElementById("ctaPin").onclick = () => {
-        location.href = LINKS.pin;
+        location.href = LINKS.portal;
       };
+
+      const ctaShowcasePro = document.getElementById("ctaShowcasePro");
+      if (ctaShowcasePro) {
+        ctaShowcasePro.onclick = () => {
+          location.href = LINKS.portal;
+        };
+      }
 
       document.getElementById("ctaPayTop").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
       document.getElementById("ctaPayMid").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
@@ -1369,6 +1549,7 @@
         console.error("EXPLORE CATEGORIES ERROR:", err);
       }
 
+      renderShowcaseSpots();
       await refreshSpots();
     })().catch((err) => {
       console.error("INDEX BOOT ERROR:", err);
