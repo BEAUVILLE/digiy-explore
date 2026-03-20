@@ -14,1546 +14,994 @@
     window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
     window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
     window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
-    window.DIGIY_MODULE = "EXPLORE";
-    window.DIGIY_PAY_URL = "https://commencer-a-payer.digiylyfe.com/";
   </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --gold:#D4AF37;
-      --gold2:#B8941E;
-      --bg:#000;
-      --bg2:#06130f;
-      --card:rgba(255,255,255,.05);
-      --card2:rgba(12,36,28,.92);
-      --line:rgba(255,255,255,.12);
-      --white:#fff;
-      --muted:rgba(255,255,255,.78);
-      --muted2:rgba(255,255,255,.64);
-      --shadow:0 18px 44px rgba(0,0,0,.45);
-      --green:#22c55e;
-      --green2:#16a34a;
-      --orange:#f59e0b;
-      --bad:#ef4444;
-      --radius:22px;
+      --bg:#06130f;
+      --bg-2:#0b1d17;
+      --card:#10261e;
+      --card-2:#143126;
+      --line:rgba(255,255,255,.10);
+      --line-2:rgba(255,255,255,.16);
+      --text:#f7fbf8;
+      --muted:rgba(247,251,248,.72);
+      --soft:rgba(247,251,248,.54);
+      --gold:#dcb45a;
+      --green:#12b76a;
+      --green-2:#1ad17a;
+      --danger:#ff7a7a;
+      --shadow:0 20px 50px rgba(0,0,0,.30);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1200px;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
     body{
-      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--white);
-      overflow-x:hidden;
-    }
-    a{color:inherit;text-decoration:none}
-    button,input,select{font:inherit}
-
-    nav{
-      position:fixed;
-      top:0; left:0; right:0;
-      z-index:1000;
-      background:rgba(0,0,0,.92);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(255,255,255,.08);
-      padding:14px 0;
-    }
-
-    .nav-container{
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.3px;
-      color:var(--gold);
-      user-select:none;
-      white-space:nowrap;
-      cursor:pointer;
-    }
-    .logo .inf{font-size:22px}
-
-    .nav-links{
-      display:none;
-      gap:18px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .nav-links a{
-      color:rgba(255,255,255,.86);
-      font-weight:700;
-      font-size:14px;
-      padding:8px 10px;
-      border-radius:999px;
-      transition:.2s;
-    }
-    .nav-links a:hover{
-      background:rgba(255,255,255,.08);
-      color:#fff;
-    }
-
-    .nav-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .nav-cta{
-      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-      color:#000;
-      border:0;
-      padding:10px 14px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:13px;
-      cursor:pointer;
-      box-shadow:0 10px 24px rgba(212,175,55,.25);
-      transition:transform .06s ease;
-      white-space:nowrap;
-    }
-    .nav-cta:active{transform:scale(.98)}
-
-    .menu-toggle{
-      background:none;
-      border:0;
-      color:#fff;
-      font-size:20px;
-      cursor:pointer;
-      padding:8px 10px;
-      border-radius:12px;
-    }
-
-    .digiy-return-bar{
-      position:fixed;
-      top:64px;
-      left:0;
-      right:0;
-      z-index:998;
-      padding:10px 16px;
-      background:rgba(6,20,14,.88);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-
-    .digiy-return-inner{
-      max-width:1200px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .digiy-return-link{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:40px;
-      padding:0 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      color:#fff3cf;
-      border:1px solid rgba(212,175,55,.30);
-      background:rgba(212,175,55,.08);
-      white-space:nowrap;
-    }
-
-    .digiy-return-note{
-      font-size:12px;
-      color:rgba(255,255,255,.70);
-      line-height:1.4;
-    }
-
-    .drawer{
-      position:fixed;
-      inset:112px 0 0 0;
-      background:rgba(0,0,0,.96);
-      border-top:1px solid rgba(255,255,255,.08);
-      display:none;
-      padding:18px 16px;
-      z-index:999;
-      overflow:auto;
-    }
-    .drawer.open{display:block}
-
-    .drawer a{
-      display:block;
-      padding:14px 12px;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      margin-bottom:10px;
-      background:rgba(255,255,255,.04);
-      font-weight:700;
-      color:rgba(255,255,255,.92);
-    }
-
-    @media (min-width:880px){
-      .menu-toggle{display:none}
-      .nav-links{display:flex}
-      .drawer{display:none !important}
-    }
-
-    .hero{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(220,180,90,.14), transparent 26%),
+        radial-gradient(circle at top right, rgba(18,183,106,.10), transparent 24%),
+        linear-gradient(180deg, #06130f 0%, #071711 42%, #091e17 100%);
+      color:var(--text);
       min-height:100vh;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    .wrap{
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter:blur(14px);
+      background:rgba(6,19,15,.72);
+      border-bottom:1px solid var(--line);
+    }
+
+    .topbar-inner{
+      min-height:74px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      padding:170px 16px 44px;
-      position:relative;
-      overflow:hidden;
+      justify-content:space-between;
+      gap:16px;
+      padding:10px 0;
     }
 
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(45deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.28) 50%, rgba(0,0,0,.74) 100%),
-        url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&auto=format&fit=crop&q=70&fm=webp') center/cover;
-      transform:scale(1.02);
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(900px 520px at 15% 12%, rgba(212,175,55,.18), transparent 55%),
-        radial-gradient(900px 520px at 85% 90%, rgba(34,197,94,.12), transparent 55%);
-      pointer-events:none;
-    }
-
-    .hero-content{
-      position:relative;
-      z-index:5;
-      max-width:1020px;
-      text-align:center;
-    }
-
-    .badge{
-      display:inline-block;
-      padding:10px 16px;
-      border-radius:999px;
-      border:1px solid rgba(212,175,55,.55);
-      background:rgba(212,175,55,.10);
-      color:var(--gold);
-      font-weight:800;
-      letter-spacing:.6px;
-      font-size:13px;
-      margin-bottom:18px;
-    }
-
-    h1{
-      font-family:'Playfair Display',serif;
-      font-weight:900;
-      font-size:40px;
-      line-height:1.08;
-      text-shadow:0 6px 24px rgba(0,0,0,.6);
-    }
-
-    .sub{
-      margin:16px auto 12px;
-      max-width:850px;
-      color:rgba(255,255,255,.92);
-      font-size:16px;
-      line-height:1.75;
-      text-shadow:0 4px 18px rgba(0,0,0,.55);
-    }
-
-    .hero-note{
-      margin:0 auto 24px;
-      max-width:780px;
-      color:rgba(255,255,255,.82);
-      font-size:14px;
-      line-height:1.75;
-    }
-
-    @media (min-width:768px){
-      h1{font-size:64px}
-      .sub{font-size:18px}
-    }
-
-    .cta-grid{
+    .brand{
       display:flex;
+      align-items:center;
       gap:12px;
-      justify-content:center;
+      min-width:0;
+    }
+
+    .brand-badge{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(220,180,90,.45), transparent 45%),
+        linear-gradient(135deg, #0f2b21, #18392b);
+      border:1px solid var(--line-2);
+      box-shadow:var(--shadow);
+      font-size:20px;
+    }
+
+    .brand-copy{
+      min-width:0;
+    }
+
+    .brand-copy strong{
+      display:block;
+      font-size:15px;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand-copy span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
       flex-wrap:wrap;
-      margin-top:14px;
+      justify-content:flex-end;
     }
 
     .btn{
+      appearance:none;
+      border:none;
+      outline:none;
+      cursor:pointer;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
-      padding:14px 18px;
+      gap:8px;
+      min-height:46px;
+      padding:0 16px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.45);
-      color:#fff;
       font-weight:800;
-      cursor:pointer;
-      box-shadow:var(--shadow);
-      transition:transform .06s ease, background .2s ease, border-color .2s ease;
-      min-width:240px;
-    }
-    .btn:active{transform:scale(.98)}
-    .btn.primary{
-      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-      color:#000;
-      border-color:rgba(212,175,55,.55);
-      box-shadow:0 18px 44px rgba(212,175,55,.22);
-    }
-    .btn.secondary{
-      background:rgba(0,0,0,.58);
-      border-color:rgba(255,255,255,.16);
-    }
-    .btn.ghost{
-      background:rgba(255,255,255,.06);
-    }
-
-    section{scroll-margin-top:136px}
-
-    .section{
-      padding:64px 16px;
-      background:#000;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-
-    .section.alt{
-      background:linear-gradient(180deg, #05110d 0%, #000 100%);
-    }
-
-    .container{
-      max-width:1120px;
-      margin:0 auto;
-    }
-
-    .sec-title{
-      font-family:'Playfair Display',serif;
-      font-size:34px;
-      color:var(--gold);
-      text-align:center;
-      margin-bottom:12px;
-    }
-
-    .sec-sub{
-      text-align:center;
-      color:rgba(255,255,255,.78);
-      max-width:880px;
-      margin:0 auto 26px;
-      line-height:1.8;
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-top:18px;
-    }
-
-    @media (min-width:900px){
-      .cards{grid-template-columns:repeat(3,1fr)}
-    }
-
-    .card{
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .card h3{
-      font-size:16px;
-      margin-bottom:8px;
-    }
-
-    .card p{
-      color:rgba(255,255,255,.76);
-      line-height:1.75;
       font-size:14px;
+      transition:.18s ease;
+      white-space:nowrap;
     }
 
-    .pricing-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-      margin-top:22px;
+    .btn:hover{
+      transform:translateY(-1px);
     }
 
-    @media (min-width:760px){
-      .pricing-grid{grid-template-columns:repeat(2,1fr)}
+    .btn-ghost{
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
     }
 
-    @media (min-width:1080px){
-      .pricing-grid{grid-template-columns:repeat(4,1fr)}
+    .btn-outline{
+      color:var(--text);
+      background:transparent;
+      border:1px solid rgba(220,180,90,.40);
     }
 
-    .price-card{
-      position:relative;
+    .btn-primary{
+      color:#062414;
+      background:linear-gradient(135deg, var(--gold), #f2cc78);
       border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(180deg, rgba(12,36,28,.96) 0%, rgba(0,0,0,.92) 100%);
-      border-radius:22px;
-      padding:20px;
+      box-shadow:0 14px 32px rgba(220,180,90,.18);
+    }
+
+    .hero{
+      padding:46px 0 24px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .hero-card,
+    .side-card,
+    .section-card{
+      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
       box-shadow:var(--shadow);
+    }
+
+    .hero-card{
+      padding:28px;
+      position:relative;
       overflow:hidden;
     }
 
-    .price-card.featured{
-      border-color:rgba(212,175,55,.35);
-      box-shadow:0 22px 50px rgba(212,175,55,.12);
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -60px -80px auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(220,180,90,.20), transparent 68%);
+      pointer-events:none;
     }
 
-    .price-tag{
+    .eyebrow{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      min-height:34px;
-      padding:7px 12px;
+      padding:8px 12px;
       border-radius:999px;
+      border:1px solid rgba(220,180,90,.24);
+      background:rgba(220,180,90,.08);
+      color:#f5db9a;
       font-size:12px;
       font-weight:900;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      margin-bottom:12px;
+      letter-spacing:.04em;
+      text-transform:uppercase;
     }
 
-    .price-name{
-      font-size:18px;
-      font-weight:900;
+    h1{
+      margin:16px 0 14px;
+      font-size:clamp(30px, 5vw, 58px);
+      line-height:1.02;
+      letter-spacing:-.03em;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.7;
+      max-width:760px;
+    }
+
+    .hero-cta{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .hero-metrics{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .metric{
+      border-radius:18px;
+      padding:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .metric strong{
+      display:block;
+      font-size:22px;
       margin-bottom:6px;
     }
 
-    .price-amount{
-      font-size:28px;
-      font-weight:900;
-      line-height:1.1;
-      margin-bottom:4px;
-    }
-
-    .price-amount small{
-      font-size:13px;
-      color:var(--muted2);
-      font-weight:700;
-    }
-
-    .price-copy{
+    .metric span{
       color:var(--muted);
-      line-height:1.75;
-      font-size:14px;
-      margin-top:12px;
-      min-height:72px;
-    }
-
-    .price-features{
-      display:grid;
-      gap:8px;
-      margin-top:14px;
-    }
-
-    .price-features div{
-      color:rgba(255,255,255,.84);
       font-size:13px;
-      line-height:1.55;
+      line-height:1.45;
     }
 
-    .agency-note{
-      margin-top:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      border-radius:18px;
-      padding:16px;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:14px;
-    }
-
-    .stack{
-      display:grid;
-      gap:14px;
-      margin-top:18px;
-    }
-
-    .highlight{
-      border:1px solid rgba(212,175,55,.18);
-      background:linear-gradient(180deg, rgba(212,175,55,.08) 0%, rgba(8,27,21,.92) 100%);
-      border-radius:20px;
+    .side-card{
       padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .highlight h3{
-      font-size:18px;
-      color:#f2d26a;
-      margin-bottom:8px;
-    }
-
-    .highlight p{
-      color:var(--muted);
-      line-height:1.8;
-      font-size:14px;
-    }
-
-    .big-cta{
-      margin-top:24px;
       display:flex;
-      justify-content:center;
+      flex-direction:column;
+      gap:14px;
     }
 
-    .big-cta .btn{
-      min-width:min(580px, 92vw);
-      font-size:16px;
-      padding:16px 18px;
+    .side-cover{
+      border-radius:20px;
+      overflow:hidden;
+      aspect-ratio:4/3;
+      border:1px solid var(--line);
+      background:#0b2018;
     }
 
-    /* LIVE SPOTS + SHOWCASE */
-    .live-toolbar{
-      display:grid;
-      grid-template-columns:1.2fr .9fr .9fr .9fr auto;
-      gap:12px;
-      margin-top:18px;
+    .side-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .side-kicker{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#f5db9a;
+      font-weight:900;
+    }
+
+    .side-title{
+      font-size:24px;
+      line-height:1.1;
+      font-weight:900;
+      margin:0;
+    }
+
+    .side-text{
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+    }
+
+    .section{
+      padding:16px 0 22px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
       margin-bottom:18px;
     }
 
-    .control{
-      min-height:52px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      color:#fff;
+    .section-head h2{
+      margin:0 0 6px;
+      font-size:clamp(24px, 3.2vw, 36px);
+      letter-spacing:-.02em;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:760px;
+    }
+
+    .section-tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:40px;
       padding:0 14px;
-      outline:none;
-    }
-
-    .control option{
-      background:#0c1d17;
-      color:#fff;
-    }
-
-    .reload-btn{
-      min-height:52px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.06);
-      color:#fff;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:13px;
       font-weight:800;
-      cursor:pointer;
-      padding:0 16px;
     }
 
-    .live-msg{
-      margin:0 auto 14px;
-      max-width:1120px;
-      border-radius:18px;
-      padding:14px 16px;
-      font-size:14px;
-      line-height:1.5;
-      font-weight:700;
-      display:none;
-    }
-    .live-msg.show{display:block}
-    .live-msg.info{
-      color:#dbeafe;
-      border:1px solid rgba(96,165,250,.18);
-      background:rgba(59,130,246,.08);
-    }
-    .live-msg.bad{
-      color:#fecaca;
-      border:1px solid rgba(239,68,68,.18);
-      background:rgba(239,68,68,.08);
-    }
-    .live-msg.ok{
-      color:#bbf7d0;
-      border:1px solid rgba(34,197,94,.18);
-      background:rgba(34,197,94,.08);
-    }
-
-    .spots-grid{
+    .grid{
       display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-      margin-top:16px;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
     }
 
-    @media (min-width:760px){
-      .spots-grid{grid-template-columns:repeat(2,1fr)}
-    }
-
-    @media (min-width:1080px){
-      .spots-grid{grid-template-columns:repeat(3,1fr)}
-    }
-
-    .spot-card{
-      border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(180deg, rgba(12,36,28,.96) 0%, rgba(0,0,0,.92) 100%);
-      border-radius:22px;
-      box-shadow:var(--shadow);
+    .spot{
+      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
       overflow:hidden;
+      box-shadow:var(--shadow);
       display:flex;
       flex-direction:column;
       min-height:100%;
     }
 
     .spot-cover{
-      min-height:220px;
-      background:#102019 center/cover no-repeat;
       position:relative;
-      border-bottom:1px solid rgba(255,255,255,.08);
+      aspect-ratio:16/10;
+      background:#0b2018;
+      overflow:hidden;
     }
 
-    .spot-cover.fallback{
-      display:grid;
-      place-items:center;
-      color:rgba(255,255,255,.72);
-      background:
-        radial-gradient(circle at top, rgba(212,175,55,.08), transparent 30%),
-        linear-gradient(180deg, #10231b, #0a1712);
+    .spot-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .35s ease;
     }
 
-    .spot-badge{
+    .spot:hover .spot-cover img{
+      transform:scale(1.03);
+    }
+
+    .spot-badges{
       position:absolute;
-      left:14px;
-      top:14px;
+      top:12px;
+      left:12px;
+      right:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
       display:inline-flex;
       align-items:center;
-      gap:8px;
       min-height:30px;
       padding:0 10px;
       border-radius:999px;
-      background:rgba(212,175,55,.14);
-      border:1px solid rgba(212,175,55,.32);
-      color:#f4d978;
       font-size:12px;
       font-weight:900;
-      letter-spacing:.04em;
-      backdrop-filter:blur(8px);
+      background:rgba(6,19,15,.74);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(6px);
+    }
+
+    .badge.gold{
+      color:#1f1604;
+      background:rgba(242,204,120,.96);
+      border-color:transparent;
     }
 
     .spot-body{
-      padding:18px;
-      display:grid;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
       gap:12px;
-      flex:1 1 auto;
+      flex:1;
+    }
+
+    .spot-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
     }
 
     .spot-title{
+      margin:0;
       font-size:20px;
-      font-weight:900;
       line-height:1.2;
-      letter-spacing:-.02em;
+      font-weight:900;
+    }
+
+    .spot-price{
+      flex:0 0 auto;
+      padding:8px 10px;
+      border-radius:14px;
+      background:rgba(18,183,106,.12);
+      border:1px solid rgba(18,183,106,.30);
+      color:#8ff0bb;
+      font-size:12px;
+      font-weight:900;
     }
 
     .spot-meta{
-      color:rgba(255,255,255,.76);
-      font-size:13px;
-      line-height:1.65;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      min-height:30px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
     }
 
     .spot-desc{
-      color:rgba(255,255,255,.84);
+      color:var(--muted);
       font-size:14px;
-      line-height:1.75;
-      min-height:72px;
+      line-height:1.65;
+      min-height:66px;
     }
 
-    .spot-tags{
+    .tags{
       display:flex;
-      flex-wrap:wrap;
       gap:8px;
+      flex-wrap:wrap;
     }
 
-    .spot-tag{
-      min-height:30px;
-      padding:0 10px;
+    .tag{
       display:inline-flex;
       align-items:center;
+      min-height:28px;
+      padding:0 10px;
       border-radius:999px;
-      background:rgba(212,175,55,.08);
-      border:1px solid rgba(212,175,55,.18);
-      color:#f4d978;
+      border:1px solid rgba(220,180,90,.18);
+      background:rgba(220,180,90,.08);
+      color:#f0d58e;
       font-size:12px;
       font-weight:800;
     }
 
     .spot-actions{
       display:flex;
-      flex-wrap:wrap;
       gap:10px;
-      margin-top:4px;
+      flex-wrap:wrap;
+      margin-top:auto;
+      padding-top:4px;
     }
 
-    .spot-btn{
+    .spot-actions .btn{
       flex:1 1 180px;
-      min-height:42px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:0 12px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:900;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.05);
-      color:#fff;
     }
 
-    .spot-btn.primary{
-      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-      color:#000;
-      border-color:rgba(212,175,55,.45);
-    }
-
-    .spot-btn.whatsapp{
-      background:linear-gradient(135deg, rgba(34,197,94,.18) 0%, rgba(22,163,74,.22) 100%);
-      border-color:rgba(34,197,94,.28);
-      color:#dcfce7;
-    }
-
-    .empty-state{
-      border:1px dashed rgba(255,255,255,.12);
+    .empty{
+      padding:24px;
+      border:1px dashed rgba(255,255,255,.18);
       border-radius:20px;
-      padding:22px;
-      color:rgba(255,255,255,.72);
-      font-size:14px;
-      line-height:1.75;
       background:rgba(255,255,255,.03);
+      color:var(--muted);
       text-align:center;
     }
 
-    @media (max-width:980px){
-      .live-toolbar{
+    .footer{
+      padding:30px 0 44px;
+    }
+
+    .footer-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:20px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      flex-wrap:wrap;
+    }
+
+    .footer-copy strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:6px;
+    }
+
+    .footer-copy span{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .loader{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .loader::before{
+      content:"";
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.16);
+      border-top-color:#f2cc78;
+      animation:spin .8s linear infinite;
+    }
+
+    @keyframes spin{
+      to{ transform:rotate(360deg); }
+    }
+
+    @media (max-width: 1024px){
+      .hero-grid,
+      .grid{
         grid-template-columns:1fr 1fr;
       }
     }
 
-    @media (max-width:640px){
-      .digiy-return-bar{top:60px}
-      .hero{padding-top:178px}
-      .digiy-return-inner{align-items:flex-start}
-      .digiy-return-note{width:100%}
-      .live-toolbar{
+    @media (max-width: 780px){
+      .topbar-inner{
+        align-items:flex-start;
+      }
+
+      .hero-grid,
+      .grid,
+      .hero-metrics{
         grid-template-columns:1fr;
       }
-    }
 
-    footer{
-      padding:28px 16px;
-      border-top:1px solid rgba(255,255,255,.08);
-      color:rgba(255,255,255,.55);
-      text-align:center;
-      font-size:12px;
-      background:#000;
+      .hero-card,
+      .side-card{
+        padding:20px;
+      }
+
+      .section-head,
+      .footer-card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .spot-actions .btn{
+        flex:1 1 100%;
+      }
     }
   </style>
 </head>
-
 <body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./" aria-label="DIGIY EXPLORE">
+        <div class="brand-badge">🌍</div>
+        <div class="brand-copy">
+          <strong>DIGIY EXPLORE</strong>
+          <span>Tourisme terrain • Spots • Contact direct</span>
+        </div>
+      </a>
 
-  <nav>
-    <div class="nav-container">
-      <div class="logo" id="homeTop">
-        <span class="inf">∞</span>
-        <span>DIGIY EXPLORE</span>
-      </div>
-
-      <div class="nav-links">
-        <a href="#role">Notre rôle</a>
-        <a href="#gateaux">Expériences</a>
-        <a href="#spots">Spots</a>
-        <a href="#agence">Agence</a>
-        <a href="#zones">Zones</a>
-        <a href="#vision">Vision</a>
-        <a id="navSubmitLink" href="https://pro-explore.digiylyfe.com/">Présenter mon lieu</a>
-        <a id="navPinLink" href="https://pro-explore.digiylyfe.com/">Je suis un professionnel</a>
-        <a id="navPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">ACTIVER MA PRÉSENCE</a>
-      </div>
-
-      <div class="nav-actions">
-        <button class="nav-cta" id="ctaPayTop">💳 ACTIVER MA PRÉSENCE</button>
-        <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu"><i class="fas fa-bars"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="digiy-return-bar">
-    <div class="digiy-return-inner">
-      <a id="backToDigiy" class="digiy-return-link" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
-      <div class="digiy-return-note">
-        EXPLORE est la porte tourisme de l’écosystème DIGIYLYFE : présence visible, spots publiés, contact direct, terrain réel.
-      </div>
-    </div>
-  </div>
-
-  <div class="drawer" id="drawer">
-    <a href="#role">Notre rôle</a>
-    <a href="#gateaux">Expériences terrain</a>
-    <a href="#spots">Spots publiés</a>
-    <a href="#agence">Agence</a>
-    <a href="#zones">Zones</a>
-    <a href="#vision">Vision</a>
-    <a id="drawerSubmitLink" href="https://pro-explore.digiylyfe.com/">🍰 Présenter mon lieu</a>
-    <a id="drawerPinLink" href="https://pro-explore.digiylyfe.com/">🧭 Je suis un professionnel</a>
-    <a id="drawerPayLink" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener noreferrer">💳 ACTIVER MA PRÉSENCE</a>
-    <a id="drawerBackLink" href="https://digiylyfe.com/">← Retour DIGIYLYFE</a>
-  </div>
-
-  <header class="hero" id="top">
-    <div class="hero-content">
-      <div class="badge">🇸🇳 Saly • Dakar • Petite Côte • Présence tourisme</div>
-      <h1>Une vraie présence tourisme<br />dans l’écosystème DIGIYLYFE</h1>
-      <p class="sub">
-        DIGIY EXPLORE donne une visibilité claire aux activités tourisme, hébergements, expériences, guides et pros terrain.
-        Le voyageur découvre, lit la fiche, contacte directement, puis traite sans commission abusive.
-      </p>
-      <p class="hero-note">
-        Ici, on ne vend pas un simple encart. On pose une présence réelle dans l’univers DIGIY :
-        vitrine, zone, contact WhatsApp, lecture claire et futur accès pro.
-      </p>
-
-      <div class="cta-grid">
-        <button class="btn primary" id="ctaPayMid">💳 Activer ma présence EXPLORE</button>
-        <button class="btn secondary" id="ctaScrollSpots">🧭 Voir les spots publiés</button>
+      <div class="actions">
+        <a class="btn btn-ghost" id="siteBackBtn" href="https://digiylyfe.com/" target="_blank" rel="noopener">
+          ← Retour au site
+        </a>
+        <a class="btn btn-outline" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+          Devenir pro
+        </a>
+        <a class="btn btn-primary" href="#spots">
+          Voir les spots
+        </a>
       </div>
     </div>
   </header>
 
-  <section class="section" id="role">
-    <div class="container">
-      <div class="sec-title">Notre rôle</div>
-      <div class="sec-sub">
-        DIGIY EXPLORE facilite la rencontre entre voyageurs et professionnels africains. On apporte la visibilité, le pro reçoit directement le contact, et la valeur reste sur le terrain.
-      </div>
-
-      <div class="cards">
-        <div class="card">
-          <h3>1) Présence visible</h3>
-          <p>Une vitrine claire, mobile, élégante et compréhensible pour présenter le lieu, l’activité ou l’expérience.</p>
-        </div>
-        <div class="card">
-          <h3>2) Contact direct</h3>
-          <p>WhatsApp, téléphone, itinéraire, lien utile : le visiteur parle au pro, pas à une plateforme gourmande au milieu.</p>
-        </div>
-        <div class="card">
-          <h3>3) Écosystème DIGIY</h3>
-          <p>EXPLORE n’est pas une page isolée. C’est une présence intégrée dans DIGIYLYFE, pensée pour durer et s’étendre.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="gateaux">
-    <div class="container">
-      <div class="sec-title">Nos expériences terrain</div>
-      <div class="sec-sub">
-        Avant même l’ouverture complète de tous les rails, DIGIY EXPLORE montre déjà le type d’expériences, de sorties et de lieux que nous pouvons mettre en avant. Pour réserver, demander ou organiser, contacte directement la conciergerie.
-      </div>
-
-      <div id="showcaseGrid" class="spots-grid"></div>
-
-      <div class="big-cta">
-        <button class="btn secondary" id="ctaShowcasePro">🍰 Présenter mon lieu</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="spots">
-    <div class="container">
-      <div class="sec-title">Spots publiés</div>
-      <div class="sec-sub">
-        Lecture publique réelle des lieux déjà publiés dans PRO-EXPLORE. Filtre, cherche, ouvre la fiche, contacte le pro.
-      </div>
-
-      <div id="liveMsg" class="live-msg info"></div>
-
-      <div class="live-toolbar">
-        <input id="searchInput" class="control" type="text" placeholder="Rechercher un lieu, une zone, un repère…" />
-        <input id="cityInput" class="control" type="text" placeholder="Ville (ex: Saly)" />
-        <input id="zoneInput" class="control" type="text" placeholder="Zone (ex: Centre)" />
-        <select id="categorySelect" class="control">
-          <option value="">Toutes les catégories</option>
-        </select>
-        <button id="reloadBtn" class="reload-btn" type="button">Actualiser</button>
-      </div>
-
-      <div id="spotsGrid" class="spots-grid">
-        <div class="empty-state">Chargement des spots publiés…</div>
-      </div>
-
-      <div class="big-cta">
-        <button class="btn secondary" id="ctaSubmitSpot">🍰 Présenter mon lieu</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="agence">
-    <div class="container">
-      <div class="sec-title">DIGIY EXPLORE — AGENCE</div>
-      <div class="sec-sub">
-        Abonnement principal de présence tourisme. Pour agences, hébergements, activités, expériences, guides et structures qui veulent une place claire dans l’écosystème DIGIYLYFE.
-      </div>
-
-      <div class="pricing-grid">
-        <article class="price-card">
-          <div class="price-tag">🟢 ESSENTIEL</div>
-          <div class="price-name">Présence locale</div>
-          <div class="price-amount">30 000 FCFA <small>/ mois</small></div>
-          <div class="price-copy">
-            Entrée propre dans EXPLORE avec fiche claire, visibilité de zone, contact direct et présence tourisme dans la vitrine.
-          </div>
-          <div class="price-features">
-            <div>✅ Fiche visible</div>
-            <div>✅ Zone / ville / contact</div>
-            <div>✅ WhatsApp direct</div>
-          </div>
-        </article>
-
-        <article class="price-card featured">
-          <div class="price-tag">🔵 PRO</div>
-          <div class="price-name">Présence renforcée</div>
-          <div class="price-amount">60 000 FCFA <small>/ mois</small></div>
-          <div class="price-copy">
-            Pour les structures qui veulent plus d’impact, une meilleure lecture commerciale et une présence plus affirmée dans la vitrine.
-          </div>
-          <div class="price-features">
-            <div>✅ Présence renforcée</div>
-            <div>✅ Lecture plus premium</div>
-            <div>✅ Visibilité élargie</div>
-          </div>
-        </article>
-
-        <article class="price-card">
-          <div class="price-tag">🟣 PREMIUM</div>
-          <div class="price-name">Présence maximale</div>
-          <div class="price-amount">120 000 FCFA <small>/ mois</small></div>
-          <div class="price-copy">
-            Niveau fort pour les activités qui veulent marquer le terrain, monter en image et occuper une place plus visible dans EXPLORE.
-          </div>
-          <div class="price-features">
-            <div>✅ Positionnement plus fort</div>
-            <div>✅ Présence premium</div>
-            <div>✅ Écosystème DIGIYLYFE</div>
-          </div>
-        </article>
-
-        <article class="price-card">
-          <div class="price-tag">🎫 SETUP &amp; ONBOARDING</div>
-          <div class="price-name">Entrée one-shot</div>
-          <div class="price-amount">150 000 FCFA <small>une fois</small></div>
-          <div class="price-copy">
-            Mise en route, préparation, cadrage et intégration initiale. C’est l’entrée propre pour poser la présence dans l’écosystème.
-          </div>
-          <div class="price-features">
-            <div>✅ Cadrage DIGIY</div>
-            <div>✅ Préparation initiale</div>
-            <div>✅ Mise en place terrain</div>
-          </div>
-        </article>
-      </div>
-
-      <div class="agency-note">
-        ✅ 0% commission abusive • 📍 présence tourisme dans la vitrine DIGIY • 💬 contact direct • paiement direct au pro.<br />
-        Le Boost Tourisme vient ensuite comme supplément optionnel. Il ne remplace pas l’abonnement principal EXPLORE.
-      </div>
-
-      <div class="big-cta">
-        <button class="btn primary" id="ctaAgency">💳 Activer ma présence EXPLORE</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="zones">
-    <div class="container">
-      <div class="sec-title">Zones actives</div>
-      <div class="sec-sub">
-        Saly, Somone, Ngaparou, Mbour, Dakar… puis extension progressive vers d’autres territoires africains. DIGIY EXPLORE commence ancré, puis élargit proprement.
-      </div>
-
-      <div class="cards">
-        <div class="card">
-          <h3>Petite Côte</h3>
-          <p>Spots, lieux, hébergements, expériences, services utiles, repères terrain et accès directs.</p>
-        </div>
-        <div class="card">
-          <h3>Dakar</h3>
-          <p>Présence urbaine, découverte, mobilité, adresses sélectionnées et connexion directe avec le pro.</p>
-        </div>
-        <div class="card">
-          <h3>Expansion Afrique</h3>
-          <p>Le rail est pensé pour s’étendre sans perdre l’ADN : visibilité juste, relation directe, racines locales.</p>
-        </div>
-      </div>
-
-      <div class="big-cta">
-        <button class="btn secondary" id="ctaSpotsBottom">🚀 Voir les spots</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section alt" id="vision">
-    <div class="container">
-      <div class="sec-title">Vision</div>
-      <div class="sec-sub">
-        Construire un tourisme digital enraciné : découverte claire, lien humain direct, valeur qui reste en Afrique, et montée en puissance progressive des pros dans l’écosystème DIGIYLYFE.
-      </div>
-
-      <div class="stack">
-        <div class="highlight">
-          <h3>EXPLORE = socle principal</h3>
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-card">
+          <div class="eyebrow">DIGIYLYFE • Présence tourisme enracinée</div>
+          <h1>Fais rayonner le terrain.<br>Montre les vrais lieux.<br>Attire les vrais visiteurs.</h1>
           <p>
-            L’abonnement EXPLORE pose la vraie présence dans l’écosystème. C’est le rail principal : visibilité, contact, lecture publique et futur accès pro.
+            DIGIY EXPLORE met en lumière les spots, expériences, lieux utiles et pépites du terrain.
+            L’objectif est simple : visibilité locale, lecture claire, contact direct, et paiement direct au pro
+            sans casser l’âme du lieu.
           </p>
+
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#spots">Découvrir les spots</a>
+            <a class="btn btn-ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+              Activer ma présence
+            </a>
+          </div>
+
+          <div class="hero-metrics">
+            <div class="metric">
+              <strong id="metricSpots">—</strong>
+              <span>Spots visibles ou de démonstration disponibles sur la vitrine.</span>
+            </div>
+            <div class="metric">
+              <strong id="metricZones">—</strong>
+              <span>Zones ou villes détectées dans la lecture publique.</span>
+            </div>
+            <div class="metric">
+              <strong id="metricCats">—</strong>
+              <span>Catégories pour montrer la richesse du terrain.</span>
+            </div>
+          </div>
         </div>
 
-        <div class="highlight">
-          <h3>BOOST = supplément ensuite</h3>
-          <p>
-            Le Boost Tourisme vient après, comme renfort de visibilité. D’abord la présence réelle, ensuite la mise en avant supplémentaire.
-          </p>
+        <aside class="side-card">
+          <div class="side-cover">
+            <img
+              src="https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
+              alt="Sortie en pirogue sur la Petite Côte"
+            />
+          </div>
+          <div class="side-kicker">Petite Côte • Dakar • Sénégal</div>
+          <h2 class="side-title">Un module pour donner envie, sans noyer le visiteur.</h2>
+          <div class="side-text">
+            Pas une vitrine froide. Pas un annuaire mort.
+            Une présence vivante pour montrer les spots, raconter l’ambiance, guider le regard
+            et ouvrir un contact simple avec le pro ou l’organisateur.
+          </div>
+          <a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="spots">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Spots à découvrir</h2>
+            <p>
+              Lecture publique du terrain : lieux, sorties, expériences, coins utiles et belles adresses.
+              Quand le backend répond, la vitrine charge les spots publiés. Sinon elle garde une présence propre
+              avec une sélection de secours.
+            </p>
+          </div>
+
+          <div class="section-tools">
+            <div class="chip" id="dataStatus">Chargement…</div>
+            <a class="chip" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">Activer ma présence</a>
+          </div>
         </div>
 
-        <div class="highlight">
-          <h3>Terrain avant cinéma</h3>
-          <p>
-            DIGIY EXPLORE ne vend pas un décor vide. L’objectif est de montrer des activités, des lieux et des professionnels réels, joignables, lisibles et crédibles.
-          </p>
+        <div id="spotsGrid" class="grid" aria-live="polite">
+          <div class="empty">
+            <div class="loader">Chargement des spots…</div>
+          </div>
         </div>
       </div>
+    </section>
+  </main>
 
-      <div class="cta-grid" style="margin-top:22px">
-        <button class="btn primary" id="ctaPayBottom">💳 Activer ma présence</button>
-        <button class="btn ghost" id="ctaPin">🍰 Je suis un professionnel</button>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-card">
+        <div class="footer-copy">
+          <strong>DIGIY EXPLORE ∞</strong>
+          <span>
+            Présence tourisme dans l’écosystème DIGIYLYFE.
+            Visibilité locale, contact humain, lecture simple et terrain vivant.
+          </span>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="https://digiylyfe.com/" target="_blank" rel="noopener">
+            ← Retour au site
+          </a>
+          <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+            Commencer
+          </a>
+        </div>
       </div>
     </div>
-  </section>
-
-  <footer>
-    © 2026 DIGIYLYFE • DIGIY EXPLORE ∞ — Présence tourisme • Spots publiés • Contact direct • Paiement direct au pro
   </footer>
 
+  <template id="spotTpl">
+    <article class="spot">
+      <div class="spot-cover">
+        <img alt="" loading="lazy" />
+        <div class="spot-badges">
+          <span class="badge js-category"></span>
+          <span class="badge gold js-city"></span>
+        </div>
+      </div>
+
+      <div class="spot-body">
+        <div class="spot-head">
+          <h3 class="spot-title js-title"></h3>
+          <div class="spot-price js-price"></div>
+        </div>
+
+        <div class="spot-meta">
+          <span class="mini js-zone"></span>
+          <span class="mini js-kind"></span>
+        </div>
+
+        <div class="spot-desc js-desc"></div>
+
+        <div class="tags js-tags"></div>
+
+        <div class="spot-actions">
+          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Contacter</a>
+          <a class="btn btn-primary js-open" target="_blank" rel="noopener">Ouvrir</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
   <script>
-    (async function(){
-      const qp = new URLSearchParams(location.search);
-
-      const SUPABASE_URL =
-        window.DIGIY_SUPABASE_URL ||
-        "https://wesqmwjjtsefyjnluosj.supabase.co";
-
-      const SUPABASE_ANON_KEY =
-        window.DIGIY_SUPABASE_ANON_KEY ||
-        window.DIGIY_SUPABASE_ANON ||
-        "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
-
-      const PAY_BASE = window.DIGIY_PAY_URL || "https://commencer-a-payer.digiylyfe.com/";
-      const PRO_PORTAL_URL = "https://pro-explore.digiylyfe.com/";
-      const SUBMIT_URL = "https://pro-explore.digiylyfe.com/";
-      const PIN_URL = "https://pro-explore.digiylyfe.com/pin.html";
-      const FICHE_URL = "./fiche.html";
-      const CONCIERGE_PHONE = "221771342889";
-
-      let sb = null;
-
-      const RETURN_URL = safeUrl(qp.get("return"), "https://digiylyfe.com/");
-
-      const liveMsg = document.getElementById("liveMsg");
-      const searchInput = document.getElementById("searchInput");
-      const cityInput = document.getElementById("cityInput");
-      const zoneInput = document.getElementById("zoneInput");
-      const categorySelect = document.getElementById("categorySelect");
-      const reloadBtn = document.getElementById("reloadBtn");
-      const spotsGrid = document.getElementById("spotsGrid");
-      const showcaseGrid = document.getElementById("showcaseGrid");
-
-      let CURRENT_ITEMS = [];
-      let CATEGORIES = [];
-
-      function safeUrl(raw, fallback){
-        const value = String(raw || "").trim();
-        try{
-          const u = new URL(value || fallback, location.href);
-          if (u.protocol === "http:" || u.protocol === "https:") return u.toString();
-          return fallback;
-        }catch{
-          return fallback;
-        }
-      }
-
-      function getClient(){
-        if (sb) return sb;
-        if (!window.supabase?.createClient) throw new Error("Supabase JS non chargé.");
-        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-          auth: {
-            persistSession: false,
-            autoRefreshToken: false,
-            detectSessionInUrl: false
-          }
-        });
-        return sb;
-      }
-
-      function withReturn(url){
-        try{
-          const u = new URL(url, location.href);
-          u.searchParams.set("return", RETURN_URL);
-          return u.toString();
-        }catch{
-          return url;
-        }
-      }
-
-      function buildPayUrl(extra = {}){
-        const u = new URL(PAY_BASE, location.href);
-        u.searchParams.set("module", "EXPLORE");
-        u.searchParams.set("plan", extra.plan || "essentiel");
-        u.searchParams.set("source", extra.source || "digiy-explore-index");
-        u.searchParams.set("return", RETURN_URL);
-        return u.toString();
-      }
-
-      function escapeHtml(value){
-        return String(value ?? "")
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
-
-      function normalizePhone(v){
-        return String(v || "").replace(/[^\d]/g, "");
-      }
-
-      function setLiveMsg(text, type){
-        if(!text){
-          liveMsg.className = "live-msg";
-          liveMsg.textContent = "";
-          return;
-        }
-        liveMsg.className = "live-msg show " + (type || "info");
-        liveMsg.textContent = text;
-      }
-
-      function ficheHref(slug){
-        const u = new URL(FICHE_URL, location.href);
-        u.searchParams.set("slug", slug);
-        return u.toString();
-      }
-
-      function waHref(phone, label){
-        const clean = normalizePhone(phone);
-        if(!clean) return "#";
-        const text = encodeURIComponent("Bonjour, je vous contacte depuis DIGIY EXPLORE pour : " + (label || "ce lieu"));
-        return "https://wa.me/" + clean + "?text=" + text;
-      }
-
-      function mapsHref(item){
-        const lat = item?.latitude;
-        const lng = item?.longitude;
-        const address = item?.address_text || "";
-        const hasCoords = lat !== null && lat !== undefined && lng !== null && lng !== undefined && lat !== "" && lng !== "";
-        if (hasCoords) {
-          return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
-        }
-        if (address) {
-          return "https://www.google.com/maps?q=" + encodeURIComponent(address);
-        }
-        return "#";
-      }
-
-      function renderCategoryOptions(items){
-        categorySelect.innerHTML = '<option value="">Toutes les catégories</option>';
-        items.forEach((item) => {
-          const opt = document.createElement("option");
-          opt.value = item.code;
-          opt.textContent = (item.icon ? item.icon + " " : "") + item.label;
-          categorySelect.appendChild(opt);
-        });
-      }
-
-      async function loadCategories(){
-        const client = getClient();
-        const { data, error } = await client
-          .from("digiy_explore_categories")
-          .select("code,label,icon,sort_order")
-          .eq("is_active", true)
-          .order("sort_order", { ascending: true });
-
-        if (error) throw error;
-        return Array.isArray(data) ? data : [];
-      }
-
-      async function loadPublicList(){
-        const client = getClient();
-        const city = String(cityInput.value || "").trim() || null;
-        const zone = String(zoneInput.value || "").trim() || null;
-        const category = String(categorySelect.value || "").trim() || null;
-        const search = String(searchInput.value || "").trim() || null;
-
-        const { data, error } = await client.rpc("digiy_explore_public_list", {
-          p_city: city,
-          p_zone: zone,
-          p_category_code: category,
-          p_search: search,
-          p_limit: 60
-        });
-
-        if (error) throw error;
-        return Array.isArray(data?.items) ? data.items : [];
-      }
+    const SITE_HOME = "https://digiylyfe.com/";
+    const DEFAULT_OPEN_URL = SITE_HOME;
+    const DEFAULT_CONTACT_URL = "https://commencer-a-payer.digiylyfe.com/";
 
     const SHOWCASE_SPOTS = [
-  {
-    title: "Sortie en pêche — Petite Côte",
-    category: "🎣 Expérience",
-    city: "Saly",
-    zone: "Petite Côte",
-    price: "Sur demande",
-    desc: "Sortie en pêche encadrée, départ côtier, ambiance locale, mer, lever tôt et vraie sensation terrain sur la Petite Côte.",
-    tags: ["pêche", "mer", "sortie", "conciergerie"],
-    cover: "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
-  },
-  {
-    title: "Journée plage privée",
-    category: "🏖️ Détente",
-    city: "Saly",
-    zone: "Bord de mer",
-    price: "Sur demande",
-    desc: "Installation simple et confortable pour profiter de la plage, du calme, du soleil et d’un moment proprement organisé.",
-    tags: ["plage", "relax", "famille"],
-    cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Balade coucher de soleil",
-    category: "🌅 Expérience",
-    city: "Ngaparou",
-    zone: "Côte",
-    price: "Sur demande",
-    desc: "Sortie douce en fin de journée pour profiter des couleurs, de l’air marin et d’un moment simple à partager.",
-    tags: ["sunset", "balade", "couple"],
-    cover: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Découverte artisanat local",
-    category: "🛍️ Découverte",
-    city: "Mbour",
-    zone: "Centre",
-    price: "Sur demande",
-    desc: "Parcours orienté artisanat et savoir-faire local pour découvrir des mains, des matières et des histoires vraies.",
-    tags: ["artisanat", "local", "culture"],
-    cover: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Déjeuner terrasse bord mer",
-    category: "🍽️ Restaurant",
-    city: "Somone",
-    zone: "Lagune",
-    price: "Sur demande",
-    desc: "Pause déjeuner avec vue, respiration, service agréable et atmosphère calme pour profiter du lieu.",
-    tags: ["restaurant", "terrasse", "vue mer"],
-    cover: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Sortie famille à la lagune",
-    category: "👨‍👩‍👧 Famille",
-    city: "Somone",
-    zone: "Lagune",
-    price: "Sur demande",
-    desc: "Moment famille avec découverte douce, coin agréable, rythme tranquille et accompagnement simple.",
-    tags: ["famille", "lagune", "nature"],
-    cover: "https://images.unsplash.com/photo-1500534623283-312aade485b7?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Circuit découverte Dakar",
-    category: "🚗 Ville",
-    city: "Dakar",
-    zone: "Centre & corniche",
-    price: "Sur demande",
-    desc: "Lecture rapide de Dakar avec arrêts choisis, ambiance urbaine, repères utiles et accompagnement terrain.",
-    tags: ["dakar", "visite", "ville"],
-    cover: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Matin calme en bord de mer",
-    category: "☀️ Détente",
-    city: "Saly",
-    zone: "Plage",
-    price: "Sur demande",
-    desc: "Un format léger pour respirer, marcher, prendre le temps et démarrer la journée dans une belle énergie.",
-    tags: ["matin", "mer", "calme"],
-    cover: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Expérience locale sur mesure",
-    category: "✨ Conciergerie",
-    city: "Petite Côte",
-    zone: "Sur demande",
-    price: "Sur demande",
-    desc: "Tu nous dis ce que tu cherches, on t’oriente vers le bon terrain : sortie, lieu, ambiance, besoin pratique.",
-    tags: ["sur mesure", "conciergerie", "terrain"],
-    cover: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1200&auto=format&fit=crop&q=70"
-  },
-  {
-    title: "Week-end respiration & découverte",
-    category: "🧭 Escapade",
-    city: "Petite Côte",
-    zone: "Multi-zones",
-    price: "Sur demande",
-    desc: "Combinaison de lieux, moments et découvertes pour donner une vraie respiration à un séjour court.",
-    tags: ["week-end", "escapade", "découverte"],
-    cover: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&auto=format&fit=crop&q=70"
-  }
-];
+      {
+        title: "Sortie en pêche — Petite Côte",
+        category: "🎣 Expérience",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Sur demande",
+        desc: "Sortie en pêche encadrée, départ côtier, ambiance locale, mer, lever tôt et vraie sensation terrain sur la Petite Côte.",
+        tags: ["pêche", "mer", "sortie", "conciergerie"],
+        cover: "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Spot"
+      },
+      {
+        title: "Pause plage — Saly",
+        category: "🏖️ Détente",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Libre / selon lieu",
+        desc: "Plage, lumière, repos, promenade, détente simple et vue ouverte. Une lecture douce du terrain, sans chichi.",
+        tags: ["plage", "repos", "balade"],
+        cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Lieu"
+      },
+      {
+        title: "Escapade locale — Dakar",
+        category: "🌆 Découverte",
+        city: "Dakar",
+        zone: "Cap-Vert",
+        price: "Selon programme",
+        desc: "Une porte d’entrée simple pour découvrir le rythme local, les points utiles, les coins inspirants et les repères vivants.",
+        tags: ["découverte", "ville", "guidage"],
+        cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Ville"
+      }
+    ];
 
-      function renderShowcaseSpots(){
-        if(!showcaseGrid) return;
+    const $grid = document.getElementById("spotsGrid");
+    const $status = document.getElementById("dataStatus");
+    const $metricSpots = document.getElementById("metricSpots");
+    const $metricZones = document.getElementById("metricZones");
+    const $metricCats = document.getElementById("metricCats");
+    const tpl = document.getElementById("spotTpl");
 
-        showcaseGrid.innerHTML = SHOWCASE_SPOTS.map((item) => {
-          const waUrl = waHref(CONCIERGE_PHONE, item.title);
+    document.getElementById("siteBackBtn").href = SITE_HOME;
 
-          return `
-            <article class="spot-card">
-              <div class="spot-cover ${item.cover ? "" : "fallback"}" ${item.cover ? `style="background-image:url('${escapeHtml(item.cover)}')"` : ""}>
-                <div class="spot-badge">${escapeHtml(item.category)}</div>
-                ${item.cover ? "" : '<div>Image non renseignée</div>'}
-              </div>
+    function esc(str){
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-              <div class="spot-body">
-                <div class="spot-title">${escapeHtml(item.title)}</div>
+    function normalizeItem(item){
+      return {
+        title: item?.title || item?.name || "Spot DIGIY EXPLORE",
+        category: item?.category || item?.type_label || item?.kind_label || "📍 Spot",
+        city: item?.city || item?.town || item?.place_city || "Sénégal",
+        zone: item?.zone || item?.district || item?.area || "Terrain",
+        price: item?.price || item?.price_label || "Sur demande",
+        desc: item?.desc || item?.description || "Lieu ou expérience visible dans la vitrine DIGIY EXPLORE.",
+        tags: Array.isArray(item?.tags) ? item.tags : [],
+        cover: item?.cover || item?.image_url || item?.photo_url || "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif",
+        contact_url: item?.contact_url || item?.whatsapp_url || DEFAULT_CONTACT_URL,
+        open_url: item?.open_url || item?.slug_url || item?.public_url || DEFAULT_OPEN_URL,
+        kind: item?.kind || item?.spot_kind || "Spot"
+      };
+    }
 
-                <div class="spot-meta">
-                  ${escapeHtml(item.city)} • ${escapeHtml(item.zone)}
-                  ${item.price ? " • " + escapeHtml(item.price) : ""}
-                </div>
+    function updateMetrics(items){
+      const zones = new Set();
+      const cats = new Set();
 
-                <div class="spot-desc">${escapeHtml(item.desc)}</div>
+      items.forEach(item => {
+        if(item.zone) zones.add(item.zone);
+        else if(item.city) zones.add(item.city);
+        if(item.category) cats.add(item.category);
+      });
 
-                <div class="spot-tags">
-                  ${item.tags.map(tag => `<span class="spot-tag">${escapeHtml(tag)}</span>`).join("")}
-                </div>
+      $metricSpots.textContent = String(items.length);
+      $metricZones.textContent = String(zones.size);
+      $metricCats.textContent = String(cats.size);
+    }
 
-                <div class="spot-actions">
-                  <a class="spot-btn whatsapp" href="${escapeHtml(waUrl)}" target="_blank" rel="noopener">WhatsApp conciergerie</a>
-                  <a class="spot-btn" href="${escapeHtml(PRO_PORTAL_URL)}">Présenter mon lieu</a>
-                </div>
-              </div>
-            </article>
-          `;
-        }).join("");
+    function renderSpots(items){
+      $grid.innerHTML = "";
+
+      if(!Array.isArray(items) || !items.length){
+        $grid.innerHTML = `
+          <div class="empty">
+            Aucun spot visible pour le moment.
+          </div>
+        `;
+        updateMetrics([]);
+        return;
       }
 
-      function renderSpots(items){
-        CURRENT_ITEMS = items;
+      items.forEach(raw => {
+        const item = normalizeItem(raw);
+        const node = tpl.content.firstElementChild.cloneNode(true);
 
-        if (!items.length) {
-          spotsGrid.innerHTML = `
-            <div class="empty-state">
-              Aucun spot publié ne correspond au filtre actuel.<br>
-              Essaie un autre mot-clé, une autre ville, ou présente ton lieu.
-            </div>
-          `;
-          return;
+        const img = node.querySelector("img");
+        img.src = item.cover;
+        img.alt = item.title;
+
+        node.querySelector(".js-category").textContent = item.category;
+        node.querySelector(".js-city").textContent = item.city;
+        node.querySelector(".js-title").textContent = item.title;
+        node.querySelector(".js-price").textContent = item.price;
+        node.querySelector(".js-zone").textContent = "📍 " + (item.zone || item.city || "Terrain");
+        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "Spot");
+        node.querySelector(".js-desc").textContent = item.desc;
+
+        const tagsWrap = node.querySelector(".js-tags");
+        if(Array.isArray(item.tags) && item.tags.length){
+          item.tags.slice(0, 5).forEach(tag => {
+            const span = document.createElement("span");
+            span.className = "tag";
+            span.textContent = "#" + String(tag).replace(/^#/, "");
+            tagsWrap.appendChild(span);
+          });
+        } else {
+          const span = document.createElement("span");
+          span.className = "tag";
+          span.textContent = "#terrain";
+          tagsWrap.appendChild(span);
         }
 
-        spotsGrid.innerHTML = items.map((item) => {
-          const cover = item?.cover_url || (Array.isArray(item?.photo_urls) && item.photo_urls[0]) || "";
-          const title = item?.public_name || "Lieu";
-          const category = [item?.category_icon, item?.category_label || item?.category_code].filter(Boolean).join(" ");
-          const location = [item?.city, item?.zone].filter(Boolean).join(" — ");
-          const desc = item?.short_description || "Lecture publique d’un lieu DIGIY EXPLORE.";
-          const tags = Array.isArray(item?.tags) ? item.tags.slice(0, 4) : [];
-          const contact = item?.whatsapp || item?.phone || "";
-          const price = item?.price_hint || "";
-          const mapUrl = mapsHref(item);
-          const ficheUrl = ficheHref(item?.slug || "");
-          const waUrl = waHref(contact, title);
+        const contact = node.querySelector(".js-contact");
+        contact.href = item.contact_url || DEFAULT_CONTACT_URL;
 
-          return `
-            <article class="spot-card">
-              <div class="spot-cover ${cover ? "" : "fallback"}" ${cover ? `style="background-image:url('${escapeHtml(cover)}')"` : ""}>
-                <div class="spot-badge">${escapeHtml(category || "Lieu")}</div>
-                ${cover ? "" : '<div>Image non renseignée</div>'}
-              </div>
+        const open = node.querySelector(".js-open");
+        open.href = item.open_url || DEFAULT_OPEN_URL;
 
-              <div class="spot-body">
-                <div class="spot-title">${escapeHtml(title)}</div>
+        $grid.appendChild(node);
+      });
 
-                <div class="spot-meta">
-                  ${escapeHtml(location || "Zone non précisée")}
-                  ${price ? " • " + escapeHtml(price) : ""}
-                </div>
+      updateMetrics(items);
+    }
 
-                <div class="spot-desc">${escapeHtml(desc)}</div>
+    async function fetchFromRpc(client){
+      const rpcNames = [
+        "digiy_explore_public_list_spots",
+        "digiy_explore_list_public_spots",
+        "digiy_explore_get_public_spots"
+      ];
 
-                <div class="spot-tags">
-                  ${tags.length
-                    ? tags.map(tag => `<span class="spot-tag">${escapeHtml(tag)}</span>`).join("")
-                    : `<span class="spot-tag">DIGIY EXPLORE</span>`
-                  }
-                </div>
-
-                <div class="spot-actions">
-                  <a class="spot-btn primary" href="${escapeHtml(ficheUrl)}">Voir la fiche</a>
-                  ${
-                    contact
-                      ? `<a class="spot-btn whatsapp" href="${escapeHtml(waUrl)}" target="_blank" rel="noopener">WhatsApp</a>`
-                      : `<span class="spot-btn">Pas de contact</span>`
-                  }
-                  ${
-                    mapUrl !== "#"
-                      ? `<a class="spot-btn" href="${escapeHtml(mapUrl)}" target="_blank" rel="noopener">Carte</a>`
-                      : `<span class="spot-btn">Pas de repère</span>`
-                  }
-                </div>
-              </div>
-            </article>
-          `;
-        }).join("");
-      }
-
-      async function refreshSpots(){
-        setLiveMsg("Chargement des spots publiés…", "info");
-        reloadBtn.disabled = true;
-
+      for(const rpcName of rpcNames){
         try{
-          const items = await loadPublicList();
-          renderSpots(items);
-          setLiveMsg(items.length ? items.length + " spot(s) publié(s) chargés." : "Aucun spot publié pour ce filtre.", items.length ? "ok" : "info");
-        }catch(err){
-          console.error("EXPLORE PUBLIC LIST ERROR:", err);
-          spotsGrid.innerHTML = `
-            <div class="empty-state">
-              Impossible de charger les spots publiés pour le moment.<br>
-              Vérifie la RPC <b>digiy_explore_public_list</b> ou réessaie plus tard.
-            </div>
-          `;
-          setLiveMsg("Le chargement des spots a échoué.", "bad");
-        }finally{
-          reloadBtn.disabled = false;
+          const { data, error } = await client.rpc(rpcName);
+          if(error) continue;
+
+          if(Array.isArray(data) && data.length) return data;
+          if(Array.isArray(data?.items) && data.items.length) return data.items;
+        }catch(_){}
+      }
+      return [];
+    }
+
+    async function fetchFromTables(client){
+      const tableAttempts = [
+        {
+          table: "digiy_explore_spots",
+          build: q => q.select("*").eq("published", true).order("created_at", { ascending:false }).limit(24)
+        },
+        {
+          table: "digiy_explore_places",
+          build: q => q.select("*").eq("published", true).order("created_at", { ascending:false }).limit(24)
         }
+      ];
+
+      for(const attempt of tableAttempts){
+        try{
+          const { data, error } = await attempt.build(client.from(attempt.table));
+          if(error) continue;
+          if(Array.isArray(data) && data.length) return data;
+        }catch(_){}
       }
 
-      const LINKS = {
-        submit: withReturn(SUBMIT_URL),
-        pin: withReturn(PIN_URL),
-        pay: buildPayUrl(),
-        portal: withReturn(PRO_PORTAL_URL),
-      };
+      return [];
+    }
 
-      [
-        document.getElementById("backToDigiy"),
-        document.getElementById("drawerBackLink")
-      ].forEach((a) => {
-        if (a) a.href = RETURN_URL;
-      });
-
-      const navPayLink = document.getElementById("navPayLink");
-      const navSubmitLink = document.getElementById("navSubmitLink");
-      const navPinLink = document.getElementById("navPinLink");
-
-      const drawerPayLink = document.getElementById("drawerPayLink");
-      const drawerSubmitLink = document.getElementById("drawerSubmitLink");
-      const drawerPinLink = document.getElementById("drawerPinLink");
-
-      if (navPayLink) navPayLink.href = LINKS.pay;
-      if (navSubmitLink) {
-        navSubmitLink.href = LINKS.portal;
-        navSubmitLink.textContent = "Présenter mon lieu";
-      }
-      if (navPinLink) {
-        navPinLink.href = LINKS.portal;
-        navPinLink.textContent = "Je suis un professionnel";
-      }
-
-      if (drawerPayLink) drawerPayLink.href = LINKS.pay;
-      if (drawerSubmitLink) {
-        drawerSubmitLink.href = LINKS.portal;
-        drawerSubmitLink.textContent = "🍰 Présenter mon lieu";
-      }
-      if (drawerPinLink) {
-        drawerPinLink.href = LINKS.portal;
-        drawerPinLink.textContent = "🧭 Je suis un professionnel";
-      }
-
-      document.getElementById("ctaScrollSpots").onclick = () => {
-        document.getElementById("spots").scrollIntoView({ behavior: "smooth" });
-      };
-      document.getElementById("ctaSpotsBottom").onclick = () => {
-        document.getElementById("spots").scrollIntoView({ behavior: "smooth" });
-      };
-      document.getElementById("ctaSubmitSpot").onclick = () => {
-        location.href = LINKS.portal;
-      };
-      document.getElementById("ctaPin").onclick = () => {
-        location.href = LINKS.portal;
-      };
-
-      const ctaShowcasePro = document.getElementById("ctaShowcasePro");
-      if (ctaShowcasePro) {
-        ctaShowcasePro.onclick = () => {
-          location.href = LINKS.portal;
-        };
-      }
-
-      document.getElementById("ctaPayTop").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
-      document.getElementById("ctaPayMid").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
-      document.getElementById("ctaAgency").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
-      document.getElementById("ctaPayBottom").onclick = () => window.open(LINKS.pay, "_blank", "noopener,noreferrer");
-
-      document.getElementById("homeTop").addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-
-      const menuToggle = document.getElementById("menuToggle");
-      const drawer = document.getElementById("drawer");
-
-      menuToggle.onclick = () => drawer.classList.toggle("open");
-      drawer.querySelectorAll("a").forEach((a) => {
-        a.addEventListener("click", () => drawer.classList.remove("open"));
-      });
-
-      reloadBtn.addEventListener("click", refreshSpots);
-      searchInput.addEventListener("input", refreshSpots);
-      cityInput.addEventListener("input", refreshSpots);
-      zoneInput.addEventListener("input", refreshSpots);
-      categorySelect.addEventListener("change", refreshSpots);
-
+    async function loadSpots(){
       try{
-        CATEGORIES = await loadCategories();
-        renderCategoryOptions(CATEGORIES);
-      }catch(err){
-        console.error("EXPLORE CATEGORIES ERROR:", err);
-      }
+        const url = window.DIGIY_SUPABASE_URL;
+        const key = window.DIGIY_SUPABASE_ANON || window.DIGIY_SUPABASE_ANON_KEY;
 
-      renderShowcaseSpots();
-      await refreshSpots();
-    })().catch((err) => {
-      console.error("INDEX BOOT ERROR:", err);
-    });
+        if(!url || !key || !window.supabase){
+          throw new Error("Supabase indisponible");
+        }
+
+        const client = window.supabase.createClient(url, key);
+
+        let items = await fetchFromRpc(client);
+        if(!items.length){
+          items = await fetchFromTables(client);
+        }
+
+        if(items.length){
+          renderSpots(items);
+          $status.textContent = "Rail public chargé";
+        } else {
+          renderSpots(SHOWCASE_SPOTS);
+          $status.textContent = "Mode vitrine de secours";
+        }
+      } catch (err){
+        console.warn("EXPLORE fallback:", err);
+        renderSpots(SHOWCASE_SPOTS);
+        $status.textContent = "Mode vitrine de secours";
+      }
+    }
+
+    loadSpots();
   </script>
 </body>
 </html>
