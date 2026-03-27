@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="DIGIY EXPLORE — présence tourisme dans l’écosystème DIGIYLYFE. Visibilité locale, spots publiés, contact direct, paiement direct au pro."
+    content="DIGIY EXPLORE — présence tourisme dans l'écosystème DIGIYLYFE. Visibilité locale, spots publiés, contact direct, paiement direct au pro."
   />
   <meta name="theme-color" content="#06130f" />
   <title>DIGIY EXPLORE ∞ | Présence tourisme • Spots • Petite Côte • Dakar</title>
@@ -764,8 +764,8 @@
           <h1>Fais rayonner le terrain.<br>Montre les vrais lieux.<br>Attire les vrais visiteurs.</h1>
           <p>
             DIGIY EXPLORE met en lumière les spots, expériences, lieux utiles et pépites du terrain.
-            L’objectif est simple : visibilité locale, lecture claire, contact direct, et paiement direct au pro
-            sans casser l’âme du lieu.
+            L'objectif est simple : visibilité locale, lecture claire, contact direct, et paiement direct au pro
+            sans casser l'âme du lieu.
           </p>
 
           <div class="hero-cta">
@@ -802,8 +802,8 @@
           <h2 class="side-title">Un module pour donner envie, sans noyer le visiteur.</h2>
           <div class="side-text">
             Pas une vitrine froide. Pas un annuaire mort.
-            Une présence vivante pour montrer les spots, raconter l’ambiance, guider le regard
-            et ouvrir un contact simple avec le pro ou l’organisateur.
+            Une présence vivante pour montrer les spots, raconter l'ambiance, guider le regard
+            et ouvrir un contact simple avec le pro ou l'organisateur.
           </div>
           <a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a>
         </aside>
@@ -843,7 +843,7 @@
         <div class="footer-copy">
           <strong>DIGIY EXPLORE ∞</strong>
           <span>
-            Présence tourisme dans l’écosystème DIGIYLYFE.
+            Présence tourisme dans l'écosystème DIGIYLYFE.
             Visibilité locale, contact humain, lecture simple et terrain vivant.
           </span>
         </div>
@@ -932,7 +932,7 @@
         city: "Dakar",
         zone: "Cap-Vert",
         price: "Selon programme",
-        desc: "Une porte d’entrée simple pour découvrir le rythme local, les points utiles, les coins inspirants et les repères vivants.",
+        desc: "Une porte d'entrée simple pour découvrir le rythme local, les points utiles, les coins inspirants et les repères vivants.",
         tags: ["découverte", "ville", "guidage"],
         cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
         contact_url: DEFAULT_CONTACT_URL,
@@ -1046,12 +1046,12 @@
         category: item?.category || item?.category_label || item?.type_label || "📍 Spot",
         city: item?.city || item?.town || item?.place_city || "Sénégal",
         zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
-        price: item?.price || item?.price_label || item?.price_index || "Sur demande",
+        price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
         desc: item?.desc || item?.short_description || item?.description || "Lieu ou expérience visible dans la vitrine DIGIY EXPLORE.",
         full_desc: item?.full_description || item?.description || item?.desc || "",
         tags,
         cover: item?.cover || item?.cover_url || item?.cover_image_url || item?.image_url || item?.photo_url || DEFAULT_COVER,
-        gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.images),
+        gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
         contact_url: item?.contact_url || item?.whatsapp_url || fallbackContact,
         open_url: item?.open_url || item?.slug_url || item?.public_url || buildPublicUrlFromSlug(slug) || DEFAULT_OPEN_URL,
         kind: item?.kind || item?.subcategory || item?.spot_kind || "Spot",
@@ -1258,7 +1258,7 @@
         },
         {
           table: "digiy_explore_places",
-          build: q => q.select("*").eq("published", true).order("created_at", { ascending:false }).limit(24)
+          build: q => q.select("*").eq("is_published", true).order("created_at", { ascending:false }).limit(24)
         }
       ];
 
@@ -1273,6 +1273,11 @@
       return [];
     }
 
+    /* ─── FIX PRINCIPAL ────────────────────────────────────────────────────────
+     * Le RPC digiy_explore_public_place_by_slug retourne { ok: true, place: {...} }
+     * L'ancienne version lisait data.slug directement → jamais trouvé.
+     * On extrait maintenant data.place en priorité.
+     * ─────────────────────────────────────────────────────────────────────────*/
     async function fetchSingleFromRpc(client, slug){
       const rpcAttempts = [
         { name: "digiy_explore_public_place_by_slug", args: { p_slug: slug } },
@@ -1285,16 +1290,23 @@
           const { data, error } = await client.rpc(attempt.name, attempt.args);
           if(error) continue;
 
-          if(data && !Array.isArray(data) && (data.slug || data.title || data.name || data.public_name)){
-            return data;
+          if(data && !Array.isArray(data)){
+            // Cas DIGIY standard : { ok: true, place: {...} }
+            if(data.ok === true && data.place && typeof data.place === "object"){
+              return data.place;
+            }
+            // Cas réponse directe : { slug, title, ... }
+            if(data.slug || data.title || data.name || data.public_name){
+              return data;
+            }
+            // Cas imbriqué générique : { item: {...} }
+            if(data.item && typeof data.item === "object"){
+              return data.item;
+            }
           }
 
           if(Array.isArray(data) && data.length){
             return data[0];
-          }
-
-          if(data?.item){
-            return data.item;
           }
         }catch(_){}
       }
@@ -1306,7 +1318,7 @@
       const tableAttempts = [
         {
           table: "digiy_explore_places",
-          build: q => q.select("*").eq("slug", slug).eq("published", true).limit(1).maybeSingle()
+          build: q => q.select("*").eq("slug", slug).eq("is_published", true).limit(1).maybeSingle()
         },
         {
           table: "digiy_explore_spots",
@@ -1348,7 +1360,7 @@
       $topActionBtn.textContent = "Retour vitrine";
       $topActionBtn.href = "./";
       $sectionTitle.textContent = "Fiche introuvable";
-      $sectionText.textContent = "Le slug a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
+      $sectionText.textContent = "Le slug a bien été lu, mais aucun lieu public correspondant n'a été trouvé.";
       $status.textContent = "Slug non trouvé";
       return false;
     }
@@ -1389,7 +1401,7 @@
           $topActionBtn.textContent = "Retour vitrine";
           $topActionBtn.href = "./";
           $sectionTitle.textContent = "Fiche indisponible";
-          $sectionText.textContent = "Le slug a été lu, mais la lecture publique n’a pas répondu.";
+          $sectionText.textContent = "Le slug a été lu, mais la lecture publique n'a pas répondu.";
           $grid.className = "grid grid-single";
           $grid.innerHTML = `
             <div class="empty">
