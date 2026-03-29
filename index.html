@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="DIGIY EXPLORE — présence tourisme dans l'écosystème DIGIYLYFE. Visibilité locale, spots publiés, contact direct, paiement direct au pro."
+    content="DIGIY EXPLORE — lieux, expériences, sorties et repères vivants. Visibilité locale, contact direct, présence humaine, paiement direct au pro."
   />
   <meta name="theme-color" content="#06130f" />
-  <title>DIGIY EXPLORE ∞ | Présence tourisme • Spots • Petite Côte • Dakar</title>
+  <title>DIGIY EXPLORE ∞ | Lieux vivants • Sorties • Petite Côte • Dakar</title>
 
   <script>
     window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
@@ -20,15 +20,17 @@
   <style>
     :root{
       --bg:#06130f;
-      --bg-2:#0b1d17;
+      --bg-2:#091a15;
       --card:#10261e;
       --card-2:#143126;
+      --card-3:#17392c;
       --line:rgba(255,255,255,.10);
       --line-2:rgba(255,255,255,.16);
       --text:#f7fbf8;
-      --muted:rgba(247,251,248,.72);
-      --soft:rgba(247,251,248,.54);
+      --muted:rgba(247,251,248,.74);
+      --soft:rgba(247,251,248,.56);
       --gold:#dcb45a;
+      --gold-2:#f2cc78;
       --green:#12b76a;
       --green-2:#1ad17a;
       --danger:#ff7a7a;
@@ -40,9 +42,10 @@
 
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
+
     body{
       margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at top left, rgba(220,180,90,.14), transparent 26%),
         radial-gradient(circle at top right, rgba(18,183,106,.10), transparent 24%),
@@ -62,14 +65,14 @@
     .topbar{
       position:sticky;
       top:0;
-      z-index:40;
+      z-index:50;
       backdrop-filter:blur(14px);
-      background:rgba(6,19,15,.72);
+      background:rgba(6,19,15,.78);
       border-bottom:1px solid var(--line);
     }
 
     .topbar-inner{
-      min-height:74px;
+      min-height:78px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -80,22 +83,25 @@
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:14px;
       min-width:0;
     }
 
-    .brand-badge{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(220,180,90,.45), transparent 45%),
-        linear-gradient(135deg, #0f2b21, #18392b);
+    .brand-logo{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      overflow:hidden;
       border:1px solid var(--line-2);
+      background:linear-gradient(135deg, #0f2b21, #18392b);
       box-shadow:var(--shadow);
-      font-size:20px;
+      flex:0 0 auto;
+    }
+
+    .brand-logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
     }
 
     .brand-copy{
@@ -104,7 +110,7 @@
 
     .brand-copy strong{
       display:block;
-      font-size:15px;
+      font-size:16px;
       letter-spacing:.02em;
       white-space:nowrap;
       overflow:hidden;
@@ -164,25 +170,34 @@
 
     .btn-primary{
       color:#062414;
-      background:linear-gradient(135deg, var(--gold), #f2cc78);
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
       border:1px solid rgba(255,255,255,.12);
       box-shadow:0 14px 32px rgba(220,180,90,.18);
     }
 
+    .btn-soft{
+      color:#dffcea;
+      background:rgba(18,183,106,.10);
+      border:1px solid rgba(18,183,106,.24);
+    }
+
     .hero{
-      padding:46px 0 24px;
+      padding:42px 0 18px;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns:1.15fr .85fr;
+      grid-template-columns:1.12fr .88fr;
       gap:20px;
       align-items:stretch;
     }
 
     .hero-card,
     .side-card,
-    .section-card{
+    .section-card,
+    .example-card,
+    .why-card,
+    .pro-card{
       background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
       border:1px solid var(--line);
       border-radius:var(--radius);
@@ -190,7 +205,7 @@
     }
 
     .hero-card{
-      padding:28px;
+      padding:30px;
       position:relative;
       overflow:hidden;
     }
@@ -199,8 +214,8 @@
       content:"";
       position:absolute;
       inset:auto -60px -80px auto;
-      width:220px;
-      height:220px;
+      width:240px;
+      height:240px;
       border-radius:50%;
       background:radial-gradient(circle, rgba(220,180,90,.20), transparent 68%);
       pointer-events:none;
@@ -223,7 +238,7 @@
 
     h1{
       margin:16px 0 14px;
-      font-size:clamp(30px, 5vw, 58px);
+      font-size:clamp(32px, 5vw, 60px);
       line-height:1.02;
       letter-spacing:-.03em;
     }
@@ -232,7 +247,7 @@
       margin:0;
       color:var(--muted);
       font-size:16px;
-      line-height:1.7;
+      line-height:1.75;
       max-width:760px;
     }
 
@@ -269,6 +284,27 @@
       line-height:1.45;
     }
 
+    .hero-note{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .mini-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+    }
+
     .side-card{
       padding:18px;
       display:flex;
@@ -282,12 +318,30 @@
       aspect-ratio:4/3;
       border:1px solid var(--line);
       background:#0b2018;
+      position:relative;
     }
 
     .side-cover img{
       width:100%;
       height:100%;
       object-fit:cover;
+    }
+
+    .side-cover-badge{
+      position:absolute;
+      left:12px;
+      top:12px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      min-height:32px;
+      padding:0 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background:rgba(6,19,15,.74);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(6px);
     }
 
     .side-kicker{
@@ -307,12 +361,40 @@
 
     .side-text{
       color:var(--muted);
-      line-height:1.65;
+      line-height:1.7;
       font-size:15px;
     }
 
+    .quick-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .quick-item{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+
+    .quick-item strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .quick-item span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
     .section{
-      padding:16px 0 22px;
+      padding:18px 0 22px;
     }
 
     .section-head{
@@ -332,7 +414,7 @@
     .section-head p{
       margin:0;
       color:var(--muted);
-      line-height:1.6;
+      line-height:1.65;
       max-width:760px;
     }
 
@@ -354,6 +436,126 @@
       color:var(--text);
       font-size:13px;
       font-weight:800;
+    }
+
+    .examples-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .example-card{
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    .example-cover{
+      aspect-ratio:16/11;
+      overflow:hidden;
+      border-bottom:1px solid var(--line);
+      background:#0b2018;
+    }
+
+    .example-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .35s ease;
+    }
+
+    .example-card:hover .example-cover img{
+      transform:scale(1.04);
+    }
+
+    .example-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+
+    .example-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .example-top span{
+      display:inline-flex;
+      align-items:center;
+      min-height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid rgba(220,180,90,.18);
+      background:rgba(220,180,90,.08);
+      color:#f0d58e;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .example-title{
+      margin:0;
+      font-size:18px;
+      line-height:1.25;
+      font-weight:900;
+    }
+
+    .example-text{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .example-footer{
+      margin-top:auto;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .example-footer .mini-chip{
+      min-height:30px;
+      font-size:11px;
+      padding:0 10px;
+    }
+
+    .why-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .why-card{
+      padding:20px;
+    }
+
+    .why-icon{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      margin-bottom:12px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+    }
+
+    .why-card h3{
+      margin:0 0 10px;
+      font-size:20px;
+      line-height:1.2;
+    }
+
+    .why-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.75;
     }
 
     .grid{
@@ -480,7 +682,7 @@
     .spot-desc{
       color:var(--muted);
       font-size:14px;
-      line-height:1.65;
+      line-height:1.68;
       min-height:66px;
     }
 
@@ -627,8 +829,105 @@
       color:var(--text);
     }
 
+    .pro-band{
+      padding:8px 0 22px;
+    }
+
+    .pro-card{
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .pro-card::after{
+      content:"";
+      position:absolute;
+      right:-30px;
+      top:-30px;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(18,183,106,.18), transparent 68%);
+      pointer-events:none;
+    }
+
+    .pro-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .pro-copy h2{
+      margin:0 0 10px;
+      font-size:clamp(26px, 3.6vw, 40px);
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+
+    .pro-copy p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:15px;
+    }
+
+    .pro-points{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .pro-point{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+
+    .pro-point strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .pro-point span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .pro-side{
+      display:grid;
+      gap:12px;
+    }
+
+    .pro-box{
+      padding:16px;
+      border-radius:20px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .pro-box strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:8px;
+    }
+
+    .pro-box span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
     .footer{
-      padding:30px 0 44px;
+      padding:26px 0 44px;
     }
 
     .footer-card{
@@ -642,6 +941,28 @@
       border:1px solid var(--line);
       box-shadow:var(--shadow);
       flex-wrap:wrap;
+    }
+
+    .footer-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .footer-logo{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      flex:0 0 auto;
+    }
+
+    .footer-logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
     }
 
     .footer-copy strong{
@@ -678,9 +999,15 @@
       to{ transform:rotate(360deg); }
     }
 
-    @media (max-width: 1024px){
+    @media (max-width: 1100px){
       .hero-grid,
-      .grid{
+      .pro-grid,
+      .grid,
+      .why-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .examples-grid{
         grid-template-columns:1fr 1fr;
       }
 
@@ -699,14 +1026,18 @@
       }
 
       .hero-grid,
+      .examples-grid,
       .grid,
       .hero-metrics,
-      .fiche-gallery{
+      .fiche-gallery,
+      .why-grid,
+      .pro-grid{
         grid-template-columns:1fr;
       }
 
       .hero-card,
-      .side-card{
+      .side-card,
+      .pro-card{
         padding:20px;
       }
 
@@ -728,6 +1059,11 @@
       .spot-actions .btn{
         flex:1 1 100%;
       }
+
+      .brand-logo{
+        width:52px;
+        height:52px;
+      }
     }
   </style>
 </head>
@@ -735,10 +1071,15 @@
   <header class="topbar">
     <div class="wrap topbar-inner">
       <a class="brand" href="./" aria-label="DIGIY EXPLORE">
-        <div class="brand-badge">🌍</div>
+        <div class="brand-logo">
+          <img
+            src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg"
+            alt="Logo DIGIYLYFE"
+          />
+        </div>
         <div class="brand-copy">
           <strong>DIGIY EXPLORE</strong>
-          <span>Tourisme terrain • Spots • Contact direct</span>
+          <span>Des lieux vivants. Des sorties vraies. Du contact direct.</span>
         </div>
       </a>
 
@@ -746,11 +1087,11 @@
         <a class="btn btn-ghost" id="siteBackBtn" href="https://digiylyfe.com/" rel="noopener">
           ← Retour au site
         </a>
-        <a class="btn btn-outline" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
-          Devenir pro
+        <a class="btn btn-outline" href="#proSection">
+          Je veux montrer mon lieu
         </a>
         <a class="btn btn-primary" id="topActionBtn" href="#spots">
-          Voir les spots
+          Voir les lieux
         </a>
       </div>
     </div>
@@ -760,53 +1101,232 @@
     <section class="hero" id="heroSection">
       <div class="wrap hero-grid">
         <div class="hero-card">
-          <div class="eyebrow">DIGIYLYFE • Présence tourisme enracinée</div>
-          <h1>Fais rayonner le terrain.<br>Montre les vrais lieux.<br>Attire les vrais visiteurs.</h1>
+          <div class="eyebrow">DIGIYLYFE • Façade humaine • Terrain vivant</div>
+          <h1>
+            Fais découvrir un vrai lieu.<br>
+            Donne envie de sortir.<br>
+            Montre ce que le terrain a de beau.
+          </h1>
           <p>
-            DIGIY EXPLORE met en lumière les spots, expériences, lieux utiles et pépites du terrain.
-            L'objectif est simple : visibilité locale, lecture claire, contact direct, et paiement direct au pro
-            sans casser l'âme du lieu.
+            DIGIY EXPLORE sert à montrer des lieux, des expériences, des sorties et des repères qui méritent d’être vus.
+            Ici, on ne noie pas le visiteur dans du bruit. On lui montre l’ambiance, l’essentiel, le contact direct et le chemin simple pour passer à l’action.
           </p>
 
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#spots">Découvrir les spots</a>
-            <a class="btn btn-ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
-              Activer ma présence
-            </a>
+            <a class="btn btn-primary" href="#spots">Découvrir maintenant</a>
+            <a class="btn btn-ghost" href="#proSection">Présenter mon lieu</a>
+          </div>
+
+          <div class="hero-note">
+            <span class="mini-chip">🌍 Petite Côte • Dakar • Sénégal</span>
+            <span class="mini-chip">💬 Contact direct</span>
+            <span class="mini-chip">🧭 Lecture simple</span>
+            <span class="mini-chip">🤝 Paiement direct au pro</span>
           </div>
 
           <div class="hero-metrics">
             <div class="metric">
               <strong id="metricSpots">—</strong>
-              <span>Spots visibles ou de démonstration disponibles sur la vitrine.</span>
+              <span>Lieux visibles ou exemples forts prêts à donner le ton de la vitrine.</span>
             </div>
             <div class="metric">
               <strong id="metricZones">—</strong>
-              <span>Zones ou villes détectées dans la lecture publique.</span>
+              <span>Zones ou villes repérées pour montrer l’ancrage local.</span>
             </div>
             <div class="metric">
               <strong id="metricCats">—</strong>
-              <span>Catégories pour montrer la richesse du terrain.</span>
+              <span>Univers de découverte pour montrer la richesse du terrain.</span>
             </div>
           </div>
         </div>
 
         <aside class="side-card">
           <div class="side-cover">
+            <span class="side-cover-badge">🌊 Ambiance terrain</span>
             <img
               src="https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
-              alt="Sortie en pirogue sur la Petite Côte"
+              alt="Sortie en mer sur la Petite Côte"
             />
           </div>
-          <div class="side-kicker">Petite Côte • Dakar • Sénégal</div>
-          <h2 class="side-title">Un module pour donner envie, sans noyer le visiteur.</h2>
+          <div class="side-kicker">Ce qu’on veut faire ressentir</div>
+          <h2 class="side-title">Pas une vitrine vide. Une invitation à vivre le lieu.</h2>
           <div class="side-text">
-            Pas une vitrine froide. Pas un annuaire mort.
-            Une présence vivante pour montrer les spots, raconter l'ambiance, guider le regard
-            et ouvrir un contact simple avec le pro ou l'organisateur.
+            Un visiteur doit comprendre vite : où il est, ce qu’il peut vivre, pourquoi c’est intéressant,
+            et comment contacter la bonne personne sans passer par un labyrinthe.
           </div>
+
+          <div class="quick-list">
+            <div class="quick-item">
+              <div>📍</div>
+              <div>
+                <strong>Le lieu doit parler</strong>
+                <span>On montre l’ambiance, pas une fiche froide.</span>
+              </div>
+            </div>
+            <div class="quick-item">
+              <div>✨</div>
+              <div>
+                <strong>L’exemple doit donner envie</strong>
+                <span>Sortie, coin calme, balade, adresse utile, vraie expérience.</span>
+              </div>
+            </div>
+            <div class="quick-item">
+              <div>📲</div>
+              <div>
+                <strong>Le contact doit être simple</strong>
+                <span>Un geste, un message, une action claire.</span>
+              </div>
+            </div>
+          </div>
+
           <a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a>
         </aside>
+      </div>
+    </section>
+
+    <section class="section" id="inspirationSection">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Exemples forts pour donner envie</h2>
+            <p>
+              Voilà le genre de présence qui donne du sens à la vitrine : pas juste “un lieu”, mais un moment, une ambiance, une envie simple de sortir, visiter, se poser ou découvrir.
+            </p>
+          </div>
+        </div>
+
+        <div class="examples-grid">
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80"
+                alt="Sortie mer au lever du jour"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🌅 Sortie</span>
+              </div>
+              <h3 class="example-title">Lever du jour en mer</h3>
+              <div class="example-text">
+                Une sortie qui fait sentir l’air, l’espace, le calme et le vrai rythme de la côte. En une lecture, on comprend l’émotion du moment.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">mer</span>
+                <span class="mini-chip">ambiance</span>
+                <span class="mini-chip">expérience</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80"
+                alt="Coin calme et nature"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🌿 Détente</span>
+              </div>
+              <h3 class="example-title">Un coin calme pour souffler</h3>
+              <div class="example-text">
+                Un jardin, une terrasse, une plage ou un cadre apaisant. La vitrine doit faire sentir que l’on peut venir ici pour respirer.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">repos</span>
+                <span class="mini-chip">famille</span>
+                <span class="mini-chip">pause</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80"
+                alt="Découverte urbaine"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🌆 Découverte</span>
+              </div>
+              <h3 class="example-title">Un parcours qui ouvre la ville</h3>
+              <div class="example-text">
+                Pour quelqu’un qui arrive, il faut un point d’entrée clair : quoi voir, où aller, quel coin mérite le détour, sans confusion.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">ville</span>
+                <span class="mini-chip">repères</span>
+                <span class="mini-chip">local</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"
+                alt="Balade plage"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🏖️ Balade</span>
+              </div>
+              <h3 class="example-title">Une adresse simple qui fait du bien</h3>
+              <div class="example-text">
+                Il n’y a pas besoin d’en faire trop. Une belle vue, une balade, une ambiance propre, un contact direct : parfois c’est cela qui convertit.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">plage</span>
+                <span class="mini-chip">lumière</span>
+                <span class="mini-chip">sortie</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="whySection">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Pourquoi cette vitrine peut marquer</h2>
+            <p>
+              Parce qu’elle ne parle pas comme une machine. Elle montre la vie d’un lieu, elle rassure le visiteur, et elle ouvre un contact direct avec la bonne personne.
+            </p>
+          </div>
+        </div>
+
+        <div class="why-grid">
+          <article class="why-card">
+            <div class="why-icon">👁️</div>
+            <h3>On voit vite ce qui compte</h3>
+            <p>
+              Le visiteur comprend immédiatement ce qu’il peut vivre, où cela se passe et pourquoi cela mérite un détour.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon">💬</div>
+            <h3>On parle à un humain, pas à un système</h3>
+            <p>
+              Le contact direct enlève le froid. Le lieu garde son âme, et la relation reste simple, claire et locale.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon">🌍</div>
+            <h3>On donne de la force au terrain</h3>
+            <p>
+              Chaque lieu bien montré devient une preuve qu’on peut faire rayonner le territoire sans perdre sa vérité.
+            </p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -814,11 +1334,10 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <h2 id="sectionTitle">Spots à découvrir</h2>
+            <h2 id="sectionTitle">Lieux à découvrir maintenant</h2>
             <p id="sectionText">
               Lecture publique du terrain : lieux, sorties, expériences, coins utiles et belles adresses.
-              Quand le backend répond, la vitrine charge les spots publiés. Sinon elle garde une présence propre
-              avec une sélection de secours.
+              Quand le backend répond, la vitrine charge les lieux publiés. Sinon elle garde une présence forte avec des exemples propres.
             </p>
           </div>
 
@@ -830,7 +1349,80 @@
 
         <div id="spotsGrid" class="grid" aria-live="polite">
           <div class="empty">
-            <div class="loader">Chargement des spots…</div>
+            <div class="loader">Chargement des lieux…</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pro-band" id="proSection">
+      <div class="wrap">
+        <div class="pro-card">
+          <div class="pro-grid">
+            <div class="pro-copy">
+              <div class="eyebrow">Côté pro • présence claire • action directe</div>
+              <h2>Tu veux faire découvrir ton lieu proprement ?</h2>
+              <p>
+                Si tu gères un lieu, une activité, une sortie, une expérience ou un coin qui mérite d’être vu,
+                DIGIY EXPLORE peut t’aider à le présenter avec clarté : une belle façade, un contact simple,
+                une lecture humaine, et un passage direct vers ton activité.
+              </p>
+
+              <div class="pro-points">
+                <div class="pro-point">
+                  <div>📍</div>
+                  <div>
+                    <strong>Montrer ton lieu sans l’alourdir</strong>
+                    <span>Une présence propre, lisible, vivante et orientée action.</span>
+                  </div>
+                </div>
+
+                <div class="pro-point">
+                  <div>📲</div>
+                  <div>
+                    <strong>Recevoir les bons contacts</strong>
+                    <span>WhatsApp, appel, lien direct, sans détour inutile.</span>
+                  </div>
+                </div>
+
+                <div class="pro-point">
+                  <div>🤝</div>
+                  <div>
+                    <strong>Garder le lien direct avec ton visiteur</strong>
+                    <span>DIGIY éclaire. Le contact reste humain. Le paiement va au pro.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pro-side">
+              <div class="pro-box">
+                <strong>Ce que le visiteur doit ressentir</strong>
+                <span>“J’ai compris le lieu. J’ai envie d’y aller. Je sais qui contacter.”</span>
+              </div>
+
+              <div class="pro-box">
+                <strong>Ce que le pro doit gagner</strong>
+                <span>Plus de clarté, plus de crédibilité, plus de demandes propres.</span>
+              </div>
+
+              <div class="pro-box">
+                <strong>Le bon passage</strong>
+                <span>Exemples forts devant. Présence propre derrière. Action directe au bon moment.</span>
+              </div>
+
+              <div class="actions">
+                <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+                  Activer ma présence
+                </a>
+                <a class="btn btn-ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+                  Commencer maintenant
+                </a>
+                <a class="btn btn-soft" href="https://digiylyfe.com/" rel="noopener">
+                  Revenir à DIGIYLYFE
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -840,12 +1432,19 @@
   <footer class="footer">
     <div class="wrap">
       <div class="footer-card">
-        <div class="footer-copy">
-          <strong>DIGIY EXPLORE ∞</strong>
-          <span>
-            Présence tourisme dans l'écosystème DIGIYLYFE.
-            Visibilité locale, contact humain, lecture simple et terrain vivant.
-          </span>
+        <div class="footer-left">
+          <div class="footer-logo">
+            <img
+              src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg"
+              alt="Logo DIGIYLYFE"
+            />
+          </div>
+          <div class="footer-copy">
+            <strong>DIGIY EXPLORE ∞</strong>
+            <span>
+              Des lieux vivants, des sorties vraies, une lecture simple, un contact humain.
+            </span>
+          </div>
         </div>
 
         <div class="actions">
@@ -853,7 +1452,7 @@
             ← Retour au site
           </a>
           <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
-            Commencer
+            Je veux montrer mon lieu
           </a>
         </div>
       </div>
@@ -898,6 +1497,7 @@
     const DEFAULT_OPEN_URL = SITE_HOME;
     const DEFAULT_CONTACT_URL = "https://commencer-a-payer.digiylyfe.com/";
     const DEFAULT_COVER = "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif";
+    const LOGO_URL = "https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg";
 
     const SHOWCASE_SPOTS = [
       {
@@ -911,7 +1511,7 @@
         cover: DEFAULT_COVER,
         contact_url: DEFAULT_CONTACT_URL,
         open_url: DEFAULT_OPEN_URL,
-        kind: "Spot"
+        kind: "Sortie"
       },
       {
         title: "Pause plage — Saly",
@@ -938,6 +1538,45 @@
         contact_url: DEFAULT_CONTACT_URL,
         open_url: DEFAULT_OPEN_URL,
         kind: "Ville"
+      },
+      {
+        title: "Déjeuner au calme — bord de jardin",
+        category: "🍽️ Adresse",
+        city: "Somone",
+        zone: "Petite Côte",
+        price: "Selon la carte",
+        desc: "Un lieu simple à recommander pour manger tranquillement, respirer, discuter et profiter d’un bon moment sans agitation.",
+        tags: ["déjeuner", "calme", "terrasse"],
+        cover: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Adresse"
+      },
+      {
+        title: "Balade famille — coin tranquille",
+        category: "👨‍👩‍👧‍👦 Famille",
+        city: "Ngaparou",
+        zone: "Petite Côte",
+        price: "Accès libre / sur place",
+        desc: "Un repère facile à comprendre pour sortir en famille, se poser, profiter du jour et faire découvrir un coin agréable.",
+        tags: ["famille", "balade", "week-end"],
+        cover: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Balade"
+      },
+      {
+        title: "Coin coucher de soleil",
+        category: "🌇 Ambiance",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Libre / selon lieu",
+        desc: "Le genre d’endroit qu’on partage parce qu’il fait du bien. Une belle lumière, une respiration, un repère simple.",
+        tags: ["soleil", "vue", "soirée"],
+        cover: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Spot"
       }
     ];
 
@@ -953,6 +1592,9 @@
     const $siteBackBtn = document.getElementById("siteBackBtn");
     const $topActionBtn = document.getElementById("topActionBtn");
     const $hero = document.getElementById("heroSection");
+    const $inspiration = document.getElementById("inspirationSection");
+    const $why = document.getElementById("whySection");
+    const $pro = document.getElementById("proSection");
     const $sectionTitle = document.getElementById("sectionTitle");
     const $sectionText = document.getElementById("sectionText");
     const $allSpotsChip = document.getElementById("allSpotsChip");
@@ -1042,8 +1684,8 @@
       return {
         raw: item || {},
         slug,
-        title: item?.title || item?.name || item?.public_name || "Spot DIGIY EXPLORE",
-        category: item?.category || item?.category_label || item?.type_label || "📍 Spot",
+        title: item?.title || item?.name || item?.public_name || "Lieu DIGIY EXPLORE",
+        category: item?.category || item?.category_label || item?.type_label || "📍 Lieu",
         city: item?.city || item?.town || item?.place_city || "Sénégal",
         zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
         price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
@@ -1054,7 +1696,7 @@
         gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
         contact_url: item?.contact_url || item?.whatsapp_url || fallbackContact,
         open_url: item?.open_url || item?.slug_url || item?.public_url || buildPublicUrlFromSlug(slug) || DEFAULT_OPEN_URL,
-        kind: item?.kind || item?.subcategory || item?.spot_kind || "Spot",
+        kind: item?.kind || item?.subcategory || item?.spot_kind || "Lieu",
         address: item?.address || item?.address_text || item?.landmark || item?.repere || "",
         whatsapp: whatsapp || phone,
         phone,
@@ -1078,14 +1720,23 @@
       $metricCats.textContent = String(cats.size);
     }
 
+    function setSingleMode(active){
+      const display = active ? "none" : "";
+      $hero.style.display = display;
+      $inspiration.style.display = display;
+      $why.style.display = display;
+      $pro.style.display = active ? "none" : "";
+    }
+
     function renderSpots(items){
+      setSingleMode(false);
       $grid.className = "grid";
       $grid.innerHTML = "";
 
       if(!Array.isArray(items) || !items.length){
         $grid.innerHTML = `
           <div class="empty">
-            Aucun spot visible pour le moment.
+            Aucun lieu visible pour le moment.
           </div>
         `;
         updateMetrics([]);
@@ -1105,7 +1756,7 @@
         node.querySelector(".js-title").textContent = item.title;
         node.querySelector(".js-price").textContent = item.price;
         node.querySelector(".js-zone").textContent = "📍 " + (item.zone || item.city || "Terrain");
-        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "Spot");
+        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "Lieu");
         node.querySelector(".js-desc").textContent = item.desc;
 
         const tagsWrap = node.querySelector(".js-tags");
@@ -1141,7 +1792,7 @@
     function renderSingleSpot(raw){
       const item = normalizeItem(raw);
 
-      $hero.style.display = "none";
+      setSingleMode(true);
       $topActionBtn.textContent = "Retour vitrine";
       $topActionBtn.href = "./";
       $sectionTitle.textContent = item.title;
@@ -1155,7 +1806,7 @@
 
       const infoBlocks = [
         item.category ? { title: "Catégorie", value: item.category } : null,
-        item.kind ? { title: "Sous-catégorie", value: item.kind } : null,
+        item.kind ? { title: "Type de lieu", value: item.kind } : null,
         item.city || item.zone ? { title: "Localisation", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
         item.address ? { title: "Adresse / repère", value: item.address } : null,
         item.price ? { title: "Indice de prix", value: item.price } : null,
@@ -1196,7 +1847,7 @@
             <div class="fiche-body">
               <div class="fiche-meta">
                 <span class="mini">📍 ${esc(item.zone || item.city || "Terrain")}</span>
-                <span class="mini">🧭 ${esc(item.kind || "Spot")}</span>
+                <span class="mini">🧭 ${esc(item.kind || "Lieu")}</span>
                 <span class="mini">💬 Contact direct</span>
               </div>
 
@@ -1273,11 +1924,6 @@
       return [];
     }
 
-    /* ─── FIX PRINCIPAL ────────────────────────────────────────────────────────
-     * Le RPC digiy_explore_public_place_by_slug retourne { ok: true, place: {...} }
-     * L'ancienne version lisait data.slug directement → jamais trouvé.
-     * On extrait maintenant data.place en priorité.
-     * ─────────────────────────────────────────────────────────────────────────*/
     async function fetchSingleFromRpc(client, slug){
       const rpcAttempts = [
         { name: "digiy_explore_public_place_by_slug", args: { p_slug: slug } },
@@ -1291,15 +1937,12 @@
           if(error) continue;
 
           if(data && !Array.isArray(data)){
-            // Cas DIGIY standard : { ok: true, place: {...} }
             if(data.ok === true && data.place && typeof data.place === "object"){
               return data.place;
             }
-            // Cas réponse directe : { slug, title, ... }
             if(data.slug || data.title || data.name || data.public_name){
               return data;
             }
-            // Cas imbriqué générique : { item: {...} }
             if(data.item && typeof data.item === "object"){
               return data.item;
             }
@@ -1346,22 +1989,22 @@
         return true;
       }
 
+      setSingleMode(true);
       $grid.className = "grid grid-single";
       $grid.innerHTML = `
         <div class="empty">
-          Fiche introuvable pour le slug <strong>${esc(slug)}</strong>.
+          Aucun lieu public trouvé pour cet identifiant.
           <div style="margin-top:14px">
             <a class="btn btn-primary" href="./">Retour à la vitrine</a>
           </div>
         </div>
       `;
       updateMetrics([]);
-      $hero.style.display = "none";
       $topActionBtn.textContent = "Retour vitrine";
       $topActionBtn.href = "./";
-      $sectionTitle.textContent = "Fiche introuvable";
-      $sectionText.textContent = "Le slug a bien été lu, mais aucun lieu public correspondant n'a été trouvé.";
-      $status.textContent = "Slug non trouvé";
+      $sectionTitle.textContent = "Lieu introuvable";
+      $sectionText.textContent = "L’identifiant a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
+      $status.textContent = "Lieu non trouvé";
       return false;
     }
 
@@ -1388,7 +2031,7 @@
 
         if(items.length){
           renderSpots(items);
-          $status.textContent = "Rail public chargé";
+          $status.textContent = "Lecture publique chargée";
         } else {
           renderSpots(SHOWCASE_SPOTS);
           $status.textContent = "Mode vitrine de secours";
@@ -1397,15 +2040,15 @@
         console.warn("EXPLORE fallback:", err);
 
         if(REQUESTED_SLUG){
-          $hero.style.display = "none";
+          setSingleMode(true);
           $topActionBtn.textContent = "Retour vitrine";
           $topActionBtn.href = "./";
-          $sectionTitle.textContent = "Fiche indisponible";
-          $sectionText.textContent = "Le slug a été lu, mais la lecture publique n'a pas répondu.";
+          $sectionTitle.textContent = "Lieu indisponible";
+          $sectionText.textContent = "L’identifiant a été lu, mais la lecture publique n’a pas répondu.";
           $grid.className = "grid grid-single";
           $grid.innerHTML = `
             <div class="empty">
-              Impossible de charger la fiche pour le moment.
+              Impossible de charger ce lieu pour le moment.
               <div style="margin-top:14px">
                 <a class="btn btn-primary" href="./">Retour à la vitrine</a>
               </div>
