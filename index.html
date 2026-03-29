@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="Je découvre le coin avec DIGIY EXPLORE : lieux, sorties, belles adresses et contact direct."
+    content="DIGIY EXPLORE — présence tourisme dans l'écosystème DIGIYLYFE. Visibilité locale, spots publiés, contact direct, paiement direct au pro."
   />
   <meta name="theme-color" content="#06130f" />
-  <title>Je découvre le coin | DIGIY EXPLORE</title>
+  <title>DIGIY EXPLORE ∞ | Présence tourisme • Spots • Petite Côte • Dakar</title>
 
   <script>
     window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
@@ -42,7 +42,7 @@
     html{ scroll-behavior:smooth; }
     body{
       margin:0;
-      font-family:Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at top left, rgba(220,180,90,.14), transparent 26%),
         radial-gradient(circle at top right, rgba(18,183,106,.10), transparent 24%),
@@ -85,21 +85,17 @@
     }
 
     .brand-badge{
-      width:48px;
-      height:48px;
+      width:44px;
+      height:44px;
       border-radius:14px;
-      overflow:hidden;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(220,180,90,.45), transparent 45%),
+        linear-gradient(135deg, #0f2b21, #18392b);
       border:1px solid var(--line-2);
       box-shadow:var(--shadow);
-      background:#fff;
-      flex:0 0 auto;
-    }
-
-    .brand-badge img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
+      font-size:20px;
     }
 
     .brand-copy{
@@ -739,12 +735,10 @@
   <header class="topbar">
     <div class="wrap topbar-inner">
       <a class="brand" href="./" aria-label="DIGIY EXPLORE">
-        <div class="brand-badge">
-          <img src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg" alt="Logo DIGIYLYFE">
-        </div>
+        <div class="brand-badge">🌍</div>
         <div class="brand-copy">
-          <strong>Je découvre le coin</strong>
-          <span>Sorties • lieux • belles adresses • contact direct</span>
+          <strong>DIGIY EXPLORE</strong>
+          <span>Tourisme terrain • Spots • Contact direct</span>
         </div>
       </a>
 
@@ -753,10 +747,10 @@
           ← Retour au site
         </a>
         <a class="btn btn-outline" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
-          Je fais découvrir mon lieu
+          Devenir pro
         </a>
         <a class="btn btn-primary" id="topActionBtn" href="#spots">
-          Voir les lieux
+          Voir les spots
         </a>
       </div>
     </div>
@@ -766,32 +760,33 @@
     <section class="hero" id="heroSection">
       <div class="wrap hero-grid">
         <div class="hero-card">
-          <div class="eyebrow">Petite Côte • Dakar • Sénégal</div>
-          <h1>Découvre les bons coins.<br>Vois les vrais lieux.<br>Parle directement au bon contact.</h1>
+          <div class="eyebrow">DIGIYLYFE • Présence tourisme enracinée</div>
+          <h1>Fais rayonner le terrain.<br>Montre les vrais lieux.<br>Attire les vrais visiteurs.</h1>
           <p>
-            DIGIY EXPLORE met en lumière les lieux, sorties, expériences et belles adresses du terrain.
-            Le but est simple : donner envie, aider à choisir vite, puis ouvrir un contact humain sans détour inutile.
+            DIGIY EXPLORE met en lumière les spots, expériences, lieux utiles et pépites du terrain.
+            L'objectif est simple : visibilité locale, lecture claire, contact direct, et paiement direct au pro
+            sans casser l'âme du lieu.
           </p>
 
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#spots">Découvrir les lieux</a>
+            <a class="btn btn-primary" href="#spots">Découvrir les spots</a>
             <a class="btn btn-ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
-              Je fais découvrir mon lieu
+              Activer ma présence
             </a>
           </div>
 
           <div class="hero-metrics">
             <div class="metric">
               <strong id="metricSpots">—</strong>
-              <span>Lieux et sorties visibles sur la vitrine.</span>
+              <span>Spots visibles ou de démonstration disponibles sur la vitrine.</span>
             </div>
             <div class="metric">
               <strong id="metricZones">—</strong>
-              <span>Zones ou villes présentes dans la lecture publique.</span>
+              <span>Zones ou villes détectées dans la lecture publique.</span>
             </div>
             <div class="metric">
               <strong id="metricCats">—</strong>
-              <span>Ambiances et familles de lieux pour aider à choisir.</span>
+              <span>Catégories pour montrer la richesse du terrain.</span>
             </div>
           </div>
         </div>
@@ -804,11 +799,11 @@
             />
           </div>
           <div class="side-kicker">Petite Côte • Dakar • Sénégal</div>
-          <h2 class="side-title">Une vitrine vivante pour donner envie.</h2>
+          <h2 class="side-title">Un module pour donner envie, sans noyer le visiteur.</h2>
           <div class="side-text">
             Pas une vitrine froide. Pas un annuaire mort.
-            Une lecture simple pour montrer l’ambiance, guider le regard
-            et ouvrir un contact direct avec la bonne personne.
+            Une présence vivante pour montrer les spots, raconter l'ambiance, guider le regard
+            et ouvrir un contact simple avec le pro ou l'organisateur.
           </div>
           <a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a>
         </aside>
@@ -819,10 +814,11 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <h2 id="sectionTitle">À voir en ce moment</h2>
+            <h2 id="sectionTitle">Spots à découvrir</h2>
             <p id="sectionText">
-              Lieux, sorties, expériences, coins utiles et belles adresses.
-              Quand la lecture publique répond, la vitrine montre les lieux publiés. Sinon elle garde une sélection simple pour rester vivante.
+              Lecture publique du terrain : lieux, sorties, expériences, coins utiles et belles adresses.
+              Quand le backend répond, la vitrine charge les spots publiés. Sinon elle garde une présence propre
+              avec une sélection de secours.
             </p>
           </div>
 
@@ -834,7 +830,7 @@
 
         <div id="spotsGrid" class="grid" aria-live="polite">
           <div class="empty">
-            <div class="loader">Chargement des lieux…</div>
+            <div class="loader">Chargement des spots…</div>
           </div>
         </div>
       </div>
@@ -845,9 +841,10 @@
     <div class="wrap">
       <div class="footer-card">
         <div class="footer-copy">
-          <strong>Je découvre le coin</strong>
+          <strong>DIGIY EXPLORE ∞</strong>
           <span>
-            Une lecture simple pour trouver un lieu, sentir l’ambiance et parler directement au bon contact.
+            Présence tourisme dans l'écosystème DIGIYLYFE.
+            Visibilité locale, contact humain, lecture simple et terrain vivant.
           </span>
         </div>
 
@@ -856,7 +853,7 @@
             ← Retour au site
           </a>
           <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
-            Je fais découvrir mon lieu
+            Commencer
           </a>
         </div>
       </div>
@@ -889,8 +886,8 @@
         <div class="tags js-tags"></div>
 
         <div class="spot-actions">
-          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Parler au lieu</a>
-          <a class="btn btn-primary js-open" rel="noopener">Voir le lieu</a>
+          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Contacter</a>
+          <a class="btn btn-primary js-open" rel="noopener">Ouvrir</a>
         </div>
       </div>
     </article>
@@ -905,16 +902,16 @@
     const SHOWCASE_SPOTS = [
       {
         title: "Sortie en pêche — Petite Côte",
-        category: "🎣 Sortie",
+        category: "🎣 Expérience",
         city: "Saly",
         zone: "Petite Côte",
         price: "Sur demande",
-        desc: "Sortie en pêche encadrée, départ côtier, ambiance locale, mer, lever tôt et vraie sensation du coin.",
-        tags: ["pêche", "mer", "sortie", "bateau"],
+        desc: "Sortie en pêche encadrée, départ côtier, ambiance locale, mer, lever tôt et vraie sensation terrain sur la Petite Côte.",
+        tags: ["pêche", "mer", "sortie", "conciergerie"],
         cover: DEFAULT_COVER,
         contact_url: DEFAULT_CONTACT_URL,
         open_url: DEFAULT_OPEN_URL,
-        kind: "En mer"
+        kind: "Spot"
       },
       {
         title: "Pause plage — Saly",
@@ -922,12 +919,12 @@
         city: "Saly",
         zone: "Petite Côte",
         price: "Libre / selon lieu",
-        desc: "Plage, lumière, repos, promenade, détente simple et vue ouverte.",
+        desc: "Plage, lumière, repos, promenade, détente simple et vue ouverte. Une lecture douce du terrain, sans chichi.",
         tags: ["plage", "repos", "balade"],
         cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
         contact_url: DEFAULT_CONTACT_URL,
         open_url: DEFAULT_OPEN_URL,
-        kind: "Bord de mer"
+        kind: "Lieu"
       },
       {
         title: "Escapade locale — Dakar",
@@ -935,12 +932,12 @@
         city: "Dakar",
         zone: "Cap-Vert",
         price: "Selon programme",
-        desc: "Une porte d’entrée simple pour découvrir le rythme local, les points utiles et les repères vivants.",
+        desc: "Une porte d'entrée simple pour découvrir le rythme local, les points utiles, les coins inspirants et les repères vivants.",
         tags: ["découverte", "ville", "guidage"],
         cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
         contact_url: DEFAULT_CONTACT_URL,
         open_url: DEFAULT_OPEN_URL,
-        kind: "En ville"
+        kind: "Ville"
       }
     ];
 
@@ -1045,19 +1042,19 @@
       return {
         raw: item || {},
         slug,
-        title: item?.title || item?.name || item?.public_name || "Lieu à découvrir",
-        category: item?.category || item?.category_label || item?.type_label || "📍 Lieu",
+        title: item?.title || item?.name || item?.public_name || "Spot DIGIY EXPLORE",
+        category: item?.category || item?.category_label || item?.type_label || "📍 Spot",
         city: item?.city || item?.town || item?.place_city || "Sénégal",
         zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
         price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
-        desc: item?.desc || item?.short_description || item?.description || "Un lieu à découvrir dans la vitrine.",
+        desc: item?.desc || item?.short_description || item?.description || "Lieu ou expérience visible dans la vitrine DIGIY EXPLORE.",
         full_desc: item?.full_description || item?.description || item?.desc || "",
         tags,
         cover: item?.cover || item?.cover_url || item?.cover_image_url || item?.image_url || item?.photo_url || DEFAULT_COVER,
         gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
         contact_url: item?.contact_url || item?.whatsapp_url || fallbackContact,
         open_url: item?.open_url || item?.slug_url || item?.public_url || buildPublicUrlFromSlug(slug) || DEFAULT_OPEN_URL,
-        kind: item?.kind || item?.subcategory || item?.spot_kind || "À découvrir",
+        kind: item?.kind || item?.subcategory || item?.spot_kind || "Spot",
         address: item?.address || item?.address_text || item?.landmark || item?.repere || "",
         whatsapp: whatsapp || phone,
         phone,
@@ -1088,7 +1085,7 @@
       if(!Array.isArray(items) || !items.length){
         $grid.innerHTML = `
           <div class="empty">
-            Aucun lieu visible pour le moment.
+            Aucun spot visible pour le moment.
           </div>
         `;
         updateMetrics([]);
@@ -1108,7 +1105,7 @@
         node.querySelector(".js-title").textContent = item.title;
         node.querySelector(".js-price").textContent = item.price;
         node.querySelector(".js-zone").textContent = "📍 " + (item.zone || item.city || "Terrain");
-        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "À découvrir");
+        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "Spot");
         node.querySelector(".js-desc").textContent = item.desc;
 
         const tagsWrap = node.querySelector(".js-tags");
@@ -1122,7 +1119,7 @@
         } else {
           const span = document.createElement("span");
           span.className = "tag";
-          span.textContent = "#sortie";
+          span.textContent = "#terrain";
           tagsWrap.appendChild(span);
         }
 
@@ -1145,23 +1142,23 @@
       const item = normalizeItem(raw);
 
       $hero.style.display = "none";
-      $topActionBtn.textContent = "Retour à la vitrine";
+      $topActionBtn.textContent = "Retour vitrine";
       $topActionBtn.href = "./";
       $sectionTitle.textContent = item.title;
-      $sectionText.textContent = item.desc || "Découvre ce lieu en un coup d’œil.";
+      $sectionText.textContent = item.desc || "Fiche publique du lieu dans DIGIY EXPLORE.";
       $grid.className = "grid grid-single";
 
       const galleryImages = [item.cover, ...item.gallery].filter(Boolean).slice(0, 6);
-      const tagsHtml = (item.tags.length ? item.tags : ["sortie"]).slice(0, 8).map(tag => (
+      const tagsHtml = (item.tags.length ? item.tags : ["terrain"]).slice(0, 8).map(tag => (
         '<span class="tag">#' + esc(String(tag).replace(/^#/, "")) + '</span>'
       )).join("");
 
       const infoBlocks = [
-        item.category ? { title: "Type de lieu", value: item.category } : null,
-        item.kind ? { title: "Ambiance", value: item.kind } : null,
-        item.city || item.zone ? { title: "Où c’est", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
-        item.address ? { title: "Repère", value: item.address } : null,
-        item.price ? { title: "Budget", value: item.price } : null,
+        item.category ? { title: "Catégorie", value: item.category } : null,
+        item.kind ? { title: "Sous-catégorie", value: item.kind } : null,
+        item.city || item.zone ? { title: "Localisation", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
+        item.address ? { title: "Adresse / repère", value: item.address } : null,
+        item.price ? { title: "Indice de prix", value: item.price } : null,
         item.phone ? { title: "Téléphone", value: item.phone } : null
       ].filter(Boolean).map(block => `
         <div class="info-block">
@@ -1184,8 +1181,6 @@
 
       const featuredBadge = item.featured ? `<span class="badge gold">Mis en avant</span>` : "";
 
-      document.title = `${item.title} | DIGIY EXPLORE`;
-
       $grid.innerHTML = `
         <article class="fiche">
           <section class="fiche-main">
@@ -1201,7 +1196,7 @@
             <div class="fiche-body">
               <div class="fiche-meta">
                 <span class="mini">📍 ${esc(item.zone || item.city || "Terrain")}</span>
-                <span class="mini">🧭 ${esc(item.kind || "À découvrir")}</span>
+                <span class="mini">🧭 ${esc(item.kind || "Spot")}</span>
                 <span class="mini">💬 Contact direct</span>
               </div>
 
@@ -1209,7 +1204,7 @@
 
               <div class="spot-price">${esc(item.price)}</div>
 
-              <div class="fiche-desc">${esc(item.full_desc || item.desc || "Découvre ce lieu en un coup d’œil.")}</div>
+              <div class="fiche-desc">${esc(item.full_desc || item.desc || "Fiche publique du lieu dans DIGIY EXPLORE.")}</div>
 
               <div class="tags">${tagsHtml}</div>
 
@@ -1222,7 +1217,7 @@
 
             <div class="spot-actions">
               <a class="btn btn-primary" href="${esc(item.contact_url || DEFAULT_CONTACT_URL)}" target="_blank" rel="noopener">
-                Parler au lieu
+                Contacter
               </a>
               ${mapButton}
               <a class="btn btn-ghost" href="./">
@@ -1278,6 +1273,11 @@
       return [];
     }
 
+    /* ─── FIX PRINCIPAL ────────────────────────────────────────────────────────
+     * Le RPC digiy_explore_public_place_by_slug retourne { ok: true, place: {...} }
+     * L'ancienne version lisait data.slug directement → jamais trouvé.
+     * On extrait maintenant data.place en priorité.
+     * ─────────────────────────────────────────────────────────────────────────*/
     async function fetchSingleFromRpc(client, slug){
       const rpcAttempts = [
         { name: "digiy_explore_public_place_by_slug", args: { p_slug: slug } },
@@ -1291,12 +1291,15 @@
           if(error) continue;
 
           if(data && !Array.isArray(data)){
+            // Cas DIGIY standard : { ok: true, place: {...} }
             if(data.ok === true && data.place && typeof data.place === "object"){
               return data.place;
             }
+            // Cas réponse directe : { slug, title, ... }
             if(data.slug || data.title || data.name || data.public_name){
               return data;
             }
+            // Cas imbriqué générique : { item: {...} }
             if(data.item && typeof data.item === "object"){
               return data.item;
             }
@@ -1339,14 +1342,14 @@
 
       if(item){
         renderSingleSpot(item);
-        $status.textContent = "Lieu chargé";
+        $status.textContent = "Fiche publique chargée";
         return true;
       }
 
       $grid.className = "grid grid-single";
       $grid.innerHTML = `
         <div class="empty">
-          Ce lieu n’a pas été trouvé.
+          Fiche introuvable pour le slug <strong>${esc(slug)}</strong>.
           <div style="margin-top:14px">
             <a class="btn btn-primary" href="./">Retour à la vitrine</a>
           </div>
@@ -1354,11 +1357,11 @@
       `;
       updateMetrics([]);
       $hero.style.display = "none";
-      $topActionBtn.textContent = "Retour à la vitrine";
+      $topActionBtn.textContent = "Retour vitrine";
       $topActionBtn.href = "./";
-      $sectionTitle.textContent = "Lieu introuvable";
-      $sectionText.textContent = "Le lien a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
-      $status.textContent = "Lieu introuvable";
+      $sectionTitle.textContent = "Fiche introuvable";
+      $sectionText.textContent = "Le slug a bien été lu, mais aucun lieu public correspondant n'a été trouvé.";
+      $status.textContent = "Slug non trouvé";
       return false;
     }
 
@@ -1385,36 +1388,36 @@
 
         if(items.length){
           renderSpots(items);
-          $status.textContent = "Lieux publiés chargés";
+          $status.textContent = "Rail public chargé";
         } else {
           renderSpots(SHOWCASE_SPOTS);
-          $status.textContent = "Vitrine prête";
+          $status.textContent = "Mode vitrine de secours";
         }
       } catch (err){
         console.warn("EXPLORE fallback:", err);
 
         if(REQUESTED_SLUG){
           $hero.style.display = "none";
-          $topActionBtn.textContent = "Retour à la vitrine";
+          $topActionBtn.textContent = "Retour vitrine";
           $topActionBtn.href = "./";
-          $sectionTitle.textContent = "Lieu indisponible";
-          $sectionText.textContent = "Le lien a bien été lu, mais ce lieu ne peut pas être chargé pour le moment.";
+          $sectionTitle.textContent = "Fiche indisponible";
+          $sectionText.textContent = "Le slug a été lu, mais la lecture publique n'a pas répondu.";
           $grid.className = "grid grid-single";
           $grid.innerHTML = `
             <div class="empty">
-              Impossible d’ouvrir ce lieu pour le moment.
+              Impossible de charger la fiche pour le moment.
               <div style="margin-top:14px">
                 <a class="btn btn-primary" href="./">Retour à la vitrine</a>
               </div>
             </div>
           `;
           updateMetrics([]);
-          $status.textContent = "Lecture indisponible";
+          $status.textContent = "Lecture publique indisponible";
           return;
         }
 
         renderSpots(SHOWCASE_SPOTS);
-        $status.textContent = "Vitrine prête";
+        $status.textContent = "Mode vitrine de secours";
       }
     }
 
