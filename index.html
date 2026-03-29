@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="Je découvre le coin avec DIGIY EXPLORE : sorties, lieux, belles adresses et contact direct."
+    content="Je découvre le coin avec DIGIY EXPLORE : lieux, sorties, belles adresses et contact direct."
   />
   <meta name="theme-color" content="#06130f" />
   <title>Je découvre le coin | DIGIY EXPLORE</title>
@@ -30,11 +30,8 @@
       --soft:rgba(247,251,248,.54);
       --gold:#dcb45a;
       --green:#12b76a;
-      --green-2:#1ad17a;
-      --danger:#ff7a7a;
       --shadow:0 20px 50px rgba(0,0,0,.30);
       --radius:24px;
-      --radius-sm:16px;
       --max:1200px;
     }
 
@@ -150,9 +147,7 @@
       white-space:nowrap;
     }
 
-    .btn:hover{
-      transform:translateY(-1px);
-    }
+    .btn:hover{ transform:translateY(-1px); }
 
     .btn-ghost{
       color:var(--text);
@@ -365,10 +360,6 @@
       gap:18px;
     }
 
-    .grid-single{
-      grid-template-columns:1fr;
-    }
-
     .spot{
       background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
       border:1px solid var(--line);
@@ -527,109 +518,6 @@
       text-align:center;
     }
 
-    .fiche{
-      display:grid;
-      grid-template-columns:minmax(0, 1.08fr) minmax(320px, .92fr);
-      gap:18px;
-      align-items:start;
-    }
-
-    .fiche-main,
-    .fiche-side{
-      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
-      border:1px solid var(--line);
-      border-radius:24px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-
-    .fiche-cover{
-      aspect-ratio:16/10;
-      background:#0b2018;
-      overflow:hidden;
-      position:relative;
-    }
-
-    .fiche-cover img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .fiche-body{
-      padding:22px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    .fiche-title{
-      margin:0;
-      font-size:clamp(28px, 4vw, 42px);
-      line-height:1.05;
-      letter-spacing:-.03em;
-    }
-
-    .fiche-meta{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .fiche-desc{
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.8;
-    }
-
-    .fiche-gallery{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:10px;
-    }
-
-    .fiche-gallery img{
-      width:100%;
-      aspect-ratio:1/1;
-      object-fit:cover;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:#0b2018;
-    }
-
-    .fiche-side{
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      position:sticky;
-      top:92px;
-    }
-
-    .info-block{
-      padding:14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .info-title{
-      font-size:12px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-weight:900;
-      color:#f5db9a;
-    }
-
-    .info-value{
-      font-size:15px;
-      line-height:1.6;
-      color:var(--text);
-    }
-
     .footer{
       padding:30px 0 44px;
     }
@@ -686,14 +574,6 @@
       .grid{
         grid-template-columns:1fr 1fr;
       }
-
-      .fiche{
-        grid-template-columns:1fr;
-      }
-
-      .fiche-side{
-        position:static;
-      }
     }
 
     @media (max-width: 780px){
@@ -703,8 +583,7 @@
 
       .hero-grid,
       .grid,
-      .hero-metrics,
-      .fiche-gallery{
+      .hero-metrics{
         grid-template-columns:1fr;
       }
 
@@ -737,7 +616,7 @@
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="./" aria-label="DIGIY EXPLORE">
+      <a class="brand" href="./index.html" aria-label="DIGIY EXPLORE">
         <div class="brand-badge">
           <img src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg" alt="Logo DIGIYLYFE">
         </div>
@@ -748,13 +627,13 @@
       </a>
 
       <div class="actions">
-        <a class="btn btn-ghost" id="siteBackBtn" href="https://digiylyfe.com/" rel="noopener">
+        <a class="btn btn-ghost" href="https://digiylyfe.com/" rel="noopener">
           ← Retour au site
         </a>
         <a class="btn btn-outline" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
           Je fais découvrir mon lieu
         </a>
-        <a class="btn btn-primary" id="topActionBtn" href="#spots">
+        <a class="btn btn-primary" href="#spots">
           Voir les lieux
         </a>
       </div>
@@ -762,7 +641,7 @@
   </header>
 
   <main>
-    <section class="hero" id="heroSection">
+    <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-card">
           <div class="eyebrow">Petite Côte • Dakar • Sénégal</div>
@@ -818,8 +697,8 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <h2 id="sectionTitle">À voir en ce moment</h2>
-            <p id="sectionText">
+            <h2>À voir en ce moment</h2>
+            <p>
               Lieux, sorties, expériences, coins utiles et belles adresses.
               Quand la lecture publique répond, la vitrine montre les lieux publiés. Sinon elle garde une sélection simple pour rester vivante.
             </p>
@@ -827,7 +706,6 @@
 
           <div class="section-tools">
             <div class="chip" id="dataStatus">Chargement…</div>
-            <a class="chip" id="allSpotsChip" href="./">Voir toute la vitrine</a>
           </div>
         </div>
 
@@ -889,15 +767,13 @@
 
         <div class="spot-actions">
           <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Parler au lieu</a>
-          <a class="btn btn-primary js-open" rel="noopener">Voir le lieu</a>
+          <a class="btn btn-primary js-open">Voir le lieu</a>
         </div>
       </div>
     </article>
   </template>
 
   <script>
-    const SITE_HOME = "https://digiylyfe.com/";
-    const DEFAULT_OPEN_URL = SITE_HOME;
     const DEFAULT_CONTACT_URL = "https://commencer-a-payer.digiylyfe.com/";
     const DEFAULT_COVER = "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif";
 
@@ -912,7 +788,7 @@
         tags: ["pêche", "mer", "sortie", "bateau"],
         cover: DEFAULT_COVER,
         contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
+        slug: "sortie-peche-petite-cote",
         kind: "En mer"
       },
       {
@@ -925,7 +801,7 @@
         tags: ["plage", "repos", "balade"],
         cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
         contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
+        slug: "pause-plage-saly",
         kind: "Bord de mer"
       },
       {
@@ -938,39 +814,17 @@
         tags: ["découverte", "ville", "guidage"],
         cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
         contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
+        slug: "escapade-locale-dakar",
         kind: "En ville"
       }
     ];
-
-    const params = new URLSearchParams(window.location.search);
-    const REQUESTED_SLUG = normalizeSlug(params.get("slug"));
-    const RETURN_URL = normalizeReturnUrl(params.get("return"));
 
     const $grid = document.getElementById("spotsGrid");
     const $status = document.getElementById("dataStatus");
     const $metricSpots = document.getElementById("metricSpots");
     const $metricZones = document.getElementById("metricZones");
     const $metricCats = document.getElementById("metricCats");
-    const $siteBackBtn = document.getElementById("siteBackBtn");
-    const $topActionBtn = document.getElementById("topActionBtn");
-    const $hero = document.getElementById("heroSection");
-    const $sectionTitle = document.getElementById("sectionTitle");
-    const $sectionText = document.getElementById("sectionText");
-    const $allSpotsChip = document.getElementById("allSpotsChip");
     const tpl = document.getElementById("spotTpl");
-
-    $siteBackBtn.href = RETURN_URL || SITE_HOME;
-    $allSpotsChip.href = "./";
-
-    function esc(str){
-      return String(str ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
 
     function normalizeSlug(value){
       return String(value || "").trim().toLowerCase();
@@ -978,16 +832,6 @@
 
     function normalizePhone(value){
       return String(value || "").replace(/[^\d]/g, "");
-    }
-
-    function normalizeReturnUrl(value){
-      const raw = String(value || "").trim();
-      if(!raw) return "";
-      try{
-        const url = new URL(raw, window.location.origin);
-        if(/^https?:$/i.test(url.protocol)) return url.href;
-      }catch(_){}
-      return "";
     }
 
     function safeArray(value){
@@ -1016,22 +860,9 @@
       return phone ? "https://wa.me/" + phone : "";
     }
 
-    function buildPublicUrlFromSlug(slug){
+    function buildFicheUrl(slug){
       const clean = normalizeSlug(slug);
-      return clean ? "./?slug=" + encodeURIComponent(clean) : "./";
-    }
-
-    function buildMapUrl(item){
-      const lat = item?.latitude ?? item?.lat;
-      const lng = item?.longitude ?? item?.lng;
-      if(lat && lng){
-        return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
-      }
-      const address = item?.address || item?.address_text || item?.landmark || item?.repere || "";
-      if(address){
-        return "https://www.google.com/maps?q=" + encodeURIComponent(address);
-      }
-      return "";
+      return clean ? "./fiche.html?slug=" + encodeURIComponent(clean) : "./fiche.html";
     }
 
     function normalizeItem(item){
@@ -1049,19 +880,11 @@
         city: item?.city || item?.town || item?.place_city || "Sénégal",
         zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
         price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
-        desc: item?.desc || item?.short_description || item?.description || "Un lieu à découvrir dans la vitrine DIGIY EXPLORE.",
-        full_desc: item?.full_description || item?.description || item?.desc || "",
+        desc: item?.desc || item?.short_description || item?.description || "Un lieu à découvrir.",
         tags,
         cover: item?.cover || item?.cover_url || item?.cover_image_url || item?.image_url || item?.photo_url || DEFAULT_COVER,
-        gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
         contact_url: item?.contact_url || item?.whatsapp_url || fallbackContact,
-        open_url: item?.open_url || item?.slug_url || item?.public_url || buildPublicUrlFromSlug(slug) || DEFAULT_OPEN_URL,
-        kind: item?.kind || item?.subcategory || item?.spot_kind || "À découvrir",
-        address: item?.address || item?.address_text || item?.landmark || item?.repere || "",
-        whatsapp: whatsapp || phone,
-        phone,
-        map_url: item?.map_url || buildMapUrl(item),
-        featured: Boolean(item?.featured || item?.is_featured || item?.highlighted)
+        kind: item?.kind || item?.subcategory || item?.spot_kind || "À découvrir"
       };
     }
 
@@ -1081,7 +904,6 @@
     }
 
     function renderSpots(items){
-      $grid.className = "grid";
       $grid.innerHTML = "";
 
       if(!Array.isArray(items) || !items.length){
@@ -1129,10 +951,7 @@
         contact.href = item.contact_url || DEFAULT_CONTACT_URL;
 
         const open = node.querySelector(".js-open");
-        open.href = item.open_url || DEFAULT_OPEN_URL;
-        if(/^https?:/i.test(open.href)){
-          open.target = "_blank";
-        }
+        open.href = buildFicheUrl(item.slug);
 
         $grid.appendChild(node);
       });
@@ -1140,105 +959,11 @@
       updateMetrics(items.map(normalizeItem));
     }
 
-    function renderSingleSpot(raw){
-      const item = normalizeItem(raw);
-
-      $hero.style.display = "none";
-      $topActionBtn.textContent = "Retour vitrine";
-      $topActionBtn.href = "./";
-      $sectionTitle.textContent = item.title;
-      $sectionText.textContent = item.desc || "Découvre ce lieu en un coup d’œil.";
-      $grid.className = "grid grid-single";
-
-      const galleryImages = [item.cover, ...item.gallery].filter(Boolean).slice(0, 6);
-      const tagsHtml = (item.tags.length ? item.tags : ["terrain"]).slice(0, 8).map(tag => (
-        '<span class="tag">#' + esc(String(tag).replace(/^#/, "")) + '</span>'
-      )).join("");
-
-      const infoBlocks = [
-        item.category ? { title: "Type de lieu", value: item.category } : null,
-        item.kind ? { title: "Ambiance", value: item.kind } : null,
-        item.city || item.zone ? { title: "Où c’est", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
-        item.address ? { title: "Repère", value: item.address } : null,
-        item.price ? { title: "Budget", value: item.price } : null,
-        item.phone ? { title: "Téléphone", value: item.phone } : null
-      ].filter(Boolean).map(block => `
-        <div class="info-block">
-          <div class="info-title">${esc(block.title)}</div>
-          <div class="info-value">${esc(block.value)}</div>
-        </div>
-      `).join("");
-
-      const galleryHtml = galleryImages.length
-        ? `
-          <div class="fiche-gallery">
-            ${galleryImages.map(src => `<img src="${esc(src)}" alt="${esc(item.title)}" loading="lazy"/>`).join("")}
-          </div>
-        `
-        : "";
-
-      const mapButton = item.map_url
-        ? `<a class="btn btn-outline" href="${esc(item.map_url)}" target="_blank" rel="noopener">Voir la carte</a>`
-        : "";
-
-      const featuredBadge = item.featured ? `<span class="badge gold">Mis en avant</span>` : "";
-
-      $grid.innerHTML = `
-        <article class="fiche">
-          <section class="fiche-main">
-            <div class="fiche-cover">
-              <img src="${esc(item.cover)}" alt="${esc(item.title)}" />
-              <div class="spot-badges">
-                <span class="badge">${esc(item.category)}</span>
-                <span class="badge gold">${esc(item.city)}</span>
-                ${featuredBadge}
-              </div>
-            </div>
-
-            <div class="fiche-body">
-              <div class="fiche-meta">
-                <span class="mini">📍 ${esc(item.zone || item.city || "Terrain")}</span>
-                <span class="mini">🧭 ${esc(item.kind || "À découvrir")}</span>
-                <span class="mini">💬 Contact direct</span>
-              </div>
-
-              <h1 class="fiche-title">${esc(item.title)}</h1>
-
-              <div class="spot-price">${esc(item.price)}</div>
-
-              <div class="fiche-desc">${esc(item.full_desc || item.desc || "Découvre ce lieu en un coup d’œil.")}</div>
-
-              <div class="tags">${tagsHtml}</div>
-
-              ${galleryHtml}
-            </div>
-          </section>
-
-          <aside class="fiche-side">
-            ${infoBlocks}
-
-            <div class="spot-actions">
-              <a class="btn btn-primary" href="${esc(item.contact_url || DEFAULT_CONTACT_URL)}" target="_blank" rel="noopener">
-                Parler au lieu
-              </a>
-              ${mapButton}
-              <a class="btn btn-ghost" href="./">
-                Retour aux lieux
-              </a>
-            </div>
-          </aside>
-        </article>
-      `;
-
-      updateMetrics([item]);
-    }
-
     function pullRows(data){
       if(Array.isArray(data)) return data;
       if(data?.ok === true && Array.isArray(data.places)) return data.places;
       if(data?.ok === true && Array.isArray(data.items)) return data.items;
       if(data?.ok === true && Array.isArray(data.spots)) return data.spots;
-      if(data?.place && typeof data.place === "object") return [data.place];
       return [];
     }
 
@@ -1258,7 +983,6 @@
           if(rows.length) return rows;
         }catch(_){}
       }
-
       return [];
     }
 
@@ -1281,77 +1005,7 @@
           if(Array.isArray(data) && data.length) return data;
         }catch(_){}
       }
-
       return [];
-    }
-
-    async function fetchSingleFromRpc(client, slug){
-      const attempts = [
-        { name:"digiy_explore_public_place_by_slug", body:{ p_slug: slug } },
-        { name:"digiy_explore_get_public_place_by_slug", body:{ p_slug: slug } }
-      ];
-
-      for(const attempt of attempts){
-        try{
-          const { data, error } = await client.rpc(attempt.name, attempt.body);
-          if(error) continue;
-          if(data?.ok && data.place) return data.place;
-          if(data && typeof data === "object" && !Array.isArray(data)) return data.place || data;
-        }catch(_){}
-      }
-
-      return null;
-    }
-
-    async function fetchSingleFromTables(client, slug){
-      const tableAttempts = [
-        {
-          table: "digiy_explore_places",
-          build: q => q.select("*").eq("slug", slug).eq("is_published", true).limit(1).maybeSingle()
-        },
-        {
-          table: "digiy_explore_spots",
-          build: q => q.select("*").eq("slug", slug).eq("published", true).limit(1).maybeSingle()
-        }
-      ];
-
-      for(const attempt of tableAttempts){
-        try{
-          const { data, error } = await attempt.build(client.from(attempt.table));
-          if(error) continue;
-          if(data) return data;
-        }catch(_){}
-      }
-
-      return null;
-    }
-
-    async function loadSingleSpot(client, slug){
-      const item = await fetchSingleFromRpc(client, slug) || await fetchSingleFromTables(client, slug);
-
-      if(item){
-        renderSingleSpot(item);
-        $status.textContent = "Lieu chargé";
-        return true;
-      }
-
-      $grid.className = "grid grid-single";
-      $grid.innerHTML = `
-        <div class="empty">
-          Ce lieu n’a pas été trouvé.
-          <div style="margin-top:14px">
-            <a class="btn btn-primary" href="./">Retour à la vitrine</a>
-          </div>
-        </div>
-      `;
-      updateMetrics([]);
-      $hero.style.display = "none";
-      $topActionBtn.textContent = "Retour vitrine";
-      $topActionBtn.href = "./";
-      $sectionTitle.textContent = "Lieu introuvable";
-      $sectionText.textContent = "Le lien a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
-      $status.textContent = "Lieu introuvable";
-      return false;
     }
 
     async function loadSpots(){
@@ -1364,11 +1018,6 @@
         }
 
         const client = window.supabase.createClient(url, key);
-
-        if(REQUESTED_SLUG){
-          await loadSingleSpot(client, REQUESTED_SLUG);
-          return;
-        }
 
         let items = await fetchFromRpc(client);
         if(!items.length){
@@ -1384,27 +1033,6 @@
         }
       } catch (err){
         console.warn("EXPLORE fallback:", err);
-
-        if(REQUESTED_SLUG){
-          $hero.style.display = "none";
-          $topActionBtn.textContent = "Retour vitrine";
-          $topActionBtn.href = "./";
-          $sectionTitle.textContent = "Lieu indisponible";
-          $sectionText.textContent = "Le lien a bien été lu, mais ce lieu ne peut pas être chargé pour le moment.";
-          $grid.className = "grid grid-single";
-          $grid.innerHTML = `
-            <div class="empty">
-              Impossible d’ouvrir ce lieu pour le moment.
-              <div style="margin-top:14px">
-                <a class="btn btn-primary" href="./">Retour à la vitrine</a>
-              </div>
-            </div>
-          `;
-          updateMetrics([]);
-          $status.textContent = "Lecture indisponible";
-          return;
-        }
-
         renderSpots(SHOWCASE_SPOTS);
         $status.textContent = "Mode vitrine";
       }
