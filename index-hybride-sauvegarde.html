@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="Je découvre le coin avec DIGIY EXPLORE : sorties, lieux, belles adresses et contact direct."
+  />
+  <meta name="theme-color" content="#06130f" />
+  <title>Je découvre le coin | DIGIY EXPLORE</title>
+
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --bg:#06130f;
+      --bg-2:#0b1d17;
+      --card:#10261e;
+      --card-2:#143126;
+      --line:rgba(255,255,255,.10);
+      --line-2:rgba(255,255,255,.16);
+      --text:#f7fbf8;
+      --muted:rgba(247,251,248,.72);
+      --soft:rgba(247,251,248,.54);
+      --gold:#dcb45a;
+      --green:#12b76a;
+      --green-2:#1ad17a;
+      --danger:#ff7a7a;
+      --shadow:0 20px 50px rgba(0,0,0,.30);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1200px;
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family:Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(220,180,90,.14), transparent 26%),
+        radial-gradient(circle at top right, rgba(18,183,106,.10), transparent 24%),
+        linear-gradient(180deg, #06130f 0%, #071711 42%, #091e17 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    .wrap{
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter:blur(14px);
+      background:rgba(6,19,15,.72);
+      border-bottom:1px solid var(--line);
+    }
+
+    .topbar-inner{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:10px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brand-badge{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--line-2);
+      box-shadow:var(--shadow);
+      background:#fff;
+      flex:0 0 auto;
+    }
+
+    .brand-badge img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .brand-copy{
+      min-width:0;
+    }
+
+    .brand-copy strong{
+      display:block;
+      font-size:15px;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand-copy span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:46px;
+      padding:0 16px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:14px;
+      transition:.18s ease;
+      white-space:nowrap;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-ghost{
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .btn-outline{
+      color:var(--text);
+      background:transparent;
+      border:1px solid rgba(220,180,90,.40);
+    }
+
+    .btn-primary{
+      color:#062414;
+      background:linear-gradient(135deg, var(--gold), #f2cc78);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 14px 32px rgba(220,180,90,.18);
+    }
+
+    .hero{
+      padding:46px 0 24px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .hero-card,
+    .side-card{
+      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero-card{
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -60px -80px auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(220,180,90,.20), transparent 68%);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(220,180,90,.24);
+      background:rgba(220,180,90,.08);
+      color:#f5db9a;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      margin:16px 0 14px;
+      font-size:clamp(30px, 5vw, 58px);
+      line-height:1.02;
+      letter-spacing:-.03em;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.7;
+      max-width:760px;
+    }
+
+    .hero-cta{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .hero-metrics{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .metric{
+      border-radius:18px;
+      padding:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .metric strong{
+      display:block;
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .metric span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .side-card{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .side-cover{
+      border-radius:20px;
+      overflow:hidden;
+      aspect-ratio:4/3;
+      border:1px solid var(--line);
+      background:#0b2018;
+    }
+
+    .side-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .side-kicker{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#f5db9a;
+      font-weight:900;
+    }
+
+    .side-title{
+      font-size:24px;
+      line-height:1.1;
+      font-weight:900;
+      margin:0;
+    }
+
+    .side-text{
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+    }
+
+    .section{
+      padding:16px 0 22px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .section-head h2{
+      margin:0 0 6px;
+      font-size:clamp(24px, 3.2vw, 36px);
+      letter-spacing:-.02em;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:760px;
+    }
+
+    .section-tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:40px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .grid-single{
+      grid-template-columns:1fr;
+    }
+
+    .spot{
+      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    .spot-cover{
+      position:relative;
+      aspect-ratio:16/10;
+      background:#0b2018;
+      overflow:hidden;
+    }
+
+    .spot-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .35s ease;
+    }
+
+    .spot:hover .spot-cover img{
+      transform:scale(1.03);
+    }
+
+    .spot-badges{
+      position:absolute;
+      top:12px;
+      left:12px;
+      right:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:30px;
+      padding:0 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background:rgba(6,19,15,.74);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(6px);
+    }
+
+    .badge.gold{
+      color:#1f1604;
+      background:rgba(242,204,120,.96);
+      border-color:transparent;
+    }
+
+    .spot-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      flex:1;
+    }
+
+    .spot-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .spot-title{
+      margin:0;
+      font-size:20px;
+      line-height:1.2;
+      font-weight:900;
+    }
+
+    .spot-price{
+      flex:0 0 auto;
+      padding:8px 10px;
+      border-radius:14px;
+      background:rgba(18,183,106,.12);
+      border:1px solid rgba(18,183,106,.30);
+      color:#8ff0bb;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .spot-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      min-height:30px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .spot-desc{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.65;
+      min-height:66px;
+    }
+
+    .tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      min-height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid rgba(220,180,90,.18);
+      background:rgba(220,180,90,.08);
+      color:#f0d58e;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .spot-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:auto;
+      padding-top:4px;
+    }
+
+    .spot-actions .btn{
+      flex:1 1 180px;
+    }
+
+    .empty{
+      padding:24px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:20px;
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .fiche{
+      display:grid;
+      grid-template-columns:minmax(0, 1.08fr) minmax(320px, .92fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .fiche-main,
+    .fiche-side{
+      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .fiche-cover{
+      aspect-ratio:16/10;
+      background:#0b2018;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .fiche-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .fiche-body{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .fiche-title{
+      margin:0;
+      font-size:clamp(28px, 4vw, 42px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+    }
+
+    .fiche-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .fiche-desc{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+    }
+
+    .fiche-gallery{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:10px;
+    }
+
+    .fiche-gallery img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#0b2018;
+    }
+
+    .fiche-side{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      position:sticky;
+      top:92px;
+    }
+
+    .info-block{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .info-title{
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-weight:900;
+      color:#f5db9a;
+    }
+
+    .info-value{
+      font-size:15px;
+      line-height:1.6;
+      color:var(--text);
+    }
+
+    .footer{
+      padding:30px 0 44px;
+    }
+
+    .footer-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:20px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      flex-wrap:wrap;
+    }
+
+    .footer-copy strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:6px;
+    }
+
+    .footer-copy span{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .loader{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .loader::before{
+      content:"";
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.16);
+      border-top-color:#f2cc78;
+      animation:spin .8s linear infinite;
+    }
+
+    @keyframes spin{
+      to{ transform:rotate(360deg); }
+    }
+
+    @media (max-width: 1024px){
+      .hero-grid,
+      .grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .fiche{
+        grid-template-columns:1fr;
+      }
+
+      .fiche-side{
+        position:static;
+      }
+    }
+
+    @media (max-width: 780px){
+      .topbar-inner{
+        align-items:flex-start;
+      }
+
+      .hero-grid,
+      .grid,
+      .hero-metrics,
+      .fiche-gallery{
+        grid-template-columns:1fr;
+      }
+
+      .hero-card,
+      .side-card{
+        padding:20px;
+      }
+
+      .section-head,
+      .footer-card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .spot-actions .btn{
+        flex:1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./" aria-label="DIGIY EXPLORE">
+        <div class="brand-badge">
+          <img src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg" alt="Logo DIGIYLYFE">
+        </div>
+        <div class="brand-copy">
+          <strong>Je découvre le coin</strong>
+          <span>Sorties • lieux • belles adresses • contact direct</span>
+        </div>
+      </a>
+
+      <div class="actions">
+        <a class="btn btn-ghost" id="siteBackBtn" href="https://digiylyfe.com/" rel="noopener">
+          ← Retour au site
+        </a>
+        <a class="btn btn-outline" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+          Je fais découvrir mon lieu
+        </a>
+        <a class="btn btn-primary" id="topActionBtn" href="#spots">
+          Voir les lieux
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="heroSection">
+      <div class="wrap hero-grid">
+        <div class="hero-card">
+          <div class="eyebrow">Petite Côte • Dakar • Sénégal</div>
+          <h1>Découvre les bons coins.<br>Vois les vrais lieux.<br>Parle directement au bon contact.</h1>
+          <p>
+            Ici, tu trouves des lieux, sorties, expériences et belles adresses du terrain.
+            Le but est simple : donner envie, aider à choisir vite, puis ouvrir un contact humain sans détour inutile.
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#spots">Voir les lieux</a>
+            <a class="btn btn-ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+              Ajouter mon lieu
+            </a>
+          </div>
+
+          <div class="hero-metrics">
+            <div class="metric">
+              <strong id="metricSpots">—</strong>
+              <span>Lieux et sorties visibles sur la vitrine.</span>
+            </div>
+            <div class="metric">
+              <strong id="metricZones">—</strong>
+              <span>Zones ou villes déjà présentes dans la lecture publique.</span>
+            </div>
+            <div class="metric">
+              <strong id="metricCats">—</strong>
+              <span>Ambiances et familles de lieux pour aider à choisir.</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side-card">
+          <div class="side-cover">
+            <img
+              src="https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
+              alt="Sortie en pirogue sur la Petite Côte"
+            />
+          </div>
+          <div class="side-kicker">Petite Côte • Dakar • Sénégal</div>
+          <h2 class="side-title">Une vitrine vivante pour donner envie.</h2>
+          <div class="side-text">
+            Pas un annuaire froid. Pas une page morte.
+            Une lecture simple pour voir l’ambiance, comprendre vite le lieu
+            et passer facilement à l’action.
+          </div>
+          <a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="spots">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 id="sectionTitle">À voir en ce moment</h2>
+            <p id="sectionText">
+              Lieux, sorties, expériences, coins utiles et belles adresses.
+              Quand la lecture publique répond, la vitrine montre les lieux publiés. Sinon elle garde une sélection simple pour rester vivante.
+            </p>
+          </div>
+
+          <div class="section-tools">
+            <div class="chip" id="dataStatus">Chargement…</div>
+            <a class="chip" id="allSpotsChip" href="./">Voir toute la vitrine</a>
+          </div>
+        </div>
+
+        <div id="spotsGrid" class="grid" aria-live="polite">
+          <div class="empty">
+            <div class="loader">Chargement des lieux…</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-card">
+        <div class="footer-copy">
+          <strong>Je découvre le coin</strong>
+          <span>
+            Une lecture simple pour trouver un lieu, sentir l’ambiance et contacter la bonne personne.
+          </span>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="https://digiylyfe.com/" rel="noopener">
+            ← Retour au site
+          </a>
+          <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+            Ajouter mon lieu
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <template id="spotTpl">
+    <article class="spot">
+      <div class="spot-cover">
+        <img alt="" loading="lazy" />
+        <div class="spot-badges">
+          <span class="badge js-category"></span>
+          <span class="badge gold js-city"></span>
+        </div>
+      </div>
+
+      <div class="spot-body">
+        <div class="spot-head">
+          <h3 class="spot-title js-title"></h3>
+          <div class="spot-price js-price"></div>
+        </div>
+
+        <div class="spot-meta">
+          <span class="mini js-zone"></span>
+          <span class="mini js-kind"></span>
+        </div>
+
+        <div class="spot-desc js-desc"></div>
+
+        <div class="tags js-tags"></div>
+
+        <div class="spot-actions">
+          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Parler au lieu</a>
+          <a class="btn btn-primary js-open" rel="noopener">Voir le lieu</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const SITE_HOME = "https://digiylyfe.com/";
+    const DEFAULT_OPEN_URL = SITE_HOME;
+    const DEFAULT_CONTACT_URL = "https://commencer-a-payer.digiylyfe.com/";
+    const DEFAULT_COVER = "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif";
+
+    const SHOWCASE_SPOTS = [
+      {
+        title: "Sortie en pêche — Petite Côte",
+        category: "🎣 Sortie",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Sur demande",
+        desc: "Une sortie en pêche au large, avec ambiance locale, air marin et vraie sensation du coin.",
+        tags: ["pêche", "mer", "sortie", "bateau"],
+        cover: DEFAULT_COVER,
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "En mer"
+      },
+      {
+        title: "Pause plage — Saly",
+        category: "🏖️ Détente",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Libre / selon lieu",
+        desc: "Plage, lumière, promenade et repos. Un coin simple pour souffler et profiter.",
+        tags: ["plage", "repos", "balade"],
+        cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Bord de mer"
+      },
+      {
+        title: "Escapade locale — Dakar",
+        category: "🌆 Découverte",
+        city: "Dakar",
+        zone: "Cap-Vert",
+        price: "Selon programme",
+        desc: "Une porte d’entrée simple pour découvrir le rythme local, les coins utiles et les lieux qui valent le détour.",
+        tags: ["découverte", "ville", "guidage"],
+        cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "En ville"
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const REQUESTED_SLUG = normalizeSlug(params.get("slug"));
+    const RETURN_URL = normalizeReturnUrl(params.get("return"));
+
+    const $grid = document.getElementById("spotsGrid");
+    const $status = document.getElementById("dataStatus");
+    const $metricSpots = document.getElementById("metricSpots");
+    const $metricZones = document.getElementById("metricZones");
+    const $metricCats = document.getElementById("metricCats");
+    const $siteBackBtn = document.getElementById("siteBackBtn");
+    const $topActionBtn = document.getElementById("topActionBtn");
+    const $hero = document.getElementById("heroSection");
+    const $sectionTitle = document.getElementById("sectionTitle");
+    const $sectionText = document.getElementById("sectionText");
+    const $allSpotsChip = document.getElementById("allSpotsChip");
+    const tpl = document.getElementById("spotTpl");
+
+    $siteBackBtn.href = RETURN_URL || SITE_HOME;
+    $allSpotsChip.href = "./";
+
+    function esc(str){
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function normalizeSlug(value){
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function normalizePhone(value){
+      return String(value || "").replace(/[^\d]/g, "");
+    }
+
+    function normalizeReturnUrl(value){
+      const raw = String(value || "").trim();
+      if(!raw) return "";
+      try{
+        const url = new URL(raw, window.location.origin);
+        if(/^https?:$/i.test(url.protocol)) return url.href;
+      }catch(_){}
+      return "";
+    }
+
+    function safeArray(value){
+      if(Array.isArray(value)) return value.filter(Boolean);
+
+      if(typeof value === "string"){
+        const trimmed = value.trim();
+        if(!trimmed) return [];
+
+        try{
+          const parsed = JSON.parse(trimmed);
+          if(Array.isArray(parsed)) return parsed.filter(Boolean);
+        }catch(_){}
+
+        return trimmed
+          .split(/\r?\n|,/)
+          .map(v => v.trim())
+          .filter(Boolean);
+      }
+
+      return [];
+    }
+
+    function makeWhatsAppUrl(value){
+      const phone = normalizePhone(value);
+      return phone ? "https://wa.me/" + phone : "";
+    }
+
+    function buildPublicUrlFromSlug(slug){
+      const clean = normalizeSlug(slug);
+      return clean ? "./?slug=" + encodeURIComponent(clean) : "./";
+    }
+
+    function buildMapUrl(item){
+      const lat = item?.latitude ?? item?.lat;
+      const lng = item?.longitude ?? item?.lng;
+      if(lat && lng){
+        return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
+      }
+      const address = item?.address || item?.address_text || item?.landmark || item?.repere || "";
+      if(address){
+        return "https://www.google.com/maps?q=" + encodeURIComponent(address);
+      }
+      return "";
+    }
+
+    function normalizeItem(item){
+      const slug = normalizeSlug(item?.slug || item?.public_slug || item?.place_slug || "");
+      const whatsapp = item?.whatsapp || item?.whatsapp_phone || item?.contact_whatsapp || "";
+      const phone = item?.phone || item?.contact_phone || item?.public_phone || "";
+      const fallbackContact = makeWhatsAppUrl(whatsapp || phone) || DEFAULT_CONTACT_URL;
+      const tags = safeArray(item?.tags);
+
+      return {
+        raw: item || {},
+        slug,
+        title: item?.title || item?.name || item?.public_name || "Lieu DIGIY EXPLORE",
+        category: item?.category || item?.category_label || item?.type_label || "📍 Lieu",
+        city: item?.city || item?.town || item?.place_city || "Sénégal",
+        zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
+        price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
+        desc: item?.desc || item?.short_description || item?.description || "Un lieu à découvrir dans la vitrine DIGIY EXPLORE.",
+        full_desc: item?.full_description || item?.description || item?.desc || "",
+        tags,
+        cover: item?.cover || item?.cover_url || item?.cover_image_url || item?.image_url || item?.photo_url || DEFAULT_COVER,
+        gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
+        contact_url: item?.contact_url || item?.whatsapp_url || fallbackContact,
+        open_url: item?.open_url || item?.slug_url || item?.public_url || buildPublicUrlFromSlug(slug) || DEFAULT_OPEN_URL,
+        kind: item?.kind || item?.subcategory || item?.spot_kind || "À découvrir",
+        address: item?.address || item?.address_text || item?.landmark || item?.repere || "",
+        whatsapp: whatsapp || phone,
+        phone,
+        map_url: item?.map_url || buildMapUrl(item),
+        featured: Boolean(item?.featured || item?.is_featured || item?.highlighted)
+      };
+    }
+
+    function updateMetrics(items){
+      const zones = new Set();
+      const cats = new Set();
+
+      items.forEach(item => {
+        if(item.zone) zones.add(item.zone);
+        else if(item.city) zones.add(item.city);
+        if(item.category) cats.add(item.category);
+      });
+
+      $metricSpots.textContent = String(items.length);
+      $metricZones.textContent = String(zones.size);
+      $metricCats.textContent = String(cats.size);
+    }
+
+    function renderSpots(items){
+      $grid.className = "grid";
+      $grid.innerHTML = "";
+
+      if(!Array.isArray(items) || !items.length){
+        $grid.innerHTML = `
+          <div class="empty">
+            Aucun lieu visible pour le moment.
+          </div>
+        `;
+        updateMetrics([]);
+        return;
+      }
+
+      items.forEach(raw => {
+        const item = normalizeItem(raw);
+        const node = tpl.content.firstElementChild.cloneNode(true);
+
+        const img = node.querySelector("img");
+        img.src = item.cover;
+        img.alt = item.title;
+
+        node.querySelector(".js-category").textContent = item.category;
+        node.querySelector(".js-city").textContent = item.city;
+        node.querySelector(".js-title").textContent = item.title;
+        node.querySelector(".js-price").textContent = item.price;
+        node.querySelector(".js-zone").textContent = "📍 " + (item.zone || item.city || "Terrain");
+        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "À découvrir");
+        node.querySelector(".js-desc").textContent = item.desc;
+
+        const tagsWrap = node.querySelector(".js-tags");
+        if(Array.isArray(item.tags) && item.tags.length){
+          item.tags.slice(0, 5).forEach(tag => {
+            const span = document.createElement("span");
+            span.className = "tag";
+            span.textContent = "#" + String(tag).replace(/^#/, "");
+            tagsWrap.appendChild(span);
+          });
+        } else {
+          const span = document.createElement("span");
+          span.className = "tag";
+          span.textContent = "#sortie";
+          tagsWrap.appendChild(span);
+        }
+
+        const contact = node.querySelector(".js-contact");
+        contact.href = item.contact_url || DEFAULT_CONTACT_URL;
+
+        const open = node.querySelector(".js-open");
+        open.href = item.open_url || DEFAULT_OPEN_URL;
+        if(/^https?:/i.test(open.href)){
+          open.target = "_blank";
+        }
+
+        $grid.appendChild(node);
+      });
+
+      updateMetrics(items.map(normalizeItem));
+    }
+
+    function renderSingleSpot(raw){
+      const item = normalizeItem(raw);
+
+      $hero.style.display = "none";
+      $topActionBtn.textContent = "Retour vitrine";
+      $topActionBtn.href = "./";
+      $sectionTitle.textContent = item.title;
+      $sectionText.textContent = item.desc || "Découvre ce lieu en un coup d’œil.";
+      $grid.className = "grid grid-single";
+
+      const galleryImages = [item.cover, ...item.gallery].filter(Boolean).slice(0, 6);
+      const tagsHtml = (item.tags.length ? item.tags : ["terrain"]).slice(0, 8).map(tag => (
+        '<span class="tag">#' + esc(String(tag).replace(/^#/, "")) + '</span>'
+      )).join("");
+
+      const infoBlocks = [
+        item.category ? { title: "Type de lieu", value: item.category } : null,
+        item.kind ? { title: "Ambiance", value: item.kind } : null,
+        item.city || item.zone ? { title: "Où c’est", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
+        item.address ? { title: "Repère", value: item.address } : null,
+        item.price ? { title: "Budget", value: item.price } : null,
+        item.phone ? { title: "Téléphone", value: item.phone } : null
+      ].filter(Boolean).map(block => `
+        <div class="info-block">
+          <div class="info-title">${esc(block.title)}</div>
+          <div class="info-value">${esc(block.value)}</div>
+        </div>
+      `).join("");
+
+      const galleryHtml = galleryImages.length
+        ? `
+          <div class="fiche-gallery">
+            ${galleryImages.map(src => `<img src="${esc(src)}" alt="${esc(item.title)}" loading="lazy"/>`).join("")}
+          </div>
+        `
+        : "";
+
+      const mapButton = item.map_url
+        ? `<a class="btn btn-outline" href="${esc(item.map_url)}" target="_blank" rel="noopener">Voir la carte</a>`
+        : "";
+
+      const featuredBadge = item.featured ? `<span class="badge gold">Mis en avant</span>` : "";
+
+      $grid.innerHTML = `
+        <article class="fiche">
+          <section class="fiche-main">
+            <div class="fiche-cover">
+              <img src="${esc(item.cover)}" alt="${esc(item.title)}" />
+              <div class="spot-badges">
+                <span class="badge">${esc(item.category)}</span>
+                <span class="badge gold">${esc(item.city)}</span>
+                ${featuredBadge}
+              </div>
+            </div>
+
+            <div class="fiche-body">
+              <div class="fiche-meta">
+                <span class="mini">📍 ${esc(item.zone || item.city || "Terrain")}</span>
+                <span class="mini">🧭 ${esc(item.kind || "À découvrir")}</span>
+                <span class="mini">💬 Contact direct</span>
+              </div>
+
+              <h1 class="fiche-title">${esc(item.title)}</h1>
+
+              <div class="spot-price">${esc(item.price)}</div>
+
+              <div class="fiche-desc">${esc(item.full_desc || item.desc || "Découvre ce lieu en un coup d’œil.")}</div>
+
+              <div class="tags">${tagsHtml}</div>
+
+              ${galleryHtml}
+            </div>
+          </section>
+
+          <aside class="fiche-side">
+            ${infoBlocks}
+
+            <div class="spot-actions">
+              <a class="btn btn-primary" href="${esc(item.contact_url || DEFAULT_CONTACT_URL)}" target="_blank" rel="noopener">
+                Parler au lieu
+              </a>
+              ${mapButton}
+              <a class="btn btn-ghost" href="./">
+                Retour aux lieux
+              </a>
+            </div>
+          </aside>
+        </article>
+      `;
+
+      updateMetrics([item]);
+    }
+
+    function pullRows(data){
+      if(Array.isArray(data)) return data;
+      if(data?.ok === true && Array.isArray(data.places)) return data.places;
+      if(data?.ok === true && Array.isArray(data.items)) return data.items;
+      if(data?.ok === true && Array.isArray(data.spots)) return data.spots;
+      if(data?.place && typeof data.place === "object") return [data.place];
+      return [];
+    }
+
+    async function fetchFromRpc(client){
+      const attempts = [
+        { name:"digiy_explore_public_places", body:{} },
+        { name:"digiy_explore_public_list_places", body:{} },
+        { name:"digiy_explore_list_public_places", body:{} },
+        { name:"digiy_explore_public_spots", body:{} }
+      ];
+
+      for(const attempt of attempts){
+        try{
+          const { data, error } = await client.rpc(attempt.name, attempt.body);
+          if(error) continue;
+          const rows = pullRows(data).filter(Boolean);
+          if(rows.length) return rows;
+        }catch(_){}
+      }
+
+      return [];
+    }
+
+    async function fetchFromTables(client){
+      const tableAttempts = [
+        {
+          table: "digiy_explore_places",
+          build: q => q.select("*").eq("is_published", true).order("updated_at", { ascending:false }).limit(24)
+        },
+        {
+          table: "digiy_explore_spots",
+          build: q => q.select("*").eq("published", true).order("updated_at", { ascending:false }).limit(24)
+        }
+      ];
+
+      for(const attempt of tableAttempts){
+        try{
+          const { data, error } = await attempt.build(client.from(attempt.table));
+          if(error) continue;
+          if(Array.isArray(data) && data.length) return data;
+        }catch(_){}
+      }
+
+      return [];
+    }
+
+    async function fetchSingleFromRpc(client, slug){
+      const attempts = [
+        { name:"digiy_explore_public_place_by_slug", body:{ p_slug: slug } },
+        { name:"digiy_explore_get_public_place_by_slug", body:{ p_slug: slug } }
+      ];
+
+      for(const attempt of attempts){
+        try{
+          const { data, error } = await client.rpc(attempt.name, attempt.body);
+          if(error) continue;
+          if(data?.ok && data.place) return data.place;
+          if(data && typeof data === "object" && !Array.isArray(data)) return data.place || data;
+        }catch(_){}
+      }
+
+      return null;
+    }
+
+    async function fetchSingleFromTables(client, slug){
+      const tableAttempts = [
+        {
+          table: "digiy_explore_places",
+          build: q => q.select("*").eq("slug", slug).eq("is_published", true).limit(1).maybeSingle()
+        },
+        {
+          table: "digiy_explore_spots",
+          build: q => q.select("*").eq("slug", slug).eq("published", true).limit(1).maybeSingle()
+        }
+      ];
+
+      for(const attempt of tableAttempts){
+        try{
+          const { data, error } = await attempt.build(client.from(attempt.table));
+          if(error) continue;
+          if(data) return data;
+        }catch(_){}
+      }
+
+      return null;
+    }
+
+    async function loadSingleSpot(client, slug){
+      const item = await fetchSingleFromRpc(client, slug) || await fetchSingleFromTables(client, slug);
+
+      if(item){
+        renderSingleSpot(item);
+        $status.textContent = "Lieu chargé";
+        return true;
+      }
+
+      $grid.className = "grid grid-single";
+      $grid.innerHTML = `
+        <div class="empty">
+          Ce lieu n’a pas été trouvé.
+          <div style="margin-top:14px">
+            <a class="btn btn-primary" href="./">Retour à la vitrine</a>
+          </div>
+        </div>
+      `;
+      updateMetrics([]);
+      $hero.style.display = "none";
+      $topActionBtn.textContent = "Retour vitrine";
+      $topActionBtn.href = "./";
+      $sectionTitle.textContent = "Lieu introuvable";
+      $sectionText.textContent = "Le lien a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
+      $status.textContent = "Lieu introuvable";
+      return false;
+    }
+
+    async function loadSpots(){
+      try{
+        const url = window.DIGIY_SUPABASE_URL;
+        const key = window.DIGIY_SUPABASE_ANON || window.DIGIY_SUPABASE_ANON_KEY;
+
+        if(!url || !key || !window.supabase){
+          throw new Error("Supabase indisponible");
+        }
+
+        const client = window.supabase.createClient(url, key);
+
+        if(REQUESTED_SLUG){
+          await loadSingleSpot(client, REQUESTED_SLUG);
+          return;
+        }
+
+        let items = await fetchFromRpc(client);
+        if(!items.length){
+          items = await fetchFromTables(client);
+        }
+
+        if(items.length){
+          renderSpots(items);
+          $status.textContent = "Lieux publiés chargés";
+        } else {
+          renderSpots(SHOWCASE_SPOTS);
+          $status.textContent = "Mode vitrine";
+        }
+      } catch (err){
+        console.warn("EXPLORE fallback:", err);
+
+        if(REQUESTED_SLUG){
+          $hero.style.display = "none";
+          $topActionBtn.textContent = "Retour vitrine";
+          $topActionBtn.href = "./";
+          $sectionTitle.textContent = "Lieu indisponible";
+          $sectionText.textContent = "Le lien a bien été lu, mais ce lieu ne peut pas être chargé pour le moment.";
+          $grid.className = "grid grid-single";
+          $grid.innerHTML = `
+            <div class="empty">
+              Impossible d’ouvrir ce lieu pour le moment.
+              <div style="margin-top:14px">
+                <a class="btn btn-primary" href="./">Retour à la vitrine</a>
+              </div>
+            </div>
+          `;
+          updateMetrics([]);
+          $status.textContent = "Lecture indisponible";
+          return;
+        }
+
+        renderSpots(SHOWCASE_SPOTS);
+        $status.textContent = "Mode vitrine";
+      }
+    }
+
+    loadSpots();
+  </script>
+</body>
+</html>
