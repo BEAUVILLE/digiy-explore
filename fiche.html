@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>EXPLORE — Fiche lieu</title>
+  <title>Voir le lieu | DIGIY EXPLORE</title>
   <meta name="theme-color" content="#06130f" />
   <meta
     name="description"
-    content="DIGIY EXPLORE — fiche publique d’un lieu, spot ou activité."
+    content="Je découvre un lieu avec DIGIY EXPLORE : ambiance, repères utiles et contact direct."
   />
 
   <script>
@@ -41,7 +41,7 @@
     body{
       min-height:100vh;
       color:var(--ink);
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family:Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at top, rgba(212,175,55,.09), transparent 26%),
         linear-gradient(180deg, #071510 0%, #06130f 48%, #04100c 100%);
@@ -72,16 +72,21 @@
     }
 
     .logo{
-      width:46px;
-      height:46px;
+      width:50px;
+      height:50px;
       border-radius:16px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, rgba(212,175,55,.24), rgba(212,175,55,.06));
+      overflow:hidden;
       border:1px solid rgba(212,175,55,.22);
       box-shadow:0 10px 28px rgba(0,0,0,.18);
-      font-size:23px;
+      background:#fff;
       flex:0 0 auto;
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
     .brandText{min-width:0}
@@ -465,18 +470,19 @@
   <div class="wrap">
     <header class="topbar">
       <div class="brand">
-        <div class="logo">🧭</div>
+        <div class="logo">
+          <img src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg" alt="Logo DIGIYLYFE">
+        </div>
         <div class="brandText">
           <div class="kicker">DIGIY EXPLORE</div>
-          <div class="title">Fiche publique lieu</div>
-          <div class="sub" id="subline">Lecture claire d’un lieu, spot ou activité.</div>
+          <div class="title">Je découvre le lieu</div>
+          <div class="sub" id="subline">Lecture claire d’un lieu, d’une sortie ou d’une activité.</div>
         </div>
       </div>
 
       <div class="topActions">
-        <a class="btn ghost" href="./index.html">Retour vitrine</a>
-        <a class="btn secondary" href="./pin.html">Entrée PIN</a>
-        <a class="btn secondary" id="editBtn" href="./submit.html">Éditer</a>
+        <a class="btn ghost" href="./index.html">Retour aux lieux</a>
+        <a class="btn primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">Je fais découvrir mon lieu</a>
       </div>
     </header>
 
@@ -484,20 +490,20 @@
 
     <section class="hero">
       <article class="panel">
-        <div id="cover" class="coverFallback">Chargement de la fiche…</div>
+        <div id="cover" class="coverFallback">Chargement du lieu…</div>
       </article>
 
       <aside class="panel sideCard">
         <div class="miniStat">
-          <div class="miniLabel">Catégorie</div>
+          <div class="miniLabel">Type de lieu</div>
           <div class="miniValue" id="categoryBox">—</div>
-          <div class="miniHint">Famille terrain du lieu.</div>
+          <div class="miniHint">La famille du lieu ou de l’activité.</div>
         </div>
 
         <div class="miniStat">
-          <div class="miniLabel">Ville / zone</div>
+          <div class="miniLabel">Où c’est</div>
           <div class="miniValue" id="locationBox">—</div>
-          <div class="miniHint">Lecture territoriale du point.</div>
+          <div class="miniHint">Ville, zone ou coin du terrain.</div>
         </div>
 
         <div class="miniStat">
@@ -507,15 +513,15 @@
         </div>
 
         <div class="miniStat">
-          <div class="miniLabel">Indice</div>
+          <div class="miniLabel">Budget</div>
           <div class="miniValue" id="priceBox">—</div>
-          <div class="miniHint">Lecture simple du prix ou de l’accès.</div>
+          <div class="miniHint">Prix, accès libre ou indication simple.</div>
         </div>
 
         <div class="actions">
           <a id="callBtn" class="btn primary" href="./index.html">Appeler</a>
           <a id="waBtn" class="btn secondary" href="./index.html">WhatsApp</a>
-          <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Carte</a>
+          <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Voir la carte</a>
         </div>
       </aside>
     </section>
@@ -523,12 +529,12 @@
     <section class="layout">
       <article class="panel">
         <div class="cardBody">
-          <h2 class="sectionTitle">À propos</h2>
-          <p class="sectionSub">Description courte puis lecture complète du lieu.</p>
+          <h2 class="sectionTitle">Ce qu’il faut savoir</h2>
+          <p class="sectionSub">Un résumé rapide puis plus de détails pour sentir le lieu.</p>
 
           <div class="grid">
             <div class="infoRow">
-              <strong>Résumé</strong>
+              <strong>En bref</strong>
               <span id="shortDescriptionBox">—</span>
             </div>
 
@@ -541,8 +547,8 @@
 
       <aside class="panel">
         <div class="cardBody">
-          <h2 class="sectionTitle">Infos clés</h2>
-          <p class="sectionSub">Repères utiles pour lire vite le lieu.</p>
+          <h2 class="sectionTitle">Repères utiles</h2>
+          <p class="sectionSub">Les infos simples pour voir vite si ce lieu te parle.</p>
 
           <div class="grid">
             <div class="infoRow">
@@ -551,14 +557,14 @@
             </div>
 
             <div class="infoRow">
-              <strong>Slug public</strong>
-              <span id="slugBox">—</span>
+              <strong>Ambiance</strong>
+              <span id="kindBox">—</span>
             </div>
 
             <div class="infoRow">
-              <strong>Tags</strong>
+              <strong>Mots du lieu</strong>
               <span id="tagsBox">
-                <span class="muted">Aucun tag.</span>
+                <span class="muted">Aucun mot-clé.</span>
               </span>
             </div>
           </div>
@@ -568,8 +574,8 @@
 
     <section class="panel">
       <div class="cardBody">
-        <h2 class="sectionTitle">Galerie</h2>
-        <p class="sectionSub">Les photos aident la lecture. Pas besoin de cinéma, juste du concret.</p>
+        <h2 class="sectionTitle">Photos</h2>
+        <p class="sectionSub">Juste ce qu’il faut pour voir le lieu sans blabla inutile.</p>
 
         <div id="gallery" class="gallery">
           <div class="empty">Aucune photo disponible pour le moment.</div>
@@ -603,14 +609,13 @@
       const shortDescriptionBox = $("shortDescriptionBox");
       const fullDescriptionBox = $("fullDescriptionBox");
       const addressBox = $("addressBox");
-      const slugBox = $("slugBox");
+      const kindBox = $("kindBox");
       const tagsBox = $("tagsBox");
       const gallery = $("gallery");
 
       const callBtn = $("callBtn");
       const waBtn = $("waBtn");
       const mapsBtn = $("mapsBtn");
-      const editBtn = $("editBtn");
 
       function setMsg(text, type){
         if(!text){
@@ -667,7 +672,7 @@
         const coverUrl = place?.cover_url || "";
         const categoryLabel = place?.category_label || place?.category_code || "Lieu";
         const title = place?.public_name || "Lieu";
-        const shortText = place?.short_description || "Lecture publique d’un lieu DIGIY EXPLORE.";
+        const shortText = place?.short_description || "Découvre ce lieu en un coup d’œil.";
 
         if(coverUrl){
           cover.className = "cover";
@@ -691,13 +696,13 @@
           `;
         }
 
-        document.title = (title ? title + " — " : "") + "DIGIY EXPLORE";
-        subline.textContent = title ? ("Lecture publique : " + title) : "Lecture claire d’un lieu, spot ou activité.";
+        document.title = (title ? title + " | " : "") + "DIGIY EXPLORE";
+        subline.textContent = title ? ("Je découvre : " + title) : "Lecture claire d’un lieu, d’une sortie ou d’une activité.";
       }
 
       function renderTags(tags){
         if(!Array.isArray(tags) || !tags.length){
-          tagsBox.innerHTML = `<span class="muted">Aucun tag.</span>`;
+          tagsBox.innerHTML = `<span class="muted">Aucun mot-clé.</span>`;
           return;
         }
 
@@ -730,11 +735,12 @@
         }).join("");
       }
 
-      function renderPlace(place, slug){
+      function renderPlace(place){
         const categoryText = [place?.category_icon, place?.category_label || place?.category_code].filter(Boolean).join(" ");
         const locationText = [place?.city, place?.zone].filter(Boolean).join(" — ");
         const contactText = place?.whatsapp || place?.phone || "Non renseigné";
         const priceText = place?.price_hint || "Non précisé";
+        const kindText = place?.subcategory || "Non précisé";
 
         renderCover(place);
 
@@ -746,7 +752,7 @@
         shortDescriptionBox.textContent = place?.short_description || "Aucun résumé disponible.";
         fullDescriptionBox.textContent = place?.full_description || "Aucune description complète disponible.";
         addressBox.textContent = place?.address_text || "Adresse non précisée.";
-        slugBox.textContent = slug || "—";
+        kindBox.textContent = kindText;
 
         renderTags(place?.tags);
         renderGallery(place);
@@ -774,10 +780,8 @@
         if(!(place?.latitude || place?.longitude || place?.address_text)){
           mapsBtn.textContent = "Pas de repère";
         } else {
-          mapsBtn.textContent = "Carte";
+          mapsBtn.textContent = "Voir la carte";
         }
-
-        editBtn.href = "./submit.html?slug=" + encodeURIComponent(slug || "");
       }
 
       async function loadPlace(slug){
@@ -792,13 +796,13 @@
         const slug = getSlug();
 
         if(!slug){
-          setMsg("Aucun slug trouvé dans l’URL. Retourne à la vitrine EXPLORE.", "bad");
+          setMsg("Aucun identifiant de lieu trouvé. Retourne à la vitrine.", "bad");
           cover.className = "coverFallback";
-          cover.textContent = "Slug manquant.";
+          cover.textContent = "Lieu non précisé.";
           return;
         }
 
-        setMsg("Chargement de la fiche publique…", "info");
+        setMsg("Chargement du lieu…", "info");
 
         try{
           const payload = await loadPlace(slug);
@@ -807,19 +811,19 @@
             throw new Error("PLACE_NOT_FOUND");
           }
 
-          renderPlace(payload.place, slug);
-          setMsg("Fiche publique chargée.", "ok");
+          renderPlace(payload.place);
+          setMsg("Lieu chargé.", "ok");
         }catch(err){
-          console.error("[PRO-EXPLORE fiche] error:", err);
-          setMsg("Ce lien n’existe pas ou le lieu n’est pas publié.", "bad");
+          console.error("[EXPLORE fiche] error:", err);
+          setMsg("Ce lieu n’est pas disponible pour le moment.", "bad");
 
           cover.className = "coverFallback";
           cover.innerHTML = `
             <div style="padding:22px;">
-              <div class="badge">Introuvable</div>
+              <div class="badge">Indisponible</div>
               <h1 class="heroTitle" style="margin-bottom:10px;">Lieu introuvable</h1>
               <p class="heroLead" style="color:var(--muted); text-shadow:none;">
-                Ce lien n’existe pas ou la fiche n’est pas actuellement publiée.
+                Ce lien n’existe pas ou le lieu n’est pas actuellement visible.
               </p>
             </div>
           `;
@@ -829,15 +833,14 @@
           contactBox.textContent = "—";
           priceBox.textContent = "—";
           shortDescriptionBox.textContent = "Aucune fiche publique disponible.";
-          fullDescriptionBox.textContent = "Retourne à la vitrine publique ou vérifie le slug.";
+          fullDescriptionBox.textContent = "Retourne à la vitrine pour découvrir les autres lieux.";
           addressBox.textContent = "—";
-          slugBox.textContent = slug || "—";
-          tagsBox.innerHTML = `<span class="muted">Aucun tag.</span>`;
+          kindBox.textContent = "—";
+          tagsBox.innerHTML = `<span class="muted">Aucun mot-clé.</span>`;
           gallery.innerHTML = `<div class="empty">Aucune photo disponible.</div>`;
           callBtn.href = "./index.html";
           waBtn.href = "./index.html";
           mapsBtn.href = "./index.html";
-          editBtn.href = "./submit.html?slug=" + encodeURIComponent(slug || "");
         }
       }
 
