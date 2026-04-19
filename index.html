@@ -1497,7 +1497,6 @@
     const DEFAULT_OPEN_URL = SITE_HOME;
     const DEFAULT_CONTACT_URL = "https://commencer-a-payer.digiylyfe.com/";
     const DEFAULT_COVER = "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif";
-    const LOGO_URL = "https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg";
 
     const SHOWCASE_SPOTS = [
       {
@@ -1583,6 +1582,8 @@
     const params = new URLSearchParams(window.location.search);
     const REQUESTED_SLUG = normalizeSlug(params.get("slug"));
     const RETURN_URL = normalizeReturnUrl(params.get("return"));
+
+    let _exploreClient = null;
 
     const $grid = document.getElementById("spotsGrid");
     const $status = document.getElementById("dataStatus");
@@ -1672,6 +1673,33 @@
         return "https://www.google.com/maps?q=" + encodeURIComponent(address);
       }
       return "";
+    }
+
+    function getExploreClient(){
+      if (_exploreClient) return _exploreClient;
+
+      const url = window.DIGIY_SUPABASE_URL;
+      const key = window.DIGIY_SUPABASE_ANON || window.DIGIY_SUPABASE_ANON_KEY;
+
+      if (!url || !key || !window.supabase) return null;
+
+      _exploreClient = window.supabase.createClient(url, key, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false,
+          storage: {
+            getItem: () => null,
+            setItem: () => {},
+            removeItem: () => {}
+          }
+        },
+        global: {
+          fetch: (...args) => fetch(...args)
+        }
+      });
+
+      return _exploreClient;
     }
 
     function normalizeItem(item){
@@ -1778,10 +1806,16 @@
         contact.href = item.contact_url || DEFAULT_CONTACT_URL;
 
         const open = node.querySelector(".js-open");
-        open.href = item.open_url || DEFAULT_OPEN_URL;
-        if(/^https?:/i.test(open.href)){
-          open.target = "_blank";
-        }
+        const rawOpenUrl = item.open_url || DEFAULT_OPEN_URL;
+        open.href = rawOpenUrl;
+
+        try{
+          const absOpenUrl = new URL(rawOpenUrl, window.location.href);
+          if (absOpenUrl.origin !== window.location.origin) {
+            open.target = "_blank";
+            open.rel = "noopener";
+          }
+        }catch(_){}
 
         $grid.appendChild(node);
       });
@@ -2010,14 +2044,11 @@
 
     async function loadSpots(){
       try{
-        const url = window.DIGIY_SUPABASE_URL;
-        const key = window.DIGIY_SUPABASE_ANON || window.DIGIY_SUPABASE_ANON_KEY;
+        const client = getExploreClient();
 
-        if(!url || !key || !window.supabase){
+        if(!client){
           throw new Error("Supabase indisponible");
         }
-
-        const client = window.supabase.createClient(url, key);
 
         if(REQUESTED_SLUG){
           await loadSingleSpot(client, REQUESTED_SLUG);
