@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Voir le lieu | DIGIY EXPLORE</title>
+  <title>Voir le lieu — DIGIY EXPLORE</title>
   <meta name="theme-color" content="#06130f" />
   <meta
     name="description"
-    content="Je découvre un lieu avec son ambiance, ses repères utiles et un contact direct."
+    content="Je découvre un lieu avec son ambiance, ses photos, son repère utile, WhatsApp, carte et partage simple sur téléphone."
   />
 
   <script>
@@ -45,6 +45,7 @@
       background:
         radial-gradient(circle at top, rgba(212,175,55,.09), transparent 26%),
         linear-gradient(180deg, #071510 0%, #06130f 48%, #04100c 100%);
+      padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));
     }
 
     a{color:inherit;text-decoration:none}
@@ -449,6 +450,128 @@
       text-align:center;
     }
 
+
+    #gallery,.hero,.layout{
+      scroll-margin-top:88px;
+    }
+
+    .publicBottomNav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:99990;
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
+      background:rgba(6,19,15,.94);
+      border-top:1px solid rgba(255,255,255,.10);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .publicBottomNavInner{
+      width:min(100%,760px);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:6px;
+    }
+
+    .publicBottomNav a,
+    .publicBottomNav button{
+      min-height:58px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:3px;
+      color:rgba(248,250,252,.72);
+      font-size:11px;
+      font-weight:950;
+      text-align:center;
+      border:1px solid transparent;
+      text-decoration:none;
+      background:transparent;
+      cursor:pointer;
+      font-family:inherit;
+      padding:0 4px;
+    }
+
+    .publicBottomNav .icoBottom{font-size:18px;line-height:1}
+
+    .publicBottomNav a.active,
+    .publicBottomNav button.active{
+      color:#13200d;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      border-color:rgba(243,212,107,.28);
+      box-shadow:0 12px 26px rgba(212,175,55,.18);
+    }
+
+    .mobilePublicFastRow{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .mobilePublicFastRow a,
+    .mobilePublicFastRow button{
+      min-height:46px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:950;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-family:inherit;
+    }
+
+    .mobilePublicFastRow .primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#13200d;
+      border:none;
+    }
+
+    .shareToast{
+      position:fixed;
+      left:50%;
+      bottom:calc(92px + env(safe-area-inset-bottom,0px));
+      transform:translateX(-50%) translateY(12px);
+      z-index:99999;
+      opacity:0;
+      pointer-events:none;
+      transition:.22s ease;
+      max-width:calc(100vw - 24px);
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid rgba(243,212,107,.28);
+      background:rgba(16,38,30,.96);
+      color:var(--gold2);
+      font-size:13px;
+      font-weight:900;
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .shareToast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:640px){
+      .topActions{display:none}
+      .mobilePublicFastRow{grid-template-columns:1fr 1fr}
+      .wrap{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+    }
+
+
     @media (max-width: 1040px){
       .hero, .layout{grid-template-columns:1fr}
     }
@@ -481,8 +604,8 @@
       </div>
 
       <div class="topActions">
-        <a class="btn ghost" href="./index.html">Retour aux lieux</a>
-        <a class="btn primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">Je fais découvrir mon lieu</a>
+        <a class="btn ghost" href="./index.html">Retour</a>
+        <a class="btn primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">Mon lieu</a>
       </div>
     </header>
 
@@ -521,7 +644,14 @@
         <div class="actions">
           <a id="callBtn" class="btn primary" href="./index.html">Appeler</a>
           <a id="waBtn" class="btn secondary" href="./index.html">WhatsApp</a>
-          <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Voir la carte</a>
+          <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Y aller</a>
+        </div>
+
+        <div class="mobilePublicFastRow">
+          <a href="./index.html">← Retour</a>
+          <a id="fastPhotos" href="#gallery">🖼️ Photos</a>
+          <a class="primary" id="fastGo" href="./index.html">🧭 Y aller</a>
+          <button id="fastShare" type="button">📤 Partager</button>
         </div>
       </aside>
     </section>
@@ -529,8 +659,8 @@
     <section class="layout">
       <article class="panel">
         <div class="cardBody">
-          <h2 class="sectionTitle">Ce qu’il faut savoir</h2>
-          <p class="sectionSub">Un résumé rapide puis plus de détails pour sentir le lieu.</p>
+          <h2 class="sectionTitle">À savoir</h2>
+          <p class="sectionSub">Le résumé utile pour comprendre vite et décider.</p>
 
           <div class="grid">
             <div class="infoRow">
@@ -547,8 +677,8 @@
 
       <aside class="panel">
         <div class="cardBody">
-          <h2 class="sectionTitle">Repères utiles</h2>
-          <p class="sectionSub">Les infos simples pour voir vite si ce lieu te parle.</p>
+          <h2 class="sectionTitle">Infos utiles</h2>
+          <p class="sectionSub">Contact, adresse, ambiance et mots utiles.</p>
 
           <div class="grid">
             <div class="infoRow">
@@ -575,7 +705,7 @@
     <section class="panel">
       <div class="cardBody">
         <h2 class="sectionTitle">Photos</h2>
-        <p class="sectionSub">Juste ce qu’il faut pour voir le lieu sans blabla inutile.</p>
+        <p class="sectionSub">Voir l’ambiance du lieu sans se perdre.</p>
 
         <div id="gallery" class="gallery">
           <div class="empty">Aucune photo disponible pour le moment.</div>
@@ -584,9 +714,22 @@
     </section>
 
     <div class="foot">
-      DIGIY EXPLORE • fiche publique • contact direct • lecture mobile simple
+      DIGIY EXPLORE • lieu public • contact direct • partage simple
     </div>
   </div>
+
+
+  <nav class="publicBottomNav" aria-label="Navigation lieu DIGIY EXPLORE">
+    <div class="publicBottomNavInner">
+      <a href="./index.html"><span class="icoBottom">←</span><span>Retour</span></a>
+      <a href="#gallery"><span class="icoBottom">🖼️</span><span>Photos</span></a>
+      <a class="active" id="bottomGo" href="./index.html"><span class="icoBottom">🧭</span><span>Y aller</span></a>
+      <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>WhatsApp</span></a>
+      <button id="bottomShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
+    </div>
+  </nav>
+
+  <div class="shareToast" id="shareToast">Lien prêt à partager</div>
 
   <script>
     (function(){
@@ -616,6 +759,12 @@
       const callBtn = $("callBtn");
       const waBtn = $("waBtn");
       const mapsBtn = $("mapsBtn");
+      const fastGo = $("fastGo");
+      const fastShare = $("fastShare");
+      const bottomGo = $("bottomGo");
+      const bottomWhatsapp = $("bottomWhatsapp");
+      const bottomShare = $("bottomShare");
+      const shareToast = $("shareToast");
 
       function setMsg(text, type){
         if(!text){
@@ -626,6 +775,65 @@
         msg.className = "msg show " + (type || "info");
         msg.textContent = text;
       }
+
+
+      function showShareToast(text){
+        if(!shareToast) return;
+        shareToast.textContent = text || "Lien prêt à partager";
+        shareToast.classList.add("show");
+        clearTimeout(showShareToast._t);
+        showShareToast._t = setTimeout(() => shareToast.classList.remove("show"), 2200);
+      }
+
+      async function shareCurrentPlace(label){
+        const title = document.title || "DIGIY EXPLORE";
+        const text = label ? "Regarde ce lieu sur DIGIY EXPLORE : " + label : "Regarde ce lieu sur DIGIY EXPLORE.";
+        const url = window.location.href;
+
+        try{
+          if(navigator.share){
+            await navigator.share({ title, text, url });
+            return;
+          }
+          await navigator.clipboard.writeText(url);
+          showShareToast("Lien copié pour partager");
+        }catch(_){
+          try{
+            await navigator.clipboard.writeText(url);
+            showShareToast("Lien copié pour partager");
+          }catch(__){
+            showShareToast("Partage indisponible ici");
+          }
+        }
+      }
+
+      function wirePublicActions(place){
+        const label = place?.public_name || place?.title || "ce lieu";
+        const mapHref = buildMapsHref(place?.latitude, place?.longitude, place?.address_text);
+        const waHref = buildWaHref(place?.whatsapp || place?.phone, label);
+
+        if(fastGo){
+          fastGo.href = mapHref || "./index.html";
+          fastGo.target = mapHref && mapHref.startsWith("http") ? "_blank" : "";
+          fastGo.rel = mapHref && mapHref.startsWith("http") ? "noopener" : "";
+        }
+
+        if(bottomGo){
+          bottomGo.href = mapHref || "./index.html";
+          bottomGo.target = mapHref && mapHref.startsWith("http") ? "_blank" : "";
+          bottomGo.rel = mapHref && mapHref.startsWith("http") ? "noopener" : "";
+        }
+
+        if(bottomWhatsapp){
+          bottomWhatsapp.href = waHref || "./index.html";
+          bottomWhatsapp.target = waHref && waHref.startsWith("http") ? "_blank" : "";
+          bottomWhatsapp.rel = waHref && waHref.startsWith("http") ? "noopener" : "";
+        }
+
+        if(fastShare) fastShare.onclick = () => shareCurrentPlace(label);
+        if(bottomShare) bottomShare.onclick = () => shareCurrentPlace(label);
+      }
+
 
       function escapeHtml(value){
         return String(value ?? "")
@@ -780,8 +988,10 @@
         if(!(place?.latitude || place?.longitude || place?.address_text)){
           mapsBtn.textContent = "Pas de repère";
         } else {
-          mapsBtn.textContent = "Voir la carte";
+          mapsBtn.textContent = "Y aller";
         }
+
+        wirePublicActions(place);
       }
 
       async function loadPlace(slug){
@@ -791,6 +1001,8 @@
         if(error) throw error;
         return data;
       }
+
+      wirePublicActions(null);
 
       async function boot(){
         const slug = getSlug();
