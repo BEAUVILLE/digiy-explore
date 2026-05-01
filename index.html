@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="Je découvre le coin avec des lieux, expériences et sorties qui donnent envie de bouger."
+    content="Je découvre le coin avec des lieux, expériences, sorties, contacts directs et partage simple sur téléphone."
   />
   <meta name="theme-color" content="#06130f" />
-  <title>Je découvre le coin | DIGIY EXPLORE</title>
+  <title>Je découvre le coin — DIGIY EXPLORE</title>
 
   <script>
     window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
@@ -52,6 +52,7 @@
         linear-gradient(180deg, #06130f 0%, #071711 42%, #091e17 100%);
       color:var(--text);
       min-height:100vh;
+      padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -999,6 +1000,129 @@
       to{ transform:rotate(360deg); }
     }
 
+
+    #heroSection,#spots,#proSection,#inspirationSection,#whySection{
+      scroll-margin-top:96px;
+    }
+
+    .publicBottomNav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:99990;
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
+      background:rgba(6,19,15,.94);
+      border-top:1px solid rgba(255,255,255,.10);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .publicBottomNavInner{
+      width:min(100%,760px);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:6px;
+    }
+
+    .publicBottomNav a,
+    .publicBottomNav button{
+      min-height:58px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:3px;
+      color:rgba(247,251,248,.72);
+      font-size:11px;
+      font-weight:950;
+      text-align:center;
+      border:1px solid transparent;
+      text-decoration:none;
+      background:transparent;
+      cursor:pointer;
+      font-family:inherit;
+      padding:0 4px;
+    }
+
+    .publicBottomNav .icoBottom{font-size:18px;line-height:1}
+
+    .publicBottomNav a.active,
+    .publicBottomNav button.active{
+      color:#062414;
+      background:linear-gradient(135deg,var(--gold),var(--gold-2));
+      border-color:rgba(242,204,120,.28);
+      box-shadow:0 12px 26px rgba(220,180,90,.18);
+    }
+
+    .mobilePublicFastRow{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .mobilePublicFastRow a,
+    .mobilePublicFastRow button{
+      min-height:46px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      text-decoration:none;
+      font-weight:950;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-family:inherit;
+    }
+
+    .mobilePublicFastRow .primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold-2));
+      color:#062414;
+      border:none;
+    }
+
+    .share-toast{
+      position:fixed;
+      left:50%;
+      bottom:calc(92px + env(safe-area-inset-bottom,0px));
+      transform:translateX(-50%) translateY(12px);
+      z-index:99999;
+      opacity:0;
+      pointer-events:none;
+      transition:.22s ease;
+      max-width:calc(100vw - 24px);
+      padding:10px 16px;
+      border-radius:999px;
+      border:1px solid rgba(242,204,120,.28);
+      background:rgba(16,38,30,.96);
+      color:#f5db9a;
+      font-size:13px;
+      font-weight:900;
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .share-toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:780px){
+      .topbar .actions{display:none}
+      .hero{padding-top:18px}
+      .mobilePublicFastRow{grid-template-columns:1fr 1fr}
+      .footer{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+    }
+
+
     @media (max-width: 1100px){
       .hero-grid,
       .pro-grid,
@@ -1117,6 +1241,13 @@
             <a class="btn btn-ghost" href="#proSection">Présenter mon lieu</a>
           </div>
 
+          <div class="mobilePublicFastRow">
+            <a class="primary" href="#spots">📍 Voir</a>
+            <a href="#spots" id="fastPublicGo">🧭 Y aller</a>
+            <button type="button" id="fastPublicShare">📤 Partager</button>
+            <a href="#proSection">✨ Mon lieu</a>
+          </div>
+
           <div class="hero-note">
             <span class="mini-chip">🌍 Petite Côte • Dakar • Sénégal</span>
             <span class="mini-chip">💬 Contact direct</span>
@@ -1179,7 +1310,7 @@
             </div>
           </div>
 
-          <a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a>
+          <a class="btn btn-outline" href="#spots">Voir les lieux</a>
         </aside>
       </div>
     </section>
@@ -1485,8 +1616,8 @@
         <div class="tags js-tags"></div>
 
         <div class="spot-actions">
-          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Contacter</a>
-          <a class="btn btn-primary js-open" rel="noopener">Ouvrir</a>
+          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-primary js-open" rel="noopener">Voir</a>
         </div>
       </div>
     </article>
@@ -1603,6 +1734,62 @@
 
     $siteBackBtn.href = RETURN_URL || SITE_HOME;
     $allSpotsChip.href = "./";
+
+
+    function showShareToast(text){
+      const toast = document.getElementById("shareToast");
+      if(!toast) return;
+      toast.textContent = text || "Lien prêt à partager";
+      toast.classList.add("show");
+      clearTimeout(showShareToast._t);
+      showShareToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    async function shareCurrentPage(){
+      const title = document.title || "DIGIY EXPLORE";
+      const text = REQUESTED_SLUG
+        ? "Regarde ce lieu sur DIGIY EXPLORE."
+        : "Découvre des lieux vivants avec DIGIY EXPLORE.";
+      const url = window.location.href;
+
+      try{
+        if(navigator.share){
+          await navigator.share({ title, text, url });
+          return;
+        }
+        await navigator.clipboard.writeText(url);
+        showShareToast("Lien copié pour partager");
+      }catch(_){
+        try{
+          await navigator.clipboard.writeText(url);
+          showShareToast("Lien copié pour partager");
+        }catch(__){
+          showShareToast("Partage indisponible ici");
+        }
+      }
+    }
+
+    function wirePublicActions(item){
+      const normalized = item ? normalizeItem(item) : null;
+      const goHref = normalized?.map_url || normalized?.open_url || "#spots";
+
+      ["bottomPublicGo","fastPublicGo"].forEach(id => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.href = goHref;
+        if(/^https?:/i.test(goHref)){
+          el.target = "_blank";
+          el.rel = "noopener";
+        }
+      });
+
+      ["bottomPublicShare","fastPublicShare"].forEach(id => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.onclick = shareCurrentPage;
+      });
+    }
+
 
     function esc(str){
       return String(str ?? "")
@@ -1758,6 +1945,7 @@
 
     function renderSpots(items){
       setSingleMode(false);
+      wirePublicActions(null);
       $grid.className = "grid";
       $grid.innerHTML = "";
 
@@ -1825,6 +2013,7 @@
 
     function renderSingleSpot(raw){
       const item = normalizeItem(raw);
+      wirePublicActions(item);
 
       setSingleMode(true);
       $topActionBtn.textContent = "Retour vitrine";
@@ -1861,7 +2050,7 @@
         : "";
 
       const mapButton = item.map_url
-        ? `<a class="btn btn-outline" href="${esc(item.map_url)}" target="_blank" rel="noopener">Voir la carte</a>`
+        ? `<a class="btn btn-outline" href="${esc(item.map_url)}" target="_blank" rel="noopener">Y aller</a>`
         : "";
 
       const featuredBadge = item.featured ? `<span class="badge gold">Mis en avant</span>` : "";
@@ -1902,11 +2091,11 @@
 
             <div class="spot-actions">
               <a class="btn btn-primary" href="${esc(item.contact_url || DEFAULT_CONTACT_URL)}" target="_blank" rel="noopener">
-                Contacter
+                WhatsApp
               </a>
               ${mapButton}
               <a class="btn btn-ghost" href="./">
-                Voir la vitrine
+                Retour aux lieux
               </a>
             </div>
           </aside>
@@ -2095,8 +2284,22 @@
       }
     }
 
+    wirePublicActions(null);
     loadSpots();
   </script>
+
+  <nav class="publicBottomNav" aria-label="Navigation publique DIGIY EXPLORE">
+    <div class="publicBottomNavInner">
+      <a class="active" href="#heroSection"><span class="icoBottom">🏠</span><span>Accueil</span></a>
+      <a href="#spots"><span class="icoBottom">📍</span><span>Lieux</span></a>
+      <a id="bottomPublicGo" href="#spots"><span class="icoBottom">🧭</span><span>Y aller</span></a>
+      <button id="bottomPublicShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
+      <a href="#proSection"><span class="icoBottom">✨</span><span>Mon lieu</span></a>
+    </div>
+  </nav>
+
+  <div class="share-toast" id="shareToast">Lien prêt à partager</div>
+
 <!-- ============================================================
      DIGIY AUDIO — EXPLORE
      À coller juste avant </body> dans ta page EXPLORE
@@ -2109,8 +2312,8 @@ window.DIGIY_AUDIO_CONFIG = {
   text: "Bienvenue. Ici, tu peux découvrir un lieu, sentir son ambiance et contacter directement la bonne personne. Tu regardes, tu comprends, tu avances sans intermédiaire. Simple. Direct. Humain. DIGIYLYFE.",
   buttonBg: "linear-gradient(135deg,#d4af37,#b78b34)",
   buttonColor: "#111827",
-  bottom: "24px",
-  left: "24px",
+  bottom: "96px",
+  left: "14px",
   rate: 0.82,
   pitch: 1,
   volume: 1,
