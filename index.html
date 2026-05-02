@@ -1,300 +1,1008 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#063b2b"/>
-  <title>DIGIY MARKET — Boutiques locales</title>
-  <meta name="description" content="DIGIY MARKET — Boutiques locales visibles sur téléphone, Visio Live, WhatsApp, partage, paiement direct au commerçant, zéro commission."/>
-  <meta name="robots" content="index,follow"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="Je découvre le coin avec des lieux, expériences, sorties, contacts directs et partage simple sur téléphone."
+  />
+  <meta name="theme-color" content="#06130f" />
+  <title>Je découvre le coin — DIGIY EXPLORE</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root{
-      --bg:#f5efe2;
-      --paper:#fffaf0;
-      --ink:#10251c;
-      --muted:#68746e;
-      --green:#063b2b;
-      --green2:#0b5a41;
-      --green3:#0f7a56;
-      --gold:#d6ad39;
-      --gold2:#f4cf64;
-      --sand:#eadfc7;
-      --cream:#fff7e8;
-      --line:rgba(16,37,28,.12);
-      --lineDark:rgba(255,255,255,.16);
-      --shadow:0 20px 60px rgba(6,59,43,.16);
-      --shadow2:0 10px 30px rgba(6,59,43,.12);
-      --r:28px;
-      --max:1180px;
-      --logo:url('https://digiylyfe.net/wp-content/uploads/2026/04/icon-512-1.png');
+      --bg:#06130f;
+      --bg-2:#091a15;
+      --card:#10261e;
+      --card-2:#143126;
+      --card-3:#17392c;
+      --line:rgba(255,255,255,.10);
+      --line-2:rgba(255,255,255,.16);
+      --text:#f7fbf8;
+      --muted:rgba(247,251,248,.74);
+      --soft:rgba(247,251,248,.56);
+      --gold:#dcb45a;
+      --gold-2:#f2cc78;
+      --green:#12b76a;
+      --green-2:#1ad17a;
+      --danger:#ff7a7a;
+      --shadow:0 20px 50px rgba(0,0,0,.30);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1200px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
     body{
       margin:0;
-      min-height:100vh;
-      font-family:Outfit,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--ink);
+      font-family: Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(900px 520px at 6% -8%, rgba(214,173,57,.18), transparent 58%),
-        radial-gradient(900px 520px at 105% 0%, rgba(6,59,43,.14), transparent 54%),
-        linear-gradient(180deg,#fff8ea 0%,#f4ecd9 48%,#efe3cc 100%);
-      overflow-x:hidden;
+        radial-gradient(circle at top left, rgba(220,180,90,.14), transparent 26%),
+        radial-gradient(circle at top right, rgba(18,183,106,.10), transparent 24%),
+        linear-gradient(180deg, #06130f 0%, #071711 42%, #091e17 100%);
+      color:var(--text);
+      min-height:100vh;
       padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));
     }
 
-    a{color:inherit;text-decoration:none}
-    button,input,select{font:inherit}
-    img{display:block;max-width:100%}
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
 
-    .wrap{width:min(var(--max),calc(100% - 28px));margin:0 auto}
+    .wrap{
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
+    }
 
     .topbar{
-      position:sticky;top:0;z-index:60;
+      position:sticky;
+      top:0;
+      z-index:50;
       backdrop-filter:blur(14px);
-      background:rgba(255,248,234,.88);
-      border-bottom:1px solid rgba(16,37,28,.10);
+      background:rgba(6,19,15,.78);
+      border-bottom:1px solid var(--line);
     }
+
     .topbar-inner{
-      min-height:94px;
-      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      min-height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
       padding:10px 0;
     }
-    .brand{display:flex;align-items:center;gap:14px;min-width:0}
-    .brand-logo{
-      width:78px;height:78px;border-radius:24px;object-fit:cover;flex:0 0 auto;
-      border:1px solid rgba(6,59,43,.14);background:#fff;box-shadow:0 14px 34px rgba(6,59,43,.18);
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
     }
-    .brand-title{font-size:1.45rem;font-weight:1000;letter-spacing:-.02em;line-height:1.05}
-    .brand-sub{margin-top:5px;color:var(--muted);font-size:.98rem;font-weight:850;line-height:1.25}
-    .top-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+
+    .brand-logo{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--line-2);
+      background:linear-gradient(135deg, #0f2b21, #18392b);
+      box-shadow:var(--shadow);
+      flex:0 0 auto;
+    }
+
+    .brand-logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .brand-copy{
+      min-width:0;
+    }
+
+    .brand-copy strong{
+      display:block;
+      font-size:16px;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand-copy span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
 
     .btn{
-      border:1px solid rgba(6,59,43,.12);cursor:pointer;
-      display:inline-flex;align-items:center;justify-content:center;gap:9px;
-      min-height:46px;padding:0 17px;border-radius:999px;
-      font-weight:950;font-size:.92rem;white-space:nowrap;
-      background:#fff;color:var(--green);box-shadow:var(--shadow2);
-      transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+      appearance:none;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:46px;
+      padding:0 16px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:14px;
+      transition:.18s ease;
+      white-space:nowrap;
     }
-    .btn:hover{transform:translateY(-1px);box-shadow:0 15px 34px rgba(6,59,43,.16)}
-    .btn-main{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:0}
-    .btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#2d2308;border:0}
-    .btn-soft{background:rgba(255,255,255,.76);color:var(--green)}
-    .btn-ghost{background:rgba(6,59,43,.07);box-shadow:none}
 
-    .hero{padding:24px 0 16px}
-    .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;align-items:stretch}
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-ghost{
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .btn-outline{
+      color:var(--text);
+      background:transparent;
+      border:1px solid rgba(220,180,90,.40);
+    }
+
+    .btn-primary{
+      color:#062414;
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 14px 32px rgba(220,180,90,.18);
+    }
+
+    .btn-soft{
+      color:#dffcea;
+      background:rgba(18,183,106,.10);
+      border:1px solid rgba(18,183,106,.24);
+    }
+
+    .hero{
+      padding:42px 0 18px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.12fr .88fr;
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .hero-card,
+    .side-card,
+    .section-card,
+    .example-card,
+    .why-card,
+    .pro-card{
+      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
     .hero-card{
-      position:relative;overflow:hidden;min-height:560px;border-radius:36px;
-      padding:30px;color:#fff;box-shadow:var(--shadow);
-      background:
-        radial-gradient(circle at 86% 12%, rgba(244,207,100,.32), transparent 22%),
-        radial-gradient(circle at 8% 92%, rgba(255,255,255,.10), transparent 28%),
-        linear-gradient(135deg,#052f22,#0b5a41 58%,#0f7a56);
+      padding:30px;
+      position:relative;
+      overflow:hidden;
     }
-    .hero-card::before{
-      content:"";position:absolute;inset:-90px -95px auto auto;width:260px;height:260px;border-radius:50%;
-      background:rgba(255,255,255,.07);
-    }
+
     .hero-card::after{
-      content:"";position:absolute;right:26px;bottom:22px;width:170px;height:170px;border-radius:38px;
-      background-image:var(--logo);background-size:cover;background-position:center;
-      opacity:.16;filter:saturate(1.1);transform:rotate(-5deg);
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .hero-copy{position:relative;z-index:2;max-width:710px}
-    .kicker{
-      display:inline-flex;align-items:center;gap:9px;width:max-content;max-width:100%;
-      padding:9px 13px;border-radius:999px;
-      background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);
-      color:#fff;font-size:.82rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;
-    }
-    h1{margin:16px 0 12px;font-size:clamp(2.4rem,5vw,5rem);line-height:.93;letter-spacing:-.055em;font-weight:1000}
-    .hero-lead{margin:0;color:rgba(255,255,255,.88);font-size:1.1rem;line-height:1.68;font-weight:730;max-width:68ch}
-    .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-    .hero-badge{
-      display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.11);
-      font-weight:900;color:#fff;font-size:.9rem;
-    }
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-    .hero-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
-    .hero-mini{
-      padding:16px;border-radius:22px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(10px)
-    }
-    .hero-mini strong{display:block;font-size:1.12rem;margin-bottom:5px}
-    .hero-mini span{display:block;color:rgba(255,255,255,.78);line-height:1.45;font-weight:650;font-size:.92rem}
-
-    .showcase{
-      display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.14fr .86fr;gap:14px;min-height:560px;
-    }
-    .photo-card{position:relative;overflow:hidden;border-radius:32px;box-shadow:var(--shadow);background:#ddd;min-height:180px}
-    .photo-card.big{grid-column:1/span 2}
-    .photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
-    .photo-card:hover img{transform:scale(1.05)}
-    .photo-layer{position:absolute;inset:auto 0 0 0;padding:18px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.68));color:#fff}
-    .photo-layer strong{display:block;font-size:1.05rem;margin-bottom:4px}
-    .photo-layer span{color:rgba(255,255,255,.86);font-weight:650}
-    .seal-card{
-      position:absolute;right:16px;top:16px;width:76px;height:76px;border-radius:24px;
-      background-image:var(--logo);background-size:cover;background-position:center;
-      border:2px solid rgba(244,207,100,.75);box-shadow:0 12px 28px rgba(0,0,0,.25);
+      content:"";
+      position:absolute;
+      inset:auto -60px -80px auto;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(220,180,90,.20), transparent 68%);
+      pointer-events:none;
     }
 
-    .quick-strip{padding:4px 0 0}
-    .quick-scroll{display:flex;gap:12px;overflow:auto;padding-bottom:8px;scrollbar-width:none}
-    .quick-scroll::-webkit-scrollbar{display:none}
-    .quick-card{
-      flex:0 0 250px;padding:16px;border-radius:24px;background:rgba(255,255,255,.78);
-      border:1px solid rgba(16,37,28,.08);box-shadow:var(--shadow2);
-    }
-    .quick-card strong{display:block;margin-bottom:6px;font-size:1.02rem}
-    .quick-card span{color:var(--muted);line-height:1.45;font-weight:650}
-
-    .section{padding:28px 0}
-    .panel{background:rgba(255,255,255,.78);border:1px solid rgba(16,37,28,.09);border-radius:32px;box-shadow:var(--shadow2)}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:16px}
-    .section-head h2{margin:10px 0 0;font-size:clamp(1.8rem,3vw,3rem);line-height:1;letter-spacing:-.035em;font-weight:1000}
-    .section-head p{margin:8px 0 0;color:var(--muted);line-height:1.65;font-weight:700;max-width:760px}
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;
-      color:var(--green);background:rgba(6,59,43,.08);border:1px solid rgba(6,59,43,.11);
-      font-size:.88rem;font-weight:950;
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(220,180,90,.24);
+      background:rgba(220,180,90,.08);
+      color:#f5db9a;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.04em;
+      text-transform:uppercase;
     }
 
-    .controls{display:grid;grid-template-columns:1.2fr .72fr .72fr auto;gap:10px;margin-top:18px}
-    .input,.select{
-      width:100%;min-height:48px;border-radius:999px;border:1px solid rgba(16,37,28,.12);
-      background:#fff;color:var(--ink);padding:0 16px;outline:none;font-weight:850;box-shadow:var(--shadow2)
-    }
-    .input:focus,.select:focus{border-color:rgba(6,59,43,.36);box-shadow:0 0 0 4px rgba(6,59,43,.09)}
-
-    .stats-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .stat-pill{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:#fff;border:1px solid rgba(16,37,28,.10);font-weight:900;color:var(--muted)}
-    .stat-pill b{color:var(--green)}
-
-    .shops-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}
-    .shop-card{
-      position:relative;overflow:hidden;border-radius:34px;background:#fff;border:1px solid rgba(16,37,28,.09);
-      box-shadow:var(--shadow);transition:transform .18s ease, box-shadow .18s ease;
-    }
-    .shop-card:hover{transform:translateY(-3px);box-shadow:0 26px 70px rgba(6,59,43,.20)}
-    .shop-media{
-      position:relative;min-height:290px;background:
-        radial-gradient(circle at 50% 42%, rgba(244,207,100,.20), transparent 34%),
-        radial-gradient(circle at 78% 14%, rgba(244,207,100,.22), transparent 28%),
-        linear-gradient(135deg,#052d22,#064b36 52%,#0b5a41);
-      color:#fff;display:grid;place-items:center;overflow:hidden;
-    }
-    .shop-media::before{
-      content:"";position:absolute;inset:0;background:
-        linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.20)),
-        radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(0,0,0,.16) 78%);
-      z-index:1;
-    }
-    .shop-media.has-img{background:#063b2b}
-    .shop-media.has-img .shop-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(.95) contrast(.95) brightness(.54);opacity:.44}
-
-    .gallery-ribbon{
-      position:absolute;left:14px;top:14px;z-index:4;
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:36px;padding:0 13px;border-radius:999px;
-      background:rgba(255,250,240,.94);color:var(--green);
-      border:1px solid rgba(244,207,100,.62);
-      box-shadow:0 12px 28px rgba(0,0,0,.18);
-      font-size:.78rem;font-weight:1000;letter-spacing:.04em;text-transform:uppercase;
-    }
-    .status-chip{
-      position:absolute;right:14px;top:14px;z-index:4;
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:36px;padding:0 12px;border-radius:999px;
-      background:rgba(34,197,94,.92);color:#062418;
-      border:1px solid rgba(255,255,255,.38);
-      box-shadow:0 12px 28px rgba(0,0,0,.18);
-      font-size:.78rem;font-weight:1000;
-    }
-    .live-digiy-hero{
-      display:inline-flex;flex-direction:column;gap:5px;
-      margin-top:18px;padding:14px 16px;border-radius:22px;
-      background:rgba(255,255,255,.12);border:1px solid rgba(244,207,100,.38);
-      box-shadow:0 14px 34px rgba(0,0,0,.18);
-      max-width:620px;
-    }
-    .live-digiy-hero strong{
-      color:#fff7c2;font-size:.95rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;
-    }
-    .live-digiy-hero span{
-      color:rgba(255,255,255,.86);font-size:.95rem;font-weight:760;line-height:1.45;
-    }
-    .live-digiy-card{
-      margin:12px 0 14px;padding:12px 13px;border-radius:18px;
-      background:linear-gradient(135deg,rgba(6,59,43,.08),rgba(214,173,57,.13));
-      border:1px solid rgba(6,59,43,.12);display:grid;gap:4px;
-    }
-    .live-digiy-card strong{
-      color:var(--green);font-size:.82rem;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;
-    }
-    .live-digiy-card span{
-      color:#4f5f58;font-size:.84rem;font-weight:820;line-height:1.38;
+    h1{
+      margin:16px 0 14px;
+      font-size:clamp(32px, 5vw, 60px);
+      line-height:1.02;
+      letter-spacing:-.03em;
     }
 
-    .shop-brand-seal{
-      position:relative;z-index:3;width:min(62%,190px);aspect-ratio:1/1;border-radius:34px;
-      background:#063b2b;display:grid;place-items:center;overflow:hidden;
-      border:3px solid rgba(244,207,100,.85);
-      box-shadow:0 22px 55px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.12);
-      transform:translateY(6px);
-    }
-    .shop-brand-seal img{width:100%;height:100%;object-fit:cover;display:block}
-    .shop-body{padding:18px 18px 17px;background:linear-gradient(180deg,#fff,#fffaf0)}
-    .shop-cat{font-size:.82rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:7px}
-    .shop-title{font-size:1.6rem;line-height:1.05;font-weight:1000;letter-spacing:-.025em;margin:0 0 8px}
-    .shop-desc{color:#45534d;font-weight:750;line-height:1.48;margin:0 0 12px;min-height:44px}
-    .shop-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-    .meta-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border-radius:999px;background:rgba(6,59,43,.06);border:1px solid rgba(6,59,43,.08);font-size:.84rem;font-weight:950;color:#263b32}
-    .shop-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .shop-actions .btn{box-shadow:none}
-    .digiy-floor{
-      margin-top:14px;padding:12px;border-radius:20px;background:linear-gradient(135deg,rgba(6,59,43,.07),rgba(214,173,57,.10));
-      border:1px solid rgba(6,59,43,.10);display:flex;gap:10px;align-items:center;
-    }
-    .digiy-floor img{width:40px;height:40px;border-radius:14px;object-fit:cover;flex:0 0 auto;border:1px solid rgba(6,59,43,.10)}
-    .digiy-floor div{font-size:.82rem;color:#4f5f58;font-weight:850;line-height:1.35}
-    .digiy-floor strong{display:block;color:var(--green);font-weight:1000}
-
-    .empty-box{padding:28px;border-radius:26px;border:1px dashed rgba(16,37,28,.18);background:rgba(255,255,255,.58);text-align:center;color:var(--muted);font-weight:850;line-height:1.6;margin-top:18px}
-    .loading-box{padding:28px;border-radius:26px;background:rgba(255,255,255,.66);border:1px solid rgba(16,37,28,.10);text-align:center;color:var(--muted);font-weight:900;margin-top:18px}
-
-    .doctrine{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
-    .doctrine-card{padding:24px;border-radius:30px;background:#fff;border:1px solid rgba(16,37,28,.08);box-shadow:var(--shadow2)}
-    .doctrine-card.dark{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;position:relative;overflow:hidden}
-    .doctrine-card.dark::after{content:"";position:absolute;right:20px;bottom:18px;width:118px;height:118px;border-radius:30px;background-image:var(--logo);background-size:cover;background-position:center;opacity:.14;transform:rotate(-5deg)}
-    .doctrine-card h3{margin:0 0 10px;font-size:1.55rem;letter-spacing:-.02em;line-height:1.05}
-    .doctrine-card p{margin:0;color:var(--muted);font-weight:730;line-height:1.7}
-    .doctrine-card.dark p{color:rgba(255,255,255,.82)}
-
-    footer{padding:24px 0 42px;color:var(--muted)}
-    .footer-box{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:18px 20px;border-radius:28px;background:rgba(255,255,255,.72);border:1px solid rgba(16,37,28,.09);box-shadow:var(--shadow2);font-weight:800}
-    .footer-box strong{color:var(--green);font-weight:1000}
-
-    .audio-btn{
-      position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:90;
-      border:0;border-radius:999px;padding:15px 20px;display:inline-flex;align-items:center;gap:10px;
-      background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1d1605;font-weight:1000;box-shadow:0 16px 40px rgba(6,59,43,.24);cursor:pointer
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.75;
+      max-width:760px;
     }
 
+    .hero-cta{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
 
-    #boutiques,.hero,.quick-strip{
-      scroll-margin-top:106px;
+    .hero-metrics{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .metric{
+      border-radius:18px;
+      padding:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .metric strong{
+      display:block;
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .metric span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .hero-note{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .mini-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+    }
+
+    .side-card{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .side-cover{
+      border-radius:20px;
+      overflow:hidden;
+      aspect-ratio:4/3;
+      border:1px solid var(--line);
+      background:#0b2018;
+      position:relative;
+    }
+
+    .side-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .side-cover-badge{
+      position:absolute;
+      left:12px;
+      top:12px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      min-height:32px;
+      padding:0 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background:rgba(6,19,15,.74);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(6px);
+    }
+
+    .side-kicker{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#f5db9a;
+      font-weight:900;
+    }
+
+    .side-title{
+      font-size:24px;
+      line-height:1.1;
+      font-weight:900;
+      margin:0;
+    }
+
+    .side-text{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .quick-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .quick-item{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+
+    .quick-item strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .quick-item span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .section{
+      padding:18px 0 22px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .section-head h2{
+      margin:0 0 6px;
+      font-size:clamp(24px, 3.2vw, 36px);
+      letter-spacing:-.02em;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
+      max-width:760px;
+    }
+
+    .section-tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:40px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .examples-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .example-card{
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    .example-cover{
+      aspect-ratio:16/11;
+      overflow:hidden;
+      border-bottom:1px solid var(--line);
+      background:#0b2018;
+    }
+
+    .example-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .35s ease;
+    }
+
+    .example-card:hover .example-cover img{
+      transform:scale(1.04);
+    }
+
+    .example-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+
+    .example-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .example-top span{
+      display:inline-flex;
+      align-items:center;
+      min-height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid rgba(220,180,90,.18);
+      background:rgba(220,180,90,.08);
+      color:#f0d58e;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .example-title{
+      margin:0;
+      font-size:18px;
+      line-height:1.25;
+      font-weight:900;
+    }
+
+    .example-text{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .example-footer{
+      margin-top:auto;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .example-footer .mini-chip{
+      min-height:30px;
+      font-size:11px;
+      padding:0 10px;
+    }
+
+    .why-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .why-card{
+      padding:20px;
+    }
+
+    .why-icon{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      margin-bottom:12px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+    }
+
+    .why-card h3{
+      margin:0 0 10px;
+      font-size:20px;
+      line-height:1.2;
+    }
+
+    .why-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.75;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .grid-single{
+      grid-template-columns:1fr;
+    }
+
+    .spot{
+      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+    }
+
+    .spot-cover{
+      position:relative;
+      aspect-ratio:16/10;
+      background:#0b2018;
+      overflow:hidden;
+    }
+
+    .spot-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .35s ease;
+    }
+
+    .spot:hover .spot-cover img{
+      transform:scale(1.03);
+    }
+
+    .spot-badges{
+      position:absolute;
+      top:12px;
+      left:12px;
+      right:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:30px;
+      padding:0 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background:rgba(6,19,15,.74);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(6px);
+    }
+
+    .badge.gold{
+      color:#1f1604;
+      background:rgba(242,204,120,.96);
+      border-color:transparent;
+    }
+
+    .spot-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      flex:1;
+    }
+
+    .spot-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .spot-title{
+      margin:0;
+      font-size:20px;
+      line-height:1.2;
+      font-weight:900;
+    }
+
+    .spot-price{
+      flex:0 0 auto;
+      padding:8px 10px;
+      border-radius:14px;
+      background:rgba(18,183,106,.12);
+      border:1px solid rgba(18,183,106,.30);
+      color:#8ff0bb;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .spot-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      min-height:30px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .spot-desc{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.68;
+      min-height:66px;
+    }
+
+    .tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      min-height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid rgba(220,180,90,.18);
+      background:rgba(220,180,90,.08);
+      color:#f0d58e;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .spot-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:auto;
+      padding-top:4px;
+    }
+
+    .spot-actions .btn{
+      flex:1 1 180px;
+    }
+
+    .empty{
+      padding:24px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:20px;
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .fiche{
+      display:grid;
+      grid-template-columns:minmax(0, 1.08fr) minmax(320px, .92fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .fiche-main,
+    .fiche-side{
+      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .fiche-cover{
+      aspect-ratio:16/10;
+      background:#0b2018;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .fiche-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .fiche-body{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .fiche-title{
+      margin:0;
+      font-size:clamp(28px, 4vw, 42px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+    }
+
+    .fiche-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .fiche-desc{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+    }
+
+    .fiche-gallery{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:10px;
+    }
+
+    .fiche-gallery img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#0b2018;
+    }
+
+    .fiche-side{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      position:sticky;
+      top:92px;
+    }
+
+    .info-block{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .info-title{
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-weight:900;
+      color:#f5db9a;
+    }
+
+    .info-value{
+      font-size:15px;
+      line-height:1.6;
+      color:var(--text);
+    }
+
+    .pro-band{
+      padding:8px 0 22px;
+    }
+
+    .pro-card{
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .pro-card::after{
+      content:"";
+      position:absolute;
+      right:-30px;
+      top:-30px;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(18,183,106,.18), transparent 68%);
+      pointer-events:none;
+    }
+
+    .pro-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .pro-copy h2{
+      margin:0 0 10px;
+      font-size:clamp(26px, 3.6vw, 40px);
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+
+    .pro-copy p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:15px;
+    }
+
+    .pro-points{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .pro-point{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+
+    .pro-point strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .pro-point span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .pro-side{
+      display:grid;
+      gap:12px;
+    }
+
+    .pro-box{
+      padding:16px;
+      border-radius:20px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .pro-box strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:8px;
+    }
+
+    .pro-box span{
+      display:block;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .footer{
+      padding:26px 0 44px;
+    }
+
+    .footer-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:20px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      flex-wrap:wrap;
+    }
+
+    .footer-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .footer-logo{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      flex:0 0 auto;
+    }
+
+    .footer-logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .footer-copy strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:6px;
+    }
+
+    .footer-copy span{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .loader{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .loader::before{
+      content:"";
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.16);
+      border-top-color:#f2cc78;
+      animation:spin .8s linear infinite;
+    }
+
+    @keyframes spin{
+      to{ transform:rotate(360deg); }
+    }
+
+
+    #heroSection,#spots,#proSection,#inspirationSection,#whySection{
+      scroll-margin-top:96px;
     }
 
     .publicBottomNav{
@@ -304,8 +1012,8 @@
       bottom:0;
       z-index:99990;
       padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
-      background:rgba(6,59,43,.94);
-      border-top:1px solid rgba(255,255,255,.14);
+      background:rgba(6,19,15,.94);
+      border-top:1px solid rgba(255,255,255,.10);
       backdrop-filter:blur(16px);
       -webkit-backdrop-filter:blur(16px);
     }
@@ -326,9 +1034,9 @@
       place-items:center;
       align-content:center;
       gap:3px;
-      color:rgba(255,247,232,.74);
+      color:rgba(247,251,248,.72);
       font-size:11px;
-      font-weight:1000;
+      font-weight:950;
       text-align:center;
       border:1px solid transparent;
       text-decoration:none;
@@ -342,10 +1050,10 @@
 
     .publicBottomNav a.active,
     .publicBottomNav button.active{
-      color:#2d2308;
-      background:linear-gradient(135deg,var(--gold2),var(--gold));
-      border-color:rgba(244,207,100,.30);
-      box-shadow:0 12px 26px rgba(214,173,57,.20);
+      color:#062414;
+      background:linear-gradient(135deg,var(--gold),var(--gold-2));
+      border-color:rgba(242,204,120,.28);
+      box-shadow:0 12px 26px rgba(220,180,90,.18);
     }
 
     .mobilePublicFastRow{
@@ -359,11 +1067,11 @@
     .mobilePublicFastRow button{
       min-height:46px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.10);
-      color:#fff;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
       text-decoration:none;
-      font-weight:1000;
+      font-weight:950;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -374,8 +1082,8 @@
     }
 
     .mobilePublicFastRow .primary{
-      background:linear-gradient(135deg,var(--gold2),var(--gold));
-      color:#2d2308;
+      background:linear-gradient(135deg,var(--gold),var(--gold-2));
+      color:#062414;
       border:none;
     }
 
@@ -391,11 +1099,11 @@
       max-width:calc(100vw - 24px);
       padding:10px 16px;
       border-radius:999px;
-      border:1px solid rgba(244,207,100,.30);
-      background:rgba(6,59,43,.96);
-      color:#fff7c2;
+      border:1px solid rgba(242,204,120,.28);
+      background:rgba(16,38,30,.96);
+      color:#f5db9a;
       font-size:13px;
-      font-weight:1000;
+      font-weight:900;
       box-shadow:var(--shadow);
       white-space:nowrap;
       overflow:hidden;
@@ -407,186 +1115,459 @@
       transform:translateX(-50%) translateY(0);
     }
 
-    @media(max-width:760px){
-      .top-actions{display:none}
-      .hero{padding-top:16px}
-      .audio-btn{
-        bottom:calc(92px + env(safe-area-inset-bottom,0px));
-        left:12px;
-        right:12px;
-        justify-content:center;
-      }
-      footer{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+    @media (max-width:780px){
+      .topbar .actions{display:none}
+      .hero{padding-top:18px}
       .mobilePublicFastRow{grid-template-columns:1fr 1fr}
+      .footer{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
     }
 
 
-    @media(max-width:1080px){
-      .hero-grid,.doctrine{grid-template-columns:1fr}
-      .showcase{min-height:520px}
-      .shops-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .controls{grid-template-columns:1fr 1fr}
-      .controls .input{grid-column:1/-1}
+    @media (max-width: 1100px){
+      .hero-grid,
+      .pro-grid,
+      .grid,
+      .why-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .examples-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .fiche{
+        grid-template-columns:1fr;
+      }
+
+      .fiche-side{
+        position:static;
+      }
     }
-    @media(max-width:760px){
-      .wrap{width:min(var(--max),calc(100% - 18px))}
-      .topbar-inner{min-height:auto;align-items:flex-start}
-      .brand-logo{width:62px;height:62px;border-radius:20px}
-      .brand-title{font-size:1.15rem}
-      .brand-sub{font-size:.86rem}
-      .top-actions{width:100%;justify-content:flex-start}
-      .top-actions .btn{flex:1 1 auto}
-      .hero-card{min-height:auto;border-radius:30px;padding:23px}
-      .showcase{grid-template-columns:1fr 1fr;min-height:auto}
-      .photo-card.big{min-height:250px}
-      .hero-mini-grid{grid-template-columns:1fr}
-      .shops-grid{grid-template-columns:1fr}
-      .shop-media{min-height:250px}
-      .controls{grid-template-columns:1fr}
-      .section-head{display:block}
-      .audio-btn{left:12px;right:12px;justify-content:center}
+
+    @media (max-width: 780px){
+      .topbar-inner{
+        align-items:flex-start;
+      }
+
+      .hero-grid,
+      .examples-grid,
+      .grid,
+      .hero-metrics,
+      .fiche-gallery,
+      .why-grid,
+      .pro-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-card,
+      .side-card,
+      .pro-card{
+        padding:20px;
+      }
+
+      .section-head,
+      .footer-card{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .spot-actions .btn{
+        flex:1 1 100%;
+      }
+
+      .brand-logo{
+        width:52px;
+        height:52px;
+      }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="https://digiylyfe.com/" aria-label="Retour au site DIGIYLYFE">
-        <img class="brand-logo" src="https://digiylyfe.net/wp-content/uploads/2026/04/Image-11.jpeg" alt="DIGIYLYFE" loading="eager"/>
-        <div>
-          <div class="brand-title">DIGIY MARKET</div>
-          <div class="brand-sub">Galerie locale · boutiques visibles · contact direct au commerçant.</div>
+      <a class="brand" href="./" aria-label="DIGIY EXPLORE">
+        <div class="brand-logo">
+          <img
+            src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg"
+            alt="Logo DIGIYLYFE"
+          />
+        </div>
+        <div class="brand-copy">
+          <strong>Je découvre le coin</strong>
+          <span>Des lieux vivants, des sorties vraies, du contact direct.</span>
         </div>
       </a>
-      <nav class="top-actions" aria-label="Navigation principale">
-        <a class="btn btn-soft" href="https://digiylyfe.com/">🌍 Site DIGIYLYFE</a>
-        <a class="btn btn-soft" href="https://digiy-hub.digiylyfe.com/">🧭 HUB DIGIY</a>
-        <a class="btn btn-soft" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">📦 Tarifs</a>
-        <a class="btn btn-main" href="#boutiques">Voir les boutiques</a>
-        <a class="btn btn-gold" href="https://pro-market.digiylyfe.com/pin.html">Côté vendeur</a>
-      </nav>
+
+      <div class="actions">
+        <a class="btn btn-ghost" id="siteBackBtn" href="https://digiylyfe.com/" rel="noopener">
+          🌍 Site DIGIYLYFE
+        </a>
+        <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">
+          🧭 HUB DIGIY
+        </a>
+        <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
+          📦 Tarifs
+        </a>
+        <a class="btn btn-outline" href="#proSection">
+          Je veux montrer mon lieu
+        </a>
+        <a class="btn btn-primary" id="topActionBtn" href="#spots">
+          Voir les lieux
+        </a>
+      </div>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="heroSection">
       <div class="wrap hero-grid">
         <div class="hero-card">
-          <div class="hero-copy">
-            <span class="kicker">🛍️ Galerie marchande DIGIY</span>
-            <h1>Les boutiques locales entrent chez DIGIY.</h1>
-            <p class="hero-lead">
-              DIGIY MARKET n’est pas un moteur froid. C’est une galerie marchande digitale :
-              chaque boutique garde son nom, mais la confiance, le cadre et le sceau viennent de DIGIY.
-              Le client découvre, regarde, contacte directement et paie le commerçant sans commission.
-            </p>
-            <div class="live-digiy-hero">
-              <strong>WhatsApp Visio Live by DIGIY</strong>
-              <span>En vidéo, comme si vous étiez sur place. Malgré les distances, vous gagnez du temps, évitez un trajet inutile et recevez le conseil du commerçant avant de choisir.</span>
+          <div class="eyebrow">DIGIYLYFE • Façade humaine • Terrain vivant</div>
+          <h1>
+            Fais découvrir un vrai lieu.<br>
+            Donne envie de sortir.<br>
+            Montre ce que le terrain a de beau.
+          </h1>
+          <p>
+            DIGIY EXPLORE sert à montrer des lieux, des expériences, des sorties et des repères qui méritent d’être vus.
+            Ici, on ne noie pas le visiteur dans du bruit. On lui montre l’ambiance, l’essentiel, le contact direct et le chemin simple pour passer à l’action.
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#spots">Découvrir maintenant</a>
+            <a class="btn btn-ghost" href="#proSection">Présenter mon lieu</a>
+          </div>
+
+          <div class="mobilePublicFastRow">
+            <a href="https://digiylyfe.com/">🌍 Site</a>
+            <a href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a>
+            <a class="primary" href="#spots">📍 Voir</a>
+            <button type="button" id="fastPublicShare">📤 Partager</button>
+            <a href="#proSection">✨ Mon lieu</a>
+          </div>
+
+          <div class="hero-note">
+            <span class="mini-chip">🌍 Petite Côte • Dakar • Sénégal</span>
+            <span class="mini-chip">💬 Contact direct</span>
+            <span class="mini-chip">🧭 Lecture simple</span>
+            <span class="mini-chip">🤝 Paiement direct au pro</span>
+          </div>
+
+          <div class="hero-metrics">
+            <div class="metric">
+              <strong id="metricSpots">—</strong>
+              <span>Lieux visibles ou exemples forts prêts à donner le ton de la vitrine.</span>
             </div>
-            <div class="hero-badges">
-              <span class="hero-badge">Galerie DIGIY MARKET</span>
-              <span class="hero-badge">🎥 Live DIGIY</span>
-              <span class="hero-badge">💬 Contact direct</span>
-              <span class="hero-badge">💳 Paiement au pro</span>
-              <span class="hero-badge">0% commission</span>
+            <div class="metric">
+              <strong id="metricZones">—</strong>
+              <span>Zones ou villes repérées pour montrer l’ancrage local.</span>
             </div>
-            <div class="hero-actions">
-              <a class="btn btn-gold" href="#boutiques">Voir les boutiques</a>
-              <a class="btn btn-soft" href="https://pro-market.digiylyfe.com/pin.html">Mon lieu de vente</a>
-              <a class="btn btn-soft" href="https://digiy-hub.digiylyfe.com/">🧭 HUB DIGIY</a>
-              <a class="btn btn-soft" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">📦 Tarifs</a>
-            </div>
-            <div class="mobilePublicFastRow">
-              <a href="https://digiylyfe.com/">🌍 Site</a>
-              <a href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a>
-              <a class="primary" href="#boutiques">🛍️ Boutiques</a>
-              <a id="fastWhatsapp" href="#boutiques">💬 WhatsApp</a>
-              <button id="fastShare" type="button">📤 Partager</button>
-            </div>
-            <div class="hero-mini-grid">
-              <div class="hero-mini"><strong>Une galerie</strong><span>On sent le lieu DIGIY, pas une fiche perdue dans le cloud.</span></div>
-              <div class="hero-mini"><strong>Des boutiques</strong><span>Chaque commerçant garde son identité, son contact et ses produits.</span></div>
-              <div class="hero-mini"><strong>Une signature</strong><span>Le sceau DIGIY rassure, rassemble et donne une présence commune.</span></div>
+            <div class="metric">
+              <strong id="metricCats">—</strong>
+              <span>Univers de découverte pour montrer la richesse du terrain.</span>
             </div>
           </div>
         </div>
 
-        <div class="showcase" aria-label="Ambiance DIGIY MARKET">
-          <div class="photo-card big">
-            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=80" alt="Galerie commerçante locale"/>
-            <div class="seal-card" aria-hidden="true"></div>
-            <div class="photo-layer"><strong>Galerie DIGIY MARKET</strong><span>Un lieu commun, des boutiques différentes, une confiance visible.</span></div>
+        <aside class="side-card">
+          <div class="side-cover">
+            <span class="side-cover-badge">🌊 Ambiance terrain</span>
+            <img
+              src="https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
+              alt="Sortie en mer sur la Petite Côte"
+            />
           </div>
-          <div class="photo-card">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80" alt="Produits en boutique"/>
-            <div class="photo-layer"><strong>Vendre par les yeux</strong><span>Ambiance, image, présence.</span></div>
+          <div class="side-kicker">Ce qu’on veut faire ressentir</div>
+          <h2 class="side-title">Pas une vitrine vide. Une invitation à vivre le lieu.</h2>
+          <div class="side-text">
+            Un visiteur doit comprendre vite : où il est, ce qu’il peut vivre, pourquoi c’est intéressant,
+            et comment contacter la bonne personne sans passer par un labyrinthe.
           </div>
-          <div class="photo-card">
-            <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=900&q=80" alt="Boutique vivante"/>
-            <div class="photo-layer"><strong>Visio en direct</strong><span>Le client voit, demande conseil et choisit sans trajet inutile.</span></div>
+
+          <div class="quick-list">
+            <div class="quick-item">
+              <div>📍</div>
+              <div>
+                <strong>Le lieu doit parler</strong>
+                <span>On montre l’ambiance, pas une fiche froide.</span>
+              </div>
+            </div>
+            <div class="quick-item">
+              <div>✨</div>
+              <div>
+                <strong>L’exemple doit donner envie</strong>
+                <span>Sortie, coin calme, balade, adresse utile, vraie expérience.</span>
+              </div>
+            </div>
+            <div class="quick-item">
+              <div>📲</div>
+              <div>
+                <strong>Le contact doit être simple</strong>
+                <span>Un geste, un message, une action claire.</span>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <a class="btn btn-outline" href="#spots">Voir les lieux</a>
+        </aside>
       </div>
     </section>
 
-    <section class="quick-strip">
-      <div class="wrap quick-scroll">
-        <div class="quick-card"><strong>🏬 Esprit galerie</strong><span>Comme une allée commerçante : les boutiques sont réunies sous la signature DIGIY.</span></div>
-        <div class="quick-card"><strong>🛍️ Pas un annuaire</strong><span>On attire d’abord par l’ambiance, puis on guide vers les bons commerces.</span></div>
-        <div class="quick-card"><strong>🎥 Live DIGIY</strong><span>WhatsApp Visio Live : voir les produits en direct, comme si vous étiez sur place.</span></div>
-        <div class="quick-card"><strong>💳 Argent direct</strong><span>DIGIY ne garde pas l’argent : paiement direct au commerçant.</span></div>
-      </div>
-    </section>
-
-    <section class="section" id="boutiques">
-      <div class="wrap panel" style="padding:22px">
+    <section class="section" id="inspirationSection">
+      <div class="wrap">
         <div class="section-head">
           <div>
-            <span class="pill">🏪 Galeries de magasins</span>
-            <h2>Les boutiques visibles maintenant</h2>
+            <h2>Exemples forts pour donner envie</h2>
             <p>
-              Chaque carte porte le sceau DIGIY : le client comprend qu’il entre dans une galerie locale,
-              puis choisit une boutique, voit ses produits et contacte directement le commerçant.
+              Voilà le genre de présence qui donne du sens à la vitrine : pas juste “un lieu”, mais un moment, une ambiance, une envie simple de sortir, visiter, se poser ou découvrir.
             </p>
           </div>
-          <button class="btn btn-ghost" id="btnReload" type="button">↻ Recharger</button>
         </div>
 
-        <div class="controls">
-          <input class="input" id="searchInput" type="search" placeholder="Chercher une boutique, une ville, une activité…"/>
-          <select class="select" id="cityFilter"><option value="">Toutes les villes</option></select>
-          <select class="select" id="categoryFilter"><option value="">Toutes les activités</option></select>
-          <button class="btn btn-main" id="btnClear" type="button">Effacer</button>
-        </div>
+        <div class="examples-grid">
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80"
+                alt="Sortie mer au lever du jour"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🌅 Sortie</span>
+              </div>
+              <h3 class="example-title">Lever du jour en mer</h3>
+              <div class="example-text">
+                Une sortie qui fait sentir l’air, l’espace, le calme et le vrai rythme de la côte. En une lecture, on comprend l’émotion du moment.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">mer</span>
+                <span class="mini-chip">ambiance</span>
+                <span class="mini-chip">expérience</span>
+              </div>
+            </div>
+          </article>
 
-        <div class="stats-row" id="statsRow">
-          <span class="stat-pill"><b id="statShops">0</b> boutiques</span>
-          <span class="stat-pill"><b id="statCities">0</b> zones</span>
-          <span class="stat-pill">Contact direct · 0% commission · paiement au commerçant</span>
-        </div>
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80"
+                alt="Coin calme et nature"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🌿 Détente</span>
+              </div>
+              <h3 class="example-title">Un coin calme pour souffler</h3>
+              <div class="example-text">
+                Un jardin, une terrasse, une plage ou un cadre apaisant. La vitrine doit faire sentir que l’on peut venir ici pour respirer.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">repos</span>
+                <span class="mini-chip">famille</span>
+                <span class="mini-chip">pause</span>
+              </div>
+            </div>
+          </article>
 
-        <div id="loadingBox" class="loading-box">Chargement des boutiques DIGIY MARKET…</div>
-        <div id="emptyBox" class="empty-box" style="display:none">Aucune boutique publiée pour le moment.</div>
-        <div id="shopsGrid" class="shops-grid"></div>
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80"
+                alt="Découverte urbaine"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🌆 Découverte</span>
+              </div>
+              <h3 class="example-title">Un parcours qui ouvre la ville</h3>
+              <div class="example-text">
+                Pour quelqu’un qui arrive, il faut un point d’entrée clair : quoi voir, où aller, quel coin mérite le détour, sans confusion.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">ville</span>
+                <span class="mini-chip">repères</span>
+                <span class="mini-chip">local</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="example-card">
+            <div class="example-cover">
+              <img
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"
+                alt="Balade plage"
+              />
+            </div>
+            <div class="example-body">
+              <div class="example-top">
+                <span>🏖️ Balade</span>
+              </div>
+              <h3 class="example-title">Une adresse simple qui fait du bien</h3>
+              <div class="example-text">
+                Il n’y a pas besoin d’en faire trop. Une belle vue, une balade, une ambiance propre, un contact direct : parfois c’est cela qui convertit.
+              </div>
+              <div class="example-footer">
+                <span class="mini-chip">plage</span>
+                <span class="mini-chip">lumière</span>
+                <span class="mini-chip">sortie</span>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap doctrine">
-        <div class="doctrine-card dark">
-          <h3>Le marché n’est pas froid. Il est vivant.</h3>
-          <p>
-            DIGIY MARKET doit donner la sensation d’une galerie marchande : un lieu, une signature,
-            une confiance. Pas seulement des résultats alignés comme une recherche Google.
-          </p>
+    <section class="section" id="whySection">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Pourquoi cette vitrine peut marquer</h2>
+            <p>
+              Parce qu’elle ne parle pas comme une machine. Elle montre la vie d’un lieu, elle rassure le visiteur, et elle ouvre un contact direct avec la bonne personne.
+            </p>
+          </div>
         </div>
-        <div class="doctrine-card">
-          <h3>La boutique reste libre.</h3>
-          <p>
-            Chaque commerçant garde son nom, son WhatsApp, ses produits et son argent. DIGIY donne la présence,
-            le cadre et la route vers le client — sans prendre de commission.
-          </p>
+
+        <div class="why-grid">
+          <article class="why-card">
+            <div class="why-icon">👁️</div>
+            <h3>On voit vite ce qui compte</h3>
+            <p>
+              Le visiteur comprend immédiatement ce qu’il peut vivre, où cela se passe et pourquoi cela mérite un détour.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon">💬</div>
+            <h3>On parle à un humain, pas à un système</h3>
+            <p>
+              Le contact direct enlève le froid. Le lieu garde son âme, et la relation reste simple, claire et locale.
+            </p>
+          </article>
+
+          <article class="why-card">
+            <div class="why-icon">🌍</div>
+            <h3>On donne de la force au terrain</h3>
+            <p>
+              Chaque lieu bien montré devient une preuve qu’on peut faire rayonner le territoire sans perdre sa vérité.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="spots">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 id="sectionTitle">Lieux à découvrir maintenant</h2>
+            <p id="sectionText">
+              Lecture publique du terrain : lieux, sorties, expériences, coins utiles et belles adresses.
+              Quand le backend répond, la vitrine charge les lieux publiés. Sinon elle garde une présence forte avec des exemples propres.
+            </p>
+          </div>
+
+          <div class="section-tools">
+            <div class="chip" id="dataStatus">Chargement…</div>
+            <a class="chip" id="allSpotsChip" href="./">Voir toute la vitrine</a>
+          </div>
+        </div>
+
+        <div id="spotsGrid" class="grid" aria-live="polite">
+          <div class="empty">
+            <div class="loader">Chargement des lieux…</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pro-band" id="proSection">
+      <div class="wrap">
+        <div class="pro-card">
+          <div class="pro-grid">
+            <div class="pro-copy">
+              <div class="eyebrow">Côté pro • présence claire • action directe</div>
+              <h2>Tu veux faire découvrir ton lieu proprement ?</h2>
+              <p>
+                Si tu gères un lieu, une activité, une sortie, une expérience ou un coin qui mérite d’être vu,
+                DIGIY EXPLORE peut t’aider à le présenter avec clarté : une belle façade, un contact simple,
+                une lecture humaine, et un passage direct vers ton activité.
+              </p>
+
+              <div class="pro-points">
+                <div class="pro-point">
+                  <div>📍</div>
+                  <div>
+                    <strong>Montrer ton lieu sans l’alourdir</strong>
+                    <span>Une présence propre, lisible, vivante et orientée action.</span>
+                  </div>
+                </div>
+
+                <div class="pro-point">
+                  <div>📲</div>
+                  <div>
+                    <strong>Recevoir les bons contacts</strong>
+                    <span>WhatsApp, appel, lien direct, sans détour inutile.</span>
+                  </div>
+                </div>
+
+                <div class="pro-point">
+                  <div>🤝</div>
+                  <div>
+                    <strong>Garder le lien direct avec ton visiteur</strong>
+                    <span>DIGIY éclaire. Le contact reste humain. Le paiement va au pro.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pro-side">
+              <div class="pro-box">
+                <strong>Ce que le visiteur doit ressentir</strong>
+                <span>“J’ai compris le lieu. J’ai envie d’y aller. Je sais qui contacter.”</span>
+              </div>
+
+              <div class="pro-box">
+                <strong>Ce que le pro doit gagner</strong>
+                <span>Plus de clarté, plus de crédibilité, plus de demandes propres.</span>
+              </div>
+
+              <div class="pro-box">
+                <strong>Le bon passage</strong>
+                <span>Exemples forts devant. Présence propre derrière. Action directe au bon moment.</span>
+              </div>
+
+              <div class="actions">
+                <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+                  Activer ma présence
+                </a>
+                <a class="btn btn-ghost" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+                  Commencer maintenant
+                </a>
+                <a class="btn btn-soft" href="https://digiylyfe.com/" rel="noopener">
+                  🌍 Site DIGIYLYFE
+                </a>
+                <a class="btn btn-soft" href="https://digiy-hub.digiylyfe.com/">
+                  🧭 HUB DIGIY
+                </a>
+                <a class="btn btn-soft" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
+                  📦 Tarifs
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -594,344 +1575,1063 @@
 
 
     <section class="section" id="retours-digiy">
-      <div class="wrap doctrine">
-        <div class="doctrine-card">
-          <h3>Revenir dans la maison DIGIY</h3>
-          <p>
-            Cette page présente les boutiques. Pour comprendre DIGIYLYFE, revenir au HUB ou voir les tarifs officiels,
-            utilise les portes ci-dessous.
-          </p>
-          <div class="hero-actions" style="margin-top:16px">
-            <a class="btn btn-soft" href="https://digiylyfe.com/">🌍 Site DIGIYLYFE</a>
-            <a class="btn btn-main" href="https://digiy-hub.digiylyfe.com/">🧭 HUB DIGIY</a>
-            <a class="btn btn-gold" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">📦 Tarifs</a>
+      <div class="wrap">
+        <div class="footer-card">
+          <div class="footer-left">
+            <div class="footer-logo">
+              <img src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg" alt="Logo DIGIYLYFE"/>
+            </div>
+            <div class="footer-copy">
+              <strong>Revenir dans la maison DIGIY</strong>
+              <span>Cette page fait découvrir les lieux. Pour comprendre DIGIYLYFE, revenir au HUB ou voir les tarifs officiels, utilise les portes ci-dessous.</span>
+            </div>
           </div>
-        </div>
-        <div class="doctrine-card dark">
-          <h3>Le commerce reste direct.</h3>
-          <p>
-            DIGIY donne la présence, la galerie et la route vers le client. Le commerçant garde son contact,
-            son argent et sa relation.
-          </p>
+          <div class="actions">
+            <a class="btn btn-ghost" href="https://digiylyfe.com/">🌍 Site DIGIYLYFE</a>
+            <a class="btn btn-primary" href="https://digiy-hub.digiylyfe.com/">🧭 HUB DIGIY</a>
+            <a class="btn btn-outline" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">📦 Tarifs</a>
+          </div>
         </div>
       </div>
     </section>
 
-  <footer>
-    <div class="wrap footer-box">
-      <div><strong>DIGIY MARKET</strong> — Galerie locale, boutiques visibles, contact direct.</div>
-      <div>0% commission · paiement direct au commerçant · signature DIGIYLYFE</div>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-card">
+        <div class="footer-left">
+          <div class="footer-logo">
+            <img
+              src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg"
+              alt="Logo DIGIYLYFE"
+            />
+          </div>
+          <div class="footer-copy">
+            <strong>DIGIY EXPLORE ∞</strong>
+            <span>
+              Des lieux vivants, des sorties vraies, une lecture simple, un contact humain.
+            </span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="https://digiylyfe.com/" rel="noopener">
+            🌍 Site DIGIYLYFE
+          </a>
+          <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">
+            🧭 HUB DIGIY
+          </a>
+          <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
+            📦 Tarifs
+          </a>
+          <a class="btn btn-primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">
+            Je veux montrer mon lieu
+          </a>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <button class="audio-btn" id="digiyAudioBtn" type="button">▶ Écouter le Live DIGIY</button>
+  <template id="spotTpl">
+    <article class="spot">
+      <div class="spot-cover">
+        <img alt="" loading="lazy" />
+        <div class="spot-badges">
+          <span class="badge js-category"></span>
+          <span class="badge gold js-city"></span>
+        </div>
+      </div>
 
-  <nav class="publicBottomNav" aria-label="Navigation publique DIGIY MARKET">
+      <div class="spot-body">
+        <div class="spot-head">
+          <h3 class="spot-title js-title"></h3>
+          <div class="spot-price js-price"></div>
+        </div>
+
+        <div class="spot-meta">
+          <span class="mini js-zone"></span>
+          <span class="mini js-kind"></span>
+        </div>
+
+        <div class="spot-desc js-desc"></div>
+
+        <div class="tags js-tags"></div>
+
+        <div class="spot-actions">
+          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-primary js-open" rel="noopener">Voir</a>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const SITE_HOME = "https://digiylyfe.com/";
+    const HUB_HOME = "https://digiy-hub.digiylyfe.com/";
+    const TARIFS_HOME = "https://tarifs.digiylyfe.com/";
+    const DEFAULT_OPEN_URL = SITE_HOME;
+    const DEFAULT_CONTACT_URL = "https://commencer-a-payer.digiylyfe.com/";
+    const DEFAULT_COVER = "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif";
+
+    const SHOWCASE_SPOTS = [
+      {
+        title: "Sortie en pêche — Petite Côte",
+        category: "🎣 Expérience",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Sur demande",
+        desc: "Sortie en pêche encadrée, départ côtier, ambiance locale, mer, lever tôt et vraie sensation terrain sur la Petite Côte.",
+        tags: ["pêche", "mer", "sortie", "conciergerie"],
+        cover: DEFAULT_COVER,
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Sortie"
+      },
+      {
+        title: "Pause plage — Saly",
+        category: "🏖️ Détente",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Libre / selon lieu",
+        desc: "Plage, lumière, repos, promenade, détente simple et vue ouverte. Une lecture douce du terrain, sans chichi.",
+        tags: ["plage", "repos", "balade"],
+        cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Lieu"
+      },
+      {
+        title: "Escapade locale — Dakar",
+        category: "🌆 Découverte",
+        city: "Dakar",
+        zone: "Cap-Vert",
+        price: "Selon programme",
+        desc: "Une porte d'entrée simple pour découvrir le rythme local, les points utiles, les coins inspirants et les repères vivants.",
+        tags: ["découverte", "ville", "guidage"],
+        cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Ville"
+      },
+      {
+        title: "Déjeuner au calme — bord de jardin",
+        category: "🍽️ Adresse",
+        city: "Somone",
+        zone: "Petite Côte",
+        price: "Selon la carte",
+        desc: "Un lieu simple à recommander pour manger tranquillement, respirer, discuter et profiter d’un bon moment sans agitation.",
+        tags: ["déjeuner", "calme", "terrasse"],
+        cover: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Adresse"
+      },
+      {
+        title: "Balade famille — coin tranquille",
+        category: "👨‍👩‍👧‍👦 Famille",
+        city: "Ngaparou",
+        zone: "Petite Côte",
+        price: "Accès libre / sur place",
+        desc: "Un repère facile à comprendre pour sortir en famille, se poser, profiter du jour et faire découvrir un coin agréable.",
+        tags: ["famille", "balade", "week-end"],
+        cover: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Balade"
+      },
+      {
+        title: "Coin coucher de soleil",
+        category: "🌇 Ambiance",
+        city: "Saly",
+        zone: "Petite Côte",
+        price: "Libre / selon lieu",
+        desc: "Le genre d’endroit qu’on partage parce qu’il fait du bien. Une belle lumière, une respiration, un repère simple.",
+        tags: ["soleil", "vue", "soirée"],
+        cover: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Spot"
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const REQUESTED_SLUG = normalizeSlug(params.get("slug"));
+    const RETURN_URL = normalizeReturnUrl(params.get("return"));
+
+    let _exploreClient = null;
+
+    const $grid = document.getElementById("spotsGrid");
+    const $status = document.getElementById("dataStatus");
+    const $metricSpots = document.getElementById("metricSpots");
+    const $metricZones = document.getElementById("metricZones");
+    const $metricCats = document.getElementById("metricCats");
+    const $siteBackBtn = document.getElementById("siteBackBtn");
+    const $topActionBtn = document.getElementById("topActionBtn");
+    const $hero = document.getElementById("heroSection");
+    const $inspiration = document.getElementById("inspirationSection");
+    const $why = document.getElementById("whySection");
+    const $pro = document.getElementById("proSection");
+    const $sectionTitle = document.getElementById("sectionTitle");
+    const $sectionText = document.getElementById("sectionText");
+    const $allSpotsChip = document.getElementById("allSpotsChip");
+    const tpl = document.getElementById("spotTpl");
+
+    $siteBackBtn.href = RETURN_URL || SITE_HOME;
+    $allSpotsChip.href = "./";
+
+
+    function showShareToast(text){
+      const toast = document.getElementById("shareToast");
+      if(!toast) return;
+      toast.textContent = text || "Lien prêt à partager";
+      toast.classList.add("show");
+      clearTimeout(showShareToast._t);
+      showShareToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    async function shareCurrentPage(){
+      const title = document.title || "DIGIY EXPLORE";
+      const text = REQUESTED_SLUG
+        ? "Regarde ce lieu sur DIGIY EXPLORE."
+        : "Découvre des lieux vivants avec DIGIY EXPLORE.";
+      const url = window.location.href;
+
+      try{
+        if(navigator.share){
+          await navigator.share({ title, text, url });
+          return;
+        }
+        await navigator.clipboard.writeText(url);
+        showShareToast("Lien copié pour partager");
+      }catch(_){
+        try{
+          await navigator.clipboard.writeText(url);
+          showShareToast("Lien copié pour partager");
+        }catch(__){
+          showShareToast("Partage indisponible ici");
+        }
+      }
+    }
+
+    function wirePublicActions(item){
+      const normalized = item ? normalizeItem(item) : null;
+      const goHref = normalized?.map_url || normalized?.open_url || "#spots";
+
+      ["bottomPublicGo","fastPublicGo"].forEach(id => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.href = goHref;
+        if(/^https?:/i.test(goHref)){
+          el.target = "_blank";
+          el.rel = "noopener";
+        }
+      });
+
+      ["bottomPublicShare","fastPublicShare"].forEach(id => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.onclick = shareCurrentPage;
+      });
+    }
+
+
+    function esc(str){
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function normalizeSlug(value){
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function normalizePhone(value){
+      return String(value || "").replace(/[^\d]/g, "");
+    }
+
+    function normalizeReturnUrl(value){
+      const raw = String(value || "").trim();
+      if(!raw) return "";
+      try{
+        const url = new URL(raw, window.location.origin);
+        if(/^https?:$/i.test(url.protocol)) return url.href;
+      }catch(_){}
+      return "";
+    }
+
+    function safeArray(value){
+      if(Array.isArray(value)) return value.filter(Boolean);
+
+      if(typeof value === "string"){
+        const trimmed = value.trim();
+        if(!trimmed) return [];
+
+        try{
+          const parsed = JSON.parse(trimmed);
+          if(Array.isArray(parsed)) return parsed.filter(Boolean);
+        }catch(_){}
+
+        return trimmed
+          .split(/\r?\n|,/)
+          .map(v => v.trim())
+          .filter(Boolean);
+      }
+
+      return [];
+    }
+
+    function makeWhatsAppUrl(value){
+      const phone = normalizePhone(value);
+      return phone ? "https://wa.me/" + phone : "";
+    }
+
+    function buildPublicUrlFromSlug(slug){
+      const clean = normalizeSlug(slug);
+      return clean ? "./?slug=" + encodeURIComponent(clean) : "./";
+    }
+
+    function buildMapUrl(item){
+      const lat = item?.latitude ?? item?.lat;
+      const lng = item?.longitude ?? item?.lng;
+      if(lat && lng){
+        return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
+      }
+      const address = item?.address || item?.address_text || item?.landmark || item?.repere || "";
+      if(address){
+        return "https://www.google.com/maps?q=" + encodeURIComponent(address);
+      }
+      return "";
+    }
+
+    function getExploreClient(){
+      if (_exploreClient) return _exploreClient;
+
+      const url = window.DIGIY_SUPABASE_URL;
+      const key = window.DIGIY_SUPABASE_ANON || window.DIGIY_SUPABASE_ANON_KEY;
+
+      if (!url || !key || !window.supabase) return null;
+
+      _exploreClient = window.supabase.createClient(url, key, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false,
+          storage: {
+            getItem: () => null,
+            setItem: () => {},
+            removeItem: () => {}
+          }
+        },
+        global: {
+          fetch: (...args) => fetch(...args)
+        }
+      });
+
+      return _exploreClient;
+    }
+
+    function normalizeItem(item){
+      const slug = normalizeSlug(item?.slug || item?.public_slug || item?.place_slug || "");
+      const whatsapp = item?.whatsapp || item?.whatsapp_phone || item?.contact_whatsapp || "";
+      const phone = item?.phone || item?.contact_phone || item?.public_phone || "";
+      const fallbackContact = makeWhatsAppUrl(whatsapp || phone) || DEFAULT_CONTACT_URL;
+      const tags = safeArray(item?.tags);
+
+      return {
+        raw: item || {},
+        slug,
+        title: item?.title || item?.name || item?.public_name || "Lieu DIGIY EXPLORE",
+        category: item?.category || item?.category_label || item?.type_label || "📍 Lieu",
+        city: item?.city || item?.town || item?.place_city || "Sénégal",
+        zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
+        price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
+        desc: item?.desc || item?.short_description || item?.description || "Lieu ou expérience visible dans la vitrine DIGIY EXPLORE.",
+        full_desc: item?.full_description || item?.description || item?.desc || "",
+        tags,
+        cover: item?.cover || item?.cover_url || item?.cover_image_url || item?.image_url || item?.photo_url || DEFAULT_COVER,
+        gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
+        contact_url: item?.contact_url || item?.whatsapp_url || fallbackContact,
+        open_url: item?.open_url || item?.slug_url || item?.public_url || buildPublicUrlFromSlug(slug) || DEFAULT_OPEN_URL,
+        kind: item?.kind || item?.subcategory || item?.spot_kind || "Lieu",
+        address: item?.address || item?.address_text || item?.landmark || item?.repere || "",
+        whatsapp: whatsapp || phone,
+        phone,
+        map_url: item?.map_url || buildMapUrl(item),
+        featured: Boolean(item?.featured || item?.is_featured || item?.highlighted)
+      };
+    }
+
+    function updateMetrics(items){
+      const zones = new Set();
+      const cats = new Set();
+
+      items.forEach(item => {
+        if(item.zone) zones.add(item.zone);
+        else if(item.city) zones.add(item.city);
+        if(item.category) cats.add(item.category);
+      });
+
+      $metricSpots.textContent = String(items.length);
+      $metricZones.textContent = String(zones.size);
+      $metricCats.textContent = String(cats.size);
+    }
+
+    function setSingleMode(active){
+      const display = active ? "none" : "";
+      $hero.style.display = display;
+      $inspiration.style.display = display;
+      $why.style.display = display;
+      $pro.style.display = active ? "none" : "";
+    }
+
+    function renderSpots(items){
+      setSingleMode(false);
+      wirePublicActions(null);
+      $grid.className = "grid";
+      $grid.innerHTML = "";
+
+      if(!Array.isArray(items) || !items.length){
+        $grid.innerHTML = `
+          <div class="empty">
+            Aucun lieu visible pour le moment.
+          </div>
+        `;
+        updateMetrics([]);
+        return;
+      }
+
+      items.forEach(raw => {
+        const item = normalizeItem(raw);
+        const node = tpl.content.firstElementChild.cloneNode(true);
+
+        const img = node.querySelector("img");
+        img.src = item.cover;
+        img.alt = item.title;
+
+        node.querySelector(".js-category").textContent = item.category;
+        node.querySelector(".js-city").textContent = item.city;
+        node.querySelector(".js-title").textContent = item.title;
+        node.querySelector(".js-price").textContent = item.price;
+        node.querySelector(".js-zone").textContent = "📍 " + (item.zone || item.city || "Terrain");
+        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "Lieu");
+        node.querySelector(".js-desc").textContent = item.desc;
+
+        const tagsWrap = node.querySelector(".js-tags");
+        if(Array.isArray(item.tags) && item.tags.length){
+          item.tags.slice(0, 5).forEach(tag => {
+            const span = document.createElement("span");
+            span.className = "tag";
+            span.textContent = "#" + String(tag).replace(/^#/, "");
+            tagsWrap.appendChild(span);
+          });
+        } else {
+          const span = document.createElement("span");
+          span.className = "tag";
+          span.textContent = "#terrain";
+          tagsWrap.appendChild(span);
+        }
+
+        const contact = node.querySelector(".js-contact");
+        contact.href = item.contact_url || DEFAULT_CONTACT_URL;
+
+        const open = node.querySelector(".js-open");
+        const rawOpenUrl = item.open_url || DEFAULT_OPEN_URL;
+        open.href = rawOpenUrl;
+
+        try{
+          const absOpenUrl = new URL(rawOpenUrl, window.location.href);
+          if (absOpenUrl.origin !== window.location.origin) {
+            open.target = "_blank";
+            open.rel = "noopener";
+          }
+        }catch(_){}
+
+        $grid.appendChild(node);
+      });
+
+      updateMetrics(items.map(normalizeItem));
+    }
+
+    function renderSingleSpot(raw){
+      const item = normalizeItem(raw);
+      wirePublicActions(item);
+
+      setSingleMode(true);
+      $topActionBtn.textContent = "Retour vitrine";
+      $topActionBtn.href = "./";
+      $sectionTitle.textContent = item.title;
+      $sectionText.textContent = item.desc || "Fiche publique du lieu dans DIGIY EXPLORE.";
+      $grid.className = "grid grid-single";
+
+      const galleryImages = [item.cover, ...item.gallery].filter(Boolean).slice(0, 6);
+      const tagsHtml = (item.tags.length ? item.tags : ["terrain"]).slice(0, 8).map(tag => (
+        '<span class="tag">#' + esc(String(tag).replace(/^#/, "")) + '</span>'
+      )).join("");
+
+      const infoBlocks = [
+        item.category ? { title: "Catégorie", value: item.category } : null,
+        item.kind ? { title: "Type de lieu", value: item.kind } : null,
+        item.city || item.zone ? { title: "Localisation", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
+        item.address ? { title: "Adresse / repère", value: item.address } : null,
+        item.price ? { title: "Indice de prix", value: item.price } : null,
+        item.phone ? { title: "Téléphone", value: item.phone } : null
+      ].filter(Boolean).map(block => `
+        <div class="info-block">
+          <div class="info-title">${esc(block.title)}</div>
+          <div class="info-value">${esc(block.value)}</div>
+        </div>
+      `).join("");
+
+      const galleryHtml = galleryImages.length
+        ? `
+          <div class="fiche-gallery">
+            ${galleryImages.map(src => `<img src="${esc(src)}" alt="${esc(item.title)}" loading="lazy"/>`).join("")}
+          </div>
+        `
+        : "";
+
+      const mapButton = item.map_url
+        ? `<a class="btn btn-outline" href="${esc(item.map_url)}" target="_blank" rel="noopener">Y aller</a>`
+        : "";
+
+      const featuredBadge = item.featured ? `<span class="badge gold">Mis en avant</span>` : "";
+
+      $grid.innerHTML = `
+        <article class="fiche">
+          <section class="fiche-main">
+            <div class="fiche-cover">
+              <img src="${esc(item.cover)}" alt="${esc(item.title)}" />
+              <div class="spot-badges">
+                <span class="badge">${esc(item.category)}</span>
+                <span class="badge gold">${esc(item.city)}</span>
+                ${featuredBadge}
+              </div>
+            </div>
+
+            <div class="fiche-body">
+              <div class="fiche-meta">
+                <span class="mini">📍 ${esc(item.zone || item.city || "Terrain")}</span>
+                <span class="mini">🧭 ${esc(item.kind || "Lieu")}</span>
+                <span class="mini">💬 Contact direct</span>
+              </div>
+
+              <h1 class="fiche-title">${esc(item.title)}</h1>
+
+              <div class="spot-price">${esc(item.price)}</div>
+
+              <div class="fiche-desc">${esc(item.full_desc || item.desc || "Fiche publique du lieu dans DIGIY EXPLORE.")}</div>
+
+              <div class="tags">${tagsHtml}</div>
+
+              ${galleryHtml}
+            </div>
+          </section>
+
+          <aside class="fiche-side">
+            ${infoBlocks}
+
+            <div class="spot-actions">
+              <a class="btn btn-primary" href="${esc(item.contact_url || DEFAULT_CONTACT_URL)}" target="_blank" rel="noopener">
+                WhatsApp
+              </a>
+              ${mapButton}
+              <a class="btn btn-ghost" href="./">
+                Retour aux lieux
+              </a>
+            </div>
+          </aside>
+        </article>
+      `;
+
+      updateMetrics([item]);
+    }
+
+    async function fetchFromRpc(client){
+      const rpcNames = [
+        "digiy_explore_public_list_spots",
+        "digiy_explore_list_public_spots",
+        "digiy_explore_get_public_spots"
+      ];
+
+      for(const rpcName of rpcNames){
+        try{
+          const { data, error } = await client.rpc(rpcName);
+          if(error) continue;
+
+          if(Array.isArray(data) && data.length) return data;
+          if(Array.isArray(data?.items) && data.items.length) return data.items;
+        }catch(_){}
+      }
+      return [];
+    }
+
+    async function fetchFromTables(client){
+      const tableAttempts = [
+        {
+          table: "digiy_explore_spots",
+          build: q => q.select("*").eq("published", true).order("created_at", { ascending:false }).limit(24)
+        },
+        {
+          table: "digiy_explore_places",
+          build: q => q.select("*").eq("is_published", true).order("created_at", { ascending:false }).limit(24)
+        }
+      ];
+
+      for(const attempt of tableAttempts){
+        try{
+          const { data, error } = await attempt.build(client.from(attempt.table));
+          if(error) continue;
+          if(Array.isArray(data) && data.length) return data;
+        }catch(_){}
+      }
+
+      return [];
+    }
+
+    async function fetchSingleFromRpc(client, slug){
+      const rpcAttempts = [
+        { name: "digiy_explore_public_place_by_slug", args: { p_slug: slug } },
+        { name: "digiy_explore_get_public_place_by_slug", args: { p_slug: slug } },
+        { name: "digiy_explore_public_spot_by_slug", args: { p_slug: slug } }
+      ];
+
+      for(const attempt of rpcAttempts){
+        try{
+          const { data, error } = await client.rpc(attempt.name, attempt.args);
+          if(error) continue;
+
+          if(data && !Array.isArray(data)){
+            if(data.ok === true && data.place && typeof data.place === "object"){
+              return data.place;
+            }
+            if(data.slug || data.title || data.name || data.public_name){
+              return data;
+            }
+            if(data.item && typeof data.item === "object"){
+              return data.item;
+            }
+          }
+
+          if(Array.isArray(data) && data.length){
+            return data[0];
+          }
+        }catch(_){}
+      }
+
+      return null;
+    }
+
+    async function fetchSingleFromTables(client, slug){
+      const tableAttempts = [
+        {
+          table: "digiy_explore_places",
+          build: q => q.select("*").eq("slug", slug).eq("is_published", true).limit(1).maybeSingle()
+        },
+        {
+          table: "digiy_explore_spots",
+          build: q => q.select("*").eq("slug", slug).eq("published", true).limit(1).maybeSingle()
+        }
+      ];
+
+      for(const attempt of tableAttempts){
+        try{
+          const { data, error } = await attempt.build(client.from(attempt.table));
+          if(error) continue;
+          if(data) return data;
+        }catch(_){}
+      }
+
+      return null;
+    }
+
+    async function loadSingleSpot(client, slug){
+      const item = await fetchSingleFromRpc(client, slug) || await fetchSingleFromTables(client, slug);
+
+      if(item){
+        renderSingleSpot(item);
+        $status.textContent = "Fiche publique chargée";
+        return true;
+      }
+
+      setSingleMode(true);
+      $grid.className = "grid grid-single";
+      $grid.innerHTML = `
+        <div class="empty">
+          Aucun lieu public trouvé pour cet identifiant.
+          <div style="margin-top:14px">
+            <a class="btn btn-primary" href="./">Retour à la vitrine</a>
+          </div>
+        </div>
+      `;
+      updateMetrics([]);
+      $topActionBtn.textContent = "Retour vitrine";
+      $topActionBtn.href = "./";
+      $sectionTitle.textContent = "Lieu introuvable";
+      $sectionText.textContent = "L’identifiant a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
+      $status.textContent = "Lieu non trouvé";
+      return false;
+    }
+
+    async function loadSpots(){
+      try{
+        const client = getExploreClient();
+
+        if(!client){
+          throw new Error("Supabase indisponible");
+        }
+
+        if(REQUESTED_SLUG){
+          await loadSingleSpot(client, REQUESTED_SLUG);
+          return;
+        }
+
+        let items = await fetchFromRpc(client);
+        if(!items.length){
+          items = await fetchFromTables(client);
+        }
+
+        if(items.length){
+          renderSpots(items);
+          $status.textContent = "Lecture publique chargée";
+        } else {
+          renderSpots(SHOWCASE_SPOTS);
+          $status.textContent = "Mode vitrine de secours";
+        }
+      } catch (err){
+        console.warn("EXPLORE fallback:", err);
+
+        if(REQUESTED_SLUG){
+          setSingleMode(true);
+          $topActionBtn.textContent = "Retour vitrine";
+          $topActionBtn.href = "./";
+          $sectionTitle.textContent = "Lieu indisponible";
+          $sectionText.textContent = "L’identifiant a été lu, mais la lecture publique n’a pas répondu.";
+          $grid.className = "grid grid-single";
+          $grid.innerHTML = `
+            <div class="empty">
+              Impossible de charger ce lieu pour le moment.
+              <div style="margin-top:14px">
+                <a class="btn btn-primary" href="./">Retour à la vitrine</a>
+              </div>
+            </div>
+          `;
+          updateMetrics([]);
+          $status.textContent = "Lecture publique indisponible";
+          return;
+        }
+
+        renderSpots(SHOWCASE_SPOTS);
+        $status.textContent = "Mode vitrine de secours";
+      }
+    }
+
+    wirePublicActions(null);
+    loadSpots();
+  </script>
+
+  <nav class="publicBottomNav" aria-label="Navigation publique DIGIY EXPLORE">
     <div class="publicBottomNavInner">
       <a href="https://digiylyfe.com/"><span class="icoBottom">🌍</span><span>Site</span></a>
       <a href="https://digiy-hub.digiylyfe.com/"><span class="icoBottom">🧭</span><span>HUB</span></a>
-      <a class="active" href="#boutiques"><span class="icoBottom">🛍️</span><span>Boutiques</span></a>
-      <a id="bottomWhatsapp" href="#boutiques"><span class="icoBottom">💬</span><span>WhatsApp</span></a>
-      <button id="bottomShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
+      <a class="active" href="#spots"><span class="icoBottom">📍</span><span>Lieux</span></a>
+      <button id="bottomPublicShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
+      <a href="#proSection"><span class="icoBottom">✨</span><span>Mon lieu</span></a>
     </div>
   </nav>
 
   <div class="share-toast" id="shareToast">Lien prêt à partager</div>
 
+<!-- ============================================================
+     DIGIY AUDIO — EXPLORE
+     À coller juste avant </body> dans ta page EXPLORE
+     ============================================================ -->
 
-  <script>
-    (function(){
-      "use strict";
+<script>
+window.DIGIY_AUDIO_CONFIG = {
+  label: "Écouter le lieu",
+  stopLabel: "Arrêter",
+  text: "Bienvenue. Ici, tu peux découvrir un lieu, sentir son ambiance et contacter directement la bonne personne. Tu regardes, tu comprends, tu avances sans intermédiaire. Simple. Direct. Humain. DIGIYLYFE.",
+  buttonBg: "linear-gradient(135deg,#d4af37,#b78b34)",
+  buttonColor: "#111827",
+  bottom: "96px",
+  left: "14px",
+  rate: 0.82,
+  pitch: 1,
+  volume: 1,
+  zIndex: 99999,
+  shadow: "0 10px 30px rgba(0,0,0,.26)"
+};
+</script>
 
-      const SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
-      const SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
-      const MARKET_ORIGIN = "https://market.digiylyfe.com";
-      const PRO_MARKET_URL = "https://pro-market.digiylyfe.com/pin.html";
-      const BADGE_URL = "https://digiylyfe.net/wp-content/uploads/2026/04/icon-512-1.png";
-      const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth:{ persistSession:false, autoRefreshToken:false, detectSessionInUrl:false }
-      });
+<style>
+#digiy-audio-btn{
+position:fixed;
+display:inline-flex;
+align-items:center;
+gap:12px;
+padding:16px 26px;
+border:none;
+border-radius:999px;
+cursor:pointer;
+font-family:'Outfit',Inter,sans-serif;
+font-weight:900;
+font-size:17px;
+line-height:1;
+-webkit-tap-highlight-color:transparent;
+user-select:none;
+transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease;
+}
+#digiy-audio-btn:hover{
+transform:translateY(-2px);
+}
+#digiy-audio-btn:active{
+transform:scale(.97);
+}
+#digiy-audio-btn:disabled{
+opacity:.65;
+cursor:not-allowed;
+}
+#digiy-audio-btn .digiy-audio-ico{
+font-size:18px;
+line-height:1;
+}
+#digiy-audio-progress-wrap{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+height:3px;
+opacity:0;
+pointer-events:none;
+transition:opacity .25s ease;
+}
+#digiy-audio-progress{
+width:0%;
+height:100%;
+transition:width .18s linear;
+}
+@media (max-width:600px){
+#digiy-audio-btn{
+font-size:16px;
+padding:15px 22px;
+gap:11px;
+}
+#digiy-audio-btn .digiy-audio-ico{
+font-size:17px;
+}
+}
+</style>
 
-      const $ = (id) => document.getElementById(id);
-      let SHOPS = [];
-      let FILTERED = [];
+<button id="digiy-audio-btn" type="button" aria-label="Écouter le lieu">
+  <span class="digiy-audio-ico">&#9654;</span>
+  <span class="digiy-audio-lbl">Écouter le lieu</span>
+</button>
 
-      function showShareToast(text){
-        const toast = $("shareToast");
-        if(!toast) return;
-        toast.textContent = text || "Lien prêt à partager";
-        toast.classList.add("show");
-        clearTimeout(showShareToast._t);
-        showShareToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+<div id="digiy-audio-progress-wrap" aria-hidden="true">
+  <div id="digiy-audio-progress"></div>
+</div>
+
+<script>
+(function(){
+  var cfg = window.DIGIY_AUDIO_CONFIG || {};
+
+  var config = {
+    label: cfg.label || "Écouter DIGIY",
+    stopLabel: cfg.stopLabel || "Arrêter",
+    text: cfg.text || "Bienvenue sur DIGIYLYFE.",
+    buttonBg: cfg.buttonBg || "linear-gradient(135deg,#d4af37,#b78b34)",
+    buttonColor: cfg.buttonColor || "#111827",
+    bottom: cfg.bottom || "24px",
+    left: cfg.left || "24px",
+    right: cfg.right || null,
+    rate: typeof cfg.rate === "number" ? cfg.rate : 0.82,
+    pitch: typeof cfg.pitch === "number" ? cfg.pitch : 1,
+    volume: typeof cfg.volume === "number" ? cfg.volume : 1,
+    zIndex: cfg.zIndex || 99999,
+    shadow: cfg.shadow || "0 8px 28px rgba(0,0,0,.24)"
+  };
+
+  var btn = document.getElementById("digiy-audio-btn");
+  var lbl = btn ? btn.querySelector(".digiy-audio-lbl") : null;
+  var ico = btn ? btn.querySelector(".digiy-audio-ico") : null;
+  var progressWrap = document.getElementById("digiy-audio-progress-wrap");
+  var progressBar = document.getElementById("digiy-audio-progress");
+
+  if (!btn || !lbl || !ico || !progressWrap || !progressBar) return;
+
+  btn.style.bottom = config.bottom;
+  btn.style.left = config.left ? config.left : "auto";
+  btn.style.right = config.right ? config.right : "auto";
+  btn.style.zIndex = String(config.zIndex);
+  btn.style.background = config.buttonBg;
+  btn.style.color = config.buttonColor;
+  btn.style.boxShadow = config.shadow;
+
+  progressWrap.style.zIndex = String(config.zIndex - 1);
+  progressWrap.style.background = "rgba(212,175,55,.2)";
+  progressBar.style.background = "linear-gradient(90deg,#d4af37,#b78b34)";
+
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+    btn.style.display = "none";
+    return;
+  }
+
+  var synth = window.speechSynthesis;
+  var utterance = null;
+  var playing = false;
+  var timer = null;
+  var launchId = 0;
+
+  function getFrenchVoice(){
+    var voices = synth.getVoices() || [];
+    if (!voices.length) return null;
+
+    return (
+      voices.find(function(v){ return /fr[-_]?FR/i.test(v.lang) && /google/i.test(v.name); }) ||
+      voices.find(function(v){ return /fr[-_]?FR/i.test(v.lang); }) ||
+      voices.find(function(v){ return /^fr/i.test(v.lang); }) ||
+      null
+    );
+  }
+
+  function setIdle(){
+    playing = false;
+    ico.innerHTML = "&#9654;";
+    lbl.textContent = config.label;
+    btn.setAttribute("aria-label", config.label);
+    clearInterval(timer);
+    timer = null;
+    progressWrap.style.opacity = "0";
+    progressBar.style.width = "0%";
+  }
+
+  function setPlaying(){
+    playing = true;
+    ico.innerHTML = "&#9632;";
+    lbl.textContent = config.stopLabel;
+    btn.setAttribute("aria-label", config.stopLabel);
+  }
+
+  function stop(){
+    clearInterval(timer);
+    timer = null;
+    try { synth.cancel(); } catch(e){}
+    utterance = null;
+    setIdle();
+  }
+
+  function startProgress(text, currentId){
+    var words = (text.trim().match(/\S+/g) || []).length;
+    var estimatedDuration = Math.max(2500, words * 520);
+    var elapsed = 0;
+
+    clearInterval(timer);
+    progressBar.style.width = "0%";
+    progressWrap.style.opacity = "1";
+
+    timer = setInterval(function(){
+      if (!playing || currentId !== launchId) {
+        clearInterval(timer);
+        timer = null;
+        return;
       }
+      elapsed += 150;
+      var pct = Math.min((elapsed / estimatedDuration) * 100, 97);
+      progressBar.style.width = pct + "%";
+    }, 150);
+  }
 
-      async function shareMarket(){
-        const title = document.title || "DIGIY MARKET";
-        const text = "Découvre les boutiques locales sur DIGIY MARKET.";
-        const url = window.location.href;
-        try{
-          if(navigator.share){
-            await navigator.share({ title, text, url });
-            return;
-          }
-          await navigator.clipboard.writeText(url);
-          showShareToast("Lien copié pour partager");
-        }catch(_){
-          try{
-            await navigator.clipboard.writeText(url);
-            showShareToast("Lien copié pour partager");
-          }catch(__){
-            showShareToast("Partage indisponible ici");
-          }
-        }
-      }
+  function launch(){
+    launchId += 1;
+    var currentId = launchId;
 
-      function firstVisibleShop(){
-        return (Array.isArray(FILTERED) && FILTERED[0]) || (Array.isArray(SHOPS) && SHOPS[0]) || null;
-      }
+    try { synth.cancel(); } catch(e){}
 
-      function wirePublicActions(){
-        const first = firstVisibleShop();
-        const phone = first ? shopPhone(first) : "";
-        const name = first ? shopName(first) : "";
-        const wa = phone ? whatsappUrl(phone, name) : "#boutiques";
+    utterance = new SpeechSynthesisUtterance(config.text);
+    utterance.lang = "fr-FR";
+    utterance.rate = config.rate;
+    utterance.pitch = config.pitch;
+    utterance.volume = config.volume;
 
-        ["bottomVisio","bottomWhatsapp","fastVisio","fastWhatsapp"].forEach(id => {
-          const el = $(id);
-          if(!el) return;
-          el.href = wa || "#boutiques";
-          if(wa && wa.startsWith("http")){
-            el.target = "_blank";
-            el.rel = "noopener";
-          }
-        });
+    var voice = getFrenchVoice();
+    if (voice) utterance.voice = voice;
 
-        ["bottomShare","fastShare"].forEach(id => {
-          const el = $(id);
-          if(el) el.onclick = shareMarket;
-        });
-      }
+    utterance.onstart = function(){
+      if (currentId !== launchId) return;
+      setPlaying();
+      startProgress(config.text, currentId);
+    };
 
+    utterance.onend = function(){
+      if (currentId !== launchId) return;
+      clearInterval(timer);
+      timer = null;
+      progressBar.style.width = "100%";
+      setTimeout(function(){
+        if (currentId === launchId) setIdle();
+      }, 250);
+    };
 
+    utterance.onerror = function(){
+      if (currentId !== launchId) return;
+      stop();
+    };
 
-      function esc(v){
-        return String(v ?? "")
-          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-          .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-      }
+    synth.speak(utterance);
+  }
 
-      function norm(v){ return String(v || "").trim(); }
-      function lower(v){ return norm(v).toLowerCase(); }
-      function digits(v){ return String(v || "").replace(/[^\d]/g, ""); }
-      function unique(arr){ return [...new Set(arr.map(norm).filter(Boolean))]; }
+  function play(){
+    if (playing) return;
 
-      function phoneDisplay(v){
-        const d = digits(v);
-        if(!d) return "Contact";
-        if(d.startsWith("221") && d.length === 12){
-          return "+221 " + d.slice(3,5) + " " + d.slice(5,8) + " " + d.slice(8,10) + " " + d.slice(10,12);
-        }
-        return "+" + d;
-      }
+    if (synth.speaking || synth.pending) {
+      try { synth.cancel(); } catch(e){}
+    }
 
-      function whatsappUrl(phone, shopName){
-        const p = digits(phone);
-        if(!p) return "";
-        const text = encodeURIComponent(`Bonjour 👋 Je viens de DIGIY MARKET. Je souhaite voir les produits en WhatsApp Visio Live by DIGIY, comme si j’étais sur place, avant de confirmer mon choix avec ${shopName || "votre boutique"}.`);
-        return `https://wa.me/${p}?text=${text}`;
-      }
+    var voices = synth.getVoices();
+    if (voices && voices.length) {
+      launch();
+      return;
+    }
 
-      function shopSlug(shop){ return norm(shop.slug || shop.workspace_slug || shop.last_slug); }
-      function shopName(shop){ return norm(shop.shop_name || shop.business_name || "Boutique DIGIY"); }
-      function shopCategory(shop){ return norm(shop.categories_text || shop.category || "Boutique locale"); }
-      function shopCity(shop){ return norm(shop.city || shop.zones || "Zone à définir"); }
-      function shopZone(shop){
-        const city = norm(shop.city);
-        const zone = norm(shop.zones);
-        if(city && zone && lower(city) !== lower(zone)) return city + " • " + zone;
-        return city || zone || "Zone à définir";
-      }
-      function shopPhone(shop){ return norm(shop.whatsapp || shop.public_phone || shop.phone || shop.owner_phone); }
-      function shopText(shop){ return norm(shop.description || "Boutique locale, contact direct avec le commerçant."); }
-      function shopImage(shop){ return norm(shop.cover_url || shop.cover_image_url || shop.photo_url || shop.logo_url); }
-      function initials(name){
-        const parts = norm(name).split(/\s+/).filter(Boolean).slice(0,2);
-        const letters = parts.map(p => p[0]).join("").toUpperCase();
-        return letters || "DM";
-      }
-      function shopUrl(shop){
-        const slug = shopSlug(shop);
-        const u = new URL("/shop.html", MARKET_ORIGIN);
-        if(slug) u.searchParams.set("slug", slug);
-        return u.toString();
-      }
+    var launched = false;
 
-      function populateFilters(){
-        const citySel = $("cityFilter");
-        const catSel = $("categoryFilter");
-        const currentCity = citySel.value;
-        const currentCat = catSel.value;
+    function handleVoicesChanged(){
+      if (launched) return;
+      launched = true;
+      synth.removeEventListener("voiceschanged", handleVoicesChanged);
+      launch();
+    }
 
-        const cities = unique(SHOPS.map(s => shopCity(s))).sort((a,b)=>a.localeCompare(b,"fr"));
-        const cats = unique(SHOPS.map(s => shopCategory(s))).sort((a,b)=>a.localeCompare(b,"fr"));
+    synth.addEventListener("voiceschanged", handleVoicesChanged);
 
-        citySel.innerHTML = '<option value="">Toutes les villes</option>' + cities.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
-        catSel.innerHTML = '<option value="">Toutes les activités</option>' + cats.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
+    setTimeout(function(){
+      if (launched) return;
+      launched = true;
+      synth.removeEventListener("voiceschanged", handleVoicesChanged);
+      launch();
+    }, 700);
+  }
 
-        if(cities.includes(currentCity)) citySel.value = currentCity;
-        if(cats.includes(currentCat)) catSel.value = currentCat;
-      }
+  btn.addEventListener("click", function(){
+    if (playing) stop();
+    else play();
+  });
 
-      function applyFilters(){
-        const q = lower($("searchInput").value);
-        const city = lower($("cityFilter").value);
-        const cat = lower($("categoryFilter").value);
+  window.addEventListener("beforeunload", stop);
 
-        FILTERED = SHOPS.filter(shop => {
-          const hay = [shopName(shop), shopCategory(shop), shopCity(shop), shop.zones, shop.address, shop.description].map(lower).join(" ");
-          const okQ = !q || hay.includes(q);
-          const okCity = !city || lower(shopCity(shop)) === city;
-          const okCat = !cat || lower(shopCategory(shop)) === cat;
-          return okQ && okCity && okCat;
-        });
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden && playing) stop();
+  });
 
-        renderShops();
-        wirePublicActions();
-      }
+  setIdle();
+})();
+</script>
 
-      function renderStats(){
-        $("statShops").textContent = String(SHOPS.length);
-        $("statCities").textContent = String(unique(SHOPS.map(shopCity)).length);
-      }
-
-      function renderShops(){
-        const grid = $("shopsGrid");
-        const empty = $("emptyBox");
-
-        if(!FILTERED.length){
-          grid.innerHTML = "";
-          empty.style.display = "block";
-          empty.textContent = SHOPS.length ? "Aucune boutique ne correspond à cette recherche." : "Aucune boutique publiée pour le moment.";
-          return;
-        }
-
-        empty.style.display = "none";
-        wirePublicActions();
-        grid.innerHTML = FILTERED.map(shop => {
-          const name = shopName(shop);
-          const cat = shopCategory(shop);
-          const city = shopZone(shop);
-          const phone = shopPhone(shop);
-          const desc = shopText(shop);
-          const img = shopImage(shop);
-          const url = shopUrl(shop);
-          const wa = whatsappUrl(phone, name);
-          const mediaClass = img ? "shop-media has-img" : "shop-media";
-
-          return `
-            <article class="shop-card">
-              <div class="${mediaClass}">
-                ${img ? `<img class="shop-bg-img" src="${esc(img)}" alt="${esc(name)}" loading="lazy" onerror="this.remove();this.parentElement.classList.remove('has-img');"/>` : ``}
-                <div class="gallery-ribbon">Galerie DIGIY MARKET</div>
-                <div class="status-chip">En ligne</div>
-                <div class="shop-brand-seal" title="Boutique présente dans la galerie DIGIY">
-                  <img src="${BADGE_URL}" alt="DIGIY" loading="lazy"/>
-                </div>
-              </div>
-              <div class="shop-body">
-                <div class="shop-cat">${esc(cat)}</div>
-                <h3 class="shop-title">${esc(name)}</h3>
-                <p class="shop-desc">${esc(desc)}</p>
-                <div class="live-digiy-card">
-                  <strong>WhatsApp Visio Live by DIGIY</strong>
-                  <span>Voir en vidéo, comme si vous étiez sur place. Moins de trajet, plus de conseil, choix plus sûr.</span>
-                </div>
-                <div class="shop-meta">
-                  <span class="meta-pill">📍 ${esc(city)}</span>
-                  <span class="meta-pill">💬 ${esc(phoneDisplay(phone))}</span>
-                </div>
-                <div class="shop-actions">
-                  <a class="btn btn-main" href="${esc(url)}">Voir la boutique</a>
-                  ${wa ? `<a class="btn btn-soft" href="${esc(wa)}" target="_blank" rel="noopener">Visio Live</a>` : ``}
-                </div>
-                <div class="digiy-floor">
-                  <img src="${BADGE_URL}" alt="DIGIY" loading="lazy"/>
-                  <div><strong>Galerie DIGIY MARKET</strong>Contact direct · 0% commission · paiement au commerçant</div>
-                </div>
-              </div>
-            </article>
-          `;
-        }).join("");
-      }
-
-      async function loadShops(){
-        $("loadingBox").style.display = "block";
-        $("emptyBox").style.display = "none";
-        $("shopsGrid").innerHTML = "";
-
-        try{
-          const { data, error } = await sb
-            .from("digiy_market_profiles")
-            .select("id,slug,workspace_slug,last_slug,shop_name,business_name,city,zones,address,address_text,categories_text,category,description,whatsapp,public_phone,phone,owner_phone,photo_url,logo_url,cover_url,cover_image_url,is_published,is_active,priority,updated_at")
-            .eq("is_published", true)
-            .eq("is_active", true)
-            .order("priority", { ascending:true, nullsFirst:false })
-            .order("updated_at", { ascending:false });
-
-          if(error) throw error;
-          SHOPS = Array.isArray(data) ? data : [];
-          FILTERED = SHOPS.slice();
-          populateFilters();
-          renderStats();
-          renderShops();
-        wirePublicActions();
-        }catch(err){
-          console.error("DIGIY MARKET galerie erreur", err);
-          $("emptyBox").style.display = "block";
-          $("emptyBox").textContent = "Impossible de charger les boutiques pour le moment. " + (err?.message || "");
-        }finally{
-          $("loadingBox").style.display = "none";
-        }
-      }
-
-      function setupAudio(){
-        const btn = $("digiyAudioBtn");
-        if(!btn || !("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)){
-          if(btn) btn.style.display = "none";
-          return;
-        }
-        let playing = false;
-        let utter = null;
-        const text = "Bienvenue dans DIGIY MARKET. Ici, les boutiques locales entrent dans une vraie galerie marchande digitale. Avec le Live DIGIY, vous pouvez voir les produits en direct, en vidéo, comme si vous étiez sur place. Malgré les distances, vous gagnez du temps et vous évitez un trajet inutile. Le commerçant vous montre les articles, vous conseille, répond à vos questions, et vous aide à choisir. Vous regardez, vous choisissez, vous confirmez directement avec la boutique. Le paiement reste direct au commerçant. DIGIY ne garde pas l’argent et ne prend pas de commission. Selon la zone, la boutique peut aussi organiser une livraison locale. DIGIY MARKET, c’est le contact direct, la vidéo, le conseil et le commerce vivant.";
-        function stop(){ try{ speechSynthesis.cancel(); }catch(_){} playing=false; btn.textContent="▶ Écouter le Live DIGIY"; }
-        function play(){
-          stop();
-          utter = new SpeechSynthesisUtterance(text);
-          utter.lang = "fr-FR"; utter.rate = .82; utter.pitch = 1; utter.volume = 1;
-          utter.onstart = () => { playing=true; btn.textContent="■ Arrêter"; };
-          utter.onend = stop; utter.onerror = stop;
-          speechSynthesis.speak(utter);
-        }
-        btn.addEventListener("click", () => playing ? stop() : play());
-        window.addEventListener("beforeunload", stop);
-        document.addEventListener("visibilitychange", () => { if(document.hidden) stop(); });
-      }
-
-      $("searchInput").addEventListener("input", applyFilters);
-      $("cityFilter").addEventListener("change", applyFilters);
-      $("categoryFilter").addEventListener("change", applyFilters);
-      $("btnClear").addEventListener("click", () => {
-        $("searchInput").value = "";
-        $("cityFilter").value = "";
-        $("categoryFilter").value = "";
-        applyFilters();
-      });
-      $("btnReload").addEventListener("click", loadShops);
-
-      wirePublicActions();
-      setupAudio();
-      loadShops();
-    })();
-  </script>
+<!-- ============================================================
+     FIN DIGIY AUDIO — EXPLORE
+     ============================================================ -->
+  
 </body>
 </html>
