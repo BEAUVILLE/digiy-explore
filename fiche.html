@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#06130f" />
   <meta
     name="description"
-    content="Je découvre un lieu avec son ambiance, ses photos, son repère utile, WhatsApp, carte et partage simple sur téléphone."
+    content="Je découvre un lieu avec son ambiance, ses photos, son repère utile, contact direct préparé, carte et partage simple sur téléphone."
   />
 
   <script>
@@ -604,7 +604,10 @@
       </div>
 
       <div class="topActions">
-        <a class="btn ghost" href="./index.html">Retour</a>
+        <a class="btn ghost" href="https://digiylyfe.com/">Site</a>
+        <a class="btn ghost" href="https://digiy-hub.digiylyfe.com/">HUB</a>
+        <a class="btn ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">Tarifs</a>
+        <a class="btn secondary" href="./index.html">Retour</a>
         <a class="btn primary" href="https://commencer-a-payer.digiylyfe.com/" target="_blank" rel="noopener">Mon lieu</a>
       </div>
     </header>
@@ -631,8 +634,8 @@
 
         <div class="miniStat">
           <div class="miniLabel">Contact direct</div>
-          <div class="miniValue" id="contactBox">—</div>
-          <div class="miniHint">Téléphone ou WhatsApp si disponible.</div>
+          <div class="miniValue" id="contactBox">Protégé</div>
+          <div class="miniHint">Le lien de contact public est préparé sans afficher le numéro.</div>
         </div>
 
         <div class="miniStat">
@@ -642,8 +645,8 @@
         </div>
 
         <div class="actions">
-          <a id="callBtn" class="btn primary" href="./index.html">Appeler</a>
-          <a id="waBtn" class="btn secondary" href="./index.html">WhatsApp</a>
+          <a id="callBtn" class="btn primary" href="./index.html">Contact direct</a>
+          <a id="waBtn" class="btn secondary" href="./index.html">Message</a>
           <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Y aller</a>
         </div>
 
@@ -724,7 +727,7 @@
       <a href="./index.html"><span class="icoBottom">←</span><span>Retour</span></a>
       <a href="#gallery"><span class="icoBottom">🖼️</span><span>Photos</span></a>
       <a class="active" id="bottomGo" href="./index.html"><span class="icoBottom">🧭</span><span>Y aller</span></a>
-      <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>WhatsApp</span></a>
+      <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>Contact</span></a>
       <button id="bottomShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
     </div>
   </nav>
@@ -776,6 +779,52 @@
         msg.textContent = text;
       }
 
+      function cleanPublicUrl(){
+        try{
+          const url = new URL(window.location.href);
+          let changed = false;
+
+          [
+            "phone",
+            "tel",
+            "owner_phone",
+            "owner_id",
+            "business_code",
+            "access_note",
+            "keybox_code",
+            "keybox_location",
+            "return"
+          ].forEach(function(key){
+            if(url.searchParams.has(key)){
+              url.searchParams.delete(key);
+              changed = true;
+            }
+          });
+
+          if(changed){
+            history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+          }
+        }catch(_){}
+      }
+
+      function safePublicContactHref(place){
+        const raw = String(
+          place?.contact_url ||
+          place?.public_contact_url ||
+          place?.whatsapp_url ||
+          ""
+        ).trim();
+
+        if(!raw) return "./index.html";
+
+        try{
+          const url = new URL(raw, window.location.href);
+          if(/^https?:$/i.test(url.protocol)) return url.href;
+        }catch(_){}
+
+        return "./index.html";
+      }
+
 
       function showShareToast(text){
         if(!shareToast) return;
@@ -810,7 +859,7 @@
       function wirePublicActions(place){
         const label = place?.public_name || place?.title || "ce lieu";
         const mapHref = buildMapsHref(place?.latitude, place?.longitude, place?.address_text);
-        const waHref = buildWaHref(place?.whatsapp || place?.phone, label);
+        const contactHref = place ? safePublicContactHref(place) : "./index.html";
 
         if(fastGo){
           fastGo.href = mapHref || "./index.html";
@@ -825,9 +874,9 @@
         }
 
         if(bottomWhatsapp){
-          bottomWhatsapp.href = waHref || "./index.html";
-          bottomWhatsapp.target = waHref && waHref.startsWith("http") ? "_blank" : "";
-          bottomWhatsapp.rel = waHref && waHref.startsWith("http") ? "noopener" : "";
+          bottomWhatsapp.href = contactHref || "./index.html";
+          bottomWhatsapp.target = contactHref && contactHref.startsWith("http") ? "_blank" : "";
+          bottomWhatsapp.rel = contactHref && contactHref.startsWith("http") ? "noopener" : "";
         }
 
         if(fastShare) fastShare.onclick = () => shareCurrentPlace(label);
@@ -845,6 +894,7 @@
       }
 
       function getSlug(){
+        cleanPublicUrl();
         const url = new URL(window.location.href);
         return String(url.searchParams.get("slug") || "").trim();
       }
@@ -853,16 +903,12 @@
         return String(v || "").replace(/[^\d]/g, "");
       }
 
-      function buildPhoneHref(phone){
-        const clean = normalizePhone(phone);
-        return clean ? "tel:+" + clean : "./index.html";
+      function buildPhoneHref(){
+        return "./index.html";
       }
 
-      function buildWaHref(phone, label){
-        const clean = normalizePhone(phone);
-        if(!clean) return "./index.html";
-        const text = encodeURIComponent("Bonjour, je vous contacte depuis DIGIY EXPLORE pour : " + (label || "ce lieu"));
-        return "https://wa.me/" + clean + "?text=" + text;
+      function buildWaHref(){
+        return "./index.html";
       }
 
       function buildMapsHref(lat, lng, address){
@@ -946,7 +992,8 @@
       function renderPlace(place){
         const categoryText = [place?.category_icon, place?.category_label || place?.category_code].filter(Boolean).join(" ");
         const locationText = [place?.city, place?.zone].filter(Boolean).join(" — ");
-        const contactText = place?.whatsapp || place?.phone || "Non renseigné";
+        const contactHref = safePublicContactHref(place);
+        const contactText = contactHref && contactHref !== "./index.html" ? "Disponible" : "À demander";
         const priceText = place?.price_hint || "Non précisé";
         const kindText = place?.subcategory || "Non précisé";
 
@@ -965,24 +1012,24 @@
         renderTags(place?.tags);
         renderGallery(place);
 
-        callBtn.href = buildPhoneHref(place?.phone || place?.whatsapp);
-        waBtn.href = buildWaHref(place?.whatsapp || place?.phone, place?.public_name || "ce lieu");
+        callBtn.href = contactHref || "./index.html";
+        waBtn.href = contactHref || "./index.html";
         mapsBtn.href = buildMapsHref(place?.latitude, place?.longitude, place?.address_text);
 
-        if(!(place?.phone || place?.whatsapp)){
-          callBtn.textContent = "Pas de numéro";
+        if(!contactHref || contactHref === "./index.html"){
+          callBtn.textContent = "Contact à demander";
           callBtn.className = "btn ghost";
-        } else {
-          callBtn.textContent = "Appeler";
-          callBtn.className = "btn primary";
-        }
-
-        if(!(place?.whatsapp || place?.phone)){
-          waBtn.textContent = "Pas de WhatsApp";
+          waBtn.textContent = "Contact indisponible";
           waBtn.className = "btn ghost";
         } else {
-          waBtn.textContent = "WhatsApp";
+          callBtn.textContent = "Contact direct";
+          callBtn.className = "btn primary";
+          waBtn.textContent = "Message";
           waBtn.className = "btn secondary";
+          callBtn.target = "_blank";
+          callBtn.rel = "noopener";
+          waBtn.target = "_blank";
+          waBtn.rel = "noopener";
         }
 
         if(!(place?.latitude || place?.longitude || place?.address_text)){
@@ -1005,6 +1052,7 @@
       wirePublicActions(null);
 
       async function boot(){
+        cleanPublicUrl();
         const slug = getSlug();
 
         if(!slug){
@@ -1053,6 +1101,7 @@
           callBtn.href = "./index.html";
           waBtn.href = "./index.html";
           mapsBtn.href = "./index.html";
+          if(bottomWhatsapp) bottomWhatsapp.href = "./index.html";
         }
       }
 
