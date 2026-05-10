@@ -757,7 +757,7 @@
         <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
           📦 Tarifs
         </a>
-        <a class="btn btn-outline" href="https://pro-explore.digiylyfe.com/cockpit.html">
+        <a class="btn btn-outline" href="https://pro-explore.digiylyfe.com/">
           Je fais découvrir mon lieu
         </a>
         <a class="btn btn-primary" id="topActionBtn" href="#spots">
@@ -780,7 +780,7 @@
 
           <div class="hero-cta">
             <a class="btn btn-primary" href="#spots">Voir les lieux</a>
-            <a class="btn btn-ghost" href="https://pro-explore.digiylyfe.com/cockpit.html">
+            <a class="btn btn-ghost" href="https://pro-explore.digiylyfe.com/">
               Ajouter mon lieu
             </a>
           </div>
@@ -866,7 +866,7 @@
           <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
             📦 Tarifs
           </a>
-          <a class="btn btn-primary" href="https://pro-explore.digiylyfe.com/cockpit.html">
+          <a class="btn btn-primary" href="https://pro-explore.digiylyfe.com/">
             Ajouter mon lieu
           </a>
         </div>
@@ -1441,12 +1441,12 @@
     loadSpots();
   </script>
 
-  <!-- DIGIY EXPLORE PUBLIC INDEX — Doctrine finale
-       Public = découvrir / comprendre / partager.
-       PRO = cockpit / lieux / ajouter / PIN.
-       Camembert = pilotage PRO.
+  <!-- DIGIY EXPLORE PUBLIC — Doctrine corrigée
+       PUBLIC = découvrir / regarder / comprendre / partager.
+       PRO = seulement une passerelle CTA visible "Je veux montrer mon lieu".
+       Camembert public = Lieux / Partager / Site / HUB.
        Audio = lecteur séparé.
-       Aucun téléphone envoyé vers le PRO.
+       Pas de cockpit, pas de PIN, pas de "Mes lieux" PRO dans le camembert public.
   -->
   <style>
     body{
@@ -1540,7 +1540,8 @@
       transform:translateX(-50%) translateY(0);
     }
 
-    #digiyPublicIndexAudioReader{
+    /* Lecteur public séparé */
+    #digiyPublicAudioReader{
       position:fixed;
       right:14px;
       bottom:calc(86px + env(safe-area-inset-bottom,0px));
@@ -1559,7 +1560,7 @@
       font-family:Outfit,Inter,system-ui,sans-serif;
     }
 
-    #digiyPublicIndexAudioReader .audioText{
+    #digiyPublicAudioReader .audioText{
       min-width:0;
       color:rgba(247,251,248,.76);
       font-size:12px;
@@ -1570,7 +1571,7 @@
       text-overflow:ellipsis;
     }
 
-    #digiyPublicIndexAudioReader button{
+    #digiyPublicAudioReader button{
       min-height:40px;
       border:none;
       border-radius:999px;
@@ -1582,22 +1583,23 @@
       white-space:nowrap;
     }
 
-    #digiyPublicIndexAudioReader .listenBtn{
+    #digiyPublicAudioReader .listenBtn{
       color:#062414;
       background:linear-gradient(135deg,var(--gold),#f2cc78);
     }
 
-    #digiyPublicIndexAudioReader .stopBtn{
+    #digiyPublicAudioReader .stopBtn{
       color:#fecaca;
       background:rgba(248,113,113,.12);
       border:1px solid rgba(248,113,113,.22);
       display:none;
     }
 
-    #digiyPublicIndexAudioReader.playing .listenBtn{display:none}
-    #digiyPublicIndexAudioReader.playing .stopBtn{display:inline-flex;align-items:center}
+    #digiyPublicAudioReader.playing .listenBtn{display:none}
+    #digiyPublicAudioReader.playing .stopBtn{display:inline-flex;align-items:center}
 
-    #digiyPublicIndexCamembert{
+    /* Camembert PUBLIC : pas de cockpit ici */
+    #digiyPublicCamembert{
       position:fixed;
       left:14px;
       bottom:calc(86px + env(safe-area-inset-bottom,0px));
@@ -1607,7 +1609,7 @@
       font-family:Outfit,Inter,system-ui,sans-serif;
     }
 
-    #digiyPublicIndexCamembert .digiyPublicCenter{
+    #digiyPublicCamembert .digiyPublicCenter{
       position:absolute;
       inset:0;
       width:84px;
@@ -1629,7 +1631,7 @@
       overflow:hidden;
     }
 
-    #digiyPublicIndexCamembert .digiyPublicCenter::before{
+    #digiyPublicCamembert .digiyPublicCenter::before{
       content:"";
       position:absolute;
       inset:13px;
@@ -1638,27 +1640,27 @@
       border:1px solid rgba(255,255,255,.10);
     }
 
-    #digiyPublicIndexCamembert .digiyPublicCenter span,
-    #digiyPublicIndexCamembert .digiyPublicCenter strong{
+    #digiyPublicCamembert .digiyPublicCenter span,
+    #digiyPublicCamembert .digiyPublicCenter strong{
       position:relative;
       z-index:2;
       display:block;
       text-align:center;
     }
 
-    #digiyPublicIndexCamembert .digiyPublicCenter span{
+    #digiyPublicCamembert .digiyPublicCenter span{
       font-size:20px;
       line-height:1;
       margin-bottom:2px;
     }
 
-    #digiyPublicIndexCamembert .digiyPublicCenter strong{
+    #digiyPublicCamembert .digiyPublicCenter strong{
       font-size:10.5px;
       font-weight:1000;
       letter-spacing:.02em;
     }
 
-    #digiyPublicIndexCamembert .digiyPublicMenu{
+    #digiyPublicCamembert .digiyPublicMenu{
       position:absolute;
       left:94px;
       bottom:4px;
@@ -1679,13 +1681,14 @@
       transition:.18s ease;
     }
 
-    #digiyPublicIndexCamembert.open .digiyPublicMenu{
+    #digiyPublicCamembert.open .digiyPublicMenu{
       opacity:1;
       transform:translateX(0) scale(1);
       pointer-events:auto;
     }
 
-    #digiyPublicIndexCamembert .digiyPublicMenu a{
+    #digiyPublicCamembert .digiyPublicMenu a,
+    #digiyPublicCamembert .digiyPublicMenu button{
       min-height:44px;
       border:none;
       border-radius:15px;
@@ -1700,55 +1703,56 @@
       justify-content:center;
       text-align:center;
       font-family:inherit;
+      cursor:pointer;
     }
 
-    #digiyPublicIndexCamembert .gold{
+    #digiyPublicCamembert .gold{
       background:linear-gradient(135deg,var(--gold),#f2cc78) !important;
       color:#062414 !important;
     }
 
-    #digiyPublicIndexCamembert .green{
+    #digiyPublicCamembert .green{
       background:rgba(18,183,106,.16) !important;
       color:#dffcea !important;
       border:1px solid rgba(18,183,106,.25) !important;
     }
 
-    #digiyPublicIndexCamembert .blue{
+    #digiyPublicCamembert .blue{
       background:rgba(56,189,248,.14) !important;
       color:#d9f4ff !important;
       border:1px solid rgba(56,189,248,.24) !important;
     }
 
-    #digiyPublicIndexCamembert .violet{
+    #digiyPublicCamembert .violet{
       background:rgba(168,85,247,.14) !important;
       color:#eadcff !important;
       border:1px solid rgba(168,85,247,.24) !important;
     }
 
     @media(max-width:640px){
-      #digiyPublicIndexCamembert{
+      #digiyPublicCamembert{
         left:10px;
         bottom:calc(84px + env(safe-area-inset-bottom,0px));
         width:76px;
         height:76px;
       }
 
-      #digiyPublicIndexCamembert .digiyPublicCenter{
+      #digiyPublicCamembert .digiyPublicCenter{
         width:76px;
         height:76px;
       }
 
-      #digiyPublicIndexCamembert .digiyPublicCenter::before{
+      #digiyPublicCamembert .digiyPublicCenter::before{
         inset:12px;
       }
 
-      #digiyPublicIndexCamembert .digiyPublicMenu{
+      #digiyPublicCamembert .digiyPublicMenu{
         left:0;
         bottom:86px;
         width:min(265px, calc(100vw - 20px));
       }
 
-      #digiyPublicIndexAudioReader{
+      #digiyPublicAudioReader{
         right:10px;
         left:96px;
         bottom:calc(92px + env(safe-area-inset-bottom,0px));
@@ -1756,19 +1760,19 @@
         justify-content:space-between;
       }
 
-      #digiyPublicIndexAudioReader .audioText{
+      #digiyPublicAudioReader .audioText{
         font-size:11.5px;
       }
     }
   </style>
 
-  <nav class="publicBottomNav" aria-label="Navigation DIGIY EXPLORE">
+  <nav class="publicBottomNav" aria-label="Navigation publique DIGIY EXPLORE">
     <div class="publicBottomNavInner">
       <a href="https://digiylyfe.com/"><span class="icoBottom">🌍</span><span>Site</span></a>
       <a href="https://digiy-hub.digiylyfe.com/"><span class="icoBottom">🧭</span><span>HUB</span></a>
       <a class="active" href="#spots"><span class="icoBottom">📍</span><span>Lieux</span></a>
       <button id="digiyPublicShareBtn" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
-      <a href="https://pro-explore.digiylyfe.com/cockpit.html"><span class="icoBottom">✨</span><span>Mon lieu</span></a>
+      <a href="#heroSection"><span class="icoBottom">↑</span><span>Haut</span></a>
     </div>
   </nav>
 
@@ -1778,15 +1782,16 @@
     (function(){
       "use strict";
 
-      const PRO = {
-        cockpit:"https://pro-explore.digiylyfe.com/cockpit.html",
-        lieux:"https://pro-explore.digiylyfe.com/lieux.html",
-        submit:"https://pro-explore.digiylyfe.com/submit.html",
-        pin:"https://pro-explore.digiylyfe.com/pin.html"
+      const PUBLIC = {
+        site:"https://digiylyfe.com/",
+        hub:"https://digiy-hub.digiylyfe.com/",
+        spots:"#spots",
+        top:"#heroSection",
+        proEntry:"https://pro-explore.digiylyfe.com/"
       };
 
       const AUDIO_TEXT =
-        "Bienvenue dans DIGIY EXPLORE. Ici, on découvre le coin. Le public regarde, comprend vite, partage et contacte. Le professionnel pilote son lieu dans le cockpit sécurisé. Pas de téléphone dans la barre. Pas de repère interne dehors. Si tu veux gérer ton lieu, ouvre le cockpit. Si tu veux découvrir, reste sur la vitrine. Le terrain garde la main.";
+        "Bienvenue dans DIGIY EXPLORE. Ici, on découvre le coin. Le public regarde, comprend vite, partage et contacte. Cette page n’est pas le cockpit. Le professionnel qui veut montrer son lieu passe par la porte visible Je fais découvrir mon lieu. La vitrine reste simple : voir les lieux, sentir l’ambiance, partager, puis contacter directement.";
 
       function make(html){
         const tpl = document.createElement("template");
@@ -1803,11 +1808,34 @@
           .trim();
       }
 
-      function setLink(node, href){
+      function setLink(node, href, external){
         if(!node) return;
         node.setAttribute("href", href);
-        node.removeAttribute("target");
-        node.removeAttribute("rel");
+        if(external){
+          node.setAttribute("target", "_blank");
+          node.setAttribute("rel", "noopener");
+        }else{
+          node.removeAttribute("target");
+          node.removeAttribute("rel");
+        }
+      }
+
+      function patchVisibleProCtasOnly(){
+        document.querySelectorAll('a[href*="commencer-a-payer.digiylyfe.com"], a[href="#proSection"], a[href*="#proSection"]').forEach(function(a){
+          setLink(a, PUBLIC.proEntry, false);
+        });
+
+        document.querySelectorAll("a").forEach(function(a){
+          const t = cleanText(a.textContent);
+          const isProCta =
+            t.includes("je fais decouvrir mon lieu") ||
+            t.includes("ajouter mon lieu") ||
+            t.includes("je veux montrer mon lieu");
+
+          if(isProCta){
+            setLink(a, PUBLIC.proEntry, false);
+          }
+        });
       }
 
       function cleanProHash(){
@@ -1819,69 +1847,37 @@
         }catch(_){}
       }
 
-      function patchProLinks(){
-        document.querySelectorAll('a[href*="commencer-a-payer.digiylyfe.com"], a[href="#proSection"], a[href*="#proSection"]').forEach(function(a){
-          setLink(a, PRO.cockpit);
-        });
-
-        document.querySelectorAll("a,button").forEach(function(node){
-          const t = cleanText(node.textContent);
-
-          const cockpit =
-            t.includes("mon lieu") ||
-            t.includes("ma fiche") ||
-            t.includes("espace pro") ||
-            t.includes("je veux montrer mon lieu") ||
-            t.includes("je fais decouvrir mon lieu") ||
-            t.includes("ajouter mon lieu") ||
-            t.includes("mon acces") ||
-            t.includes("cockpit");
-
-          const lieux =
-            t.includes("voir mes lieux") ||
-            t === "lieux" ||
-            t.includes("mes lieux");
-
-          const add =
-            t.includes("ajouter un lieu");
-
-          if(node.tagName === "A"){
-            if(add) setLink(node, PRO.submit);
-            else if(lieux) setLink(node, PRO.lieux);
-            else if(cockpit) setLink(node, PRO.cockpit);
-          }else if(node.tagName === "BUTTON" && (add || lieux || cockpit)){
-            node.addEventListener("click", function(e){
-              e.preventDefault();
-              window.location.href = add ? PRO.submit : lieux ? PRO.lieux : PRO.cockpit;
-            });
-          }
-        });
-      }
-
-      function installCamembert(){
-        document.querySelectorAll("#digiyPublicIndexCamembert").forEach(n => n.remove());
+      function installPublicCamembert(){
+        document.querySelectorAll("#digiyPublicCamembert").forEach(n => n.remove());
 
         const root = make(`
-          <div id="digiyPublicIndexCamembert" aria-label="Actions DIGIY EXPLORE">
-            <button class="digiyPublicCenter" id="digiyPublicIndexCenter" type="button" aria-expanded="false">
-              <span>🧭</span><strong>PRO</strong>
+          <div id="digiyPublicCamembert" aria-label="Actions publiques DIGIY EXPLORE">
+            <button class="digiyPublicCenter" id="digiyPublicCenter" type="button" aria-expanded="false">
+              <span>🧭</span><strong>Voir</strong>
             </button>
             <div class="digiyPublicMenu">
-              <a class="gold" href="${PRO.cockpit}">Cockpit</a>
-              <a class="green" href="${PRO.lieux}">Mes lieux</a>
-              <a class="blue" href="${PRO.submit}">Ajouter</a>
-              <a class="violet" href="${PRO.pin}">PIN</a>
+              <a class="gold" href="#spots">Lieux</a>
+              <button class="green" id="digiyPublicMenuShare" type="button">Partager</button>
+              <a class="blue" href="${PUBLIC.site}">Site</a>
+              <a class="violet" href="${PUBLIC.hub}">HUB</a>
             </div>
           </div>
         `);
 
         document.body.appendChild(root);
 
-        const center = document.getElementById("digiyPublicIndexCenter");
+        const center = document.getElementById("digiyPublicCenter");
+        const share = document.getElementById("digiyPublicMenuShare");
+
         center && center.addEventListener("click", function(e){
           e.preventDefault();
           root.classList.toggle("open");
           center.setAttribute("aria-expanded", root.classList.contains("open") ? "true" : "false");
+        });
+
+        share && share.addEventListener("click", function(e){
+          e.preventDefault();
+          shareCurrent();
         });
 
         document.addEventListener("click", function(e){
@@ -1893,20 +1889,20 @@
       }
 
       function installAudio(){
-        document.querySelectorAll("#digiyPublicIndexAudioReader").forEach(n => n.remove());
+        document.querySelectorAll("#digiyPublicAudioReader").forEach(n => n.remove());
 
         const reader = make(`
-          <div id="digiyPublicIndexAudioReader" aria-label="Lecteur audio DIGIY EXPLORE">
+          <div id="digiyPublicAudioReader" aria-label="Lecteur audio DIGIY EXPLORE">
             <span class="audioText">Écouter DIGIY expliquer EXPLORE</span>
-            <button class="listenBtn" id="digiyPublicIndexListen" type="button">🎧 Écouter</button>
-            <button class="stopBtn" id="digiyPublicIndexStop" type="button">⏹ Stop</button>
+            <button class="listenBtn" id="digiyPublicListen" type="button">🎧 Écouter</button>
+            <button class="stopBtn" id="digiyPublicStop" type="button">⏹ Stop</button>
           </div>
         `);
 
         document.body.appendChild(reader);
 
-        const listen = document.getElementById("digiyPublicIndexListen");
-        const stopBtn = document.getElementById("digiyPublicIndexStop");
+        const listen = document.getElementById("digiyPublicListen");
+        const stopBtn = document.getElementById("digiyPublicStop");
         let playing = false;
 
         function setPlaying(v){
@@ -1996,15 +1992,15 @@
 
       function boot(){
         cleanProHash();
-        installCamembert();
+        installPublicCamembert();
         installAudio();
-        patchProLinks();
+        patchVisibleProCtasOnly();
 
         const shareBtn = document.getElementById("digiyPublicShareBtn");
         shareBtn && shareBtn.addEventListener("click", shareCurrent);
 
-        setTimeout(patchProLinks, 500);
-        setTimeout(patchProLinks, 1500);
+        setTimeout(patchVisibleProCtasOnly, 500);
+        setTimeout(patchVisibleProCtasOnly, 1500);
       }
 
       if(document.readyState === "loading"){
