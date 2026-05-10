@@ -827,7 +827,7 @@
             <h2 id="sectionTitle">À voir en ce moment</h2>
             <p id="sectionText">
               Lieux, sorties, expériences, coins utiles et belles adresses.
-              Quand la lecture publique répond, la vitrine montre les lieux publiés. Sinon elle garde une sélection simple pour rester vivante.
+              Quand la lecture publique répond, la vitrine montre les lieux publiés. Sinon elle garde une sélection d’exemples pour montrer le potentiel du terrain.
             </p>
           </div>
 
@@ -952,6 +952,45 @@
         contact_url: DEFAULT_CONTACT_URL,
         open_url: DEFAULT_OPEN_URL,
         kind: "En ville"
+      },
+      {
+        title: "Restaurant terrasse — Saly",
+        category: "🍽️ Restaurant",
+        city: "Saly",
+        zone: "Centre",
+        price: "Selon menu",
+        desc: "Une terrasse simple pour manger, se poser, sentir l’ambiance locale et contacter sans détour.",
+        tags: ["restaurant", "terrasse", "saly", "local"],
+        cover: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "À table"
+      },
+      {
+        title: "Boutique locale — Mbour",
+        category: "🛍️ Boutique",
+        city: "Mbour",
+        zone: "Marché",
+        price: "Selon produit",
+        desc: "Une adresse de commerce local pour découvrir des produits utiles, de l’artisanat et du contact humain.",
+        tags: ["boutique", "marché", "commerce", "artisanat"],
+        cover: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Commerce local"
+      },
+      {
+        title: "Villa détente — Somone",
+        category: "🏡 Séjour",
+        city: "Somone",
+        zone: "Petite Côte",
+        price: "Sur demande",
+        desc: "Un exemple de lieu de séjour clair : ambiance, zone, repère utile et envie de venir respirer.",
+        tags: ["villa", "séjour", "somone", "petite côte"],
+        cover: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
+        contact_url: DEFAULT_CONTACT_URL,
+        open_url: DEFAULT_OPEN_URL,
+        kind: "Repos"
       }
     ];
 
@@ -1548,13 +1587,13 @@
       z-index:99998;
       display:flex;
       align-items:center;
-      gap:8px;
-      max-width:min(340px, calc(100vw - 118px));
-      padding:9px 10px;
-      border-radius:999px;
-      border:1px solid rgba(242,204,120,.24);
-      background:rgba(6,19,15,.94);
-      box-shadow:0 18px 44px rgba(0,0,0,.34);
+      gap:10px;
+      max-width:min(430px, calc(100vw - 118px));
+      padding:10px 12px;
+      border-radius:22px;
+      border:1px solid rgba(242,204,120,.34);
+      background:linear-gradient(180deg, rgba(16,38,30,.97), rgba(6,19,15,.95));
+      box-shadow:0 18px 44px rgba(0,0,0,.38);
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
       font-family:Outfit,Inter,system-ui,sans-serif;
@@ -1562,13 +1601,28 @@
 
     #digiyPublicAudioReader .audioText{
       min-width:0;
-      color:rgba(247,251,248,.76);
-      font-size:12px;
-      font-weight:900;
-      line-height:1.25;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      color:rgba(247,251,248,.86);
+      font-size:12.5px;
+      font-weight:950;
+      line-height:1.28;
+      white-space:normal;
+      overflow:visible;
+      text-overflow:clip;
+    }
+
+    #digiyPublicAudioReader .audioText strong{
+      display:block;
+      color:#f5db9a;
+      font-size:12.8px;
+      font-weight:1000;
+      margin-bottom:2px;
+    }
+
+    #digiyPublicAudioReader .audioText span{
+      display:block;
+      color:rgba(247,251,248,.72);
+      font-size:11.5px;
+      font-weight:850;
     }
 
     #digiyPublicAudioReader button{
@@ -1758,10 +1812,17 @@
         bottom:calc(92px + env(safe-area-inset-bottom,0px));
         max-width:none;
         justify-content:space-between;
+        padding:9px 10px;
+        border-radius:18px;
       }
 
       #digiyPublicAudioReader .audioText{
         font-size:11.5px;
+        line-height:1.22;
+      }
+
+      #digiyPublicAudioReader .audioText span{
+        display:none;
       }
     }
   </style>
@@ -1791,7 +1852,7 @@
       };
 
       const AUDIO_TEXT =
-        "Bienvenue dans DIGIY EXPLORE. Ici, on découvre le coin. Le public regarde, comprend vite, partage et contacte. Cette page n’est pas le cockpit. Le professionnel qui veut montrer son lieu passe par la porte visible Je fais découvrir mon lieu. La vitrine reste simple : voir les lieux, sentir l’ambiance, partager, puis contacter directement.";
+        "Bienvenue dans DIGIY EXPLORE. Ici, tu découvres le coin sans te perdre. On regarde d’abord les lieux, on comprend vite l’ambiance, puis on choisit simplement : voir, partager ou contacter. DIGIY ne cache pas le terrain derrière une machine. La vitrine te montre les lieux avec une lecture claire, humaine et directe. Le professionnel garde la main, le public garde le choix. Si tu veux montrer ton propre lieu, utilise la porte visible Je fais découvrir mon lieu. Ici, pas besoin de notice longue : tu écoutes, tu regardes, tu cliques, et tu avances tranquillement.";
 
       function make(html){
         const tpl = document.createElement("template");
@@ -1893,7 +1954,10 @@
 
         const reader = make(`
           <div id="digiyPublicAudioReader" aria-label="Lecteur audio DIGIY EXPLORE">
-            <span class="audioText">Écouter DIGIY expliquer EXPLORE</span>
+            <span class="audioText">
+              <strong>Écoute DIGIY</strong>
+              <span>Comprendre la vitrine avant de cliquer.</span>
+            </span>
             <button class="listenBtn" id="digiyPublicListen" type="button">🎧 Écouter</button>
             <button class="stopBtn" id="digiyPublicStop" type="button">⏹ Stop</button>
           </div>
