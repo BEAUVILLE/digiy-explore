@@ -820,7 +820,7 @@
 
         <div class="actions">
           <a id="callBtn" class="btn primary" href="./index.html">Contact direct</a>
-          <a id="waBtn" class="btn secondary" href="./index.html">Message</a>
+          <a id="waBtn" class="btn secondary" href="./index.html">WhatsApp</a>
           <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Y aller</a>
         </div>
 
@@ -854,7 +854,7 @@
       <a href="./index.html"><span class="icoBottom">←</span><span>Retour</span></a>
       <a href="#gallery"><span class="icoBottom">🖼️</span><span>Galerie</span></a>
       <a class="active" id="bottomGo" href="./index.html"><span class="icoBottom">🧭</span><span>Y aller</span></a>
-      <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>Contact</span></a>
+      <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>WhatsApp</span></a>
       <button id="bottomShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
     </div>
   </nav>
@@ -867,6 +867,16 @@
 
       const PUBLIC_BASE = "https://explore.digiylyfe.com/";
       const QR_API = "https://api.qrserver.com/v1/create-qr-code/";
+
+      const WHATSAPP_FALLBACKS = {
+        "test-digiy-explore-saly": "https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20des%20informations%20sur%20Test%20DIGIY%20Explore%20Saly."
+      };
+
+      function fallbackWhatsappForSlug(slug){
+        const key = String(slug || "").trim().toLowerCase();
+        return WHATSAPP_FALLBACKS[key] || "";
+      }
+
 
       const DEMO_PLACES = {
         "sortie-peche-petite-cote": {
@@ -1166,7 +1176,55 @@
         return "./index.html";
       }
 
+      function readExternalLinks(place){
+        const raw = place?.external_links || place?.links || place?.public_links || [];
+        if(Array.isArray(raw)) return raw;
+
+        if(typeof raw === "string"){
+          const s = raw.trim();
+          if(!s) return [];
+          try{
+            const parsed = JSON.parse(s);
+            return Array.isArray(parsed) ? parsed : [];
+          }catch(_){
+            return s.startsWith("http") ? [s] : [];
+          }
+        }
+
+        return [];
+      }
+
+      function firstWhatsappFromExternalLinks(place){
+        const links = readExternalLinks(place);
+
+        for(const item of links){
+          const url = typeof item === "string"
+            ? item
+            : String(item?.url || item?.href || item?.link || "").trim();
+
+          const label = typeof item === "string"
+            ? ""
+            : String(item?.label || item?.type || item?.name || "").toLowerCase();
+
+          if(!url) continue;
+
+          try{
+            const u = new URL(url, window.location.href);
+            const host = u.hostname.toLowerCase();
+
+            if(host.includes("wa.me") || host.includes("whatsapp.com") || label.includes("whatsapp")){
+              return u.href;
+            }
+          }catch(_){}
+        }
+
+        return "";
+      }
+
       function safePublicContactHref(place){
+        const externalWhatsapp = firstWhatsappFromExternalLinks(place);
+        if(externalWhatsapp) return externalWhatsapp;
+
         const raw = String(
           place?.contact_url ||
           place?.public_contact_url ||
@@ -1177,7 +1235,12 @@
         if(raw){
           try{
             const url = new URL(raw, window.location.href);
-            if(/^https?:$/i.test(url.protocol)) return url.href;
+            const host = url.hostname.toLowerCase();
+
+            if(/^https?:$/i.test(url.protocol)){
+              if(host.includes("wa.me") || host.includes("whatsapp.com")) return url.href;
+              if(!host.includes("digiylyfe.com")) return url.href;
+            }
           }catch(_){}
         }
 
@@ -1193,6 +1256,9 @@
           const label = place?.public_name || place?.title || place?.name || "ce lieu";
           return "https://wa.me/" + phone + "?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE. Je souhaite des informations sur : " + label);
         }
+
+        const fallback = fallbackWhatsappForSlug(place?.slug || getSlug());
+        if(fallback) return fallback;
 
         return "./index.html";
       }
@@ -1519,6 +1585,7 @@
   </script>
 </body>
 </html>
+
 
 
 
