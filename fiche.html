@@ -854,6 +854,134 @@
       const PUBLIC_BASE = "https://explore.digiylyfe.com/";
       const QR_API = "https://api.qrserver.com/v1/create-qr-code/";
 
+      const DEMO_PLACES = {
+        "sortie-peche-petite-cote": {
+          slug:"sortie-peche-petite-cote",
+          public_name:"Sortie en pêche — Petite Côte",
+          title:"Sortie en pêche — Petite Côte",
+          category_label:"🎣 Sortie",
+          city:"Saly",
+          zone:"Petite Côte",
+          price_label:"Sur demande",
+          short_description:"Une sortie en pêche au large, avec ambiance locale, air marin et vraie sensation du coin.",
+          full_description:"Une fiche vitrine DIGIY EXPLORE pour montrer comment un lieu, une sortie ou une expérience peut circuler proprement : photos, repère utile, contact direct, itinéraire et QR partageable. Le regard vient d’abord, puis le client clique quand il est prêt.",
+          address_text:"Petite Côte · Saly · Sénégal",
+          kind:"En mer",
+          tags:["pêche","mer","sortie","bateau","terrain"],
+          cover_url:"https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif",
+          gallery_urls:[
+            "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "pause-plage-saly": {
+          slug:"pause-plage-saly",
+          public_name:"Pause plage — Saly",
+          title:"Pause plage — Saly",
+          category_label:"🏖️ Détente",
+          city:"Saly",
+          zone:"Petite Côte",
+          price_label:"Libre / selon lieu",
+          short_description:"Plage, lumière, promenade et repos. Un coin simple pour souffler et profiter.",
+          full_description:"Une fiche de démonstration pour montrer une adresse de détente côté EXPLORE : ambiance, repère, galerie et partage par QR.",
+          address_text:"Saly · Petite Côte · Sénégal",
+          kind:"Bord de mer",
+          tags:["plage","repos","balade","saly"],
+          cover_url:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "escapade-locale-dakar": {
+          slug:"escapade-locale-dakar",
+          public_name:"Escapade locale — Dakar",
+          title:"Escapade locale — Dakar",
+          category_label:"🌆 Découverte",
+          city:"Dakar",
+          zone:"Cap-Vert",
+          price_label:"Selon programme",
+          short_description:"Une porte d’entrée simple pour découvrir le rythme local, les coins utiles et les lieux qui valent le détour.",
+          full_description:"Une fiche vitrine pour montrer comment DIGIY EXPLORE peut présenter une sortie urbaine : repère, ambiance, galerie, contact et QR.",
+          address_text:"Dakar · Sénégal",
+          kind:"En ville",
+          tags:["découverte","ville","guidage","dakar"],
+          cover_url:"https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "restaurant-terrasse-saly": {
+          slug:"restaurant-terrasse-saly",
+          public_name:"Restaurant terrasse — Saly",
+          title:"Restaurant terrasse — Saly",
+          category_label:"🍽️ Restaurant",
+          city:"Saly",
+          zone:"Centre",
+          price_label:"Selon menu",
+          short_description:"Une terrasse simple pour manger, se poser, sentir l’ambiance locale et contacter sans détour.",
+          full_description:"Une fiche vitrine pour montrer une belle adresse terrain avec contact direct, galerie et QR partageable.",
+          address_text:"Saly Centre · Sénégal",
+          kind:"À table",
+          tags:["restaurant","terrasse","saly","local"],
+          cover_url:"https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "boutique-locale-mbour": {
+          slug:"boutique-locale-mbour",
+          public_name:"Boutique locale — Mbour",
+          title:"Boutique locale — Mbour",
+          category_label:"🛍️ Boutique",
+          city:"Mbour",
+          zone:"Marché",
+          price_label:"Selon produit",
+          short_description:"Une adresse de commerce local pour découvrir des produits utiles, de l’artisanat et du contact humain.",
+          full_description:"Une fiche vitrine pour montrer comment une boutique peut être vue, partagée et contactée directement.",
+          address_text:"Mbour · Marché · Sénégal",
+          kind:"Commerce local",
+          tags:["boutique","marché","commerce","artisanat"],
+          cover_url:"https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "villa-detente-somone": {
+          slug:"villa-detente-somone",
+          public_name:"Villa détente — Somone",
+          title:"Villa détente — Somone",
+          category_label:"🏡 Séjour",
+          city:"Somone",
+          zone:"Petite Côte",
+          price_label:"Sur demande",
+          short_description:"Une adresse de séjour pour se poser, respirer et découvrir le coin autrement.",
+          full_description:"Une fiche vitrine pour montrer une adresse de séjour côté EXPLORE, partageable par QR et contact direct.",
+          address_text:"Somone · Petite Côte · Sénégal",
+          kind:"Séjour",
+          tags:["villa","séjour","somone","repos"],
+          cover_url:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        }
+      };
+
+      function demoPlaceBySlug(slug){
+        return DEMO_PLACES[String(slug || "").trim().toLowerCase()] || null;
+      }
+
+
       const supabase = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
         window.DIGIY_SUPABASE_URL,
         window.DIGIY_SUPABASE_ANON_KEY,
@@ -1321,16 +1449,25 @@
       }
 
       async function loadPlace(slug){
-        const { data, error } = await supabase.rpc("digiy_explore_public_place_by_slug", {
-          p_slug: slug
-        });
+        const demo = demoPlaceBySlug(slug);
 
-        if(error) throw error;
+        try{
+          const { data, error } = await supabase.rpc("digiy_explore_public_place_by_slug", {
+            p_slug: slug
+          });
 
-        if(data?.ok === true && data.place) return data.place;
-        if(data && typeof data === "object" && data.slug) return data;
+          if(error) throw error;
 
-        throw new Error(data?.error || "place_not_found");
+          if(data?.ok === true && data.place) return data.place;
+          if(data && typeof data === "object" && data.slug) return data;
+
+          if(demo) return demo;
+
+          throw new Error(data?.error || "place_not_found");
+        }catch(e){
+          if(demo) return demo;
+          throw e;
+        }
       }
 
       async function boot(){
@@ -1367,4 +1504,5 @@
   </script>
 </body>
 </html>
+
 
