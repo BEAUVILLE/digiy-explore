@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <meta
     name="description"
     content="Je découvre le coin avec des sorties, des lieux et de belles adresses avec contact direct."
   />
-  <meta name="theme-color" content="#06130f" />
+  <meta name="theme-color" content="#06130f"/>
   <title>Je découvre le coin | DIGIY EXPLORE</title>
 
   <script>
@@ -23,12 +23,13 @@
       --bg-2:#0b1d17;
       --card:#10261e;
       --card-2:#143126;
-      --line:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.11);
       --line-2:rgba(255,255,255,.16);
       --text:#f7fbf8;
-      --muted:rgba(247,251,248,.72);
-      --soft:rgba(247,251,248,.54);
+      --muted:rgba(247,251,248,.76);
+      --soft:rgba(247,251,248,.58);
       --gold:#dcb45a;
+      --gold2:#f2cc78;
       --green:#12b76a;
       --green-2:#1ad17a;
       --danger:#ff7a7a;
@@ -38,24 +39,27 @@
       --max:1200px;
     }
 
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family:Outfit,Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(220,180,90,.14), transparent 26%),
-        radial-gradient(circle at top right, rgba(18,183,106,.10), transparent 24%),
-        linear-gradient(180deg, #06130f 0%, #071711 42%, #091e17 100%);
+        radial-gradient(circle at top left,rgba(220,180,90,.14),transparent 26%),
+        radial-gradient(circle at top right,rgba(18,183,106,.10),transparent 24%),
+        linear-gradient(180deg,#06130f 0%,#071711 42%,#091e17 100%);
       color:var(--text);
       min-height:100vh;
+      font-size:17px;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    img{ max-width:100%; display:block; }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
 
     .wrap{
-      width:min(var(--max), calc(100% - 28px));
+      width:min(var(--max),calc(100% - 28px));
       margin:0 auto;
     }
 
@@ -64,7 +68,7 @@
       top:0;
       z-index:40;
       backdrop-filter:blur(14px);
-      background:rgba(6,19,15,.72);
+      background:rgba(6,19,15,.76);
       border-bottom:1px solid var(--line);
     }
 
@@ -85,9 +89,9 @@
     }
 
     .brand-badge{
-      width:48px;
-      height:48px;
-      border-radius:14px;
+      width:50px;
+      height:50px;
+      border-radius:15px;
       overflow:hidden;
       border:1px solid var(--line-2);
       box-shadow:var(--shadow);
@@ -102,26 +106,25 @@
       display:block;
     }
 
-    .brand-copy{
-      min-width:0;
-    }
-
+    .brand-copy{min-width:0}
     .brand-copy strong{
       display:block;
-      font-size:15px;
-      letter-spacing:.02em;
+      font-size:16px;
+      letter-spacing:.01em;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      font-weight:1000;
     }
 
     .brand-copy span{
       display:block;
-      font-size:12px;
+      font-size:13px;
       color:var(--muted);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      font-weight:800;
     }
 
     .actions{
@@ -141,41 +144,37 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      min-height:46px;
+      min-height:48px;
       padding:0 16px;
       border-radius:999px;
-      font-weight:800;
-      font-size:14px;
+      font-weight:1000;
+      font-size:15px;
       transition:.18s ease;
       white-space:nowrap;
+      text-align:center;
     }
 
-    .btn:hover{
-      transform:translateY(-1px);
-    }
-
+    .btn:hover{transform:translateY(-1px)}
     .btn-ghost{
       color:var(--text);
-      background:rgba(255,255,255,.04);
+      background:rgba(255,255,255,.045);
       border:1px solid var(--line);
     }
 
     .btn-outline{
       color:var(--text);
       background:transparent;
-      border:1px solid rgba(220,180,90,.40);
+      border:1px solid rgba(220,180,90,.42);
     }
 
     .btn-primary{
       color:#062414;
-      background:linear-gradient(135deg, var(--gold), #f2cc78);
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
       border:1px solid rgba(255,255,255,.12);
       box-shadow:0 14px 32px rgba(220,180,90,.18);
     }
 
-    .hero{
-      padding:46px 0 24px;
-    }
+    .hero{padding:46px 0 24px}
 
     .hero-grid{
       display:grid;
@@ -184,9 +183,8 @@
       align-items:stretch;
     }
 
-    .hero-card,
-    .side-card{
-      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
+    .hero-card,.side-card{
+      background:linear-gradient(180deg,rgba(16,38,30,.96),rgba(11,29,23,.96));
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
@@ -205,7 +203,7 @@
       width:220px;
       height:220px;
       border-radius:50%;
-      background:radial-gradient(circle, rgba(220,180,90,.20), transparent 68%);
+      background:radial-gradient(circle,rgba(220,180,90,.20),transparent 68%);
       pointer-events:none;
     }
 
@@ -218,24 +216,25 @@
       border:1px solid rgba(220,180,90,.24);
       background:rgba(220,180,90,.08);
       color:#f5db9a;
-      font-size:12px;
-      font-weight:900;
+      font-size:13px;
+      font-weight:1000;
       letter-spacing:.04em;
       text-transform:uppercase;
     }
 
     h1{
       margin:16px 0 14px;
-      font-size:clamp(30px, 5vw, 58px);
+      font-size:clamp(34px,5vw,62px);
       line-height:1.02;
-      letter-spacing:-.03em;
+      letter-spacing:-.04em;
     }
 
     .hero p{
       margin:0;
       color:var(--muted);
-      font-size:16px;
+      font-size:18px;
       line-height:1.7;
+      font-weight:850;
       max-width:760px;
     }
 
@@ -249,27 +248,29 @@
     .hero-metrics{
       margin-top:24px;
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:12px;
     }
 
     .metric{
       border-radius:18px;
       padding:16px;
-      background:rgba(255,255,255,.04);
+      background:rgba(255,255,255,.045);
       border:1px solid var(--line);
     }
 
     .metric strong{
       display:block;
-      font-size:22px;
+      font-size:28px;
       margin-bottom:6px;
+      color:#fff7cc;
     }
 
     .metric span{
       color:var(--muted);
-      font-size:13px;
+      font-size:15px;
       line-height:1.45;
+      font-weight:850;
     }
 
     .side-card{
@@ -294,29 +295,29 @@
     }
 
     .side-kicker{
-      font-size:12px;
+      font-size:13px;
       text-transform:uppercase;
       letter-spacing:.06em;
       color:#f5db9a;
-      font-weight:900;
+      font-weight:1000;
     }
 
     .side-title{
-      font-size:24px;
+      font-size:28px;
       line-height:1.1;
-      font-weight:900;
+      font-weight:1000;
       margin:0;
+      letter-spacing:-.03em;
     }
 
     .side-text{
       color:var(--muted);
       line-height:1.65;
-      font-size:15px;
+      font-size:17px;
+      font-weight:850;
     }
 
-    .section{
-      padding:16px 0 22px;
-    }
+    .section{padding:16px 0 22px}
 
     .section-head{
       display:flex;
@@ -328,14 +329,16 @@
 
     .section-head h2{
       margin:0 0 6px;
-      font-size:clamp(24px, 3.2vw, 36px);
-      letter-spacing:-.02em;
+      font-size:clamp(28px,3.2vw,40px);
+      letter-spacing:-.03em;
     }
 
     .section-head p{
       margin:0;
       color:var(--muted);
       line-height:1.6;
+      font-size:17px;
+      font-weight:850;
       max-width:760px;
     }
 
@@ -349,28 +352,24 @@
       display:inline-flex;
       align-items:center;
       gap:8px;
-      min-height:40px;
+      min-height:42px;
       padding:0 14px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
+      background:rgba(255,255,255,.045);
       color:var(--text);
-      font-size:13px;
-      font-weight:800;
+      font-size:14px;
+      font-weight:1000;
     }
 
     .grid{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:18px;
     }
 
-    .grid-single{
-      grid-template-columns:1fr;
-    }
-
     .spot{
-      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
+      background:linear-gradient(180deg,rgba(16,38,30,.98),rgba(12,30,23,.98));
       border:1px solid var(--line);
       border-radius:24px;
       overflow:hidden;
@@ -394,9 +393,7 @@
       transition:transform .35s ease;
     }
 
-    .spot:hover .spot-cover img{
-      transform:scale(1.03);
-    }
+    .spot:hover .spot-cover img{transform:scale(1.03)}
 
     .spot-badges{
       position:absolute;
@@ -411,12 +408,12 @@
     .badge{
       display:inline-flex;
       align-items:center;
-      min-height:30px;
+      min-height:32px;
       padding:0 10px;
       border-radius:999px;
-      font-size:12px;
-      font-weight:900;
-      background:rgba(6,19,15,.74);
+      font-size:13px;
+      font-weight:1000;
+      background:rgba(6,19,15,.76);
       border:1px solid rgba(255,255,255,.14);
       backdrop-filter:blur(6px);
     }
@@ -428,7 +425,7 @@
     }
 
     .spot-body{
-      padding:16px;
+      padding:17px;
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -444,9 +441,10 @@
 
     .spot-title{
       margin:0;
-      font-size:20px;
-      line-height:1.2;
-      font-weight:900;
+      font-size:22px;
+      line-height:1.16;
+      font-weight:1000;
+      letter-spacing:-.03em;
     }
 
     .spot-price{
@@ -456,8 +454,8 @@
       background:rgba(18,183,106,.12);
       border:1px solid rgba(18,183,106,.30);
       color:#8ff0bb;
-      font-size:12px;
-      font-weight:900;
+      font-size:13px;
+      font-weight:1000;
     }
 
     .spot-meta{
@@ -470,21 +468,22 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
-      min-height:30px;
+      min-height:32px;
       padding:0 10px;
       border-radius:999px;
       background:rgba(255,255,255,.05);
       border:1px solid var(--line);
       color:var(--muted);
-      font-size:12px;
-      font-weight:800;
+      font-size:13px;
+      font-weight:900;
     }
 
     .spot-desc{
       color:var(--muted);
-      font-size:14px;
+      font-size:16px;
       line-height:1.65;
-      min-height:66px;
+      font-weight:850;
+      min-height:70px;
     }
 
     .tags{
@@ -496,14 +495,14 @@
     .tag{
       display:inline-flex;
       align-items:center;
-      min-height:28px;
+      min-height:30px;
       padding:0 10px;
       border-radius:999px;
       border:1px solid rgba(220,180,90,.18);
       background:rgba(220,180,90,.08);
       color:#f0d58e;
-      font-size:12px;
-      font-weight:800;
+      font-size:13px;
+      font-weight:900;
     }
 
     .spot-actions{
@@ -514,9 +513,7 @@
       padding-top:4px;
     }
 
-    .spot-actions .btn{
-      flex:1 1 180px;
-    }
+    .spot-actions .btn{flex:1 1 180px}
 
     .empty{
       padding:24px;
@@ -525,138 +522,9 @@
       background:rgba(255,255,255,.03);
       color:var(--muted);
       text-align:center;
-    }
-
-    .fiche{
-      display:grid;
-      grid-template-columns:minmax(0, 1.08fr) minmax(320px, .92fr);
-      gap:18px;
-      align-items:start;
-    }
-
-    .fiche-main,
-    .fiche-side{
-      background:linear-gradient(180deg, rgba(16,38,30,.98), rgba(12,30,23,.98));
-      border:1px solid var(--line);
-      border-radius:24px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-
-    .fiche-cover{
-      aspect-ratio:16/10;
-      background:#0b2018;
-      overflow:hidden;
-      position:relative;
-    }
-
-    .fiche-cover img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .fiche-body{
-      padding:22px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    .fiche-title{
-      margin:0;
-      font-size:clamp(28px, 4vw, 42px);
-      line-height:1.05;
-      letter-spacing:-.03em;
-    }
-
-    .fiche-meta{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .fiche-desc{
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.8;
-    }
-
-    .fiche-gallery{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:10px;
-    }
-
-    .fiche-gallery img{
-      width:100%;
-      aspect-ratio:1/1;
-      object-fit:cover;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:#0b2018;
-    }
-
-    .fiche-side{
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      position:sticky;
-      top:92px;
-    }
-
-    .info-block{
-      padding:14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .info-title{
-      font-size:12px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-weight:900;
-      color:#f5db9a;
-    }
-
-    .info-value{
-      font-size:15px;
-      line-height:1.6;
-      color:var(--text);
-    }
-
-    .footer{
-      padding:30px 0 44px;
-    }
-
-    .footer-card{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      padding:20px;
-      border-radius:24px;
-      background:linear-gradient(180deg, rgba(16,38,30,.96), rgba(11,29,23,.96));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      flex-wrap:wrap;
-    }
-
-    .footer-copy strong{
-      display:block;
-      font-size:18px;
-      margin-bottom:6px;
-    }
-
-    .footer-copy span{
-      color:var(--muted);
-      line-height:1.6;
-      font-size:14px;
+      font-size:17px;
+      line-height:1.55;
+      font-weight:850;
     }
 
     .loader{
@@ -664,7 +532,8 @@
       align-items:center;
       gap:10px;
       color:var(--muted);
-      font-size:14px;
+      font-size:16px;
+      font-weight:900;
     }
 
     .loader::before{
@@ -677,63 +546,54 @@
       animation:spin .8s linear infinite;
     }
 
-    @keyframes spin{
-      to{ transform:rotate(360deg); }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .footer{padding:30px 0 44px}
+
+    .footer-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      padding:20px;
+      border-radius:24px;
+      background:linear-gradient(180deg,rgba(16,38,30,.96),rgba(11,29,23,.96));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      flex-wrap:wrap;
     }
 
-    @media (max-width: 1024px){
-      .hero-grid,
-      .grid{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .fiche{
-        grid-template-columns:1fr;
-      }
-
-      .fiche-side{
-        position:static;
-      }
+    .footer-copy strong{
+      display:block;
+      font-size:20px;
+      margin-bottom:6px;
+      font-weight:1000;
     }
 
-    @media (max-width: 780px){
-      .topbar-inner{
-        align-items:flex-start;
-      }
+    .footer-copy span{
+      color:var(--muted);
+      line-height:1.6;
+      font-size:16px;
+      font-weight:850;
+    }
 
-      .hero-grid,
-      .grid,
-      .hero-metrics,
-      .fiche-gallery{
-        grid-template-columns:1fr;
-      }
+    @media(max-width:1024px){
+      .hero-grid,.grid{grid-template-columns:1fr 1fr}
+    }
 
-      .hero-card,
-      .side-card{
-        padding:20px;
-      }
-
-      .section-head,
-      .footer-card{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .actions{
-        width:100%;
-        justify-content:flex-start;
-      }
-
-      .btn{
-        width:100%;
-      }
-
-      .spot-actions .btn{
-        flex:1 1 100%;
-      }
+    @media(max-width:780px){
+      .topbar-inner{align-items:flex-start}
+      .hero-grid,.grid,.hero-metrics{grid-template-columns:1fr}
+      .hero-card,.side-card{padding:20px}
+      .section-head,.footer-card{flex-direction:column;align-items:flex-start}
+      .actions{width:100%;justify-content:flex-start}
+      .btn{width:100%;min-height:54px}
+      .spot-actions .btn{flex:1 1 100%}
+      h1{font-size:clamp(36px,12vw,58px)}
     }
   </style>
 </head>
+
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
@@ -748,21 +608,11 @@
       </a>
 
       <div class="actions">
-        <a class="btn btn-ghost" id="siteBackBtn" href="https://digiylyfe.com/" rel="noopener">
-          ← Retour au site
-        </a>
-        <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">
-          🧭 HUB
-        </a>
-        <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
-          📦 Tarifs
-        </a>
-        <a class="btn btn-outline" href="https://pro-explore.digiylyfe.com/">
-          Je fais découvrir mon lieu
-        </a>
-        <a class="btn btn-primary" id="topActionBtn" href="#spots">
-          Voir les lieux
-        </a>
+        <a class="btn btn-ghost" href="https://digiylyfe.com/" rel="noopener">← Retour au site</a>
+        <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a>
+        <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">📦 Tarifs</a>
+        <a class="btn btn-outline" href="https://pro-explore.digiylyfe.com/">Je fais découvrir mon lieu</a>
+        <a class="btn btn-primary" href="#spots">Voir les lieux</a>
       </div>
     </div>
   </header>
@@ -780,9 +630,7 @@
 
           <div class="hero-cta">
             <a class="btn btn-primary" href="#spots">Voir les lieux</a>
-            <a class="btn btn-ghost" href="https://pro-explore.digiylyfe.com/">
-              Ajouter mon lieu
-            </a>
+            <a class="btn btn-ghost" href="https://pro-explore.digiylyfe.com/">Ajouter mon lieu</a>
           </div>
 
           <div class="hero-metrics">
@@ -804,7 +652,7 @@
         <aside class="side-card">
           <div class="side-cover">
             <img
-              src="https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
+              src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif"
               alt="Sortie en pirogue sur la Petite Côte"
             />
           </div>
@@ -827,7 +675,7 @@
             <h2 id="sectionTitle">À voir en ce moment</h2>
             <p id="sectionText">
               Lieux, sorties, expériences, coins utiles et belles adresses.
-              Quand la lecture publique répond, la vitrine montre les lieux publiés. Sinon elle garde une sélection d’exemples pour montrer le potentiel du terrain.
+              La vitrine donne d’abord la priorité aux lieux réellement publiés.
             </p>
           </div>
 
@@ -838,9 +686,7 @@
         </div>
 
         <div id="spotsGrid" class="grid" aria-live="polite">
-          <div class="empty">
-            <div class="loader">Chargement des lieux…</div>
-          </div>
+          <div class="empty"><div class="loader">Chargement des lieux…</div></div>
         </div>
       </div>
     </section>
@@ -851,24 +697,14 @@
       <div class="footer-card">
         <div class="footer-copy">
           <strong>Je découvre le coin</strong>
-          <span>
-            Une lecture simple pour trouver un lieu, sentir l’ambiance et contacter la bonne personne.
-          </span>
+          <span>Une lecture simple pour trouver un lieu, sentir l’ambiance et contacter la bonne personne.</span>
         </div>
 
         <div class="actions">
-          <a class="btn btn-ghost" href="https://digiylyfe.com/" rel="noopener">
-            ← Retour au site
-          </a>
-          <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">
-            🧭 HUB
-          </a>
-          <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">
-            📦 Tarifs
-          </a>
-          <a class="btn btn-primary" href="https://pro-explore.digiylyfe.com/">
-            Ajouter mon lieu
-          </a>
+          <a class="btn btn-ghost" href="https://digiylyfe.com/" rel="noopener">← Retour au site</a>
+          <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a>
+          <a class="btn btn-ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">📦 Tarifs</a>
+          <a class="btn btn-primary" href="https://pro-explore.digiylyfe.com/">Ajouter mon lieu</a>
         </div>
       </div>
     </div>
@@ -877,7 +713,7 @@
   <template id="spotTpl">
     <article class="spot">
       <div class="spot-cover">
-        <img alt="" loading="lazy" />
+        <img alt="" loading="lazy"/>
         <div class="spot-badges">
           <span class="badge js-category"></span>
           <span class="badge gold js-city"></span>
@@ -896,7 +732,6 @@
         </div>
 
         <div class="spot-desc js-desc"></div>
-
         <div class="tags js-tags"></div>
 
         <div class="spot-actions">
@@ -909,1171 +744,379 @@
 
   <script>
     const SITE_HOME = "https://digiylyfe.com/";
-    const DEFAULT_OPEN_URL = SITE_HOME;
-    const DEFAULT_CONTACT_URL = SITE_HOME;
-    const DEFAULT_COVER = "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif";
+    const DEFAULT_COVER = "https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif";
+    const FICHE_URL = "./fiche.html";
+
+    const supabase = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
+      window.DIGIY_SUPABASE_URL,
+      window.DIGIY_SUPABASE_ANON_KEY,
+      {
+        auth:{
+          persistSession:false,
+          autoRefreshToken:false,
+          detectSessionInUrl:false,
+          storageKey:"digiy-explore-public-index-noauth",
+          storage:{ getItem:()=>null, setItem:()=>{}, removeItem:()=>{} }
+        }
+      }
+    );
+
+    window.DIGIY_PUBLIC_EXPLORE_SB = supabase;
 
     const SHOWCASE_SPOTS = [
       {
-        title: "Sortie en pêche — Petite Côte",
-        category: "🎣 Sortie",
-        city: "Saly",
-        zone: "Petite Côte",
-        price: "Sur demande",
-        desc: "Une sortie en pêche au large, avec ambiance locale, air marin et vraie sensation du coin.",
-        tags: ["pêche", "mer", "sortie", "bateau"],
-        cover: DEFAULT_COVER,
-        contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
-        kind: "En mer"
+        slug:"sortie-peche-petite-cote",
+        public_name:"Sortie en pêche — Petite Côte",
+        category_label:"🎣 Sortie",
+        city:"Saly",
+        zone:"Petite Côte",
+        price_hint:"Sur demande",
+        short_description:"Une sortie en pêche au large, avec ambiance locale, air marin et vraie sensation du coin.",
+        tags:["pêche","mer","sortie","bateau"],
+        cover_url:DEFAULT_COVER,
+        whatsapp:"221771342889",
+        kind:"En mer",
+        is_demo:true
       },
       {
-        title: "Pause plage — Saly",
-        category: "🏖️ Détente",
-        city: "Saly",
-        zone: "Petite Côte",
-        price: "Libre / selon lieu",
-        desc: "Plage, lumière, promenade et repos. Un coin simple pour souffler et profiter.",
-        tags: ["plage", "repos", "balade"],
-        cover: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
-        contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
-        kind: "Bord de mer"
+        slug:"pause-plage-saly",
+        public_name:"Pause plage — Saly",
+        category_label:"🏖️ Détente",
+        city:"Saly",
+        zone:"Petite Côte",
+        price_hint:"Libre / selon lieu",
+        short_description:"Plage, lumière, promenade et repos. Un coin simple pour souffler et profiter.",
+        tags:["plage","repos","balade"],
+        cover_url:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        kind:"Bord de mer",
+        is_demo:true
       },
       {
-        title: "Escapade locale — Dakar",
-        category: "🌆 Découverte",
-        city: "Dakar",
-        zone: "Cap-Vert",
-        price: "Selon programme",
-        desc: "Une porte d’entrée simple pour découvrir le rythme local, les coins utiles et les lieux qui valent le détour.",
-        tags: ["découverte", "ville", "guidage"],
-        cover: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
-        contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
-        kind: "En ville"
-      },
-      {
-        title: "Restaurant terrasse — Saly",
-        category: "🍽️ Restaurant",
-        city: "Saly",
-        zone: "Centre",
-        price: "Selon menu",
-        desc: "Une terrasse simple pour manger, se poser, sentir l’ambiance locale et contacter sans détour.",
-        tags: ["restaurant", "terrasse", "saly", "local"],
-        cover: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
-        contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
-        kind: "À table"
-      },
-      {
-        title: "Boutique locale — Mbour",
-        category: "🛍️ Boutique",
-        city: "Mbour",
-        zone: "Marché",
-        price: "Selon produit",
-        desc: "Une adresse de commerce local pour découvrir des produits utiles, de l’artisanat et du contact humain.",
-        tags: ["boutique", "marché", "commerce", "artisanat"],
-        cover: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1200&q=80",
-        contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
-        kind: "Commerce local"
-      },
-      {
-        title: "Villa détente — Somone",
-        category: "🏡 Séjour",
-        city: "Somone",
-        zone: "Petite Côte",
-        price: "Sur demande",
-        desc: "Un exemple de lieu de séjour clair : ambiance, zone, repère utile et envie de venir respirer.",
-        tags: ["villa", "séjour", "somone", "petite côte"],
-        cover: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
-        contact_url: DEFAULT_CONTACT_URL,
-        open_url: DEFAULT_OPEN_URL,
-        kind: "Repos"
+        slug:"escapade-locale-dakar",
+        public_name:"Escapade locale — Dakar",
+        category_label:"🌆 Découverte",
+        city:"Dakar",
+        zone:"Cap-Vert",
+        price_hint:"Selon programme",
+        short_description:"Une porte d’entrée simple pour découvrir le rythme local, les coins utiles et les lieux qui valent le détour.",
+        tags:["découverte","ville","guidage"],
+        cover_url:"https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+        kind:"En ville",
+        is_demo:true
       }
     ];
 
-    const params = new URLSearchParams(window.location.search);
-    const REQUESTED_SLUG = normalizeSlug(params.get("slug"));
-    const RETURN_URL = normalizeReturnUrl(params.get("return"));
+    const $ = (id) => document.getElementById(id);
+    const grid = $("spotsGrid");
+    const tpl = $("spotTpl");
+    const statusEl = $("dataStatus");
 
-    cleanPublicUrl();
-
-    const $grid = document.getElementById("spotsGrid");
-    const $status = document.getElementById("dataStatus");
-    const $metricSpots = document.getElementById("metricSpots");
-    const $metricZones = document.getElementById("metricZones");
-    const $metricCats = document.getElementById("metricCats");
-    const $siteBackBtn = document.getElementById("siteBackBtn");
-    const $topActionBtn = document.getElementById("topActionBtn");
-    const $hero = document.getElementById("heroSection");
-    const $sectionTitle = document.getElementById("sectionTitle");
-    const $sectionText = document.getElementById("sectionText");
-    const $allSpotsChip = document.getElementById("allSpotsChip");
-    const tpl = document.getElementById("spotTpl");
-
-    $siteBackBtn.href = RETURN_URL || SITE_HOME;
-    $allSpotsChip.href = "./";
-
-    function esc(str){
-      return String(str ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    function escapeHtml(value){
+      return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
 
-    function normalizeSlug(value){
-      return String(value || "")
+    function cleanSlug(v){
+      return String(v || "")
         .trim()
         .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\d{6,}/g, "")
-        .replace(/[^a-z0-9-]+/g, "-")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "");
+        .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^a-z0-9\-_]/g,"")
+        .replace(/-+/g,"-")
+        .replace(/^[-_]+|[-_]+$/g,"");
     }
 
-    function hasSensitiveSlug(value){
-      return /\d{6,}/.test(String(value || ""));
+    function normalizePhone(v){
+      const raw = String(v || "").replace(/[^\d]/g,"");
+      if(raw.length === 9) return "221" + raw;
+      return raw;
     }
 
-    function normalizePhone(value){
-      return String(value || "").replace(/[^\d]/g, "");
-    }
-
-    function normalizeReturnUrl(value){
-      const raw = String(value || "").trim();
-      if(!raw) return "";
-      try{
-        const url = new URL(raw, window.location.origin);
-        const host = url.hostname.toLowerCase();
-        const sameOrigin = url.origin === window.location.origin;
-        const digiyHost = host === "digiylyfe.com" || host.endsWith(".digiylyfe.com");
-        if(/^https?:$/i.test(url.protocol) && (sameOrigin || digiyHost)) return url.href;
-      }catch(_){}
+    function firstText(){
+      for(const v of arguments){
+        const s = String(v ?? "").trim();
+        if(s) return s;
+      }
       return "";
     }
 
-    function cleanPublicUrl(){
-      try{
-        const url = new URL(window.location.href);
-        let changed = false;
-        [
-          "phone",
-          "tel",
-          "owner_phone",
-          "owner_id",
-          "business_code",
-          "access_note",
-          "keybox_code",
-          "keybox_location",
-          "return"
-        ].forEach(function(key){
-          if(url.searchParams.has(key)){
-            url.searchParams.delete(key);
-            changed = true;
-          }
-        });
-
-        if(changed){
-          history.replaceState({}, document.title, url.pathname + url.search + url.hash);
-        }
-      }catch(_){}
-    }
-
-    function safeArray(value){
-      if(Array.isArray(value)) return value.filter(Boolean);
-
-      if(typeof value === "string"){
-        const trimmed = value.trim();
-        if(!trimmed) return [];
-
-        try{
-          const parsed = JSON.parse(trimmed);
-          if(Array.isArray(parsed)) return parsed.filter(Boolean);
-        }catch(_){}
-
-        return trimmed
-          .split(/\r?\n|,/)
-          .map(v => v.trim())
-          .filter(Boolean);
+    function parseJsonMaybe(raw){
+      if(Array.isArray(raw)) return raw;
+      if(raw && typeof raw === "object") return raw;
+      if(typeof raw === "string"){
+        const s = raw.trim();
+        if(!s) return [];
+        try{ return JSON.parse(s); }catch(_){}
       }
-
       return [];
     }
 
-    function makeWhatsAppUrl(){
-      return "";
-    }
-
-    function buildPublicUrlFromSlug(slug){
-      const clean = normalizeSlug(slug);
-      return clean ? "./?slug=" + encodeURIComponent(clean) : "./";
-    }
-
-    function buildMapUrl(item){
-      const lat = item?.latitude ?? item?.lat;
-      const lng = item?.longitude ?? item?.lng;
-      if(lat && lng){
-        return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
+    function listFrom(raw){
+      if(Array.isArray(raw)) return raw.map(String).filter(Boolean);
+      if(typeof raw === "string"){
+        const s = raw.trim();
+        if(!s) return [];
+        try{
+          const parsed = JSON.parse(s);
+          if(Array.isArray(parsed)) return parsed.map(String).filter(Boolean);
+        }catch(_){}
+        return s.split(/[,|#]+/).map(x=>x.trim()).filter(Boolean);
       }
-      const address = item?.address || item?.address_text || item?.landmark || item?.repere || "";
-      if(address){
-        return "https://www.google.com/maps?q=" + encodeURIComponent(address);
-      }
-      return "";
+      return [];
     }
 
-    function normalizeItem(item){
-      const rawSlug = String(item?.public_slug || item?.publicSlug || item?.public_url_slug || item?.slug || item?.place_slug || "");
-      const slug = hasSensitiveSlug(rawSlug) ? "" : normalizeSlug(rawSlug);
-      const publicContactUrl = String(item?.contact_url || item?.public_contact_url || item?.whatsapp_url || "").trim();
-      const tags = safeArray(item?.tags);
+    function photosOf(place){
+      const photoUrls = listFrom(place.photo_urls);
+      const galleryUrls = listFrom(place.gallery_urls);
+      const photos = listFrom(place.photos);
+      const images = listFrom(place.images);
 
-      return {
-        raw: item || {},
-        slug,
-        title: item?.title || item?.name || item?.public_name || "Lieu DIGIY EXPLORE",
-        category: item?.category || item?.category_label || item?.type_label || "📍 Lieu",
-        city: item?.city || item?.town || item?.place_city || "Sénégal",
-        zone: item?.zone || item?.district || item?.area || item?.quarter || "Terrain",
-        price: item?.price || item?.price_label || item?.price_hint || item?.price_index || "Sur demande",
-        desc: item?.desc || item?.short_description || item?.description || "Un lieu à découvrir dans la vitrine DIGIY EXPLORE.",
-        full_desc: item?.full_description || item?.description || item?.desc || "",
-        tags,
-        cover: item?.cover || item?.cover_url || item?.cover_image_url || item?.image_url || item?.photo_url || DEFAULT_COVER,
-        gallery: safeArray(item?.gallery || item?.gallery_urls || item?.photos || item?.photo_urls || item?.images),
-        contact_url: publicContactUrl || DEFAULT_CONTACT_URL,
-        open_url: buildPublicUrlFromSlug(slug) || item?.public_url || DEFAULT_OPEN_URL,
-        kind: item?.kind || item?.subcategory || item?.spot_kind || "À découvrir",
-        address: item?.address || item?.address_text || item?.landmark || item?.repere || "",
-        whatsapp: "",
-        phone: "",
-        map_url: item?.map_url || buildMapUrl(item),
-        featured: Boolean(item?.featured || item?.is_featured || item?.highlighted)
+      return [
+        place.cover_url,
+        ...photoUrls,
+        place.photo_url,
+        place.image_url,
+        place.hero_url,
+        ...galleryUrls,
+        ...photos,
+        ...images
+      ].filter(Boolean).filter(x => /^https?:\/\//i.test(String(x)));
+    }
+
+    function coverOf(place){
+      return photosOf(place)[0] || DEFAULT_COVER;
+    }
+
+    function nameOf(place){
+      return firstText(place.public_name, place.title, place.name, "Lieu DIGIY EXPLORE");
+    }
+
+    function categoryOf(place){
+      const code = firstText(place.category_label, place.category_name, place.category_code, place.subcategory, "Activité");
+      const map = {
+        activity:"Activité",
+        restaurant:"Restaurant",
+        beach:"Plage",
+        shop:"Boutique",
+        stay:"Séjour"
       };
+      return map[code] || code;
     }
 
-    function updateMetrics(items){
-      const zones = new Set();
-      const cats = new Set();
-
-      items.forEach(item => {
-        if(item.zone) zones.add(item.zone);
-        else if(item.city) zones.add(item.city);
-        if(item.category) cats.add(item.category);
-      });
-
-      $metricSpots.textContent = String(items.length);
-      $metricZones.textContent = String(zones.size);
-      $metricCats.textContent = String(cats.size);
+    function cityOf(place){
+      return firstText(place.city, place.town, "Sénégal");
     }
 
-    function renderSpots(items){
-      $grid.className = "grid";
-      $grid.innerHTML = "";
+    function zoneOf(place){
+      return firstText(place.zone, place.district, place.area, "Repère à préciser");
+    }
 
-      if(!Array.isArray(items) || !items.length){
-        $grid.innerHTML = `
-          <div class="empty">
-            Aucun lieu visible pour le moment.
-          </div>
-        `;
-        updateMetrics([]);
+    function priceOf(place){
+      return firstText(place.price_hint, place.price_label, place.budget_label, "Sur demande");
+    }
+
+    function descOf(place){
+      return firstText(
+        place.short_description,
+        place.description,
+        place.full_description,
+        "Un lieu à découvrir dans la vitrine DIGIY EXPLORE."
+      );
+    }
+
+    function kindOf(place){
+      return firstText(place.kind, place.ambiance, place.type_label, place.subcategory, "À découvrir");
+    }
+
+    function tagsOf(place){
+      return listFrom(place.tags).slice(0,6);
+    }
+
+    function ficheHref(place){
+      const slug = cleanSlug(place.slug || "");
+      if(!slug) return "./";
+      const u = new URL(FICHE_URL, window.location.href);
+      u.searchParams.set("slug", slug);
+      return u.toString();
+    }
+
+    function externalWhatsapp(place){
+      const links = parseJsonMaybe(place.external_links);
+      if(!Array.isArray(links)) return "";
+
+      for(const item of links){
+        const url = typeof item === "string" ? item : String(item?.url || item?.href || item?.link || "");
+        const type = typeof item === "string" ? "" : String(item?.type || item?.label || "").toLowerCase();
+        if(!url) continue;
+
+        try{
+          const u = new URL(url, window.location.href);
+          const host = u.hostname.toLowerCase();
+
+          if(host.includes("wa.me") || host.includes("whatsapp.com") || type.includes("whatsapp")){
+            return u.href;
+          }
+        }catch(_){}
+      }
+
+      return "";
+    }
+
+    function contactHref(place){
+      const ext = externalWhatsapp(place);
+      if(ext) return ext;
+
+      const raw = firstText(place.contact_url, place.public_contact_url, place.whatsapp_url);
+      if(raw){
+        try{
+          const u = new URL(raw, window.location.href);
+          const host = u.hostname.toLowerCase();
+          if(host.includes("wa.me") || host.includes("whatsapp.com")) return u.href;
+          if(!host.includes("digiylyfe.com")) return u.href;
+        }catch(_){}
+      }
+
+      const phone = normalizePhone(firstText(place.whatsapp, place.phone, place.contact_phone, place.public_phone));
+      if(phone){
+        return "https://wa.me/" + phone + "?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE. Je souhaite des informations sur : " + nameOf(place));
+      }
+
+      return ficheHref(place);
+    }
+
+    function setMetrics(list, realCount){
+      const zones = new Set(list.map(p => cityOf(p) + "|" + zoneOf(p)));
+      const cats = new Set(list.map(categoryOf));
+
+      $("metricSpots").textContent = String(list.length);
+      $("metricZones").textContent = String(zones.size);
+      $("metricCats").textContent = String(cats.size);
+
+      if(realCount > 0){
+        statusEl.textContent = "Lieux publiés";
+        $("sectionText").textContent = "Lieux réellement publiés dans EXPLORE. Les fiches ouvrent QR, galerie, contact direct et itinéraire.";
+      }else{
+        statusEl.textContent = "Mode vitrine";
+        $("sectionText").textContent = "Mode vitrine : exemples de lieux pour montrer le potentiel du terrain.";
+      }
+    }
+
+    function renderPlaces(list, realCount){
+      grid.innerHTML = "";
+
+      if(!list.length){
+        grid.innerHTML = '<div class="empty">Aucun lieu publié pour le moment.</div>';
+        setMetrics([], 0);
         return;
       }
 
-      items.forEach(raw => {
-        const item = normalizeItem(raw);
-        const node = tpl.content.firstElementChild.cloneNode(true);
+      setMetrics(list, realCount);
 
+      list.forEach(place => {
+        const node = tpl.content.cloneNode(true);
         const img = node.querySelector("img");
-        img.src = item.cover;
-        img.alt = item.title;
-
-        node.querySelector(".js-category").textContent = item.category;
-        node.querySelector(".js-city").textContent = item.city;
-        node.querySelector(".js-title").textContent = item.title;
-        node.querySelector(".js-price").textContent = item.price;
-        node.querySelector(".js-zone").textContent = "📍 " + (item.zone || item.city || "Terrain");
-        node.querySelector(".js-kind").textContent = "🧭 " + (item.kind || "À découvrir");
-        node.querySelector(".js-desc").textContent = item.desc;
-
-        const tagsWrap = node.querySelector(".js-tags");
-        if(Array.isArray(item.tags) && item.tags.length){
-          item.tags.slice(0, 5).forEach(tag => {
-            const span = document.createElement("span");
-            span.className = "tag";
-            span.textContent = "#" + String(tag).replace(/^#/, "");
-            tagsWrap.appendChild(span);
-          });
-        } else {
-          const span = document.createElement("span");
-          span.className = "tag";
-          span.textContent = "#sortie";
-          tagsWrap.appendChild(span);
-        }
-
+        const category = node.querySelector(".js-category");
+        const city = node.querySelector(".js-city");
+        const title = node.querySelector(".js-title");
+        const price = node.querySelector(".js-price");
+        const zone = node.querySelector(".js-zone");
+        const kind = node.querySelector(".js-kind");
+        const desc = node.querySelector(".js-desc");
+        const tags = node.querySelector(".js-tags");
         const contact = node.querySelector(".js-contact");
-        contact.href = item.contact_url || DEFAULT_CONTACT_URL;
-
         const open = node.querySelector(".js-open");
-        open.href = item.open_url || DEFAULT_OPEN_URL;
-        if(/^https?:/i.test(open.href)){
-          open.target = "_blank";
-        }
 
-        $grid.appendChild(node);
+        img.src = coverOf(place);
+        img.alt = nameOf(place);
+
+        category.textContent = categoryOf(place);
+        city.textContent = cityOf(place);
+        title.textContent = nameOf(place);
+        price.textContent = priceOf(place);
+        zone.textContent = "📍 " + zoneOf(place);
+        kind.textContent = "🧭 " + kindOf(place);
+        desc.textContent = descOf(place);
+
+        const tagList = tagsOf(place);
+        tags.innerHTML = tagList.length
+          ? tagList.map(t => '<span class="tag">#' + escapeHtml(t) + '</span>').join("")
+          : '<span class="tag">#terrain</span>';
+
+        contact.href = contactHref(place);
+        open.href = ficheHref(place);
+
+        grid.appendChild(node);
       });
-
-      updateMetrics(items.map(normalizeItem));
     }
 
-    function renderSingleSpot(raw){
-      const item = normalizeItem(raw);
-
-      $hero.style.display = "none";
-      $topActionBtn.textContent = "Retour vitrine";
-      $topActionBtn.href = "./";
-      $sectionTitle.textContent = item.title;
-      $sectionText.textContent = item.desc || "Découvre ce lieu en un coup d’œil.";
-      $grid.className = "grid grid-single";
-
-      const galleryImages = [item.cover, ...item.gallery].filter(Boolean).slice(0, 6);
-      const tagsHtml = (item.tags.length ? item.tags : ["terrain"]).slice(0, 8).map(tag => (
-        '<span class="tag">#' + esc(String(tag).replace(/^#/, "")) + '</span>'
-      )).join("");
-
-      const infoBlocks = [
-        item.category ? { title: "Type de lieu", value: item.category } : null,
-        item.kind ? { title: "Ambiance", value: item.kind } : null,
-        item.city || item.zone ? { title: "Où c’est", value: [item.city, item.zone].filter(Boolean).join(" • ") } : null,
-        item.address ? { title: "Repère", value: item.address } : null,
-        item.price ? { title: "Budget", value: item.price } : null
-      ].filter(Boolean).map(block => `
-        <div class="info-block">
-          <div class="info-title">${esc(block.title)}</div>
-          <div class="info-value">${esc(block.value)}</div>
-        </div>
-      `).join("");
-
-      const galleryHtml = galleryImages.length
-        ? `
-          <div class="fiche-gallery">
-            ${galleryImages.map(src => `<img src="${esc(src)}" alt="${esc(item.title)}" loading="lazy"/>`).join("")}
-          </div>
-        `
-        : "";
-
-      const mapButton = item.map_url
-        ? `<a class="btn btn-outline" href="${esc(item.map_url)}" target="_blank" rel="noopener">Voir la carte</a>`
-        : "";
-
-      const featuredBadge = item.featured ? `<span class="badge gold">Mis en avant</span>` : "";
-
-      $grid.innerHTML = `
-        <article class="fiche">
-          <section class="fiche-main">
-            <div class="fiche-cover">
-              <img src="${esc(item.cover)}" alt="${esc(item.title)}" />
-              <div class="spot-badges">
-                <span class="badge">${esc(item.category)}</span>
-                <span class="badge gold">${esc(item.city)}</span>
-                ${featuredBadge}
-              </div>
-            </div>
-
-            <div class="fiche-body">
-              <div class="fiche-meta">
-                <span class="mini">📍 ${esc(item.zone || item.city || "Terrain")}</span>
-                <span class="mini">🧭 ${esc(item.kind || "À découvrir")}</span>
-                <span class="mini">💬 Contact direct</span>
-              </div>
-
-              <h1 class="fiche-title">${esc(item.title)}</h1>
-
-              <div class="spot-price">${esc(item.price)}</div>
-
-              <div class="fiche-desc">${esc(item.full_desc || item.desc || "Découvre ce lieu en un coup d’œil.")}</div>
-
-              <div class="tags">${tagsHtml}</div>
-
-              ${galleryHtml}
-            </div>
-          </section>
-
-          <aside class="fiche-side">
-            ${infoBlocks}
-
-            <div class="spot-actions">
-              <a class="btn btn-primary" href="${esc(item.contact_url || DEFAULT_CONTACT_URL)}" target="_blank" rel="noopener">
-                Contact direct
-              </a>
-              ${mapButton}
-              <a class="btn btn-ghost" href="./">
-                Retour aux lieux
-              </a>
-            </div>
-          </aside>
-        </article>
-      `;
-
-      updateMetrics([item]);
-    }
-
-    function pullRows(data){
-      if(Array.isArray(data)) return data;
-      if(data?.ok === true && Array.isArray(data.places)) return data.places;
-      if(data?.ok === true && Array.isArray(data.items)) return data.items;
-      if(data?.ok === true && Array.isArray(data.spots)) return data.spots;
-      if(data?.place && typeof data.place === "object") return [data.place];
-      return [];
-    }
-
-    async function fetchFromRpc(client){
-      const attempts = [
-        { name:"digiy_explore_public_places", body:{} },
-        { name:"digiy_explore_public_list_places", body:{} },
-        { name:"digiy_explore_list_public_places", body:{} },
-        { name:"digiy_explore_public_spots", body:{} }
+    async function tryRpcList(){
+      const rpcNames = [
+        "digiy_explore_public_places",
+        "digiy_explore_public_list_places",
+        "digiy_explore_public_places_list"
       ];
 
-      for(const attempt of attempts){
+      for(const name of rpcNames){
         try{
-          const { data, error } = await client.rpc(attempt.name, attempt.body);
+          const { data, error } = await supabase.rpc(name);
           if(error) continue;
-          const rows = pullRows(data).filter(Boolean);
-          if(rows.length) return rows;
+
+          if(Array.isArray(data)) return data;
+
+          if(data?.ok === true && Array.isArray(data.places)) return data.places;
+          if(Array.isArray(data?.places)) return data.places;
         }catch(_){}
       }
 
       return [];
     }
 
-    async function fetchFromTables(){
-      return [];
-    }
-
-    async function fetchSingleFromRpc(client, slug){
-      const attempts = [
-        { name:"digiy_explore_public_place_by_slug", body:{ p_slug: slug } },
-        { name:"digiy_explore_get_public_place_by_slug", body:{ p_slug: slug } }
-      ];
-
-      for(const attempt of attempts){
-        try{
-          const { data, error } = await client.rpc(attempt.name, attempt.body);
-          if(error) continue;
-          if(data?.ok && data.place) return data.place;
-          if(data && typeof data === "object" && !Array.isArray(data)) return data.place || data;
-        }catch(_){}
-      }
-
-      return null;
-    }
-
-    async function fetchSingleFromTables(){
-      return null;
-    }
-
-    async function loadSingleSpot(client, slug){
-      const item = await fetchSingleFromRpc(client, slug);
-
-      if(item){
-        renderSingleSpot(item);
-        $status.textContent = "Lieu chargé";
-        return true;
-      }
-
-      $grid.className = "grid grid-single";
-      $grid.innerHTML = `
-        <div class="empty">
-          Ce lieu n’a pas été trouvé.
-          <div style="margin-top:14px">
-            <a class="btn btn-primary" href="./">Retour à la vitrine</a>
-          </div>
-        </div>
-      `;
-      updateMetrics([]);
-      $hero.style.display = "none";
-      $topActionBtn.textContent = "Retour vitrine";
-      $topActionBtn.href = "./";
-      $sectionTitle.textContent = "Lieu introuvable";
-      $sectionText.textContent = "Le lien a bien été lu, mais aucun lieu public correspondant n’a été trouvé.";
-      document.body.classList.add("digiy-place-not-found");
-      $status.textContent = "Lieu introuvable";
-      return false;
-    }
-
-    async function loadSpots(){
+    async function tryTableList(){
       try{
-        const url = window.DIGIY_SUPABASE_URL;
-        const key = window.DIGIY_SUPABASE_ANON || window.DIGIY_SUPABASE_ANON_KEY;
+        const { data, error } = await supabase
+          .from("digiy_explore_places")
+          .select("*")
+          .eq("is_published", true)
+          .eq("status", "published")
+          .order("is_featured", { ascending:false })
+          .order("updated_at", { ascending:false })
+          .limit(60);
 
-        if(!url || !key || !window.supabase){
-          throw new Error("Supabase indisponible");
-        }
-
-        const client = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(url, key, {
-          auth: {
-            persistSession: false,
-            autoRefreshToken: false,
-            detectSessionInUrl: false,
-            storageKey: "digiy-explore-public-index-noauth",
-            storage: {
-              getItem: () => null,
-              setItem: () => {},
-              removeItem: () => {}
-            }
-          }
-        });
-
-        window.DIGIY_PUBLIC_EXPLORE_SB = client;
-
-        if(REQUESTED_SLUG){
-          await loadSingleSpot(client, REQUESTED_SLUG);
-          return;
-        }
-
-        let items = await fetchFromRpc(client);
-
-        if(items.length){
-          renderSpots(items);
-          $status.textContent = "Lieux publiés chargés";
-        } else {
-          renderSpots(SHOWCASE_SPOTS);
-          $status.textContent = "Mode vitrine";
-        }
-      } catch (err){
-        console.warn("EXPLORE fallback:", err);
-
-        if(REQUESTED_SLUG){
-          $hero.style.display = "none";
-          $topActionBtn.textContent = "Retour vitrine";
-          $topActionBtn.href = "./";
-          $sectionTitle.textContent = "Lieu indisponible";
-          $sectionText.textContent = "Le lien a bien été lu, mais ce lieu ne peut pas être chargé pour le moment.";
-          $grid.className = "grid grid-single";
-          $grid.innerHTML = `
-            <div class="empty">
-              Impossible d’ouvrir ce lieu pour le moment.
-              <div style="margin-top:14px">
-                <a class="btn btn-primary" href="./">Retour à la vitrine</a>
-              </div>
-            </div>
-          `;
-          updateMetrics([]);
-          document.body.classList.add("digiy-place-not-found");
-          $status.textContent = "Lecture indisponible";
-          return;
-        }
-
-        renderSpots(SHOWCASE_SPOTS);
-        $status.textContent = "Mode vitrine";
+        if(error) throw error;
+        return Array.isArray(data) ? data : [];
+      }catch(e){
+        console.warn("[DIGIY EXPLORE] lecture table impossible", e);
+        return [];
       }
     }
 
-    loadSpots();
+    async function loadPlaces(){
+      statusEl.textContent = "Chargement…";
+
+      let places = await tryRpcList();
+
+      if(!places.length){
+        places = await tryTableList();
+      }
+
+      const published = places
+        .filter(p => String(p.status || "published").toLowerCase() === "published")
+        .filter(p => p.is_published !== false);
+
+      if(published.length){
+        renderPlaces(published, published.length);
+        return;
+      }
+
+      renderPlaces(SHOWCASE_SPOTS, 0);
+    }
+
+    loadPlaces();
   </script>
-
-  <!-- DIGIY EXPLORE PUBLIC — Doctrine corrigée
-       PUBLIC = découvrir / regarder / comprendre / partager.
-       PRO = seulement une passerelle CTA visible "Je veux montrer mon lieu".
-       Camembert public = Lieux / Partager / Site / HUB.
-       Audio = lecteur séparé.
-       Pas de cockpit, pas de PIN, pas de "Mes lieux" PRO dans le camembert public.
-  -->
-  <style>
-    body{
-      padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));
-    }
-
-    body.digiy-place-not-found .hero,
-    body.digiy-place-not-found footer.footer{
-      display:none !important;
-    }
-
-    .publicBottomNav{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:99990;
-      padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
-      background:rgba(6,19,15,.94);
-      border-top:1px solid rgba(255,255,255,.10);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-    }
-
-    .publicBottomNavInner{
-      width:min(100%,760px);
-      margin:0 auto;
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:6px;
-    }
-
-    .publicBottomNav a,
-    .publicBottomNav button{
-      min-height:58px;
-      border-radius:16px;
-      display:grid;
-      place-items:center;
-      align-content:center;
-      gap:3px;
-      color:rgba(247,251,248,.72);
-      font-size:11px;
-      font-weight:950;
-      text-align:center;
-      border:1px solid transparent;
-      text-decoration:none;
-      background:transparent;
-      cursor:pointer;
-      font-family:inherit;
-      padding:0 4px;
-    }
-
-    .publicBottomNav .icoBottom{
-      font-size:18px;
-      line-height:1;
-    }
-
-    .publicBottomNav a.active,
-    .publicBottomNav button.active{
-      color:#062414;
-      background:linear-gradient(135deg,var(--gold),#f2cc78);
-      border-color:rgba(242,204,120,.28);
-      box-shadow:0 12px 26px rgba(220,180,90,.18);
-    }
-
-    .share-toast-digiy{
-      position:fixed;
-      left:50%;
-      bottom:calc(92px + env(safe-area-inset-bottom,0px));
-      transform:translateX(-50%) translateY(12px);
-      z-index:99999;
-      opacity:0;
-      pointer-events:none;
-      transition:.22s ease;
-      max-width:calc(100vw - 24px);
-      padding:10px 16px;
-      border-radius:999px;
-      border:1px solid rgba(242,204,120,.28);
-      background:rgba(16,38,30,.96);
-      color:#f5db9a;
-      font-size:13px;
-      font-weight:900;
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .share-toast-digiy.show{
-      opacity:1;
-      transform:translateX(-50%) translateY(0);
-    }
-
-    /* Lecteur public séparé */
-    #digiyPublicAudioReader{
-      position:fixed;
-      right:14px;
-      bottom:calc(86px + env(safe-area-inset-bottom,0px));
-      z-index:99998;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      max-width:min(430px, calc(100vw - 118px));
-      padding:10px 12px;
-      border-radius:22px;
-      border:1px solid rgba(242,204,120,.34);
-      background:linear-gradient(180deg, rgba(16,38,30,.97), rgba(6,19,15,.95));
-      box-shadow:0 18px 44px rgba(0,0,0,.38);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      font-family:Outfit,Inter,system-ui,sans-serif;
-    }
-
-    #digiyPublicAudioReader .audioText{
-      min-width:0;
-      color:rgba(247,251,248,.86);
-      font-size:12.5px;
-      font-weight:950;
-      line-height:1.28;
-      white-space:normal;
-      overflow:visible;
-      text-overflow:clip;
-    }
-
-    #digiyPublicAudioReader .audioText strong{
-      display:block;
-      color:#f5db9a;
-      font-size:12.8px;
-      font-weight:1000;
-      margin-bottom:2px;
-    }
-
-    #digiyPublicAudioReader .audioText span{
-      display:block;
-      color:rgba(247,251,248,.72);
-      font-size:11.5px;
-      font-weight:850;
-    }
-
-    #digiyPublicAudioReader button{
-      min-height:40px;
-      border:none;
-      border-radius:999px;
-      padding:0 13px;
-      cursor:pointer;
-      font-family:inherit;
-      font-size:12px;
-      font-weight:1000;
-      white-space:nowrap;
-    }
-
-    #digiyPublicAudioReader .listenBtn{
-      color:#062414;
-      background:linear-gradient(135deg,var(--gold),#f2cc78);
-    }
-
-    #digiyPublicAudioReader .stopBtn{
-      color:#fecaca;
-      background:rgba(248,113,113,.12);
-      border:1px solid rgba(248,113,113,.22);
-      display:none;
-    }
-
-    #digiyPublicAudioReader.playing .listenBtn{display:none}
-    #digiyPublicAudioReader.playing .stopBtn{display:inline-flex;align-items:center}
-
-    /* Camembert PUBLIC : pas de cockpit ici */
-    #digiyPublicCamembert{
-      position:fixed;
-      left:14px;
-      bottom:calc(86px + env(safe-area-inset-bottom,0px));
-      width:84px;
-      height:84px;
-      z-index:99999;
-      font-family:Outfit,Inter,system-ui,sans-serif;
-    }
-
-    #digiyPublicCamembert .digiyPublicCenter{
-      position:absolute;
-      inset:0;
-      width:84px;
-      height:84px;
-      border:none;
-      border-radius:50%;
-      cursor:pointer;
-      color:#fff;
-      box-shadow:0 18px 40px rgba(0,0,0,.34);
-      background:
-        radial-gradient(circle at center, rgba(6,19,15,.95) 0 42%, transparent 43%),
-        conic-gradient(
-          from -90deg,
-          rgba(220,180,90,.96) 0 25%,
-          rgba(18,183,106,.90) 25% 50%,
-          rgba(56,189,248,.88) 50% 75%,
-          rgba(168,85,247,.82) 75% 100%
-        );
-      overflow:hidden;
-    }
-
-    #digiyPublicCamembert .digiyPublicCenter::before{
-      content:"";
-      position:absolute;
-      inset:13px;
-      border-radius:50%;
-      background:rgba(6,19,15,.97);
-      border:1px solid rgba(255,255,255,.10);
-    }
-
-    #digiyPublicCamembert .digiyPublicCenter span,
-    #digiyPublicCamembert .digiyPublicCenter strong{
-      position:relative;
-      z-index:2;
-      display:block;
-      text-align:center;
-    }
-
-    #digiyPublicCamembert .digiyPublicCenter span{
-      font-size:20px;
-      line-height:1;
-      margin-bottom:2px;
-    }
-
-    #digiyPublicCamembert .digiyPublicCenter strong{
-      font-size:10.5px;
-      font-weight:1000;
-      letter-spacing:.02em;
-    }
-
-    #digiyPublicCamembert .digiyPublicMenu{
-      position:absolute;
-      left:94px;
-      bottom:4px;
-      width:248px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      padding:10px;
-      border-radius:22px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(6,19,15,.94);
-      box-shadow:0 18px 48px rgba(0,0,0,.32);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      opacity:0;
-      transform:translateX(-8px) scale(.96);
-      pointer-events:none;
-      transition:.18s ease;
-    }
-
-    #digiyPublicCamembert.open .digiyPublicMenu{
-      opacity:1;
-      transform:translateX(0) scale(1);
-      pointer-events:auto;
-    }
-
-    #digiyPublicCamembert .digiyPublicMenu a,
-    #digiyPublicCamembert .digiyPublicMenu button{
-      min-height:44px;
-      border:none;
-      border-radius:15px;
-      background:rgba(255,255,255,.07);
-      color:#f7fbf8;
-      padding:9px 10px;
-      font-size:12px;
-      font-weight:1000;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      font-family:inherit;
-      cursor:pointer;
-    }
-
-    #digiyPublicCamembert .gold{
-      background:linear-gradient(135deg,var(--gold),#f2cc78) !important;
-      color:#062414 !important;
-    }
-
-    #digiyPublicCamembert .green{
-      background:rgba(18,183,106,.16) !important;
-      color:#dffcea !important;
-      border:1px solid rgba(18,183,106,.25) !important;
-    }
-
-    #digiyPublicCamembert .blue{
-      background:rgba(56,189,248,.14) !important;
-      color:#d9f4ff !important;
-      border:1px solid rgba(56,189,248,.24) !important;
-    }
-
-    #digiyPublicCamembert .violet{
-      background:rgba(168,85,247,.14) !important;
-      color:#eadcff !important;
-      border:1px solid rgba(168,85,247,.24) !important;
-    }
-
-    @media(max-width:640px){
-      #digiyPublicCamembert{
-        left:10px;
-        bottom:calc(84px + env(safe-area-inset-bottom,0px));
-        width:76px;
-        height:76px;
-      }
-
-      #digiyPublicCamembert .digiyPublicCenter{
-        width:76px;
-        height:76px;
-      }
-
-      #digiyPublicCamembert .digiyPublicCenter::before{
-        inset:12px;
-      }
-
-      #digiyPublicCamembert .digiyPublicMenu{
-        left:0;
-        bottom:86px;
-        width:min(265px, calc(100vw - 20px));
-      }
-
-      #digiyPublicAudioReader{
-        right:10px;
-        left:96px;
-        bottom:calc(92px + env(safe-area-inset-bottom,0px));
-        max-width:none;
-        justify-content:space-between;
-        padding:9px 10px;
-        border-radius:18px;
-      }
-
-      #digiyPublicAudioReader .audioText{
-        font-size:11.5px;
-        line-height:1.22;
-      }
-
-      #digiyPublicAudioReader .audioText span{
-        display:none;
-      }
-    }
-  </style>
-
-  <nav class="publicBottomNav" aria-label="Navigation publique DIGIY EXPLORE">
-    <div class="publicBottomNavInner">
-      <a href="https://digiylyfe.com/"><span class="icoBottom">🌍</span><span>Site</span></a>
-      <a href="https://digiy-hub.digiylyfe.com/"><span class="icoBottom">🧭</span><span>HUB</span></a>
-      <a class="active" href="#spots"><span class="icoBottom">📍</span><span>Lieux</span></a>
-      <button id="digiyPublicShareBtn" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
-      <a href="#heroSection"><span class="icoBottom">↑</span><span>Haut</span></a>
-    </div>
-  </nav>
-
-  <div class="share-toast-digiy" id="digiyPublicShareToast">Lien prêt à partager</div>
-
-  <script>
-    (function(){
-      "use strict";
-
-      const PUBLIC = {
-        site:"https://digiylyfe.com/",
-        hub:"https://digiy-hub.digiylyfe.com/",
-        spots:"#spots",
-        top:"#heroSection",
-        proEntry:"https://pro-explore.digiylyfe.com/"
-      };
-
-      const AUDIO_TEXT =
-        "Bienvenue dans DIGIY EXPLORE. Ici, tu découvres le coin sans te perdre. On regarde d’abord les lieux, on comprend vite l’ambiance, puis on choisit simplement : voir, partager ou contacter. DIGIY ne cache pas le terrain derrière une machine. La vitrine te montre les lieux avec une lecture claire, humaine et directe. Le professionnel garde la main, le public garde le choix. Si tu veux montrer ton propre lieu, utilise la porte visible Je fais découvrir mon lieu. Ici, pas besoin de notice longue : tu écoutes, tu regardes, tu cliques, et tu avances tranquillement.";
-
-      function make(html){
-        const tpl = document.createElement("template");
-        tpl.innerHTML = html.trim();
-        return tpl.content.firstElementChild;
-      }
-
-      function cleanText(value){
-        return String(value || "")
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/\s+/g, " ")
-          .trim();
-      }
-
-      function setLink(node, href, external){
-        if(!node) return;
-        node.setAttribute("href", href);
-        if(external){
-          node.setAttribute("target", "_blank");
-          node.setAttribute("rel", "noopener");
-        }else{
-          node.removeAttribute("target");
-          node.removeAttribute("rel");
-        }
-      }
-
-      function patchVisibleProCtasOnly(){
-        document.querySelectorAll('a[href*="commencer-a-payer.digiylyfe.com"], a[href="#proSection"], a[href*="#proSection"]').forEach(function(a){
-          setLink(a, PUBLIC.proEntry, false);
-        });
-
-        document.querySelectorAll("a").forEach(function(a){
-          const t = cleanText(a.textContent);
-          const isProCta =
-            t.includes("je fais decouvrir mon lieu") ||
-            t.includes("ajouter mon lieu") ||
-            t.includes("je veux montrer mon lieu");
-
-          if(isProCta){
-            setLink(a, PUBLIC.proEntry, false);
-          }
-        });
-      }
-
-      function cleanProHash(){
-        try{
-          const url = new URL(window.location.href);
-          if(url.hash === "#proSection"){
-            history.replaceState({}, document.title, url.pathname + url.search);
-          }
-        }catch(_){}
-      }
-
-      function installPublicCamembert(){
-        document.querySelectorAll("#digiyPublicCamembert").forEach(n => n.remove());
-
-        const root = make(`
-          <div id="digiyPublicCamembert" aria-label="Actions publiques DIGIY EXPLORE">
-            <button class="digiyPublicCenter" id="digiyPublicCenter" type="button" aria-expanded="false">
-              <span>🧭</span><strong>Voir</strong>
-            </button>
-            <div class="digiyPublicMenu">
-              <a class="gold" href="#spots">Lieux</a>
-              <button class="green" id="digiyPublicMenuShare" type="button">Partager</button>
-              <a class="blue" href="${PUBLIC.site}">Site</a>
-              <a class="violet" href="${PUBLIC.hub}">HUB</a>
-            </div>
-          </div>
-        `);
-
-        document.body.appendChild(root);
-
-        const center = document.getElementById("digiyPublicCenter");
-        const share = document.getElementById("digiyPublicMenuShare");
-
-        center && center.addEventListener("click", function(e){
-          e.preventDefault();
-          root.classList.toggle("open");
-          center.setAttribute("aria-expanded", root.classList.contains("open") ? "true" : "false");
-        });
-
-        share && share.addEventListener("click", function(e){
-          e.preventDefault();
-          shareCurrent();
-        });
-
-        document.addEventListener("click", function(e){
-          if(root && !root.contains(e.target)){
-            root.classList.remove("open");
-            center && center.setAttribute("aria-expanded", "false");
-          }
-        });
-      }
-
-      function installAudio(){
-        document.querySelectorAll("#digiyPublicAudioReader").forEach(n => n.remove());
-
-        const reader = make(`
-          <div id="digiyPublicAudioReader" aria-label="Lecteur audio DIGIY EXPLORE">
-            <span class="audioText">
-              <strong>Écoute DIGIY</strong>
-              <span>Comprendre la vitrine avant de cliquer.</span>
-            </span>
-            <button class="listenBtn" id="digiyPublicListen" type="button">🎧 Écouter</button>
-            <button class="stopBtn" id="digiyPublicStop" type="button">⏹ Stop</button>
-          </div>
-        `);
-
-        document.body.appendChild(reader);
-
-        const listen = document.getElementById("digiyPublicListen");
-        const stopBtn = document.getElementById("digiyPublicStop");
-        let playing = false;
-
-        function setPlaying(v){
-          playing = !!v;
-          reader.classList.toggle("playing", playing);
-        }
-
-        function stop(){
-          try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(_){}
-          setPlaying(false);
-        }
-
-        function getVoice(){
-          const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-          return voices.find(v => /^fr/i.test(v.lang || "")) || null;
-        }
-
-        function speak(){
-          if(!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)){
-            alert("Audio indisponible sur ce navigateur.");
-            return;
-          }
-
-          if(playing){
-            stop();
-            return;
-          }
-
-          stop();
-
-          const u = new SpeechSynthesisUtterance(AUDIO_TEXT);
-          u.lang = "fr-FR";
-          u.rate = 0.86;
-          u.pitch = 1.04;
-          u.volume = 1;
-
-          const v = getVoice();
-          if(v) u.voice = v;
-
-          u.onstart = () => setPlaying(true);
-          u.onend = () => setTimeout(stop, 120);
-          u.onerror = stop;
-
-          window.speechSynthesis.speak(u);
-        }
-
-        listen && listen.addEventListener("click", speak);
-        stopBtn && stopBtn.addEventListener("click", stop);
-
-        if(window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined"){
-          window.speechSynthesis.onvoiceschanged = getVoice;
-        }
-
-        window.addEventListener("beforeunload", stop);
-        document.addEventListener("visibilitychange", function(){
-          if(document.hidden) stop();
-        });
-      }
-
-      function shareCurrent(){
-        const title = document.title || "DIGIY EXPLORE";
-        const text = "Regarde DIGIY EXPLORE : lieux, sorties et belles adresses du terrain.";
-        const url = window.location.href;
-        const toast = document.getElementById("digiyPublicShareToast");
-
-        function showToast(label){
-          if(!toast) return;
-          toast.textContent = label || "Lien prêt à partager";
-          toast.classList.add("show");
-          clearTimeout(showToast._t);
-          showToast._t = setTimeout(function(){ toast.classList.remove("show"); }, 2200);
-        }
-
-        if(navigator.share){
-          navigator.share({title, text, url}).catch(function(){});
-          return;
-        }
-
-        if(navigator.clipboard){
-          navigator.clipboard.writeText(url)
-            .then(function(){ showToast("Lien copié pour partager"); })
-            .catch(function(){ showToast("Partage indisponible ici"); });
-        }else{
-          showToast("Partage indisponible ici");
-        }
-      }
-
-      function boot(){
-        cleanProHash();
-        installPublicCamembert();
-        installAudio();
-        patchVisibleProCtasOnly();
-
-        const shareBtn = document.getElementById("digiyPublicShareBtn");
-        shareBtn && shareBtn.addEventListener("click", shareCurrent);
-
-        setTimeout(patchVisibleProCtasOnly, 500);
-        setTimeout(patchVisibleProCtasOnly, 1500);
-      }
-
-      if(document.readyState === "loading"){
-        document.addEventListener("DOMContentLoaded", boot);
-      }else{
-        boot();
-      }
-    })();
-  </script>
-
 </body>
 </html>
+
