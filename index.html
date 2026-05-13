@@ -747,6 +747,16 @@
     const DEFAULT_COVER = "https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif";
     const FICHE_URL = "./fiche.html";
 
+    const FORCE_WHATSAPP_BY_SLUG = {
+      "test-digiy-explore-saly": "https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20des%20informations%20sur%20Test%20DIGIY%20Explore%20Saly."
+    };
+
+    function forcedWhatsapp(place){
+      const slug = cleanSlug(place?.slug || "");
+      return FORCE_WHATSAPP_BY_SLUG[slug] || "";
+    }
+
+
     const digiySb = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
       window.DIGIY_SUPABASE_URL,
       window.DIGIY_SUPABASE_ANON_KEY,
@@ -967,6 +977,9 @@
     }
 
     function contactHref(place){
+      const forced = forcedWhatsapp(place);
+      if(forced) return forced;
+
       const ext = externalWhatsapp(place);
       if(ext) return ext;
 
@@ -976,16 +989,22 @@
           const u = new URL(raw, window.location.href);
           const host = u.hostname.toLowerCase();
           if(host.includes("wa.me") || host.includes("whatsapp.com")) return u.href;
+
+          /*
+            Important terrain :
+            Contact direct ne doit jamais retomber vers digiylyfe.com ou l'index.
+            Si le lien n'est pas WhatsApp, on continue vers le téléphone.
+          */
           if(!host.includes("digiylyfe.com")) return u.href;
         }catch(_){}
       }
 
-      const phone = normalizePhone(firstText(place.whatsapp, place.phone, place.contact_phone, place.public_phone));
+      const phone = normalizePhone(firstText(place.whatsapp, place.phone, place.contact_phone, place.public_phone, "221771342889"));
       if(phone){
         return "https://wa.me/" + phone + "?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE. Je souhaite des informations sur : " + nameOf(place));
       }
 
-      return ficheHref(place);
+      return "https://wa.me/221771342889?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE.");
     }
 
     function setMetrics(list, realCount){
@@ -1119,5 +1138,6 @@
   </script>
 </body>
 </html>
+
 
 
