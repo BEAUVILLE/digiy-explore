@@ -747,7 +747,7 @@
     const DEFAULT_COVER = "https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif";
     const FICHE_URL = "./fiche.html";
 
-    const supabase = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
+    const digiySb = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
       window.DIGIY_SUPABASE_URL,
       window.DIGIY_SUPABASE_ANON_KEY,
       {
@@ -761,7 +761,7 @@
       }
     );
 
-    window.DIGIY_PUBLIC_EXPLORE_SB = supabase;
+    window.DIGIY_PUBLIC_EXPLORE_SB = digiySb;
 
     const SHOWCASE_SPOTS = [
       {
@@ -1062,7 +1062,7 @@
 
       for(const name of rpcNames){
         try{
-          const { data, error } = await supabase.rpc(name);
+          const { data, error } = await digiySb.rpc(name);
           if(error) continue;
 
           if(Array.isArray(data)) return data;
@@ -1077,7 +1077,7 @@
 
     async function tryTableList(){
       try{
-        const { data, error } = await supabase
+        const { data, error } = await digiySb
           .from("digiy_explore_places")
           .select("*")
           .eq("is_published", true)
@@ -1119,4 +1119,5 @@
   </script>
 </body>
 </html>
+
 
