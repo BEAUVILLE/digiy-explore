@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>Voir le lieu — DIGIY EXPLORE</title>
-  <meta name="theme-color" content="#06130f" />
+  <meta name="theme-color" content="#06130f"/>
   <meta
     name="description"
-    content="Je découvre un lieu avec son ambiance, ses photos, son repère utile, contact direct préparé, carte et partage simple sur téléphone."
+    content="Je découvre un lieu avec son ambiance, ses photos, son repère utile, son QR public, contact direct préparé, carte et partage simple sur téléphone."
   />
 
   <script>
@@ -16,7 +16,11 @@
     window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
     window.DIGIY_MODULE = "EXPLORE";
   </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
@@ -24,37 +28,47 @@
       --bg2:#0a1f18;
       --card:#0b241b;
       --card2:#102b22;
-      --line:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.11);
       --ink:#f8fafc;
-      --muted:rgba(248,250,252,.72);
-      --soft:rgba(248,250,252,.52);
+      --muted:rgba(248,250,252,.78);
+      --soft:rgba(248,250,252,.58);
       --gold:#d4af37;
       --gold2:#f3d46b;
       --ok:#22c55e;
+      --blue:#38bdf8;
       --bad:#ef4444;
-      --radius:22px;
-      --shadow:0 24px 60px rgba(0,0,0,.28);
+      --radius:24px;
+      --shadow:0 24px 60px rgba(0,0,0,.30);
+      --font:"Outfit",Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
 
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
+
     body{
       min-height:100vh;
       color:var(--ink);
-      font-family:Outfit, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family:var(--font);
+      font-size:18px;
       background:
-        radial-gradient(circle at top, rgba(212,175,55,.09), transparent 26%),
+        radial-gradient(900px 520px at 8% -10%, rgba(212,175,55,.14), transparent 58%),
+        radial-gradient(850px 520px at 100% 0%, rgba(56,189,248,.10), transparent 55%),
+        radial-gradient(900px 520px at 100% 100%, rgba(34,197,94,.10), transparent 58%),
         linear-gradient(180deg, #071510 0%, #06130f 48%, #04100c 100%);
-      padding-bottom:calc(104px + env(safe-area-inset-bottom,0px));
+      padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
 
     a{color:inherit;text-decoration:none}
     button{font:inherit}
 
     .wrap{
-      width:min(100%, 1160px);
+      width:min(100%,1160px);
       margin:0 auto;
-      padding:16px 14px 40px;
+      padding:16px 14px 42px;
+      display:grid;
+      gap:16px;
     }
 
     .topbar{
@@ -62,7 +76,7 @@
       align-items:flex-start;
       justify-content:space-between;
       gap:14px;
-      margin-bottom:16px;
+      flex-wrap:wrap;
     }
 
     .brand{
@@ -73,12 +87,12 @@
     }
 
     .logo{
-      width:50px;
-      height:50px;
-      border-radius:16px;
+      width:58px;
+      height:58px;
+      border-radius:18px;
       overflow:hidden;
-      border:1px solid rgba(212,175,55,.22);
-      box-shadow:0 10px 28px rgba(0,0,0,.18);
+      border:1px solid rgba(212,175,55,.24);
+      box-shadow:0 10px 28px rgba(0,0,0,.20);
       background:#fff;
       flex:0 0 auto;
     }
@@ -90,31 +104,32 @@
       display:block;
     }
 
-    .brandText{min-width:0}
     .kicker{
       color:var(--gold2);
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.18em;
+      font-size:13px;
+      font-weight:1000;
+      letter-spacing:.16em;
       text-transform:uppercase;
-      margin-bottom:3px;
+      margin-bottom:4px;
       white-space:nowrap;
     }
 
     .title{
-      font-size:clamp(18px, 2vw, 28px);
-      font-weight:900;
-      line-height:1.08;
-      letter-spacing:-.03em;
+      font-size:clamp(24px,3vw,36px);
+      font-weight:1000;
+      line-height:1.05;
+      letter-spacing:-.04em;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
 
     .sub{
-      margin-top:4px;
+      margin-top:5px;
       color:var(--muted);
-      font-size:13px;
+      font-size:16px;
+      line-height:1.45;
+      font-weight:800;
     }
 
     .topActions{
@@ -125,46 +140,53 @@
     }
 
     .btn{
-      min-height:44px;
+      min-height:58px;
       border:none;
-      border-radius:14px;
-      padding:0 14px;
+      border-radius:17px;
+      padding:14px 17px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
-      font-weight:800;
+      gap:9px;
+      font-size:18px;
+      font-weight:1000;
       cursor:pointer;
       white-space:nowrap;
-      transition:filter .18s ease, transform .04s ease;
+      transition:filter .18s ease, transform .08s ease;
+      text-align:center;
     }
 
-    .btn:active{transform:translateY(1px)}
+    .btn:active{transform:translateY(1px) scale(.99)}
     .btn.primary{
-      background:linear-gradient(135deg, var(--gold), var(--gold2));
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
       color:#13200d;
       box-shadow:0 14px 30px rgba(212,175,55,.22);
     }
 
     .btn.secondary{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
       color:var(--ink);
     }
 
     .btn.ghost{
-      background:transparent;
+      background:rgba(255,255,255,.03);
       border:1px solid var(--line);
       color:var(--ink);
     }
 
+    .btn.green{
+      background:rgba(34,197,94,.14);
+      border:1px solid rgba(34,197,94,.30);
+      color:#bbf7d0;
+    }
+
     .msg{
-      margin-bottom:16px;
       border-radius:18px;
-      padding:14px 16px;
-      font-size:14px;
+      padding:16px 18px;
+      font-size:17px;
       line-height:1.5;
-      font-weight:700;
+      font-weight:900;
       display:none;
     }
 
@@ -174,11 +196,13 @@
       border:1px solid rgba(96,165,250,.18);
       background:rgba(59,130,246,.08);
     }
+
     .msg.bad{
       color:#fecaca;
       border:1px solid rgba(239,68,68,.18);
       background:rgba(239,68,68,.08);
     }
+
     .msg.ok{
       color:#bbf7d0;
       border:1px solid rgba(34,197,94,.18);
@@ -187,14 +211,12 @@
 
     .hero{
       display:grid;
-      grid-template-columns:1.05fr .95fr;
+      grid-template-columns:1.08fr .92fr;
       gap:16px;
-      margin-bottom:16px;
     }
 
     .panel{
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
@@ -203,7 +225,7 @@
 
     .cover{
       position:relative;
-      min-height:380px;
+      min-height:430px;
       background:#0d1914 center/cover no-repeat;
       border-bottom:1px solid rgba(255,255,255,.08);
     }
@@ -211,19 +233,20 @@
     .coverFallback{
       display:grid;
       place-items:center;
-      min-height:380px;
+      min-height:430px;
       color:var(--muted);
-      font-size:15px;
+      font-size:18px;
+      font-weight:900;
       background:
-        radial-gradient(circle at top, rgba(212,175,55,.08), transparent 30%),
-        linear-gradient(180deg, #10231b, #0a1712);
+        radial-gradient(circle at top, rgba(212,175,55,.10), transparent 30%),
+        linear-gradient(180deg,#10231b,#0a1712);
     }
 
     .coverShade{
       position:absolute;
       inset:0;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.12) 25%, rgba(0,0,0,.58));
+        linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.10) 22%,rgba(0,0,0,.62));
     }
 
     .coverContent{
@@ -231,7 +254,7 @@
       left:0;
       right:0;
       bottom:0;
-      padding:22px;
+      padding:24px;
       z-index:2;
     }
 
@@ -239,13 +262,13 @@
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:8px 12px;
+      padding:9px 13px;
       border-radius:999px;
-      border:1px solid rgba(212,175,55,.22);
-      background:rgba(212,175,55,.08);
+      border:1px solid rgba(212,175,55,.24);
+      background:rgba(212,175,55,.10);
       color:var(--gold2);
-      font-size:12px;
-      font-weight:900;
+      font-size:14px;
+      font-weight:1000;
       letter-spacing:.08em;
       text-transform:uppercase;
       margin-bottom:12px;
@@ -253,17 +276,18 @@
 
     .heroTitle{
       margin:0 0 10px;
-      font-size:clamp(28px, 4vw, 44px);
-      line-height:1.02;
-      letter-spacing:-.04em;
-      text-shadow:0 6px 20px rgba(0,0,0,.24);
+      font-size:clamp(38px,6vw,64px);
+      line-height:1.00;
+      letter-spacing:-.055em;
+      text-shadow:0 6px 20px rgba(0,0,0,.26);
     }
 
     .heroLead{
       margin:0;
       color:#eef6f2;
-      font-size:15px;
-      line-height:1.65;
+      font-size:20px;
+      line-height:1.55;
+      font-weight:850;
       max-width:62ch;
       text-shadow:0 4px 16px rgba(0,0,0,.24);
     }
@@ -273,38 +297,110 @@
       display:grid;
       gap:12px;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
-        linear-gradient(180deg, #0a1c16, #0d241c);
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015)),
+        linear-gradient(180deg,#0a1c16,#0d241c);
+    }
+
+    .qrCard{
+      border:1px solid rgba(212,175,55,.28);
+      border-radius:26px;
+      background:
+        radial-gradient(420px 180px at 50% 0%, rgba(212,175,55,.15), transparent 62%),
+        rgba(0,0,0,.15);
+      padding:18px;
+      display:grid;
+      gap:12px;
+      text-align:center;
+    }
+
+    .qrKicker{
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      margin:auto;
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.28);
+      background:rgba(212,175,55,.11);
+      color:#fde68a;
+      font-size:16px;
+      font-weight:1000;
+    }
+
+    .qrImg{
+      width:min(100%,250px);
+      height:auto;
+      margin:auto;
+      display:block;
+      border-radius:22px;
+      background:#fff;
+      padding:12px;
+      border:1px solid rgba(212,175,55,.42);
+      box-shadow:0 14px 34px rgba(0,0,0,.34);
+    }
+
+    .qrTitle{
+      font-size:28px;
+      line-height:1.08;
+      font-weight:1000;
+      color:var(--gold2);
+    }
+
+    .qrText{
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.45;
+      font-weight:900;
+    }
+
+    .qrLink{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      padding:10px;
+      word-break:break-word;
+      font-size:13px;
+      line-height:1.35;
+      color:rgba(248,250,252,.72);
+      font-weight:900;
+    }
+
+    .qrActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
 
     .miniStat{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:14px;
-      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:19px;
+      padding:15px;
+      background:rgba(255,255,255,.035);
     }
 
     .miniLabel{
       color:var(--soft);
-      font-size:12px;
-      font-weight:800;
+      font-size:13px;
+      font-weight:1000;
       text-transform:uppercase;
       letter-spacing:.08em;
       margin-bottom:8px;
     }
 
     .miniValue{
-      font-size:20px;
-      font-weight:900;
+      font-size:23px;
+      font-weight:1000;
       line-height:1.15;
-      letter-spacing:-.03em;
+      letter-spacing:-.035em;
       word-break:break-word;
     }
 
     .miniHint{
-      margin-top:6px;
+      margin-top:7px;
       color:var(--muted);
-      font-size:13px;
+      font-size:16px;
+      font-weight:800;
       line-height:1.45;
     }
 
@@ -317,39 +413,37 @@
 
     .layout{
       display:grid;
-      grid-template-columns:1.1fr .9fr;
+      grid-template-columns:1.08fr .92fr;
       gap:16px;
-      margin-bottom:16px;
     }
 
-    .cardBody{
-      padding:20px;
-    }
+    .cardBody{padding:22px}
 
     .sectionTitle{
-      margin:0 0 14px;
-      font-size:20px;
-      font-weight:900;
-      letter-spacing:-.02em;
+      margin:0 0 12px;
+      font-size:clamp(28px,5.8vw,42px);
+      font-weight:1000;
+      letter-spacing:-.045em;
+      line-height:1.08;
     }
 
     .sectionSub{
-      margin:-4px 0 14px;
+      margin:-4px 0 16px;
       color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
+      font-size:18px;
+      font-weight:850;
+      line-height:1.55;
     }
 
     .text{
       color:#eef6f2;
-      font-size:15px;
-      line-height:1.8;
+      font-size:20px;
+      font-weight:800;
+      line-height:1.75;
       word-break:break-word;
     }
 
-    .muted{
-      color:var(--muted);
-    }
+    .muted{color:var(--muted)}
 
     .grid{
       display:grid;
@@ -357,24 +451,26 @@
     }
 
     .infoRow{
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
-      border-radius:18px;
-      padding:14px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.035);
+      border-radius:19px;
+      padding:16px;
     }
 
     .infoRow strong{
       display:block;
-      font-size:13px;
-      margin-bottom:6px;
+      font-size:15px;
+      margin-bottom:7px;
       color:#eef6f2;
       text-transform:uppercase;
       letter-spacing:.05em;
+      font-weight:1000;
     }
 
     .infoRow span{
       color:var(--muted);
-      font-size:14px;
+      font-size:18px;
+      font-weight:850;
       line-height:1.55;
       word-break:break-word;
     }
@@ -386,33 +482,34 @@
     }
 
     .chip{
-      min-height:34px;
-      padding:0 12px;
+      min-height:38px;
+      padding:0 13px;
       border-radius:999px;
       display:inline-flex;
       align-items:center;
-      background:rgba(212,175,55,.08);
-      border:1px solid rgba(212,175,55,.18);
+      background:rgba(212,175,55,.09);
+      border:1px solid rgba(212,175,55,.20);
       color:var(--gold2);
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:.04em;
+      font-size:15px;
+      font-weight:1000;
+      letter-spacing:.02em;
     }
 
     .gallery{
       display:grid;
-      grid-template-columns:repeat(2, 1fr);
+      grid-template-columns:repeat(2,1fr);
       gap:12px;
     }
 
     .photo{
       position:relative;
       display:block;
-      border-radius:18px;
+      border-radius:20px;
       overflow:hidden;
-      min-height:180px;
+      min-height:220px;
       background:#102019 center/cover no-repeat;
-      border:1px solid rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 14px 34px rgba(0,0,0,.22);
     }
 
     .photo::after{
@@ -420,40 +517,71 @@
       position:absolute;
       right:10px;
       bottom:10px;
-      min-height:28px;
-      padding:0 10px;
+      min-height:34px;
+      padding:0 12px;
       border-radius:999px;
       display:inline-flex;
       align-items:center;
-      background:rgba(0,0,0,.46);
+      background:rgba(0,0,0,.50);
       color:#fff;
-      font-size:12px;
-      font-weight:800;
-      border:1px solid rgba(255,255,255,.12);
+      font-size:14px;
+      font-weight:1000;
+      border:1px solid rgba(255,255,255,.14);
     }
 
     .empty{
-      border:1px dashed rgba(255,255,255,.12);
-      border-radius:18px;
-      padding:18px;
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius:20px;
+      padding:20px;
       color:var(--muted);
-      font-size:14px;
+      font-size:18px;
+      font-weight:850;
       line-height:1.6;
-      background:rgba(255,255,255,.02);
+      background:rgba(255,255,255,.025);
+    }
+
+    .mobilePublicFastRow{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .mobilePublicFastRow a,
+    .mobilePublicFastRow button{
+      min-height:56px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.055);
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:1000;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px;
+      cursor:pointer;
+      font-family:inherit;
+      font-size:16px;
+    }
+
+    .mobilePublicFastRow .primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#13200d;
+      border:none;
     }
 
     .foot{
-      margin-top:18px;
+      margin-top:2px;
       color:var(--muted);
-      font-size:12px;
+      font-size:15px;
+      font-weight:850;
       line-height:1.6;
       text-align:center;
     }
 
-
-    #gallery,.hero,.layout{
-      scroll-margin-top:88px;
-    }
+    #gallery,.hero,.layout{scroll-margin-top:90px}
 
     .publicBottomNav{
       position:fixed;
@@ -462,7 +590,7 @@
       bottom:0;
       z-index:99990;
       padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
-      background:rgba(6,19,15,.94);
+      background:rgba(6,19,15,.95);
       border-top:1px solid rgba(255,255,255,.10);
       backdrop-filter:blur(16px);
       -webkit-backdrop-filter:blur(16px);
@@ -478,15 +606,15 @@
 
     .publicBottomNav a,
     .publicBottomNav button{
-      min-height:58px;
-      border-radius:16px;
+      min-height:62px;
+      border-radius:17px;
       display:grid;
       place-items:center;
       align-content:center;
       gap:3px;
-      color:rgba(248,250,252,.72);
-      font-size:11px;
-      font-weight:950;
+      color:rgba(248,250,252,.75);
+      font-size:12px;
+      font-weight:1000;
       text-align:center;
       border:1px solid transparent;
       text-decoration:none;
@@ -496,64 +624,33 @@
       padding:0 4px;
     }
 
-    .publicBottomNav .icoBottom{font-size:18px;line-height:1}
+    .publicBottomNav .icoBottom{font-size:20px;line-height:1}
 
     .publicBottomNav a.active,
     .publicBottomNav button.active{
       color:#13200d;
       background:linear-gradient(135deg,var(--gold),var(--gold2));
-      border-color:rgba(243,212,107,.28);
+      border-color:rgba(243,212,107,.30);
       box-shadow:0 12px 26px rgba(212,175,55,.18);
-    }
-
-    .mobilePublicFastRow{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-      margin-top:14px;
-    }
-
-    .mobilePublicFastRow a,
-    .mobilePublicFastRow button{
-      min-height:46px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.05);
-      color:var(--ink);
-      text-decoration:none;
-      font-weight:950;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:10px 12px;
-      cursor:pointer;
-      font-family:inherit;
-    }
-
-    .mobilePublicFastRow .primary{
-      background:linear-gradient(135deg,var(--gold),var(--gold2));
-      color:#13200d;
-      border:none;
     }
 
     .shareToast{
       position:fixed;
       left:50%;
-      bottom:calc(92px + env(safe-area-inset-bottom,0px));
+      bottom:calc(96px + env(safe-area-inset-bottom,0px));
       transform:translateX(-50%) translateY(12px);
       z-index:99999;
       opacity:0;
       pointer-events:none;
       transition:.22s ease;
       max-width:calc(100vw - 24px);
-      padding:10px 16px;
+      padding:12px 18px;
       border-radius:999px;
       border:1px solid rgba(243,212,107,.28);
-      background:rgba(16,38,30,.96);
+      background:rgba(16,38,30,.97);
       color:var(--gold2);
-      font-size:13px;
-      font-weight:900;
+      font-size:15px;
+      font-weight:1000;
       box-shadow:var(--shadow);
       white-space:nowrap;
       overflow:hidden;
@@ -565,30 +662,35 @@
       transform:translateX(-50%) translateY(0);
     }
 
-    @media (max-width:640px){
-      .topActions{display:none}
-      .mobilePublicFastRow{grid-template-columns:1fr 1fr}
-      .wrap{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+    @media(max-width:1040px){
+      .hero,.layout{grid-template-columns:1fr}
     }
 
-
-    @media (max-width: 1040px){
-      .hero, .layout{grid-template-columns:1fr}
-    }
-
-    @media (max-width: 760px){
+    @media(max-width:760px){
       .gallery{grid-template-columns:1fr}
     }
 
-    @media (max-width: 640px){
-      .wrap{padding:14px 12px 34px}
+    @media(max-width:640px){
+      body{font-size:18px}
+      .wrap{padding:12px 10px 36px}
       .topbar{flex-direction:column}
-      .topActions{width:100%;justify-content:flex-start}
-      .cover, .coverFallback{min-height:300px}
-      .cardBody, .sideCard{padding:18px}
+      .topActions{display:none}
+      .cover,.coverFallback{min-height:320px}
+      .coverContent{padding:18px}
+      .cardBody,.sideCard{padding:18px}
+      .heroTitle{font-size:clamp(38px,12vw,56px)}
+      .heroLead,.text{font-size:19px}
+      .btn{width:100%;min-height:62px;font-size:18px}
+      .actions{display:grid;grid-template-columns:1fr}
+      .qrActions{grid-template-columns:1fr}
+      .qrImg{width:min(82vw,270px)}
+      .mobilePublicFastRow{grid-template-columns:1fr 1fr}
+      .miniValue{font-size:22px}
+      .photo{min-height:240px}
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header class="topbar">
@@ -620,6 +722,20 @@
       </article>
 
       <aside class="panel sideCard">
+        <article class="qrCard" aria-label="QR de découverte du lieu">
+          <div class="qrKicker">📲 QR découverte</div>
+          <img id="qrImg" class="qrImg" alt="QR découverte DIGIY EXPLORE" src="">
+          <div class="qrTitle">Scanne pour découvrir ce lieu</div>
+          <div class="qrText">
+            Ambiance, photos, repère utile, contact direct et itinéraire.
+          </div>
+          <div class="qrLink" id="qrLinkText">Préparation du lien…</div>
+          <div class="qrActions">
+            <a class="btn primary" id="qrOpenBtn" href="#" target="_blank" rel="noopener">🧭 Ouvrir</a>
+            <button class="btn secondary" id="qrCopyBtn" type="button">📋 Copier</button>
+          </div>
+        </article>
+
         <div class="miniStat">
           <div class="miniLabel">Type de lieu</div>
           <div class="miniValue" id="categoryBox">—</div>
@@ -671,9 +787,7 @@
               <span id="shortDescriptionBox">—</span>
             </div>
 
-            <div class="text" id="fullDescriptionBox">
-              —
-            </div>
+            <div class="text" id="fullDescriptionBox">—</div>
           </div>
         </div>
       </article>
@@ -707,8 +821,8 @@
 
     <section class="panel">
       <div class="cardBody">
-        <h2 class="sectionTitle">Photos</h2>
-        <p class="sectionSub">Voir l’ambiance du lieu sans se perdre.</p>
+        <h2 class="sectionTitle">Galerie</h2>
+        <p class="sectionSub">Voir l’ambiance du lieu sans se perdre. Le regard d’abord, le clic ensuite.</p>
 
         <div id="gallery" class="gallery">
           <div class="empty">Aucune photo disponible pour le moment.</div>
@@ -717,15 +831,14 @@
     </section>
 
     <div class="foot">
-      DIGIY EXPLORE • lieu public • contact direct • partage simple
+      DIGIY EXPLORE • fiche publique • QR découverte • galerie • contact direct • partage simple
     </div>
   </div>
-
 
   <nav class="publicBottomNav" aria-label="Navigation lieu DIGIY EXPLORE">
     <div class="publicBottomNavInner">
       <a href="./index.html"><span class="icoBottom">←</span><span>Retour</span></a>
-      <a href="#gallery"><span class="icoBottom">🖼️</span><span>Photos</span></a>
+      <a href="#gallery"><span class="icoBottom">🖼️</span><span>Galerie</span></a>
       <a class="active" id="bottomGo" href="./index.html"><span class="icoBottom">🧭</span><span>Y aller</span></a>
       <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>Contact</span></a>
       <button id="bottomShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
@@ -738,6 +851,9 @@
     (function(){
       "use strict";
 
+      const PUBLIC_BASE = "https://explore.digiylyfe.com/";
+      const QR_API = "https://api.qrserver.com/v1/create-qr-code/";
+
       const supabase = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
         window.DIGIY_SUPABASE_URL,
         window.DIGIY_SUPABASE_ANON_KEY,
@@ -747,11 +863,7 @@
             autoRefreshToken:false,
             detectSessionInUrl:false,
             storageKey:"digiy-explore-public-fiche-noauth",
-            storage:{
-              getItem:() => null,
-              setItem:() => {},
-              removeItem:() => {}
-            }
+            storage:{ getItem:()=>null, setItem:()=>{}, removeItem:()=>{} }
           }
         }
       );
@@ -784,6 +896,11 @@
       const bottomShare = $("bottomShare");
       const shareToast = $("shareToast");
 
+      const qrImg = $("qrImg");
+      const qrLinkText = $("qrLinkText");
+      const qrOpenBtn = $("qrOpenBtn");
+      const qrCopyBtn = $("qrCopyBtn");
+
       function setMsg(text, type){
         if(!text){
           msg.className = "msg";
@@ -798,17 +915,10 @@
         try{
           const url = new URL(window.location.href);
           let changed = false;
-
           [
-            "phone",
-            "tel",
-            "owner_phone",
-            "owner_id",
-            "business_code",
-            "access_note",
-            "keybox_code",
-            "keybox_location",
-            "return"
+            "phone","tel","owner_phone","owner_id","business_code",
+            "access_note","keybox_code","keybox_location","return",
+            "token","pin","module","from"
           ].forEach(function(key){
             if(url.searchParams.has(key)){
               url.searchParams.delete(key);
@@ -822,24 +932,78 @@
         }catch(_){}
       }
 
-      function safePublicContactHref(place){
-        const raw = String(
-          place?.contact_url ||
-          place?.public_contact_url ||
-          place?.whatsapp_url ||
-          ""
-        ).trim();
-
-        if(!raw) return "./index.html";
-
-        try{
-          const url = new URL(raw, window.location.href);
-          if(/^https?:$/i.test(url.protocol)) return url.href;
-        }catch(_){}
-
-        return "./index.html";
+      function escapeHtml(value){
+        return String(value ?? "")
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
       }
 
+      function textOf(){
+        return Array.from(arguments).find(v => String(v ?? "").trim()) || "";
+      }
+
+      function safeText(value, fallback){
+        const s = String(value ?? "").trim();
+        return s || fallback || "—";
+      }
+
+      function getSlug(){
+        cleanPublicUrl();
+        try{
+          const url = new URL(window.location.href);
+          return String(url.searchParams.get("slug") || "").trim();
+        }catch(_){
+          return "";
+        }
+      }
+
+      function normalizePhone(v){
+        const raw = String(v || "").replace(/[^\d]/g,"");
+        if(raw.length === 9) return "221" + raw;
+        return raw;
+      }
+
+      function qrUrlFor(target){
+        return QR_API + "?size=620x620&margin=16&data=" + encodeURIComponent(target);
+      }
+
+      function canonicalPlaceUrl(slug){
+        try{
+          const u = new URL("./fiche.html", window.location.href);
+          if(slug) u.searchParams.set("slug", slug);
+          [
+            "phone","tel","owner_phone","owner_id","business_code",
+            "access_note","keybox_code","keybox_location","return",
+            "token","pin","module","from"
+          ].forEach(k => u.searchParams.delete(k));
+          return u.toString();
+        }catch(_){
+          return window.location.href;
+        }
+      }
+
+      async function copyText(text){
+        const value = String(text || "").trim();
+        if(!value) throw new Error("empty_copy");
+        if(navigator.clipboard?.writeText){
+          await navigator.clipboard.writeText(value);
+          return true;
+        }
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.setAttribute("readonly","");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        if(!ok) throw new Error("copy_failed");
+        return true;
+      }
 
       function showShareToast(text){
         if(!shareToast) return;
@@ -849,21 +1013,192 @@
         showShareToast._t = setTimeout(() => shareToast.classList.remove("show"), 2200);
       }
 
+      function buildMapsHref(lat,lng,address){
+        const la = Number(lat);
+        const lo = Number(lng);
+        if(Number.isFinite(la) && Number.isFinite(lo)){
+          return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(la + "," + lo);
+        }
+        const a = String(address || "").trim();
+        if(a) return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(a);
+        return "./index.html";
+      }
+
+      function safePublicContactHref(place){
+        const raw = String(
+          place?.contact_url ||
+          place?.public_contact_url ||
+          place?.whatsapp_url ||
+          ""
+        ).trim();
+
+        if(raw){
+          try{
+            const url = new URL(raw, window.location.href);
+            if(/^https?:$/i.test(url.protocol)) return url.href;
+          }catch(_){}
+        }
+
+        const phone = normalizePhone(
+          place?.whatsapp ||
+          place?.phone ||
+          place?.contact_phone ||
+          place?.public_phone ||
+          ""
+        );
+
+        if(phone){
+          const label = place?.public_name || place?.title || place?.name || "ce lieu";
+          return "https://wa.me/" + phone + "?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE. Je souhaite des informations sur : " + label);
+        }
+
+        return "./index.html";
+      }
+
+      function buildPhoneHref(place){
+        const phone = normalizePhone(place?.phone || place?.contact_phone || place?.public_phone || "");
+        if(!phone) return "./index.html";
+        return "tel:+" + phone;
+      }
+
+      function placeName(place){
+        return safeText(place?.public_name || place?.name || place?.title, "Lieu DIGIY EXPLORE");
+      }
+
+      function placeCategory(place){
+        return safeText(place?.category_label || place?.category_name || place?.category_code || place?.subcategory || place?.type_label, "Lieu / activité");
+      }
+
+      function placeCity(place){
+        return safeText(place?.city || place?.town || place?.location_city, "Ville à préciser");
+      }
+
+      function placeZone(place){
+        return safeText(place?.zone || place?.district || place?.area || place?.neighborhood, "");
+      }
+
+      function placeLocation(place){
+        return [placeCity(place), placeZone(place)].filter(Boolean).join(" · ") || "Repère à préciser";
+      }
+
+      function placeShort(place){
+        return safeText(
+          place?.short_description || place?.summary || place?.description || place?.full_description,
+          "Un lieu à découvrir sur DIGIY EXPLORE."
+        );
+      }
+
+      function placeFull(place){
+        return safeText(
+          place?.full_description || place?.description || place?.short_description || place?.summary,
+          "La fiche donne les repères utiles : ambiance, localisation, contact direct et photos quand elles sont disponibles."
+        );
+      }
+
+      function placeAddress(place){
+        return safeText(place?.address_text || place?.address || place?.address_label || place?.location_label, "Adresse ou repère à préciser.");
+      }
+
+      function placeKind(place){
+        return safeText(place?.kind || place?.ambiance || place?.vibe || place?.type_label || placeCategory(place), "Ambiance à découvrir.");
+      }
+
+      function placeBudget(place){
+        return safeText(place?.price_label || place?.budget_label || place?.price_hint || place?.budget, "À demander");
+      }
+
+      function parsePhotos(place){
+        const candidates = [
+          place?.cover_url,
+          place?.photo_url,
+          place?.image_url,
+          place?.hero_url,
+          place?.gallery_urls,
+          place?.photos,
+          place?.images
+        ];
+
+        const out = [];
+
+        candidates.forEach(item => {
+          if(!item) return;
+
+          if(Array.isArray(item)){
+            item.forEach(x => {
+              if(typeof x === "string") out.push(x);
+              else if(x?.url) out.push(x.url);
+              else if(x?.src) out.push(x.src);
+            });
+            return;
+          }
+
+          if(typeof item === "string"){
+            const s = item.trim();
+            if(!s) return;
+
+            if((s.startsWith("[") && s.endsWith("]")) || (s.startsWith("{") && s.endsWith("}"))){
+              try{
+                const parsed = JSON.parse(s);
+                if(Array.isArray(parsed)){
+                  parsed.forEach(x => {
+                    if(typeof x === "string") out.push(x);
+                    else if(x?.url) out.push(x.url);
+                    else if(x?.src) out.push(x.src);
+                  });
+                  return;
+                }
+              }catch(_){}
+            }
+
+            s.split(/[\n,|]+/).map(x => x.trim()).filter(Boolean).forEach(x => out.push(x));
+          }
+        });
+
+        return Array.from(new Set(out.filter(url => /^https?:\/\//i.test(url)))).slice(0,8);
+      }
+
+      function parseTags(place){
+        const raw = place?.tags || place?.keywords || place?.mots_cles || "";
+        if(Array.isArray(raw)) return raw.map(String).filter(Boolean).slice(0,12);
+        return String(raw || "")
+          .split(/[,|#]+/)
+          .map(x => x.trim())
+          .filter(Boolean)
+          .slice(0,12);
+      }
+
+      function setQr(slug){
+        const target = canonicalPlaceUrl(slug);
+        qrImg.src = qrUrlFor(target);
+        qrOpenBtn.href = target;
+        qrLinkText.textContent = target;
+
+        qrCopyBtn.onclick = async () => {
+          try{
+            await copyText(target);
+            showShareToast("Lien de la fiche copié");
+            setMsg("✅ Lien de la fiche copié. Le QR ouvre cette fiche publique.", "ok");
+          }catch(_){
+            setMsg("⚠️ Copie bloquée sur ce navigateur. Le lien reste visible sous le QR.", "info");
+          }
+        };
+      }
+
       async function shareCurrentPlace(label){
         const title = document.title || "DIGIY EXPLORE";
         const text = label ? "Regarde ce lieu sur DIGIY EXPLORE : " + label : "Regarde ce lieu sur DIGIY EXPLORE.";
-        const url = window.location.href;
+        const url = qrOpenBtn.href || window.location.href;
 
         try{
           if(navigator.share){
             await navigator.share({ title, text, url });
             return;
           }
-          await navigator.clipboard.writeText(url);
+          await copyText(url);
           showShareToast("Lien copié pour partager");
         }catch(_){
           try{
-            await navigator.clipboard.writeText(url);
+            await copyText(url);
             showShareToast("Lien copié pour partager");
           }catch(__){
             showShareToast("Partage indisponible ici");
@@ -871,188 +1206,117 @@
         }
       }
 
+      function renderCover(place){
+        const photos = parsePhotos(place);
+        const coverUrl = photos[0] || "";
+        const name = placeName(place);
+        const short = placeShort(place);
+
+        if(coverUrl){
+          cover.className = "cover";
+          cover.style.backgroundImage = "url('" + coverUrl.replaceAll("'", "%27") + "')";
+          cover.innerHTML = `
+            <div class="coverShade"></div>
+            <div class="coverContent">
+              <div class="badge">DIGIY EXPLORE · Lieu public</div>
+              <h1 class="heroTitle">${escapeHtml(name)}</h1>
+              <p class="heroLead">${escapeHtml(short)}</p>
+            </div>
+          `;
+          return;
+        }
+
+        cover.className = "cover";
+        cover.style.backgroundImage = "";
+        cover.innerHTML = `
+          <div class="coverShade"></div>
+          <div class="coverContent">
+            <div class="badge">DIGIY EXPLORE · Lieu public</div>
+            <h1 class="heroTitle">${escapeHtml(name)}</h1>
+            <p class="heroLead">${escapeHtml(short)}</p>
+          </div>
+        `;
+      }
+
+      function renderGallery(place){
+        const photos = parsePhotos(place);
+
+        if(!photos.length){
+          gallery.innerHTML = `<div class="empty">Aucune photo disponible pour le moment. La fiche reste partageable par QR et contact direct.</div>`;
+          return;
+        }
+
+        gallery.innerHTML = photos.map((url, idx) => `
+          <a
+            class="photo"
+            href="${escapeHtml(url)}"
+            target="_blank"
+            rel="noopener"
+            style="background-image:url('${escapeHtml(url).replaceAll("'", "%27")}')"
+            aria-label="Ouvrir la photo ${idx + 1}"
+          ></a>
+        `).join("");
+      }
+
+      function renderTags(place){
+        const tags = parseTags(place);
+
+        if(!tags.length){
+          tagsBox.innerHTML = `<span class="muted">Aucun mot-clé.</span>`;
+          return;
+        }
+
+        tagsBox.innerHTML = `<div class="chips">${tags.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join("")}</div>`;
+      }
+
       function wirePublicActions(place){
-        const label = place?.public_name || place?.title || "ce lieu";
-        const mapHref = buildMapsHref(place?.latitude, place?.longitude, place?.address_text);
-        const contactHref = place ? safePublicContactHref(place) : "./index.html";
+        const label = placeName(place);
+        const mapHref = buildMapsHref(place?.latitude, place?.longitude, placeAddress(place));
+        const contactHref = safePublicContactHref(place);
+        const phoneHref = buildPhoneHref(place);
 
-        if(fastGo){
-          fastGo.href = mapHref || "./index.html";
-          fastGo.target = mapHref && mapHref.startsWith("http") ? "_blank" : "";
-          fastGo.rel = mapHref && mapHref.startsWith("http") ? "noopener" : "";
-        }
+        callBtn.href = phoneHref || contactHref || "./index.html";
+        waBtn.href = contactHref || "./index.html";
+        mapsBtn.href = mapHref || "./index.html";
 
-        if(bottomGo){
-          bottomGo.href = mapHref || "./index.html";
-          bottomGo.target = mapHref && mapHref.startsWith("http") ? "_blank" : "";
-          bottomGo.rel = mapHref && mapHref.startsWith("http") ? "noopener" : "";
-        }
+        [waBtn, mapsBtn, fastGo, bottomGo, bottomWhatsapp].forEach(el => {
+          if(!el) return;
+          const href = el === mapsBtn || el === fastGo || el === bottomGo ? mapHref : contactHref;
+          el.href = href || "./index.html";
+          el.target = href && href.startsWith("http") ? "_blank" : "";
+          el.rel = href && href.startsWith("http") ? "noopener" : "";
+        });
 
-        if(bottomWhatsapp){
-          bottomWhatsapp.href = contactHref || "./index.html";
-          bottomWhatsapp.target = contactHref && contactHref.startsWith("http") ? "_blank" : "";
-          bottomWhatsapp.rel = contactHref && contactHref.startsWith("http") ? "noopener" : "";
+        if(contactHref && contactHref.startsWith("http")){
+          contactBox.textContent = "WhatsApp direct";
+        }else{
+          contactBox.textContent = "Protégé";
         }
 
         if(fastShare) fastShare.onclick = () => shareCurrentPlace(label);
         if(bottomShare) bottomShare.onclick = () => shareCurrentPlace(label);
       }
 
+      function renderPlace(place, slug){
+        const name = placeName(place);
+        const category = placeCategory(place);
+        const location = placeLocation(place);
 
-      function escapeHtml(value){
-        return String(value ?? "")
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
-      }
+        document.title = name + " — DIGIY EXPLORE";
+        subline.textContent = location + " · " + category;
 
-      function getSlug(){
-        cleanPublicUrl();
-        const url = new URL(window.location.href);
-        return String(url.searchParams.get("slug") || "").trim();
-      }
+        categoryBox.textContent = category;
+        locationBox.textContent = location;
+        priceBox.textContent = placeBudget(place);
+        shortDescriptionBox.textContent = placeShort(place);
+        fullDescriptionBox.textContent = placeFull(place);
+        addressBox.textContent = placeAddress(place);
+        kindBox.textContent = placeKind(place);
 
-      function normalizePhone(v){
-        return String(v || "").replace(/[^\d]/g, "");
-      }
-
-      function buildPhoneHref(){
-        return "./index.html";
-      }
-
-      function buildWaHref(){
-        return "./index.html";
-      }
-
-      function buildMapsHref(lat, lng, address){
-        const hasCoords = lat !== null && lat !== undefined && lng !== null && lng !== undefined && lat !== "" && lng !== "";
-        if(hasCoords){
-          return "https://www.google.com/maps?q=" + encodeURIComponent(String(lat) + "," + String(lng));
-        }
-        if(address){
-          return "https://www.google.com/maps?q=" + encodeURIComponent(address);
-        }
-        return "./index.html";
-      }
-
-      function renderCover(place){
-        const coverUrl = place?.cover_url || "";
-        const categoryLabel = place?.category_label || place?.category_code || "Lieu";
-        const title = place?.public_name || "Lieu";
-        const shortText = place?.short_description || "Découvre ce lieu en un coup d’œil.";
-
-        if(coverUrl){
-          cover.className = "cover";
-          cover.style.backgroundImage = `url("${coverUrl.replaceAll('"', '\\"')}")`;
-          cover.innerHTML = `
-            <div class="coverShade"></div>
-            <div class="coverContent">
-              <div class="badge">${escapeHtml(categoryLabel)}</div>
-              <h1 class="heroTitle">${escapeHtml(title)}</h1>
-              <p class="heroLead">${escapeHtml(shortText)}</p>
-            </div>
-          `;
-        } else {
-          cover.className = "coverFallback";
-          cover.innerHTML = `
-            <div style="padding:22px; width:100%;">
-              <div class="badge">${escapeHtml(categoryLabel)}</div>
-              <h1 class="heroTitle" style="margin-bottom:10px;">${escapeHtml(title)}</h1>
-              <p class="heroLead" style="color:var(--muted); text-shadow:none;">${escapeHtml(shortText)}</p>
-            </div>
-          `;
-        }
-
-        document.title = (title ? title + " | " : "") + "DIGIY EXPLORE";
-        subline.textContent = title ? ("Je découvre : " + title) : "Lecture claire d’un lieu, d’une sortie ou d’une activité.";
-      }
-
-      function renderTags(tags){
-        if(!Array.isArray(tags) || !tags.length){
-          tagsBox.innerHTML = `<span class="muted">Aucun mot-clé.</span>`;
-          return;
-        }
-
-        tagsBox.innerHTML = `
-          <div class="chips">
-            ${tags.map(tag => `<span class="chip">${escapeHtml(tag)}</span>`).join("")}
-          </div>
-        `;
-      }
-
-      function renderGallery(place){
-        const photos = [];
-        if(place?.cover_url) photos.push(place.cover_url);
-        if(Array.isArray(place?.photo_urls)){
-          place.photo_urls.forEach(function(url){
-            if(url && !photos.includes(url)) photos.push(url);
-          });
-        }
-
-        if(!photos.length){
-          gallery.innerHTML = `<div class="empty">Aucune photo disponible pour le moment.</div>`;
-          return;
-        }
-
-        gallery.innerHTML = photos.map(function(url){
-          const safe = escapeHtml(url);
-          return `
-            <a class="photo" href="${safe}" target="_blank" rel="noopener" style="background-image:url('${safe}')"></a>
-          `;
-        }).join("");
-      }
-
-      function renderPlace(place){
-        const categoryText = [place?.category_icon, place?.category_label || place?.category_code].filter(Boolean).join(" ");
-        const locationText = [place?.city, place?.zone].filter(Boolean).join(" — ");
-        const contactHref = safePublicContactHref(place);
-        const contactText = contactHref && contactHref !== "./index.html" ? "Disponible" : "À demander";
-        const priceText = place?.price_hint || "Non précisé";
-        const kindText = place?.subcategory || "Non précisé";
-
+        setQr(slug);
         renderCover(place);
-
-        categoryBox.textContent = categoryText || "—";
-        locationBox.textContent = locationText || "—";
-        contactBox.textContent = contactText;
-        priceBox.textContent = priceText;
-
-        shortDescriptionBox.textContent = place?.short_description || "Aucun résumé disponible.";
-        fullDescriptionBox.textContent = place?.full_description || "Aucune description complète disponible.";
-        addressBox.textContent = place?.address_text || "Adresse non précisée.";
-        kindBox.textContent = kindText;
-
-        renderTags(place?.tags);
+        renderTags(place);
         renderGallery(place);
-
-        callBtn.href = contactHref || "./index.html";
-        waBtn.href = contactHref || "./index.html";
-        mapsBtn.href = buildMapsHref(place?.latitude, place?.longitude, place?.address_text);
-
-        if(!contactHref || contactHref === "./index.html"){
-          callBtn.textContent = "Contact à demander";
-          callBtn.className = "btn ghost";
-          waBtn.textContent = "Contact indisponible";
-          waBtn.className = "btn ghost";
-        } else {
-          callBtn.textContent = "Contact direct";
-          callBtn.className = "btn primary";
-          waBtn.textContent = "Message";
-          waBtn.className = "btn secondary";
-          callBtn.target = "_blank";
-          callBtn.rel = "noopener";
-          waBtn.target = "_blank";
-          waBtn.rel = "noopener";
-        }
-
-        if(!(place?.latitude || place?.longitude || place?.address_text)){
-          mapsBtn.textContent = "Pas de repère";
-        } else {
-          mapsBtn.textContent = "Y aller";
-        }
-
         wirePublicActions(place);
       }
 
@@ -1060,524 +1324,47 @@
         const { data, error } = await supabase.rpc("digiy_explore_public_place_by_slug", {
           p_slug: slug
         });
-        if(error) throw error;
-        return data;
-      }
 
-      wirePublicActions(null);
+        if(error) throw error;
+
+        if(data?.ok === true && data.place) return data.place;
+        if(data && typeof data === "object" && data.slug) return data;
+
+        throw new Error(data?.error || "place_not_found");
+      }
 
       async function boot(){
         cleanPublicUrl();
         const slug = getSlug();
 
         if(!slug){
-          setMsg("Aucun identifiant de lieu trouvé. Retourne à la vitrine.", "bad");
+          setQr("");
+          setMsg("Choisis un lieu depuis EXPLORE pour ouvrir une fiche complète.", "info");
           cover.className = "coverFallback";
-          cover.textContent = "Lieu non précisé.";
+          cover.textContent = "Choisis un lieu depuis la liste EXPLORE.";
+          gallery.innerHTML = `<div class="empty">Aucune galerie chargée : aucun lieu précis n’est ouvert.</div>`;
           return;
         }
 
+        setQr(slug);
         setMsg("Chargement du lieu…", "info");
 
         try{
-          const payload = await loadPlace(slug);
-
-          if(!payload || payload.ok !== true || !payload.place){
-            throw new Error("PLACE_NOT_FOUND");
-          }
-
-          renderPlace(payload.place);
-          setMsg("Lieu chargé.", "ok");
-        }catch(err){
-          console.error("[EXPLORE fiche] error:", err);
-          document.body.classList.add("digiy-place-not-found");
-          setMsg("Ce lieu n’est pas disponible pour le moment.", "bad");
-
+          const place = await loadPlace(slug);
+          renderPlace(place, slug);
+          setMsg("", "ok");
+        }catch(e){
+          console.error(e);
+          setMsg("Impossible de charger ce lieu pour le moment. Le QR reste prêt vers cette fiche publique.", "bad");
           cover.className = "coverFallback";
-          cover.innerHTML = `
-            <div style="padding:22px;">
-              <div class="badge">Indisponible</div>
-              <h1 class="heroTitle" style="margin-bottom:10px;">Lieu introuvable</h1>
-              <p class="heroLead" style="color:var(--muted); text-shadow:none;">
-                Ce lien n’existe pas ou le lieu n’est pas actuellement visible.
-              </p>
-            </div>
-          `;
-
-          categoryBox.textContent = "—";
-          locationBox.textContent = "—";
-          contactBox.textContent = "—";
-          priceBox.textContent = "—";
-          shortDescriptionBox.textContent = "Aucune fiche publique disponible.";
-          fullDescriptionBox.textContent = "Retourne à la vitrine pour découvrir les autres lieux.";
-          addressBox.textContent = "—";
-          kindBox.textContent = "—";
-          tagsBox.innerHTML = `<span class="muted">Aucun mot-clé.</span>`;
-          gallery.innerHTML = `<div class="empty">Aucune photo disponible.</div>`;
-          callBtn.href = "./index.html";
-          waBtn.href = "./index.html";
-          mapsBtn.href = "./index.html";
-          if(bottomWhatsapp) bottomWhatsapp.href = "./index.html";
+          cover.textContent = "Lieu indisponible.";
+          gallery.innerHTML = `<div class="empty">Galerie indisponible pour le moment.</div>`;
         }
       }
 
       boot();
     })();
   </script>
-
-  <!-- DIGIY EXPLORE PUBLIC FICHE — Doctrine finale
-       Public = voir / comprendre / contacter / partager.
-       PRO = cockpit / lieux / ajouter / PIN.
-       Camembert = pilotage PRO.
-       Audio = lecteur séparé.
-       Aucun téléphone envoyé vers le PRO.
-  -->
-  <style>
-    body.digiy-place-not-found .publicBottomNav a.active{
-      background:rgba(255,255,255,.05) !important;
-      color:rgba(248,250,252,.72) !important;
-      box-shadow:none !important;
-    }
-
-    #digiyPublicFicheAudioReader{
-      position:fixed;
-      right:14px;
-      bottom:calc(86px + env(safe-area-inset-bottom,0px));
-      z-index:99998;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      max-width:min(360px, calc(100vw - 118px));
-      padding:9px 10px;
-      border-radius:999px;
-      border:1px solid rgba(243,212,107,.24);
-      background:rgba(6,19,15,.94);
-      box-shadow:0 18px 44px rgba(0,0,0,.34);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      font-family:Outfit,Inter,system-ui,sans-serif;
-    }
-
-    #digiyPublicFicheAudioReader .audioText{
-      min-width:0;
-      color:rgba(248,250,252,.76);
-      font-size:12px;
-      font-weight:900;
-      line-height:1.25;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    #digiyPublicFicheAudioReader button{
-      min-height:40px;
-      border:none;
-      border-radius:999px;
-      padding:0 13px;
-      cursor:pointer;
-      font-family:inherit;
-      font-size:12px;
-      font-weight:1000;
-      white-space:nowrap;
-    }
-
-    #digiyPublicFicheAudioReader .listenBtn{
-      color:#13200d;
-      background:linear-gradient(135deg,var(--gold),var(--gold2));
-    }
-
-    #digiyPublicFicheAudioReader .stopBtn{
-      color:#fecaca;
-      background:rgba(248,113,113,.12);
-      border:1px solid rgba(248,113,113,.22);
-      display:none;
-    }
-
-    #digiyPublicFicheAudioReader.playing .listenBtn{display:none}
-    #digiyPublicFicheAudioReader.playing .stopBtn{display:inline-flex;align-items:center}
-
-    #digiyPublicFicheCamembert{
-      position:fixed;
-      left:14px;
-      bottom:calc(86px + env(safe-area-inset-bottom,0px));
-      width:84px;
-      height:84px;
-      z-index:99999;
-      font-family:Outfit,Inter,system-ui,sans-serif;
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicCenter{
-      position:absolute;
-      inset:0;
-      width:84px;
-      height:84px;
-      border:none;
-      border-radius:50%;
-      cursor:pointer;
-      color:#fff;
-      box-shadow:0 18px 40px rgba(0,0,0,.34);
-      background:
-        radial-gradient(circle at center, rgba(6,19,15,.95) 0 42%, transparent 43%),
-        conic-gradient(
-          from -90deg,
-          rgba(212,175,55,.96) 0 25%,
-          rgba(34,197,94,.90) 25% 50%,
-          rgba(56,189,248,.88) 50% 75%,
-          rgba(168,85,247,.82) 75% 100%
-        );
-      overflow:hidden;
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicCenter::before{
-      content:"";
-      position:absolute;
-      inset:13px;
-      border-radius:50%;
-      background:rgba(6,19,15,.97);
-      border:1px solid rgba(255,255,255,.10);
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicCenter span,
-    #digiyPublicFicheCamembert .digiyPublicCenter strong{
-      position:relative;
-      z-index:2;
-      display:block;
-      text-align:center;
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicCenter span{
-      font-size:20px;
-      line-height:1;
-      margin-bottom:2px;
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicCenter strong{
-      font-size:10.5px;
-      font-weight:1000;
-      letter-spacing:.02em;
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicMenu{
-      position:absolute;
-      left:94px;
-      bottom:4px;
-      width:248px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      padding:10px;
-      border-radius:22px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(6,19,15,.94);
-      box-shadow:0 18px 48px rgba(0,0,0,.32);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      opacity:0;
-      transform:translateX(-8px) scale(.96);
-      pointer-events:none;
-      transition:.18s ease;
-    }
-
-    #digiyPublicFicheCamembert.open .digiyPublicMenu{
-      opacity:1;
-      transform:translateX(0) scale(1);
-      pointer-events:auto;
-    }
-
-    #digiyPublicFicheCamembert .digiyPublicMenu a{
-      min-height:44px;
-      border:none;
-      border-radius:15px;
-      background:rgba(255,255,255,.07);
-      color:#f7fbf8;
-      padding:9px 10px;
-      font-size:12px;
-      font-weight:1000;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      font-family:inherit;
-    }
-
-    #digiyPublicFicheCamembert .gold{
-      background:linear-gradient(135deg,var(--gold),var(--gold2)) !important;
-      color:#13200d !important;
-    }
-
-    #digiyPublicFicheCamembert .green{
-      background:rgba(34,197,94,.16) !important;
-      color:#dffcea !important;
-      border:1px solid rgba(34,197,94,.25) !important;
-    }
-
-    #digiyPublicFicheCamembert .blue{
-      background:rgba(56,189,248,.14) !important;
-      color:#d9f4ff !important;
-      border:1px solid rgba(56,189,248,.24) !important;
-    }
-
-    #digiyPublicFicheCamembert .violet{
-      background:rgba(168,85,247,.14) !important;
-      color:#eadcff !important;
-      border:1px solid rgba(168,85,247,.24) !important;
-    }
-
-    @media(max-width:640px){
-      #digiyPublicFicheCamembert{
-        left:10px;
-        bottom:calc(84px + env(safe-area-inset-bottom,0px));
-        width:76px;
-        height:76px;
-      }
-
-      #digiyPublicFicheCamembert .digiyPublicCenter{
-        width:76px;
-        height:76px;
-      }
-
-      #digiyPublicFicheCamembert .digiyPublicCenter::before{
-        inset:12px;
-      }
-
-      #digiyPublicFicheCamembert .digiyPublicMenu{
-        left:0;
-        bottom:86px;
-        width:min(265px, calc(100vw - 20px));
-      }
-
-      #digiyPublicFicheAudioReader{
-        right:10px;
-        left:96px;
-        bottom:calc(92px + env(safe-area-inset-bottom,0px));
-        max-width:none;
-        justify-content:space-between;
-      }
-
-      #digiyPublicFicheAudioReader .audioText{
-        font-size:11.5px;
-      }
-    }
-  </style>
-
-  <script>
-    (function(){
-      "use strict";
-
-      const PRO = {
-        cockpit:"https://pro-explore.digiylyfe.com/cockpit.html",
-        lieux:"https://pro-explore.digiylyfe.com/lieux.html",
-        submit:"https://pro-explore.digiylyfe.com/submit.html",
-        pin:"https://pro-explore.digiylyfe.com/pin.html"
-      };
-
-      const AUDIO_TEXT =
-        "Bienvenue dans DIGIY EXPLORE. Ici, tu regardes une fiche de lieu. Le public doit comprendre vite : où c’est, pourquoi venir, comment contacter et comment partager. Le professionnel, lui, pilote son lieu dans le cockpit sécurisé. Pas de téléphone dans la barre. Pas de repère interne dehors. Le terrain garde la main.";
-
-      function removeOld(){
-        [
-          "#digiyExploreProCamembert",
-          "#digiyExploreAudioReader",
-          "#digiyPublicActionCamembert",
-          "#digiyPublicAudioReader",
-          "#digiyPublicFicheCamembert",
-          "#digiyPublicFicheAudioReader"
-        ].forEach(function(sel){
-          document.querySelectorAll(sel).forEach(function(n){ n.remove(); });
-        });
-      }
-
-      function make(html){
-        const tpl = document.createElement("template");
-        tpl.innerHTML = html.trim();
-        return tpl.content.firstElementChild;
-      }
-
-      function cleanText(value){
-        return String(value || "")
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/\s+/g, " ")
-          .trim();
-      }
-
-      function setLink(node, href){
-        if(!node) return;
-        node.setAttribute("href", href);
-        node.removeAttribute("target");
-        node.removeAttribute("rel");
-      }
-
-      function patchProLinks(){
-        document.querySelectorAll('a[href*="commencer-a-payer.digiylyfe.com"], a[href="#proSection"], a[href*="#proSection"]').forEach(function(a){
-          setLink(a, PRO.cockpit);
-        });
-
-        document.querySelectorAll("a,button").forEach(function(node){
-          const t = cleanText(node.textContent);
-
-          const cockpit =
-            t.includes("mon lieu") ||
-            t.includes("ma fiche") ||
-            t.includes("espace pro") ||
-            t.includes("je veux montrer mon lieu") ||
-            t.includes("mon acces") ||
-            t.includes("cockpit");
-
-          const lieux =
-            t.includes("voir mes lieux") ||
-            t === "lieux" ||
-            t.includes("mes lieux");
-
-          const add =
-            t.includes("ajouter un lieu") ||
-            t === "ajouter";
-
-          if(node.tagName === "A"){
-            if(add) setLink(node, PRO.submit);
-            else if(lieux) setLink(node, PRO.lieux);
-            else if(cockpit) setLink(node, PRO.cockpit);
-          }else if(node.tagName === "BUTTON" && (add || lieux || cockpit)){
-            node.addEventListener("click", function(e){
-              e.preventDefault();
-              window.location.href = add ? PRO.submit : lieux ? PRO.lieux : PRO.cockpit;
-            });
-          }
-        });
-      }
-
-      function cleanProHash(){
-        try{
-          const url = new URL(window.location.href);
-          if(url.hash === "#proSection"){
-            history.replaceState({}, document.title, url.pathname + url.search);
-          }
-        }catch(_){}
-      }
-
-      function installCamembert(){
-        const root = make(`
-          <div id="digiyPublicFicheCamembert" aria-label="Actions DIGIY EXPLORE">
-            <button class="digiyPublicCenter" id="digiyPublicFicheCenter" type="button" aria-expanded="false">
-              <span>🧭</span><strong>PRO</strong>
-            </button>
-            <div class="digiyPublicMenu">
-              <a class="gold" href="${PRO.cockpit}">Cockpit</a>
-              <a class="green" href="${PRO.lieux}">Mes lieux</a>
-              <a class="blue" href="${PRO.submit}">Ajouter</a>
-              <a class="violet" href="${PRO.pin}">PIN</a>
-            </div>
-          </div>
-        `);
-
-        document.body.appendChild(root);
-
-        const center = document.getElementById("digiyPublicFicheCenter");
-        center && center.addEventListener("click", function(e){
-          e.preventDefault();
-          root.classList.toggle("open");
-          center.setAttribute("aria-expanded", root.classList.contains("open") ? "true" : "false");
-        });
-
-        document.addEventListener("click", function(e){
-          if(root && !root.contains(e.target)){
-            root.classList.remove("open");
-            center && center.setAttribute("aria-expanded", "false");
-          }
-        });
-      }
-
-      function installAudio(){
-        const reader = make(`
-          <div id="digiyPublicFicheAudioReader" aria-label="Lecteur audio DIGIY EXPLORE">
-            <span class="audioText">Écouter DIGIY expliquer cette fiche</span>
-            <button class="listenBtn" id="digiyPublicFicheListen" type="button">🎧 Écouter</button>
-            <button class="stopBtn" id="digiyPublicFicheStop" type="button">⏹ Stop</button>
-          </div>
-        `);
-
-        document.body.appendChild(reader);
-
-        const listen = document.getElementById("digiyPublicFicheListen");
-        const stopBtn = document.getElementById("digiyPublicFicheStop");
-        let playing = false;
-
-        function setPlaying(v){
-          playing = !!v;
-          reader.classList.toggle("playing", playing);
-        }
-
-        function stop(){
-          try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(_){}
-          setPlaying(false);
-        }
-
-        function getVoice(){
-          const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-          return voices.find(v => /^fr/i.test(v.lang || "")) || null;
-        }
-
-        function speak(){
-          if(!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)){
-            alert("Audio indisponible sur ce navigateur.");
-            return;
-          }
-
-          if(playing){
-            stop();
-            return;
-          }
-
-          stop();
-
-          const u = new SpeechSynthesisUtterance(AUDIO_TEXT);
-          u.lang = "fr-FR";
-          u.rate = 0.86;
-          u.pitch = 1.04;
-          u.volume = 1;
-
-          const v = getVoice();
-          if(v) u.voice = v;
-
-          u.onstart = () => setPlaying(true);
-          u.onend = () => setTimeout(stop, 120);
-          u.onerror = stop;
-
-          window.speechSynthesis.speak(u);
-        }
-
-        listen && listen.addEventListener("click", speak);
-        stopBtn && stopBtn.addEventListener("click", stop);
-
-        if(window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined"){
-          window.speechSynthesis.onvoiceschanged = getVoice;
-        }
-
-        window.addEventListener("beforeunload", stop);
-        document.addEventListener("visibilitychange", function(){
-          if(document.hidden) stop();
-        });
-      }
-
-      function boot(){
-        cleanProHash();
-        removeOld();
-        installCamembert();
-        installAudio();
-        patchProLinks();
-        setTimeout(patchProLinks, 500);
-        setTimeout(patchProLinks, 1500);
-      }
-
-      if(document.readyState === "loading"){
-        document.addEventListener("DOMContentLoaded", boot);
-      }else{
-        boot();
-      }
-    })();
-  </script>
-
 </body>
 </html>
+
