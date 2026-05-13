@@ -215,6 +215,18 @@
       gap:16px;
     }
 
+    .heroMain{
+      display:grid;
+      gap:16px;
+      align-content:start;
+    }
+
+    .infoUnderPhoto{
+      grid-template-columns:1fr;
+      margin:0;
+      gap:16px;
+    }
+
     .panel{
       background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
       border:1px solid var(--line);
@@ -581,7 +593,7 @@
       text-align:center;
     }
 
-    #gallery,.hero,.layout{scroll-margin-top:90px}
+    #gallery,.hero,.layout,.infoUnderPhoto{scroll-margin-top:90px}
 
     .publicBottomNav{
       position:fixed;
@@ -663,7 +675,7 @@
     }
 
     @media(max-width:1040px){
-      .hero,.layout{grid-template-columns:1fr}
+      .hero,.layout,.infoUnderPhoto{grid-template-columns:1fr}
     }
 
     @media(max-width:760px){
@@ -717,9 +729,55 @@
     <div id="msg" class="msg info"></div>
 
     <section class="hero">
-      <article class="panel">
-        <div id="cover" class="coverFallback">Chargement du lieu…</div>
-      </article>
+      <div class="heroMain">
+        <article class="panel">
+          <div id="cover" class="coverFallback">Chargement du lieu…</div>
+        </article>
+
+        <section class="layout infoUnderPhoto">
+          <article class="panel">
+            <div class="cardBody">
+              <h2 class="sectionTitle">À savoir</h2>
+              <p class="sectionSub">Le résumé utile pour comprendre vite et décider.</p>
+
+              <div class="grid">
+                <div class="infoRow">
+                  <strong>En bref</strong>
+                  <span id="shortDescriptionBox">—</span>
+                </div>
+
+                <div class="text" id="fullDescriptionBox">—</div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel">
+            <div class="cardBody">
+              <h2 class="sectionTitle">Infos utiles</h2>
+              <p class="sectionSub">Contact, adresse, ambiance et mots utiles.</p>
+
+              <div class="grid">
+                <div class="infoRow">
+                  <strong>Adresse / repère</strong>
+                  <span id="addressBox">—</span>
+                </div>
+
+                <div class="infoRow">
+                  <strong>Ambiance</strong>
+                  <span id="kindBox">—</span>
+                </div>
+
+                <div class="infoRow">
+                  <strong>Mots du lieu</strong>
+                  <span id="tagsBox">
+                    <span class="muted">Aucun mot-clé.</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </div>
 
       <aside class="panel sideCard">
         <article class="qrCard" aria-label="QR de découverte du lieu">
@@ -771,50 +829,6 @@
           <a id="fastPhotos" href="#gallery">🖼️ Photos</a>
           <a class="primary" id="fastGo" href="./index.html">🧭 Y aller</a>
           <button id="fastShare" type="button">📤 Partager</button>
-        </div>
-      </aside>
-    </section>
-
-    <section class="layout">
-      <article class="panel">
-        <div class="cardBody">
-          <h2 class="sectionTitle">À savoir</h2>
-          <p class="sectionSub">Le résumé utile pour comprendre vite et décider.</p>
-
-          <div class="grid">
-            <div class="infoRow">
-              <strong>En bref</strong>
-              <span id="shortDescriptionBox">—</span>
-            </div>
-
-            <div class="text" id="fullDescriptionBox">—</div>
-          </div>
-        </div>
-      </article>
-
-      <aside class="panel">
-        <div class="cardBody">
-          <h2 class="sectionTitle">Infos utiles</h2>
-          <p class="sectionSub">Contact, adresse, ambiance et mots utiles.</p>
-
-          <div class="grid">
-            <div class="infoRow">
-              <strong>Adresse / repère</strong>
-              <span id="addressBox">—</span>
-            </div>
-
-            <div class="infoRow">
-              <strong>Ambiance</strong>
-              <span id="kindBox">—</span>
-            </div>
-
-            <div class="infoRow">
-              <strong>Mots du lieu</strong>
-              <span id="tagsBox">
-                <span class="muted">Aucun mot-clé.</span>
-              </span>
-            </div>
-          </div>
         </div>
       </aside>
     </section>
@@ -1505,5 +1519,6 @@
   </script>
 </body>
 </html>
+
 
 
