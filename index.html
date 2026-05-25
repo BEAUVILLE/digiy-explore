@@ -548,6 +548,94 @@
 
     @keyframes spin{to{transform:rotate(360deg)}}
 
+
+    .digiy-audio-card{
+      margin-top:18px;
+      border-radius:22px;
+      border:1px solid rgba(220,180,90,.28);
+      background:
+        radial-gradient(circle at top left,rgba(220,180,90,.14),transparent 44%),
+        rgba(255,255,255,.045);
+      padding:16px;
+      box-shadow:0 16px 34px rgba(0,0,0,.20);
+      position:relative;
+      z-index:1;
+    }
+
+    .digiy-audio-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .digiy-audio-title{
+      color:#fff7cc;
+      font-size:20px;
+      line-height:1.15;
+      font-weight:1000;
+      letter-spacing:-.02em;
+    }
+
+    .digiy-audio-text{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.65;
+      font-weight:850;
+      max-width:820px;
+    }
+
+    .digiy-audio-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    .digiy-audio-actions .btn{
+      min-height:46px;
+      font-size:14px;
+      padding:0 14px;
+    }
+
+    .digiy-audio-actions .btn[disabled]{
+      opacity:.58;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .digiy-note-video{
+      margin-top:10px;
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      color:#f5db9a;
+      font-size:14px;
+      line-height:1.55;
+      font-weight:900;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:10px;
+    }
+
+    .digiy-audio-progress-wrap{
+      margin-top:12px;
+      height:4px;
+      overflow:hidden;
+      border-radius:999px;
+      background:rgba(255,255,255,.10);
+    }
+
+    .digiy-audio-progress{
+      width:0%;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--gold),var(--green-2));
+      transition:width .18s linear;
+    }
+
     .footer{padding:30px 0 44px}
 
     .footer-card{
@@ -631,6 +719,34 @@
           <div class="hero-cta">
             <a class="btn btn-primary" href="#spots">Voir les lieux</a>
             <a class="btn btn-ghost" href="https://pro-explore.digiylyfe.com/">Ajouter mon lieu</a>
+            <a class="btn btn-ghost" href="https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20une%20information%20sur%20un%20lieu." target="_blank" rel="noopener noreferrer">WhatsApp DIGIY</a>
+            <a class="btn btn-outline" href="sms:+221771342889?body=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20une%20information%20sur%20un%20lieu.">SMS DIGIY</a>
+          </div>
+
+          <div class="digiy-audio-card" id="digiyAudioCard">
+            <div class="digiy-audio-top">
+              <div>
+                <div class="digiy-audio-title">🎧 Écouter EXPLORE</div>
+                <div class="digiy-audio-text">
+                  Le lecteur explique la vitrine : regarder l’ambiance, comprendre vite, puis contacter directement.
+                  Quand une vidéo existe sur une fiche, elle aide à sentir le lieu avant de demander par WhatsApp ou SMS.
+                </div>
+              </div>
+
+              <div class="digiy-audio-actions" aria-label="Lecteur audio DIGIY EXPLORE">
+                <button class="btn btn-primary" id="digiyAudioPlay" type="button">▶️ Lecture</button>
+                <button class="btn btn-ghost" id="digiyAudioStop" type="button">⏹ Arrêt</button>
+              </div>
+            </div>
+
+            <div class="digiy-note-video">
+              <span>🎥</span>
+              <span>Vidéo possible : si le lieu ajoute une vidéo, le client peut la regarder avant de contacter le bon interlocuteur.</span>
+            </div>
+
+            <div class="digiy-audio-progress-wrap" aria-hidden="true">
+              <div class="digiy-audio-progress" id="digiyAudioProgress"></div>
+            </div>
           </div>
 
           <div class="hero-metrics">
@@ -735,7 +851,8 @@
         <div class="tags js-tags"></div>
 
         <div class="spot-actions">
-          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">Contact direct</a>
+          <a class="btn btn-ghost js-contact" target="_blank" rel="noopener">WhatsApp direct</a>
+          <a class="btn btn-ghost js-sms">SMS direct</a>
           <a class="btn btn-primary js-open" rel="noopener">Voir le lieu</a>
         </div>
       </div>
@@ -1007,6 +1124,174 @@
       return "https://wa.me/221771342889?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE.");
     }
 
+    function smsHref(place){
+      const phone = normalizePhone(firstText(place.sms, place.phone, place.contact_phone, place.public_phone, place.whatsapp, "221771342889"));
+      const body = "Bonjour, je viens de DIGIY EXPLORE. Je souhaite des informations sur : " + nameOf(place);
+      return "sms:+" + phone + "?body=" + encodeURIComponent(body);
+    }
+
+    function prepareDigiyAudioText(raw){
+      return String(raw || "")
+        .replace(/\bDIGIYLYFE\b/g, "diji i laïfe")
+        .replace(/\bDIGIY\b/g, "diji i")
+        .replace(/\bEXPLORE\b/g, "explore")
+        .replace(/\bWhatsApp\b/g, "Ouatsap")
+        .replace(/\bSMS\b/g, "S M S")
+        .replace(/\bQR\b/g, "Q R")
+        .replace(/\bWave\b/g, "Ouève")
+        .replace(/\bSénélec\b/g, "Sé né lek")
+        .replace(/0\s*%/g, "zéro pour cent");
+    }
+
+    function bindDigiyAudio(){
+      const playBtn = $("digiyAudioPlay");
+      const stopBtn = $("digiyAudioStop");
+      const progress = $("digiyAudioProgress");
+
+      if(!playBtn || !stopBtn || !progress) return;
+
+      if(!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined"){
+        playBtn.disabled = true;
+        stopBtn.disabled = true;
+        playBtn.textContent = "Audio indisponible";
+        return;
+      }
+
+      const synth = window.speechSynthesis;
+      let utterance = null;
+      let playing = false;
+      let timer = null;
+      let launchId = 0;
+
+      const visibleText = "Bienvenue dans DIGIY EXPLORE. Ici, on regarde d'abord, on comprend vite, puis on contacte directement. Cette vitrine présente les lieux, les sorties, les expériences et les belles adresses du terrain. Le client peut voir l'ambiance, ouvrir une fiche, regarder une vidéo quand elle existe, puis faire une demande par WhatsApp ou par SMS. Le contact reste humain, simple et direct. DIGIY ne garde pas le client prisonnier. Le terrain garde la main.";
+      const audioText = prepareDigiyAudioText(visibleText);
+
+      function getFrenchVoice(){
+        const voices = synth.getVoices() || [];
+        return (
+          voices.find((v) => /fr[-_]?FR/i.test(v.lang) && /google/i.test(v.name)) ||
+          voices.find((v) => /fr[-_]?FR/i.test(v.lang)) ||
+          voices.find((v) => /^fr/i.test(v.lang)) ||
+          null
+        );
+      }
+
+      function setIdle(){
+        playing = false;
+        playBtn.textContent = "▶️ Lecture";
+        stopBtn.disabled = true;
+        progress.style.width = "0%";
+        clearInterval(timer);
+        timer = null;
+      }
+
+      function setPlaying(){
+        playing = true;
+        playBtn.textContent = "🔊 Lecture en cours";
+        stopBtn.disabled = false;
+      }
+
+      function stopAudio(){
+        launchId += 1;
+        try{ synth.cancel(); }catch(_){}
+        utterance = null;
+        setIdle();
+      }
+
+      function startProgress(currentId){
+        const words = (audioText.match(/\S+/g) || []).length;
+        const estimatedDuration = Math.max(2800, words * 500);
+        let elapsed = 0;
+
+        clearInterval(timer);
+        progress.style.width = "0%";
+
+        timer = setInterval(() => {
+          if(!playing || currentId !== launchId){
+            clearInterval(timer);
+            timer = null;
+            return;
+          }
+
+          elapsed += 150;
+          progress.style.width = Math.min((elapsed / estimatedDuration) * 100, 96) + "%";
+        }, 150);
+      }
+
+      function speakNow(){
+        launchId += 1;
+        const currentId = launchId;
+
+        try{ synth.cancel(); }catch(_){}
+
+        utterance = new SpeechSynthesisUtterance(audioText);
+        utterance.lang = "fr-FR";
+        utterance.rate = 0.84;
+        utterance.pitch = 1.02;
+        utterance.volume = 1;
+
+        const voice = getFrenchVoice();
+        if(voice) utterance.voice = voice;
+
+        utterance.onstart = () => {
+          if(currentId !== launchId) return;
+          setPlaying();
+          startProgress(currentId);
+        };
+
+        utterance.onend = () => {
+          if(currentId !== launchId) return;
+          progress.style.width = "100%";
+          setTimeout(() => {
+            if(currentId === launchId) setIdle();
+          }, 240);
+        };
+
+        utterance.onerror = () => {
+          if(currentId !== launchId) return;
+          stopAudio();
+        };
+
+        synth.speak(utterance);
+      }
+
+      function playAudio(){
+        if(playing) return;
+
+        const voices = synth.getVoices();
+        if(voices && voices.length){
+          speakNow();
+          return;
+        }
+
+        let launched = false;
+        function onVoices(){
+          if(launched) return;
+          launched = true;
+          synth.removeEventListener("voiceschanged", onVoices);
+          speakNow();
+        }
+
+        synth.addEventListener("voiceschanged", onVoices);
+
+        setTimeout(() => {
+          if(launched) return;
+          launched = true;
+          synth.removeEventListener("voiceschanged", onVoices);
+          speakNow();
+        }, 700);
+      }
+
+      playBtn.addEventListener("click", playAudio);
+      stopBtn.addEventListener("click", stopAudio);
+      window.addEventListener("beforeunload", stopAudio);
+      document.addEventListener("visibilitychange", () => {
+        if(document.hidden && playing) stopAudio();
+      });
+
+      setIdle();
+    }
+
     function setMetrics(list, realCount){
       const zones = new Set(list.map(p => cityOf(p) + "|" + zoneOf(p)));
       const cats = new Set(list.map(categoryOf));
@@ -1047,6 +1332,7 @@
         const desc = node.querySelector(".js-desc");
         const tags = node.querySelector(".js-tags");
         const contact = node.querySelector(".js-contact");
+        const sms = node.querySelector(".js-sms");
         const open = node.querySelector(".js-open");
 
         img.src = coverOf(place);
@@ -1066,6 +1352,7 @@
           : '<span class="tag">#terrain</span>';
 
         contact.href = contactHref(place);
+        if(sms) sms.href = smsHref(place);
         open.href = ficheHref(place);
 
         grid.appendChild(node);
@@ -1134,10 +1421,15 @@
       renderPlaces(SHOWCASE_SPOTS, 0);
     }
 
+    bindDigiyAudio();
     loadPlaces();
   </script>
 </body>
 </html>
+
+
+
+
 
 
 
