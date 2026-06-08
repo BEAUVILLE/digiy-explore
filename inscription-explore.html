@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f3d32">
-  <meta name="digiy-version" content="explore-inscription-wave-note-readable-20260604">
+  <meta name="digiy-version" content="explore-inscription-info-pro-paiement-20260608">
   <title>Inscription EXPLORE — CODE 8</title>
 
   <style>
@@ -328,6 +328,65 @@
       font-weight: 850;
     }
 
+
+    .proInfoBox {
+      margin-top: 12px;
+      border: 1px solid rgba(250, 204, 21, .38);
+      border-radius: 18px;
+      background: rgba(250, 204, 21, .10);
+      padding: 12px;
+    }
+
+    .proInfoBox h3 {
+      margin: 0 0 8px;
+      color: #fff3b2;
+      font-size: 20px;
+      line-height: 1.12;
+    }
+
+    .proInfoBox p {
+      margin: 0 0 12px;
+      color: rgba(237, 255, 247, .82);
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 850;
+    }
+
+    .proInfoGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .proInfoField label {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff3b2;
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    .proInfoField input {
+      width: 100%;
+      border: 1px solid rgba(250, 204, 21, .42);
+      border-radius: 16px;
+      background: rgba(6, 39, 31, .70);
+      color: #fff;
+      padding: 12px;
+      font: inherit;
+      font-weight: 850;
+      outline: none;
+    }
+
+    .proInfoField input::placeholder {
+      color: rgba(255, 255, 255, .62);
+    }
+
+    .proInfoField input:focus {
+      border-color: rgba(250, 204, 21, .88);
+      box-shadow: 0 0 0 3px rgba(250, 204, 21, .16);
+    }
+
     .line {
       display: flex;
       justify-content: space-between;
@@ -374,6 +433,10 @@
       }
 
       .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .proInfoGrid {
         grid-template-columns: 1fr;
       }
 
@@ -456,6 +519,33 @@
           Rien n’est précoché.
         </div>
 
+        <div class="proInfoBox" aria-label="Informations pro EXPLORE">
+          <h3>Infos pro / lieu</h3>
+          <p>Ces infos servent seulement à identifier la demande de paiement. La fiche complète se prépare ensuite dans l’espace EXPLORE.</p>
+
+          <div class="proInfoGrid">
+            <div class="proInfoField">
+              <label for="proName">Nom / responsable</label>
+              <input id="proName" autocomplete="name" placeholder="Ex : Mamadou Diop">
+            </div>
+
+            <div class="proInfoField">
+              <label for="proPhone">Téléphone / WhatsApp</label>
+              <input id="proPhone" inputmode="tel" autocomplete="tel" placeholder="Ex : +221 77 000 00 00">
+            </div>
+
+            <div class="proInfoField">
+              <label for="proZone">Zone / ville</label>
+              <input id="proZone" autocomplete="address-level2" placeholder="Ex : Saly, Mbour, Dakar">
+            </div>
+
+            <div class="proInfoField">
+              <label for="proActivity">Lieu / activité</label>
+              <input id="proActivity" autocomplete="organization" placeholder="Ex : sortie pêche, guide, lieu à visiter">
+            </div>
+          </div>
+        </div>
+
         <div id="choiceList"></div>
 
         <div class="box">
@@ -532,6 +622,7 @@
     (function () {
       const TEL = "221771342889";
       const WAVE_LABEL = "Wave : JB BEAUVILLE · +221 77 134 28 89";
+      const IDENTITY_KEY = "digiy_explore_payment_identity_v1";
 
       const PLANS = [
         {
@@ -679,6 +770,50 @@
         return note ? "\n\nNote / preuve : " + note : "";
       }
 
+      function proValue(id) {
+        return ($(id)?.value || "").trim();
+      }
+
+      function identityData() {
+        return {
+          name: proValue("proName"),
+          phone: proValue("proPhone"),
+          zone: proValue("proZone"),
+          activity: proValue("proActivity")
+        };
+      }
+
+      function identityText() {
+        const d = identityData();
+
+        return [
+          "Nom / responsable : " + (d.name || "à compléter"),
+          "Téléphone / WhatsApp : " + (d.phone || "à compléter"),
+          "Zone / ville : " + (d.zone || "à compléter"),
+          "Lieu / activité : " + (d.activity || "à compléter")
+        ].join("\n");
+      }
+
+      function saveIdentity() {
+        try {
+          localStorage.setItem(IDENTITY_KEY, JSON.stringify({
+            ...identityData(),
+            updated_at: new Date().toISOString()
+          }));
+        } catch (_) {}
+      }
+
+      function loadIdentity() {
+        try {
+          const data = JSON.parse(localStorage.getItem(IDENTITY_KEY) || "{}");
+
+          if (data.name && $("proName")) $("proName").value = data.name;
+          if (data.phone && $("proPhone")) $("proPhone").value = data.phone;
+          if (data.zone && $("proZone")) $("proZone").value = data.zone;
+          if (data.activity && $("proActivity")) $("proActivity").value = data.activity;
+        } catch (_) {}
+      }
+
       function render() {
         ["base", "reseau"].forEach((cat) => {
           const containerId = cat === "base" ? "baseOptions" : "reseauOptions";
@@ -719,6 +854,9 @@
         return `Bonjour JB, je veux avancer avec DIGIY EXPLORE.
 
 Date de demande : ${date()}
+
+Infos pro / lieu :
+${identityText()}
 
 Choix :
 ${lines}
@@ -834,6 +972,17 @@ Je joins la capture / preuve de paiement à ce message.`;
 
       $("notePayment").addEventListener("input", () => update(false));
 
+      ["proName", "proPhone", "proZone", "proActivity"].forEach((id) => {
+        const el = $(id);
+        if (!el) return;
+
+        el.addEventListener("input", () => {
+          saveIdentity();
+          update(false);
+        });
+      });
+
+      loadIdentity();
       update(false);
     })();
   </script>
@@ -846,3 +995,4 @@ Je joins la capture / preuve de paiement à ce message.`;
   </script>
 </body>
 </html>
+
