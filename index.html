@@ -8,17 +8,286 @@
   <title>DIGIY EXPLORE — Découvrir & s’inscrire</title>
   <style>
     :root{--bg:#06130f;--card:#10261e;--line:rgba(255,255,255,.13);--text:#f7fbf8;--muted:rgba(247,251,248,.76);--gold:#dcb45a;--gold2:#f2cc78;--green:#12b76a;--shadow:0 20px 50px rgba(0,0,0,.30);--max:1180px}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(220,180,90,.14),transparent 26%),radial-gradient(circle at top right,rgba(18,183,106,.10),transparent 24%),linear-gradient(180deg,#06130f 0%,#071711 42%,#091e17 100%);color:var(--text);min-height:100vh;font-size:17px}a{color:inherit;text-decoration:none}.wrap{width:min(var(--max),calc(100% - 28px));margin:0 auto}.topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);background:rgba(6,19,15,.78);border-bottom:1px solid var(--line)}.topbar-inner{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}.brand{display:flex;align-items:center;gap:12px;font-weight:1000}.brand-badge{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:#fff;color:#06130f;box-shadow:var(--shadow)}.brand small{display:block;color:var(--muted);font-weight:800}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border-radius:999px;font-weight:1000;font-size:15px;white-space:nowrap;text-align:center;border:1px solid var(--line)}.btn-ghost{background:rgba(255,255,255,.045)}.btn-outline{background:transparent;border-color:rgba(220,180,90,.42)}.btn-primary{color:#062414;background:linear-gradient(135deg,var(--gold),var(--gold2));border-color:rgba(255,255,255,.12)}.btn-inscription{color:#062414;background:linear-gradient(135deg,var(--green),var(--gold2));border-color:rgba(255,255,255,.14)}.hero{padding:46px 0 24px}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}.hero-card,.side-card,.spot,.footer-card{background:linear-gradient(180deg,rgba(16,38,30,.96),rgba(11,29,23,.96));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.hero-card,.side-card{padding:28px}.eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;border:1px solid rgba(220,180,90,.24);background:rgba(220,180,90,.08);color:#f5db9a;font-size:13px;font-weight:1000;text-transform:uppercase}h1{margin:16px 0 14px;font-size:clamp(34px,5vw,62px);line-height:1.02;letter-spacing:-.04em}.hero p,.side-text{margin:0;color:var(--muted);font-size:18px;line-height:1.7;font-weight:850}.hero-cta{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}.metrics{margin-top:24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{border-radius:18px;padding:16px;background:rgba(255,255,255,.045);border:1px solid var(--line)}.metric strong{display:block;font-size:28px;margin-bottom:6px;color:#fff7cc}.metric span{color:var(--muted);font-size:15px;line-height:1.45;font-weight:850}.side-cover{border-radius:20px;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line);background:#0b2018;margin-bottom:14px}.side-cover img{width:100%;height:100%;object-fit:cover}.side-title{font-size:28px;line-height:1.1;font-weight:1000;margin:0 0 12px}.section{padding:16px 0 34px}.section-head{margin-bottom:18px}.section-head h2{margin:0 0 6px;font-size:clamp(28px,3.2vw,40px)}.section-head p{margin:0;color:var(--muted);line-height:1.6;font-size:17px;font-weight:850}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.spot{overflow:hidden;display:flex;flex-direction:column}.spot-cover{aspect-ratio:16/10;background:#0b2018;overflow:hidden}.spot-cover img{width:100%;height:100%;object-fit:cover}.spot-body{padding:17px;display:flex;flex-direction:column;gap:12px;flex:1}.spot-title{margin:0;font-size:22px;line-height:1.16;font-weight:1000}.spot-desc{color:var(--muted);font-size:16px;line-height:1.65;font-weight:850}.tag{display:inline-flex;width:max-content;min-height:30px;align-items:center;padding:0 10px;border-radius:999px;border:1px solid rgba(220,180,90,.18);background:rgba(220,180,90,.08);color:#f0d58e;font-size:13px;font-weight:900}.spot-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.spot-actions .btn{flex:1 1 160px}.audio{margin-top:18px;border-radius:22px;border:1px solid rgba(220,180,90,.28);background:rgba(255,255,255,.045);padding:16px}.audio-title{color:#fff7cc;font-size:20px;font-weight:1000}.audio-text{margin-top:8px;color:var(--muted);font-size:15px;line-height:1.65;font-weight:850}.footer{padding:30px 0 44px}.footer-card{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px;flex-wrap:wrap}.footer-copy span{color:var(--muted);line-height:1.6;font-weight:850}@media(max-width:900px){.hero-grid,.grid,.metrics{grid-template-columns:1fr}.hero-card,.side-card{padding:20px}.actions{width:100%;justify-content:flex-start}.btn{width:100%;min-height:54px}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(220,180,90,.14),transparent 26%),radial-gradient(circle at top right,rgba(18,183,106,.10),transparent 24%),linear-gradient(180deg,#06130f 0%,#071711 42%,#091e17 100%);color:var(--text);min-height:100vh;font-size:17px}a{color:inherit;text-decoration:none}.wrap{width:min(var(--max),calc(100% - 28px));margin:0 auto}.topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);background:rgba(6,19,15,.78);border-bottom:1px solid var(--line)}.topbar-inner{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}.brand{display:flex;align-items:center;gap:12px;font-weight:1000}.brand-badge{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:#fff;color:#06130f;box-shadow:var(--shadow)}.brand small{display:block;color:var(--muted);font-weight:800}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border-radius:999px;font-weight:1000;font-size:15px;white-space:nowrap;text-align:center;border:1px solid var(--line)}.btn-ghost{background:rgba(255,255,255,.045)}.btn-outline{background:transparent;border-color:rgba(220,180,90,.42)}.btn-primary{color:#062414;background:linear-gradient(135deg,var(--gold),var(--gold2));border-color:rgba(255,255,255,.12)}.btn-inscription{color:#062414;background:linear-gradient(135deg,var(--green),var(--gold2));border-color:rgba(255,255,255,.14)}.hero{padding:46px 0 24px}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}.hero-card,.side-card,.spot,.footer-card{background:linear-gradient(180deg,rgba(16,38,30,.96),rgba(11,29,23,.96));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.hero-card,.side-card{padding:28px}.eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;border:1px solid rgba(220,180,90,.24);background:rgba(220,180,90,.08);color:#f5db9a;font-size:13px;font-weight:1000;text-transform:uppercase}h1{margin:16px 0 14px;font-size:clamp(34px,5vw,62px);line-height:1.02;letter-spacing:-.04em}.hero p,.side-text{margin:0;color:var(--muted);font-size:18px;line-height:1.7;font-weight:850}.hero-cta{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}.metrics{margin-top:24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{border-radius:18px;padding:16px;background:rgba(255,255,255,.045);border:1px solid var(--line)}.metric strong{display:block;font-size:28px;margin-bottom:6px;color:#fff7cc}.metric span{color:var(--muted);font-size:15px;line-height:1.45;font-weight:850}.side-cover{border-radius:20px;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line);background:#0b2018;margin-bottom:14px}.side-cover img{width:100%;height:100%;object-fit:cover}.side-title{font-size:28px;line-height:1.1;font-weight:1000;margin:0 0 12px}.section{padding:16px 0 34px}.section-head{margin-bottom:18px}.section-head h2{margin:0 0 6px;font-size:clamp(28px,3.2vw,40px)}.section-head p{margin:0;color:var(--muted);line-height:1.6;font-size:17px;font-weight:850}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.spot{overflow:hidden;display:flex;flex-direction:column}.spot-cover{aspect-ratio:16/10;background:#0b2018;overflow:hidden}.spot-cover img{width:100%;height:100%;object-fit:cover}.spot-body{padding:17px;display:flex;flex-direction:column;gap:12px;flex:1}.spot-title{margin:0;font-size:22px;line-height:1.16;font-weight:1000}.spot-desc{color:var(--muted);font-size:16px;line-height:1.65;font-weight:850}.tag{display:inline-flex;width:max-content;min-height:30px;align-items:center;padding:0 10px;border-radius:999px;border:1px solid rgba(220,180,90,.18);background:rgba(220,180,90,.08);color:#f0d58e;font-size:13px;font-weight:900}.spot-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.spot-actions .btn{flex:1 1 160px}.audio{margin-top:18px;border-radius:22px;border:1px solid rgba(220,180,90,.28);background:rgba(255,255,255,.045);padding:16px}.audio-title{color:#fff7cc;font-size:20px;font-weight:1000}.audio-text{margin-top:8px;color:var(--muted);font-size:15px;line-height:1.65;font-weight:850}.footer{padding:30px 0 44px}.footer-card{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px;flex-wrap:wrap}.footer-copy span{color:var(--muted);line-height:1.6;font-weight:850}
+    .lang-switch{display:flex;gap:6px;padding:4px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.045)}
+    .lang-switch button{border:0;border-radius:999px;min-height:38px;padding:0 12px;font-weight:1000;font-size:13px;cursor:pointer;color:var(--text);background:transparent}
+    .lang-switch button.active{background:#f7fbf8;color:#06130f}
+    @media(max-width:900px){.hero-grid,.grid,.metrics{grid-template-columns:1fr}.hero-card,.side-card{padding:20px}.actions{width:100%;justify-content:flex-start}.btn{width:100%;min-height:54px}.lang-switch{width:100%;display:grid;grid-template-columns:1fr 1fr}.lang-switch button{width:100%}}
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="wrap topbar-inner"><a class="brand" href="./"><span class="brand-badge">🌍</span><span>Je découvre le coin<small>DIGIY EXPLORE</small></span></a><div class="actions"><a class="btn btn-ghost" href="https://digiylyfe.com/">← Retour au site</a><a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a><a class="btn btn-inscription" href="./inscription-explore.html?v=code8">🌍 Inscription EXPLORE</a><a class="btn btn-outline" href="./inscription-explore.html?v=code8">Je fais découvrir mon lieu</a><a class="btn btn-primary" href="#spots">Voir les lieux</a></div></div></header>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./">
+        <span class="brand-badge">🌍</span>
+        <span><span data-i18n="brand_main">Je découvre le coin</span><small>DIGIY EXPLORE</small></span>
+      </a>
+      <div class="actions">
+        <a class="btn btn-ghost" href="https://digiylyfe.com/" data-i18n="back_site">← Retour au site</a>
+        <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/" data-i18n="hub">🧭 HUB</a>
+        <a class="btn btn-inscription" href="./inscription-explore.html?v=code8" data-i18n="register_top">🌍 Inscription EXPLORE</a>
+        <a class="btn btn-outline" href="./inscription-explore.html?v=code8" data-i18n="make_place_known">Je fais découvrir mon lieu</a>
+        <a class="btn btn-primary" href="#spots" data-i18n="see_places">Voir les lieux</a>
+        <div class="lang-switch" aria-label="Language switch">
+          <button id="lang-fr" class="active" type="button">FR</button>
+          <button id="lang-en" type="button">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
   <main>
-    <section class="hero"><div class="wrap hero-grid"><div class="hero-card"><div class="eyebrow">Petite Côte · Dakar · Sénégal</div><h1>Découvre les bons coins.<br>Vois les vrais lieux.<br>Parle directement au bon contact.</h1><p>Ici, tu trouves des lieux, sorties, expériences et belles adresses du terrain. Certaines cartes peuvent être des annonces passerelles : DIGIY teste l'intérêt, reçoit les demandes, puis invite le professionnel à se mettre en rapport quand le terrain répond.</p><div class="hero-cta"><a class="btn btn-primary" href="#spots">Voir les lieux</a><a class="btn btn-inscription" href="./inscription-explore.html?v=code8">Ajouter / inscrire mon lieu</a><a class="btn btn-ghost" href="https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20une%20information%20sur%20un%20lieu." target="_blank" rel="noopener noreferrer">WhatsApp DIGIY</a><a class="btn btn-outline" href="sms:+221771342889?body=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20une%20information%20sur%20un%20lieu.">SMS DIGIY</a></div><div class="audio"><div class="audio-title">🎧 Écouter EXPLORE</div><div class="audio-text">On regarde d’abord, on comprend vite, puis on clique. EXPLORE peut montrer une annonce passerelle, recevoir l’intérêt chez DIGIY, puis aider le professionnel à entrer proprement quand il y a des retombées.</div></div><div class="metrics"><div class="metric"><strong>1</strong><span>Annonce passerelle pour tester l’intérêt.</span></div><div class="metric"><strong>8</strong><span>Code tarif Me faire connaître quand le pro est prêt.</span></div><div class="metric"><strong>0%</strong><span>Commission sur le client.</span></div></div></div><aside class="side-card"><div class="side-cover"><img src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif" alt="Sortie en pirogue sur la Petite Côte"></div><h2 class="side-title">Une vitrine vivante pour donner envie.</h2><div class="side-text">Pas un annuaire froid. Une lecture simple pour sentir l’ambiance, recevoir les premiers contacts et transformer l’intérêt en vraie fiche quand le terrain répond.</div><div class="hero-cta"><a class="btn btn-inscription" href="./inscription-explore.html?v=code8">🌍 Inscription EXPLORE</a><a class="btn btn-outline" href="#spots">Entrer dans la vitrine</a></div></aside></div></section>
-    <section class="section" id="spots"><div class="wrap"><div class="section-head"><h2>À voir en ce moment</h2><p>Une annonce passerelle peut ouvrir le chemin : DIGIY présente l’idée, reçoit les demandes, puis le professionnel entre dans la boucle quand les retombées deviennent concrètes.</p></div><div class="grid"><article class="spot"><div class="spot-cover"><img src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif" alt="Sortie pêche Petite Côte"></div><div class="spot-body"><span class="tag">#annonce passerelle</span><h3 class="spot-title">Sortie pêche — Petite Côte</h3><div class="spot-desc">Une sortie en mer, ambiance locale, air marin et vraie sensation du coin. DIGIY recueille les demandes d’intérêt, puis met en rapport avec les pêcheurs quand l’opportunité devient réelle.</div><div class="spot-actions"><a class="btn btn-ghost" href="https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20suis%20int%C3%A9ress%C3%A9%20par%20une%20sortie%20p%C3%AAche%20sur%20la%20Petite%20C%C3%B4te." target="_blank" rel="noopener noreferrer">Je suis intéressé</a><a class="btn btn-primary" href="sms:+221771342889?body=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20suis%20int%C3%A9ress%C3%A9%20par%20une%20sortie%20p%C3%AAche%20sur%20la%20Petite%20C%C3%B4te.">SMS DIGIY</a></div></div></article><article class="spot"><div class="spot-cover"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Ambiance plage Saly"></div><div class="spot-body"><span class="tag">#inspiration</span><h3 class="spot-title">Ambiance plage — Saly</h3><div class="spot-desc">Un modèle d’ambiance pour les adresses de plage : lumière, promenade, repos, contact direct et inscription propre quand le lieu est prêt à être présenté.</div><div class="spot-actions"><a class="btn btn-ghost" href="https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20connais%20un%20lieu%20%C3%A0%20Saly%20%C3%A0%20faire%20d%C3%A9couvrir." target="_blank" rel="noopener noreferrer">Proposer un lieu</a><a class="btn btn-primary" href="./inscription-explore.html?v=code8">Inscrire un lieu</a></div></div></article><article class="spot"><div class="spot-cover"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80" alt="Découverte locale Dakar"></div><div class="spot-body"><span class="tag">#inspiration</span><h3 class="spot-title">Découverte locale — Dakar</h3><div class="spot-desc">Un modèle pour les expériences locales : balade, guide, lieu utile, sortie familiale ou découverte du rythme du coin. DIGIY donne envie sans enfermer le contact.</div><div class="spot-actions"><a class="btn btn-ghost" href="https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20veux%20proposer%20une%20exp%C3%A9rience%20locale." target="_blank" rel="noopener noreferrer">Proposer une expérience</a><a class="btn btn-primary" href="./inscription-explore.html?v=code8">Inscription EXPLORE</a></div></div></article></div></div></section>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-card">
+          <div class="eyebrow" data-i18n="eyebrow">Petite Côte · Dakar · Sénégal</div>
+          <h1 data-i18n="hero_title">Découvre les bons coins.<br>Vois les vrais lieux.<br>Parle directement au bon contact.</h1>
+          <p data-i18n="hero_text">Ici, tu trouves des lieux, sorties, expériences et belles adresses du terrain. Certaines cartes peuvent être des annonces passerelles : DIGIY teste l'intérêt, reçoit les demandes, puis invite le professionnel à se mettre en rapport quand le terrain répond.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#spots" data-i18n="see_places">Voir les lieux</a>
+            <a class="btn btn-inscription" href="./inscription-explore.html?v=code8" data-i18n="add_place">Ajouter / inscrire mon lieu</a>
+            <a class="btn btn-ghost lang-link" id="waExploreTop" href="#" target="_blank" rel="noopener noreferrer" data-i18n="whatsapp_digiy">WhatsApp DIGIY</a>
+            <a class="btn btn-outline lang-link" id="smsExploreTop" href="#" data-i18n="sms_digiy">SMS DIGIY</a>
+          </div>
+          <div class="audio">
+            <div class="audio-title" data-i18n="audio_title">🎧 Écouter EXPLORE</div>
+            <div class="audio-text" data-i18n="audio_text">On regarde d’abord, on comprend vite, puis on clique. EXPLORE peut montrer une annonce passerelle, recevoir l’intérêt chez DIGIY, puis aider le professionnel à entrer proprement quand il y a des retombées.</div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><strong>1</strong><span data-i18n="metric_1">Annonce passerelle pour tester l’intérêt.</span></div>
+            <div class="metric"><strong>8</strong><span data-i18n="metric_8">Code tarif Me faire connaître quand le pro est prêt.</span></div>
+            <div class="metric"><strong>0%</strong><span data-i18n="metric_0">Commission sur le client.</span></div>
+          </div>
+        </div>
+
+        <aside class="side-card">
+          <div class="side-cover"><img src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif" alt="Sortie en pirogue sur la Petite Côte"></div>
+          <h2 class="side-title" data-i18n="side_title">Une vitrine vivante pour donner envie.</h2>
+          <div class="side-text" data-i18n="side_text">Pas un annuaire froid. Une lecture simple pour sentir l’ambiance, recevoir les premiers contacts et transformer l’intérêt en vraie fiche quand le terrain répond.</div>
+          <div class="hero-cta">
+            <a class="btn btn-inscription" href="./inscription-explore.html?v=code8" data-i18n="register_top">🌍 Inscription EXPLORE</a>
+            <a class="btn btn-outline" href="#spots" data-i18n="enter_showcase">Entrer dans la vitrine</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="spots">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-i18n="section_title">À voir en ce moment</h2>
+          <p data-i18n="section_text">Une annonce passerelle peut ouvrir le chemin : DIGIY présente l’idée, reçoit les demandes, puis le professionnel entre dans la boucle quand les retombées deviennent concrètes.</p>
+        </div>
+
+        <div class="grid">
+          <article class="spot">
+            <div class="spot-cover"><img src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif" alt="Sortie pêche Petite Côte"></div>
+            <div class="spot-body">
+              <span class="tag" data-i18n="tag_bridge">#annonce passerelle</span>
+              <h3 class="spot-title" data-i18n="spot_1_title">Sortie pêche — Petite Côte</h3>
+              <div class="spot-desc" data-i18n="spot_1_desc">Une sortie en mer, ambiance locale, air marin et vraie sensation du coin. DIGIY recueille les demandes d’intérêt, puis met en rapport avec les pêcheurs quand l’opportunité devient réelle.</div>
+              <div class="spot-actions">
+                <a class="btn btn-ghost" id="waFishing" href="#" target="_blank" rel="noopener noreferrer" data-i18n="interested">Je suis intéressé</a>
+                <a class="btn btn-primary" id="smsFishing" href="#" data-i18n="sms_digiy">SMS DIGIY</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="spot">
+            <div class="spot-cover"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Ambiance plage Saly"></div>
+            <div class="spot-body">
+              <span class="tag" data-i18n="tag_inspiration">#inspiration</span>
+              <h3 class="spot-title" data-i18n="spot_2_title">Ambiance plage — Saly</h3>
+              <div class="spot-desc" data-i18n="spot_2_desc">Un modèle d’ambiance pour les adresses de plage : lumière, promenade, repos, contact direct et inscription propre quand le lieu est prêt à être présenté.</div>
+              <div class="spot-actions">
+                <a class="btn btn-ghost" id="waPlaceSaly" href="#" target="_blank" rel="noopener noreferrer" data-i18n="suggest_place">Proposer un lieu</a>
+                <a class="btn btn-primary" href="./inscription-explore.html?v=code8" data-i18n="register_place">Inscrire un lieu</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="spot">
+            <div class="spot-cover"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80" alt="Découverte locale Dakar"></div>
+            <div class="spot-body">
+              <span class="tag" data-i18n="tag_inspiration">#inspiration</span>
+              <h3 class="spot-title" data-i18n="spot_3_title">Découverte locale — Dakar</h3>
+              <div class="spot-desc" data-i18n="spot_3_desc">Un modèle pour les expériences locales : balade, guide, lieu utile, sortie familiale ou découverte du rythme du coin. DIGIY donne envie sans enfermer le contact.</div>
+              <div class="spot-actions">
+                <a class="btn btn-ghost" id="waExperience" href="#" target="_blank" rel="noopener noreferrer" data-i18n="suggest_experience">Proposer une expérience</a>
+                <a class="btn btn-primary" href="./inscription-explore.html?v=code8" data-i18n="register_top">Inscription EXPLORE</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="footer"><div class="wrap footer-card"><div class="footer-copy"><strong>Je découvre le coin</strong><br><span>Voir une ambiance, signaler son intérêt, contacter DIGIY ou inscrire une adresse EXPLORE quand le terrain est prêt.</span></div><div class="actions"><a class="btn btn-ghost" href="https://digiylyfe.com/">← Retour au site</a><a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a><a class="btn btn-inscription" href="./inscription-explore.html?v=code8">🌍 Inscription EXPLORE</a></div></div></footer>
+
+  <footer class="footer">
+    <div class="wrap footer-card">
+      <div class="footer-copy">
+        <strong data-i18n="footer_title">Je découvre le coin</strong><br>
+        <span data-i18n="footer_text">Voir une ambiance, signaler son intérêt, contacter DIGIY ou inscrire une adresse EXPLORE quand le terrain est prêt.</span>
+      </div>
+      <div class="actions">
+        <a class="btn btn-ghost" href="https://digiylyfe.com/" data-i18n="back_site">← Retour au site</a>
+        <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/" data-i18n="hub">🧭 HUB</a>
+        <a class="btn btn-inscription" href="./inscription-explore.html?v=code8" data-i18n="register_top">🌍 Inscription EXPLORE</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+
+  const TXT = {
+    fr: {
+      pageTitle: "DIGIY EXPLORE — Découvrir & s’inscrire",
+      meta: "DIGIY EXPLORE — découvrir les lieux et inscrire son lieu avec CODE 8 Me faire connaître.",
+      brand_main: "Je découvre le coin",
+      back_site: "← Retour au site",
+      hub: "🧭 HUB",
+      register_top: "🌍 Inscription EXPLORE",
+      make_place_known: "Je fais découvrir mon lieu",
+      see_places: "Voir les lieux",
+      eyebrow: "Petite Côte · Dakar · Sénégal",
+      hero_title: "Découvre les bons coins.<br>Vois les vrais lieux.<br>Parle directement au bon contact.",
+      hero_text: "Ici, tu trouves des lieux, sorties, expériences et belles adresses du terrain. Certaines cartes peuvent être des annonces passerelles : DIGIY teste l'intérêt, reçoit les demandes, puis invite le professionnel à se mettre en rapport quand le terrain répond.",
+      add_place: "Ajouter / inscrire mon lieu",
+      whatsapp_digiy: "WhatsApp DIGIY",
+      sms_digiy: "SMS DIGIY",
+      audio_title: "🎧 Écouter EXPLORE",
+      audio_text: "On regarde d’abord, on comprend vite, puis on clique. EXPLORE peut montrer une annonce passerelle, recevoir l’intérêt chez DIGIY, puis aider le professionnel à entrer proprement quand il y a des retombées.",
+      metric_1: "Annonce passerelle pour tester l’intérêt.",
+      metric_8: "Code tarif Me faire connaître quand le pro est prêt.",
+      metric_0: "Commission sur le client.",
+      side_title: "Une vitrine vivante pour donner envie.",
+      side_text: "Pas un annuaire froid. Une lecture simple pour sentir l’ambiance, recevoir les premiers contacts et transformer l’intérêt en vraie fiche quand le terrain répond.",
+      enter_showcase: "Entrer dans la vitrine",
+      section_title: "À voir en ce moment",
+      section_text: "Une annonce passerelle peut ouvrir le chemin : DIGIY présente l’idée, reçoit les demandes, puis le professionnel entre dans la boucle quand les retombées deviennent concrètes.",
+      tag_bridge: "#annonce passerelle",
+      tag_inspiration: "#inspiration",
+      spot_1_title: "Sortie pêche — Petite Côte",
+      spot_1_desc: "Une sortie en mer, ambiance locale, air marin et vraie sensation du coin. DIGIY recueille les demandes d’intérêt, puis met en rapport avec les pêcheurs quand l’opportunité devient réelle.",
+      interested: "Je suis intéressé",
+      spot_2_title: "Ambiance plage — Saly",
+      spot_2_desc: "Un modèle d’ambiance pour les adresses de plage : lumière, promenade, repos, contact direct et inscription propre quand le lieu est prêt à être présenté.",
+      suggest_place: "Proposer un lieu",
+      register_place: "Inscrire un lieu",
+      spot_3_title: "Découverte locale — Dakar",
+      spot_3_desc: "Un modèle pour les expériences locales : balade, guide, lieu utile, sortie familiale ou découverte du rythme du coin. DIGIY donne envie sans enfermer le contact.",
+      suggest_experience: "Proposer une expérience",
+      footer_title: "Je découvre le coin",
+      footer_text: "Voir une ambiance, signaler son intérêt, contacter DIGIY ou inscrire une adresse EXPLORE quand le terrain est prêt."
+    },
+    en: {
+      pageTitle: "DIGIY EXPLORE — Discover & register",
+      meta: "DIGIY EXPLORE — discover local places and register a place with CODE 8 Make me known.",
+      brand_main: "Discover the area",
+      back_site: "← Back to site",
+      hub: "🧭 HUB",
+      register_top: "🌍 EXPLORE registration",
+      make_place_known: "I want to showcase my place",
+      see_places: "View places",
+      eyebrow: "Petite Côte · Dakar · Senegal",
+      hero_title: "Discover the right spots.<br>See real places.<br>Speak directly to the right contact.",
+      hero_text: "Here, you find places, outings, experiences and local addresses from the field. Some cards can be bridge listings: DIGIY tests interest, receives requests, then invites the professional to connect when the field responds.",
+      add_place: "Add / register my place",
+      whatsapp_digiy: "WhatsApp DIGIY",
+      sms_digiy: "SMS DIGIY",
+      audio_title: "🎧 Listen to EXPLORE",
+      audio_text: "First we look, then we understand quickly, then we click. EXPLORE can show a bridge listing, receive interest through DIGIY, then help the professional enter properly when results become real.",
+      metric_1: "Bridge listing to test interest.",
+      metric_8: "Pricing code Make me known when the pro is ready.",
+      metric_0: "Commission on the client.",
+      side_title: "A living showcase that creates desire.",
+      side_text: "Not a cold directory. A simple reading to feel the atmosphere, receive first contacts and turn interest into a real card when the field responds.",
+      enter_showcase: "Enter the showcase",
+      section_title: "Worth seeing now",
+      section_text: "A bridge listing can open the road: DIGIY presents the idea, receives requests, then the professional enters the loop when the response becomes concrete.",
+      tag_bridge: "#bridge listing",
+      tag_inspiration: "#inspiration",
+      spot_1_title: "Fishing trip — Petite Côte",
+      spot_1_desc: "A sea outing, local atmosphere, ocean air and a real feeling of the area. DIGIY collects expressions of interest, then connects with fishermen when the opportunity becomes real.",
+      interested: "I am interested",
+      spot_2_title: "Beach atmosphere — Saly",
+      spot_2_desc: "A mood model for beach addresses: light, walk, rest, direct contact and proper registration when the place is ready to be presented.",
+      suggest_place: "Suggest a place",
+      register_place: "Register a place",
+      spot_3_title: "Local discovery — Dakar",
+      spot_3_desc: "A model for local experiences: walk, guide, useful place, family outing or discovery of the local rhythm. DIGIY creates desire without locking the contact.",
+      suggest_experience: "Suggest an experience",
+      footer_title: "Discover the area",
+      footer_text: "See an atmosphere, show interest, contact DIGIY or register an EXPLORE address when the field is ready."
+    }
+  };
+
+  const msg = {
+    fr: {
+      general: "Bonjour, je viens de DIGIY EXPLORE. Je souhaite une information sur un lieu.",
+      fishing: "Bonjour, je viens de DIGIY EXPLORE. Je suis intéressé par une sortie pêche sur la Petite Côte.",
+      saly: "Bonjour, je viens de DIGIY EXPLORE. Je connais un lieu à Saly à faire découvrir.",
+      exp: "Bonjour, je viens de DIGIY EXPLORE. Je veux proposer une expérience locale."
+    },
+    en: {
+      general: "Hello, I come from DIGIY EXPLORE. I would like information about a place.",
+      fishing: "Hello, I come from DIGIY EXPLORE. I am interested in a fishing trip on the Petite Côte.",
+      saly: "Hello, I come from DIGIY EXPLORE. I know a place in Saly to showcase.",
+      exp: "Hello, I come from DIGIY EXPLORE. I want to suggest a local experience."
+    }
+  };
+
+  function wa(text){ return "https://wa.me/221771342889?text=" + encodeURIComponent(text); }
+  function sms(text){ return "sms:+221771342889?body=" + encodeURIComponent(text); }
+
+  function setLinks(lang){
+    document.getElementById("waExploreTop").href = wa(msg[lang].general);
+    document.getElementById("smsExploreTop").href = sms(msg[lang].general);
+    document.getElementById("waFishing").href = wa(msg[lang].fishing);
+    document.getElementById("smsFishing").href = sms(msg[lang].fishing);
+    document.getElementById("waPlaceSaly").href = wa(msg[lang].saly);
+    document.getElementById("waExperience").href = wa(msg[lang].exp);
+  }
+
+  function applyLang(lang, push){
+    lang = lang === "en" ? "en" : "fr";
+    document.documentElement.lang = lang;
+    document.title = TXT[lang].pageTitle;
+    const meta = document.querySelector('meta[name="description"]');
+    if(meta) meta.setAttribute("content", TXT[lang].meta);
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      const value = TXT[lang][key];
+      if(value == null) return;
+      if(value.includes("<br>")) el.innerHTML = value;
+      else el.textContent = value;
+    });
+
+    document.getElementById("lang-fr").classList.toggle("active", lang === "fr");
+    document.getElementById("lang-en").classList.toggle("active", lang === "en");
+
+    setLinks(lang);
+
+    if(push){
+      const u = new URL(location.href);
+      if(lang === "fr") u.searchParams.delete("lang");
+      else u.searchParams.set("lang","en");
+      history.replaceState({}, "", u.pathname + u.search + u.hash);
+    }
+  }
+
+  document.getElementById("lang-fr").addEventListener("click", () => applyLang("fr", true));
+  document.getElementById("lang-en").addEventListener("click", () => applyLang("en", true));
+
+  const startLang = new URLSearchParams(location.search).get("lang") === "en" ? "en" : "fr";
+  applyLang(startLang, false);
+})();
+</script>
 
 <script src="https://pro-action-digiy.digiylyfe.com/assets/js/digiy-retour-voix.js?v=retour-voix-20260606-v4" defer></script>
 </body>
 </html>
+
