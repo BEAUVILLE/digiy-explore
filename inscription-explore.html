@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f3d32">
-  <meta name="digiy-version" content="explore-inscription-france-senegal-sendwave-grille-pays-20260629">
-  <title>Inscription EXPLORE — France · Sénégal · CODE 8</title>
+  <meta name="digiy-version" content="explore-demande-initiale-activation-payante-sendwave-dore-20260707">
+  <title>Demande EXPLORE — Activation visibilité · France · Sénégal · CODE 8</title>
 
   <style>
     * {
@@ -486,6 +486,85 @@
       font-weight: 950;
     }
 
+    .gold-emphasis {
+      border-color: rgba(250, 204, 21, .78) !important;
+      background: linear-gradient(135deg, rgba(250, 204, 21, .28), rgba(251, 146, 60, .16)) !important;
+      color: #fff8dc !important;
+      box-shadow: 0 12px 28px rgba(250, 204, 21, .14) !important;
+    }
+
+    .exploreDoctrine {
+      margin: 0 0 14px;
+      border: 2px solid rgba(250, 204, 21, .58);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at top right, rgba(250, 204, 21, .22), transparent 38%),
+        linear-gradient(145deg, rgba(18, 63, 52, .98), rgba(6, 39, 31, .96));
+      box-shadow: 0 18px 52px rgba(0, 0, 0, .28);
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .exploreDoctrineTag {
+      display: inline-flex;
+      width: max-content;
+      max-width: 100%;
+      min-height: 34px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, .68);
+      background: rgba(250, 204, 21, .16);
+      color: #fff3b2;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .exploreDoctrine h2 {
+      margin: 0;
+      color: #fff3b2;
+      font-size: clamp(28px, 4.8vw, 48px);
+      line-height: 1;
+      letter-spacing: -.04em;
+      font-weight: 1000;
+    }
+
+    .exploreDoctrine p {
+      margin: 0;
+      color: rgba(237, 255, 247, .84);
+      line-height: 1.62;
+      font-weight: 850;
+    }
+
+    .exploreDoctrineList {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .exploreDoctrineList span {
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .09);
+      border-radius: 17px;
+      padding: 11px;
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 1000;
+    }
+
+    .exploreDoctrineQuote {
+      border-left: 4px solid #facc15;
+      background: rgba(0, 0, 0, .16);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #fff3b2 !important;
+      font-weight: 1000 !important;
+    }
+
     @media (max-width: 850px) {
       .hero,
       .grid {
@@ -505,7 +584,8 @@
       }
 
       .proInfoGrid,
-      .countryGrid {
+      .countryGrid,
+      .exploreDoctrineList {
         grid-template-columns: 1fr;
       }
 
@@ -528,7 +608,7 @@
 <body>
   <div class="app">
     <header class="top">
-      <a class="brand" href="./index.html">🌍 DIGIY EXPLORE · inscription</a>
+      <a class="brand" href="./index.html">🌍 DIGIY EXPLORE · demande</a>
 
       <nav class="nav">
         <a href="./index.html">← EXPLORE public</a>
@@ -538,17 +618,21 @@
 
     <section class="hero">
       <div>
-        <h1>Me faire connaître sur le territoire.</h1>
+        <h1>Faire connaître mon lieu, mon activité, mon expérience.</h1>
 
         <p>
           CODE 8 ouvre la visibilité EXPLORE : lieux, activités, excursions,
           guides, culture, plages, restaurants à découvrir, artisans à visiter
-          et expériences locales. Aucun tarif n’est précoché.
+          et expériences locales. La demande initiale est sans engagement :
+          aucun tarif n’est précoché, et l’activation EXPLORE devient payante seulement si le pro valide son choix.
         </p>
 
         <div class="pills">
           <span class="pill">🧭 CODE 8</span>
-          <span class="pill">Me faire connaître</span>
+          <span class="pill">Demande sans engagement</span>
+          <span class="pill">Activation EXPLORE payante</span>
+          <span class="pill">0% commission</span>
+          <span class="pill gold-emphasis">🇫🇷 France → Sendwave Sénégal</span>
           <span class="pill">QR / lien</span>
           <span class="pill">Effacer</span>
         </div>
@@ -556,22 +640,42 @@
 
       <div>
         <div class="waveHero">
-          <small>Paiement Wave</small>
+          <small>Paiement Wave / Sendwave</small>
           <strong>Wave : JB BEAUVILLE · +221 77 134 28 89</strong>
         </div>
 
         <p>
           Choix cumulables, date dans le message, sous-total, total, WhatsApp
-          ou SMS. Sénégal : Wave direct. France : Sendwave vers Wave Sénégal.
+          ou SMS. Sénégal : Wave direct.
+          <strong class="gold-emphasis" style="display:inline-flex;padding:2px 8px;border-radius:999px;">France : Sendwave vers Wave Sénégal</strong>.
         </p>
       </div>
     </section>
 
+    <section class="exploreDoctrine" aria-label="Doctrine commerciale EXPLORE">
+      <span class="exploreDoctrineTag">Demande initiale sans engagement · Activation EXPLORE payante · 0% commission</span>
+      <h2>Le territoire se montre. Le pro reste libre. La visibilité s’active clairement.</h2>
+      <p>
+        DIGIY EXPLORE ne prend aucune commission sur les réservations, visites, sorties ou prestations.
+        La demande initiale / orientation est sans engagement : le paiement concerne seulement l’activation
+        d’une présence EXPLORE, d’une fiche lieu, d’un QR, d’une mise en valeur ou d’un pack visibilité.
+      </p>
+      <div class="exploreDoctrineList">
+        <span>✅ Demande initiale sans engagement</span>
+        <span>🧭 Activation EXPLORE payante</span>
+        <span>🤝 Contact et paiement directs</span>
+        <span class="gold-emphasis">🇫🇷 France / diaspora : Sendwave possible</span>
+      </div>
+      <p class="exploreDoctrineQuote">
+        DIGIY EXPLORE ne vend pas une commission sur le territoire. DIGIY construit la route visible entre le visiteur et l’acteur local.
+      </p>
+    </section>
+
     <main class="grid">
       <section class="card">
-        <h2>Tarifs EXPLORE</h2>
+        <h2>Activation EXPLORE</h2>
 
-        <p>Clique un ou plusieurs choix. Si tu te trompes, efface.</p>
+        <p>Clique un ou plusieurs choix seulement si tu veux activer une présence EXPLORE. Si tu te trompes, efface.</p>
 
         <div class="countryBox" aria-label="Choix pays EXPLORE">
           <div class="countryTitle">🌍 Choisir le pays de règlement</div>
@@ -580,7 +684,7 @@
               <strong>🇸🇳 Sénégal</strong>
               <span>Tarifs FCFA · Wave direct</span>
             </button>
-            <button class="countryBtn" type="button" data-country="france">
+            <button class="countryBtn gold-emphasis" type="button" data-country="france">
               <strong>🇫🇷 France</strong>
               <span>Tarifs EUR · Sendwave vers Wave Sénégal</span>
             </button>
@@ -598,16 +702,16 @@
       </section>
 
       <aside class="card summary" id="summary">
-        <h2>Ce que l’abonnement m’apporte</h2>
+        <h2>Ce que ma présence EXPLORE m’apporte</h2>
 
         <div class="box" id="selectedBox">
           <strong>Aucun choix sélectionné</strong><br>
-          Rien n’est précoché.
+          Demande sans engagement avant activation EXPLORE. Rien n’est précoché.
         </div>
 
         <div class="proInfoBox" aria-label="Informations pro EXPLORE">
           <h3>Infos pro / lieu</h3>
-          <p>Ces infos servent seulement à identifier la demande de paiement. La fiche complète se prépare ensuite dans l’espace EXPLORE.</p>
+          <p>Ces infos servent seulement à identifier la demande. La demande initiale est sans engagement ; la fiche complète s’active ensuite selon le choix validé.</p>
 
           <div class="proInfoGrid">
             <div class="proInfoField">
@@ -666,10 +770,10 @@
 
           <div class="proof">
             Après paiement Wave, envoie la capture ou la preuve par WhatsApp.
-            DIGIY vérifie puis accompagne l’ouverture / visibilité EXPLORE.
+            DIGIY vérifie puis accompagne l’activation de la présence / visibilité EXPLORE.
           </div>
 
-          <div class="payBadge" id="payBadge">
+          <div class="payBadge gold-emphasis" id="payBadge">
             🇸🇳 Sénégal : règlement Wave direct. 🇫🇷 France : règlement Sendwave vers Wave Sénégal.
           </div>
 
@@ -1001,6 +1105,7 @@
 
 Date de demande : ${date()}
 Pays / règlement : ${countryLabel()}
+Demande initiale : sans engagement avant activation EXPLORE
 
 Infos pro / lieu :
 ${identityText()}
@@ -1013,6 +1118,7 @@ Total : ${total.label}
 Règlement : ${paymentLabel()}${noteBlock()}
 
 Important : les tarifs France et Sénégal sont une grille pays, pas une conversion au taux de change.
+Important : DIGIY EXPLORE prend 0% commission. Le paiement concerne l’activation choisie.
 
 Après paiement, je vous envoie la preuve ici.
 
@@ -1025,6 +1131,7 @@ Canal souhaité : WhatsApp ou SMS.`;
 
 Date de demande : ${date()}
 Pays / règlement : ${countryLabel()}
+Demande initiale : sans engagement avant activation EXPLORE
 
 Infos pro / lieu :
 ${identityText()}
@@ -1046,7 +1153,7 @@ Je joins la capture / preuve de paiement à ce message.`;
 
         $("selectedBox").innerHTML = items.length
           ? `<strong>${items.length} choix sélectionné${items.length > 1 ? "s" : ""}</strong><br>${countryLabel()}`
-          : `<strong>Aucun choix sélectionné</strong><br>Rien n’est précoché.`;
+          : `<strong>Aucun choix sélectionné</strong><br>Demande sans engagement avant activation EXPLORE. Rien n’est précoché.`;
 
         $("choiceList").innerHTML = items.length
           ? items.map((p) => `
@@ -1081,7 +1188,7 @@ Je joins la capture / preuve de paiement à ce message.`;
         if (proof) {
           proof.textContent = country === "france"
             ? "Depuis la France, règle par Sendwave vers le Wave Sénégal de JB BEAUVILLE, puis envoie la preuve par WhatsApp."
-            : "Après paiement Wave, envoie la capture ou la preuve par WhatsApp. DIGIY vérifie puis accompagne l’ouverture / visibilité EXPLORE.";
+            : "Après paiement Wave, envoie la capture ou la preuve par WhatsApp. DIGIY vérifie puis accompagne l’activation de la présence / visibilité EXPLORE.";
         }
 
         $("benefits").innerHTML = (items.length
@@ -1161,5 +1268,7 @@ Je joins la capture / preuve de paiement à ce message.`;
   </script>
 </body>
 </html>
+
+
 
 
