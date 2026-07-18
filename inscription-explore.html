@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f3d32">
-  <meta name="digiy-version" content="explore-demande-initiale-activation-payante-sendwave-dore-20260707">
+  <meta name="digiy-version" content="explore-inscription-presence-40eur-metier-15eur-20260718">
   <title>Demande EXPLORE — Activation visibilité · France · Sénégal · CODE 8</title>
 
   <style>
@@ -180,6 +180,12 @@
     .option.active {
       border-color: #facc15;
       background: rgba(250, 204, 21, .18);
+    }
+
+    .option.disabled {
+      opacity: .46;
+      cursor: not-allowed;
+      filter: grayscale(.15);
     }
 
     .code {
@@ -621,20 +627,19 @@
         <h1>Faire connaître mon lieu, mon activité, mon expérience.</h1>
 
         <p>
-          CODE 8 ouvre la visibilité EXPLORE : lieux, activités, excursions,
-          guides, culture, plages, restaurants à découvrir, artisans à visiter
-          et expériences locales. La demande initiale est sans engagement :
-          aucun tarif n’est précoché, et l’activation EXPLORE devient payante seulement si le pro valide son choix.
+          DIGIY EXPLORE rend visibles les lieux, activités, excursions,
+          guides, plages, artisans et expériences locales.
+          DIGIY PRÉSENCE construit la fiche publique et son QR.
+          DIGIY MÉTIER ajoute l’outil de gestion EXPLORE uniquement si le professionnel le choisit.
         </p>
 
         <div class="pills">
-          <span class="pill">🧭 CODE 8</span>
-          <span class="pill">Demande sans engagement</span>
-          <span class="pill">Activation EXPLORE payante</span>
+          <span class="pill">Présence 19 900 FCFA / 40 €</span>
+          <span class="pill">Métier +8 000 FCFA / +15 €</span>
+          <span class="pill">Total 27 900 FCFA / 55 €</span>
           <span class="pill">0% commission</span>
-          <span class="pill gold-emphasis">🇫🇷 France → Sendwave Sénégal</span>
+          <span class="pill gold-emphasis">Aucun module imposé</span>
           <span class="pill">QR / lien</span>
-          <span class="pill">Effacer</span>
         </div>
       </div>
 
@@ -653,18 +658,20 @@
     </section>
 
     <section class="exploreDoctrine" aria-label="Doctrine commerciale EXPLORE">
-      <span class="exploreDoctrineTag">Demande initiale sans engagement · Activation EXPLORE payante · 0% commission</span>
-      <h2>Le territoire se montre. Le pro reste libre. La visibilité s’active clairement.</h2>
+      <span class="exploreDoctrineTag">Demande gratuite · Présence 19 900 / 40 € · Métier +8 000 / +15 € · 0% commission</span>
+      <h2>Commencer proprement. Monter quand l’activité le demande.</h2>
       <p>
-        DIGIY EXPLORE ne prend aucune commission sur les réservations, visites, sorties ou prestations.
-        La demande initiale / orientation est sans engagement : le paiement concerne seulement l’activation
-        d’une présence EXPLORE, d’une fiche lieu, d’un QR, d’une mise en valeur ou d’un pack visibilité.
+        DIGIY PRÉSENCE donne au professionnel une fiche lieu ou activité,
+        un QR officiel, un lien partageable, un contact direct et la maintenance essentielle.
+        DIGIY MÉTIER ajoute le logiciel EXPLORE pour organiser contenus, demandes,
+        expériences et suivi opérationnel. Cette option reste facultative.
+        PRO CARNET et RÉSEAU restent séparés.
       </p>
       <div class="exploreDoctrineList">
-        <span>✅ Demande initiale sans engagement</span>
-        <span>🧭 Activation EXPLORE payante</span>
-        <span>🤝 Contact et paiement directs</span>
-        <span class="gold-emphasis">🇫🇷 France / diaspora : Sendwave possible</span>
+        <span>1 · DIGIY PRÉSENCE · 19 900 FCFA / 40 €</span>
+        <span>2 · DIGIY MÉTIER · +8 000 FCFA / +15 €</span>
+        <span>✅ Total avec logiciel · 27 900 FCFA / 55 €</span>
+        <span class="gold-emphasis">Aucun module supplémentaire imposé</span>
       </div>
       <p class="exploreDoctrineQuote">
         DIGIY EXPLORE ne vend pas une commission sur le territoire. DIGIY construit la route visible entre le visiteur et l’acteur local.
@@ -675,7 +682,7 @@
       <section class="card">
         <h2>Activation EXPLORE</h2>
 
-        <p>Clique un ou plusieurs choix seulement si tu veux activer une présence EXPLORE. Si tu te trompes, efface.</p>
+        <p>Commence par DIGIY PRÉSENCE. Ajoute DIGIY MÉTIER seulement si tu veux le logiciel EXPLORE.</p>
 
         <div class="countryBox" aria-label="Choix pays EXPLORE">
           <div class="countryTitle">🌍 Choisir le pays de règlement</div>
@@ -690,12 +697,16 @@
             </button>
           </div>
           <div class="countryNote" id="countryNote">
-            Les tarifs France et Sénégal sont une grille pays : pas une conversion au taux de change.
+            Sénégal : Présence 19 900 FCFA ; Métier +8 000 FCFA ; total 27 900 FCFA.
+            France : Présence 40 € ; Métier +15 € ; total 55 €.
           </div>
         </div>
 
-        <div class="section">🧭 CODE 8 · Me faire connaître</div>
+        <div class="section">1 · SOCLE — DIGIY PRÉSENCE</div>
         <div class="prices" id="baseOptions"></div>
+
+        <div class="section">2 · OPTION MÉTIER — DIGIY MÉTIER</div>
+        <div class="prices" id="metierOptions"></div>
 
         <div class="section">📣 RÉSEAU abonné / FIRST non-abonné</div>
         <div class="prices" id="reseauOptions"></div>
@@ -782,7 +793,7 @@
 
             <textarea
               id="notePayment"
-              placeholder="Ex : Paiement Wave envoyé pour EXPLORE 8B — 60 000 FCFA — au nom de Mamadou Diop — tél +221 77 000 00 00."></textarea>
+              placeholder="Ex : DIGIY PRÉSENCE EXPLORE — 19 900 FCFA ; option métier ajoutée — total 27 900 FCFA — Mamadou Diop."></textarea>
 
             <div class="noteHelp">
               Cette note part dans le message WhatsApp / SMS pour identifier
@@ -824,59 +835,31 @@
 
       const PLANS = [
         {
-          code: "8A",
+          code: "PRESENCE",
           cat: "base",
-          name: "Me faire connaître — Essentiel",
-          fcfa: 30000,
-          eur: 49,
-          desc: "Présence territoire locale, visibilité tourisme, fiche pro.",
+          name: "DIGIY PRÉSENCE EXPLORE",
+          fcfa: 19900,
+          eur: 40,
+          desc: "Fiche lieu ou activité, QR officiel, lien partageable, contact direct et maintenance essentielle.",
           bonus: [
-            "Présence territoire locale",
-            "Visibilité tourisme",
-            "Fiche pro",
-            "QR et lien partageable"
+            "Fiche EXPLORE visible",
+            "QR officiel",
+            "Lien partageable",
+            "Contact direct"
           ]
         },
         {
-          code: "8B",
-          cat: "base",
-          name: "Me faire connaître — Pro",
-          fcfa: 60000,
-          eur: 89,
-          desc: "Présence territoire renforcée.",
+          code: "METIER",
+          cat: "metier",
+          name: "DIGIY MÉTIER EXPLORE",
+          fcfa: 8000,
+          eur: 15,
+          desc: "Option facultative : logiciel EXPLORE pour contenus, demandes, expériences et suivi opérationnel.",
           bonus: [
-            "Présence territoire renforcée",
-            "Meilleure lecture publique",
-            "Contact direct",
-            "Image plus crédible"
-          ]
-        },
-        {
-          code: "8C",
-          cat: "base",
-          name: "Me faire connaître — Premium",
-          fcfa: 120000,
-          eur: 149,
-          desc: "Présence territoire premium et priorité visibilité.",
-          bonus: [
-            "Présence premium",
-            "Priorité visibilité",
-            "Fiche plus forte",
-            "Mise en valeur renforcée"
-          ]
-        },
-        {
-          code: "8D",
-          cat: "base",
-          name: "Me faire connaître — Installation",
-          fcfa: 150000,
-          eur: 199,
-          desc: "Mise en route et accompagnement one-shot.",
-          bonus: [
-            "Installation one-shot",
-            "Accompagnement de départ",
-            "Mise en route propre",
-            "Fiche prête à partager"
+            "Logiciel métier EXPLORE",
+            "Organisation des contenus",
+            "Demandes et expériences",
+            "Suivi opérationnel"
           ]
         },
         {
@@ -933,7 +916,6 @@
       const COMMON = [
         "Carte de visite complète",
         "QR et lien partageable",
-        "Fiche métier EXPLORE",
         "Voix DIGIY et textes prêts",
         "Validation humaine",
         "0% commission",
@@ -1052,8 +1034,8 @@
         const note = $("countryNote");
         if (note) {
           note.innerHTML = country === "france"
-            ? "🇫🇷 France : règlement en euros par <strong>Sendwave</strong> vers le <strong>Wave Sénégal JB BEAUVILLE · +221 77 134 28 89</strong>. Grille pays, pas taux de change."
-            : "🇸🇳 Sénégal : règlement en FCFA par <strong>Wave direct</strong> vers <strong>JB BEAUVILLE · +221 77 134 28 89</strong>.";
+            ? "🇫🇷 France : DIGIY PRÉSENCE EXPLORE à <strong>40 €</strong> ; DIGIY MÉTIER EXPLORE à <strong>+15 €</strong> ; total <strong>55 €</strong>. Règlement Sendwave vers Wave Sénégal."
+            : "🇸🇳 Sénégal : DIGIY PRÉSENCE EXPLORE à <strong>19 900 FCFA</strong> ; DIGIY MÉTIER EXPLORE à <strong>+8 000 FCFA</strong> ; total <strong>27 900 FCFA</strong>.";
         }
 
         try {
@@ -1069,26 +1051,57 @@
       }
 
       function render() {
-        ["base", "reseau"].forEach((cat) => {
-          const containerId = cat === "base" ? "baseOptions" : "reseauOptions";
+        ["base", "metier", "reseau"].forEach((cat) => {
+          const containerId =
+            cat === "base"
+              ? "baseOptions"
+              : cat === "metier"
+                ? "metierOptions"
+                : "reseauOptions";
+
+          const presenceSelected = selected.has("PRESENCE");
 
           $(containerId).innerHTML = PLANS
             .filter((p) => p.cat === cat)
-            .map((p) => `
-              <button class="option ${selected.has(p.code) ? "active" : ""}" type="button" data-code="${p.code}">
-                <span class="code ${cat !== "base" ? "extra" : ""}">${p.code}</span>
-                <b>${p.name}</b>
-                <span class="amount">${planAmount(p)}</span>
-                <span>${p.desc}</span>
-              </button>
-            `)
+            .map((p) => {
+              const unavailable = p.code === "METIER" && !presenceSelected;
+              const note = p.code === "METIER"
+                ? (country === "france"
+                    ? "Option facultative · +15 € / mois"
+                    : "Option facultative · +8 000 FCFA / mois")
+                : "";
+
+              return `
+                <button
+                  class="option ${selected.has(p.code) ? "active" : ""} ${unavailable ? "disabled" : ""}"
+                  type="button"
+                  data-code="${p.code}"
+                  ${unavailable ? "disabled" : ""}
+                >
+                  <span class="code ${cat !== "base" ? "extra" : ""}">${p.code}</span>
+                  <b>${p.name}</b>
+                  <span class="amount">${planAmount(p)}</span>
+                  ${note ? `<span>${note}</span>` : ""}
+                  <span>${p.desc}</span>
+                </button>
+              `;
+            })
             .join("");
         });
 
         document.querySelectorAll(".option").forEach((button) => {
           button.onclick = () => {
-            if (selected.has(button.dataset.code)) selected.delete(button.dataset.code);
-            else selected.add(button.dataset.code);
+            const code = button.dataset.code;
+
+            if (code === "METIER" && !selected.has("PRESENCE")) return;
+
+            if (selected.has(code)) {
+              selected.delete(code);
+              if (code === "PRESENCE") selected.delete("METIER");
+            } else {
+              selected.add(code);
+            }
+
             update(true);
           };
         });
@@ -1112,6 +1125,11 @@ ${identityText()}
 
 Choix :
 ${choiceLines()}
+
+Doctrine EXPLORE :
+- DIGIY PRÉSENCE : socle
+- DIGIY MÉTIER : option facultative
+- PRO CARNET et RÉSEAU : séparés
 
 Total : ${total.label}
 
@@ -1152,8 +1170,8 @@ Je joins la capture / preuve de paiement à ce message.`;
         const total = totals();
 
         $("selectedBox").innerHTML = items.length
-          ? `<strong>${items.length} choix sélectionné${items.length > 1 ? "s" : ""}</strong><br>${countryLabel()}`
-          : `<strong>Aucun choix sélectionné</strong><br>Demande sans engagement avant activation EXPLORE. Rien n’est précoché.`;
+          ? `<strong>${items.length} choix sélectionné${items.length > 1 ? "s" : ""}</strong><br>${selected.has("METIER") ? "Présence + logiciel métier" : selected.has("PRESENCE") ? "Présence seule" : "Option de visibilité séparée"}`
+          : `<strong>Aucun choix sélectionné</strong><br>Rien n’est précoché. Commence par DIGIY PRÉSENCE.`;
 
         $("choiceList").innerHTML = items.length
           ? items.map((p) => `
@@ -1192,7 +1210,12 @@ Je joins la capture / preuve de paiement à ce message.`;
         }
 
         $("benefits").innerHTML = (items.length
-          ? [...COMMON, ...items.flatMap((p) => p.bonus)]
+          ? [
+              ...COMMON,
+              ...items
+                .filter((p) => p.code !== "METIER" || selected.has("METIER"))
+                .flatMap((p) => p.bonus)
+            ]
           : [])
           .slice(0, 22)
           .map((x) => `<li>✅ ${x}</li>`)
@@ -1268,6 +1291,11 @@ Je joins la capture / preuve de paiement à ce message.`;
   </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
