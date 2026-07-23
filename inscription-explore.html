@@ -175,6 +175,7 @@
       text-align: left;
       color: #fff;
       min-height: 122px;
+      cursor: pointer;
     }
 
     .option.active {
@@ -459,6 +460,7 @@
       gap: 2px;
       padding: 10px 12px;
       text-align: left;
+      cursor: pointer;
     }
 
     .countryBtn strong {
@@ -629,12 +631,12 @@
         <p>
           DIGIY EXPLORE rend visibles les lieux, activités, excursions,
           guides, plages, artisans et expériences locales.
-          Commence par une formule de visibilité EXPLORE : 8P à 19 900 FCFA au Sénégal, puis 8A, 8B, 8C ou 8D selon l’ampleur du projet.
-          La fiche EXPLORE détaillée et le moteur métier restent une option distincte et facultative à +8 000 FCFA.
+          Commence par une formule de visibilité EXPLORE : 8P à 19 900 FCFA / 45 €, puis 8A, 8B, 8C ou 8D selon l’ampleur du projet.
+          La fiche EXPLORE détaillée et le moteur métier restent une option distincte et facultative à +8 000 FCFA / +15 €.
         </p>
 
         <div class="pills">
-          <span class="pill gold-emphasis">8P · 19 900 FCFA · Sénégal</span>
+          <span class="pill gold-emphasis">8P · 19 900 FCFA / 45 €</span>
           <span class="pill">8A · 30 000 FCFA / 49 €</span>
           <span class="pill">8B · 60 000 FCFA / 89 €</span>
           <span class="pill">8C · 120 000 FCFA / 149 €</span>
@@ -662,13 +664,13 @@
       <span class="exploreDoctrineTag">8P À 8D · FICHE + MOTEUR +8 000 / +15 € · 0% COMMISSION</span>
       <h2>Commencer par la visibilité. Monter selon le projet.</h2>
       <p>
-        8P est le premier palier EXPLORE au Sénégal : carte de visibilité numérique, QR, lien partageable, contact direct et présence sur le site pour 19 900 FCFA par mois.
+        8P est le premier palier EXPLORE : carte de visibilité numérique, QR, lien partageable, contact direct et présence sur le site pour 19 900 FCFA / 45 €.
         Les formules 8A à 8D renforcent ensuite la visibilité selon l’ampleur du projet.
         Aucune formule de visibilité n’inclut automatiquement la fiche EXPLORE détaillée ni le moteur métier.
-        L’option à +8 000 FCFA ajoute la fiche complète, l’organisation des contenus, les demandes, les expériences et le suivi opérationnel. PRO CARNET et RÉSEAU restent séparés.
+        L’option à +8 000 FCFA / +15 € ajoute la fiche complète, l’organisation des contenus, les demandes, les expériences et le suivi opérationnel. PRO CARNET et RÉSEAU restent séparés.
       </p>
       <div class="exploreDoctrineList">
-        <span>8P · Carte de visibilité · 19 900 FCFA · Sénégal</span>
+        <span>8P · Carte de visibilité · 19 900 FCFA / 45 €</span>
         <span>8A · Essentiel · 30 000 FCFA / 49 €</span>
         <span>8B · Pro · 60 000 FCFA / 89 €</span>
         <span>8C · Premium · 120 000 FCFA / 149 €</span>
@@ -714,11 +716,11 @@
       </section>
 
       <aside class="card summary" id="summary">
-        <h2>Ce que ma formule EXPLORE m’apporte</h2>
+        <h2>Ce que ma formule EXPLORE m'apporte</h2>
 
         <div class="box" id="selectedBox">
           <strong>Aucun choix sélectionné</strong><br>
-          Rien n’est précoché. Choisis une formule 8P, 8A, 8B, 8C ou 8D.
+          Rien n'est précoché. Choisis une formule 8P, 8A, 8B, 8C ou 8D.
         </div>
 
         <div class="proInfoBox" aria-label="Informations pro EXPLORE">
@@ -782,7 +784,7 @@
 
           <div class="proof">
             Après paiement Wave, envoie la capture ou la preuve par WhatsApp.
-            DIGIY vérifie puis accompagne l’activation de la visibilité EXPLORE et, si elle est choisie, de la fiche détaillée avec moteur métier.
+            DIGIY vérifie puis accompagne l'activation de la visibilité EXPLORE et, si elle est choisie, de la fiche détaillée avec moteur métier.
           </div>
 
           <div class="payBadge gold-emphasis" id="payBadge">
@@ -794,7 +796,7 @@
 
             <textarea
               id="notePayment"
-              placeholder="Ex : EXPLORE 8P — 19 900 FCFA ; fiche + moteur ajoutés +8 000 FCFA ; total 27 900 FCFA — Mamadou Diop."></textarea>
+              placeholder="Ex : EXPLORE 8P — 19 900 FCFA / 45 € ; fiche + moteur ajoutés +8 000 FCFA / +15 € ; total 27 900 FCFA / 60 € — Mamadou Diop."></textarea>
 
             <div class="noteHelp">
               Cette note part dans le message WhatsApp / SMS pour identifier
@@ -840,8 +842,7 @@
           cat: "base",
           name: "EXPLORE 8P · Carte de visibilité",
           fcfa: 19900,
-          eur: 0,
-          senegalOnly: true,
+          eur: 45,
           desc: "Premier palier EXPLORE : carte de visibilité numérique, QR, lien partageable, contact direct et présence sur le site, sans fiche détaillée ni moteur métier.",
           bonus: [
             "Carte de visibilité EXPLORE",
@@ -899,7 +900,7 @@
           name: "EXPLORE 8D · Installation",
           fcfa: 150000,
           eur: 199,
-          desc: "Visibilité d’installation pour une destination ou un projet EXPLORE structuré.",
+          desc: "Visibilité d'installation pour une destination ou un projet EXPLORE structuré.",
           bonus: [
             "Présence EXPLORE installation",
             "QR officiel",
@@ -997,7 +998,6 @@
       }
 
       function planAmount(plan) {
-        if (country === "france" && plan.senegalOnly) return "Non proposé en France";
         return country === "france" ? moneyEur(plan.eur) : moneyFcfa(plan.fcfa);
       }
 
@@ -1088,12 +1088,6 @@
       function setCountry(next, updateUrl) {
         country = next === "france" ? "france" : "senegal";
 
-        if (country === "france" && selected.has("8P")) {
-          selected.delete("8P");
-          selected.delete("METIER");
-          ["R7", "R15", "R30"].forEach((code) => selected.delete(code));
-        }
-
         document.querySelectorAll("[data-country]").forEach((button) => {
           button.classList.toggle("active", button.getAttribute("data-country") === country);
         });
@@ -1101,7 +1095,7 @@
         const note = $("countryNote");
         if (note) {
           note.innerHTML = country === "france"
-            ? "🇫🇷 France : 8P n’est pas proposé tant que son tarif France n’est pas validé. 8A <strong>49 €</strong> · 8B <strong>89 €</strong> · 8C <strong>149 €</strong> · 8D <strong>199 €</strong>. Fiche + moteur EXPLORE facultatifs : <strong>+15 €</strong>."
+            ? "🇫🇷 France : 8P <strong>45 €</strong> · 8A <strong>49 €</strong> · 8B <strong>89 €</strong> · 8C <strong>149 €</strong> · 8D <strong>199 €</strong>. Fiche + moteur EXPLORE facultatifs : <strong>+15 €</strong>."
             : "🇸🇳 Sénégal : 8P <strong>19 900</strong> · 8A <strong>30 000</strong> · 8B <strong>60 000</strong> · 8C <strong>120 000</strong> · 8D <strong>150 000 FCFA</strong>. Fiche + moteur EXPLORE facultatifs : <strong>+8 000 FCFA</strong>.";
         }
 
@@ -1134,15 +1128,12 @@
               const subscriberExtra = ["R7", "R15", "R30"].includes(p.code);
               const unavailable =
                 (p.code === "METIER" && !presenceSelected) ||
-                (subscriberExtra && !presenceSelected) ||
-                (country === "france" && p.senegalOnly);
+                (subscriberExtra && !presenceSelected);
               const note = p.code === "METIER"
                 ? (country === "france"
                     ? "Fiche + moteur facultatifs · +15 € / mois"
                     : "Fiche + moteur facultatifs · +8 000 FCFA / mois")
-                : (country === "france" && p.senegalOnly)
-                  ? "Sénégal uniquement"
-                  : (subscriberExtra && !presenceSelected)
+                : (subscriberExtra && !presenceSelected)
                     ? "Réservé à un abonné EXPLORE actif"
                     : "";
 
@@ -1215,7 +1206,7 @@ ${choiceLines()}
 
 Doctrine EXPLORE :
 - 8P, 8A, 8B, 8C ou 8D : choisir une seule formule de visibilité
-- 8P : carte de visibilité à 19 900 FCFA au Sénégal, sans fiche détaillée ni moteur
+- 8P : carte de visibilité à 19 900 FCFA / 45 €, sans fiche détaillée ni moteur
 - Fiche détaillée + moteur EXPLORE : option facultative à +8 000 FCFA / +15 €
 - PRO CARNET et RÉSEAU : séparés
 
@@ -1224,7 +1215,7 @@ Total : ${total.label}
 Règlement : ${paymentLabel()}${noteBlock()}
 
 Important : les tarifs France et Sénégal sont une grille pays, pas une conversion au taux de change.
-Important : DIGIY EXPLORE prend 0% commission. Le paiement concerne l’activation choisie.
+Important : DIGIY EXPLORE prend 0% commission. Le paiement concerne l'activation choisie.
 
 Après paiement, je vous envoie la preuve ici.
 
@@ -1265,7 +1256,7 @@ Je joins la capture / preuve de paiement à ce message.`;
 
         $("selectedBox").innerHTML = items.length
           ? `<strong>${items.length} choix sélectionné${items.length > 1 ? "s" : ""}</strong><br>${selected.has("METIER") ? "Visibilité EXPLORE + fiche détaillée et moteur" : ["8P","8A","8B","8C","8D"].some((code) => selected.has(code)) ? "Visibilité EXPLORE seule" : "Option de visibilité séparée"}`
-          : `<strong>Aucun choix sélectionné</strong><br>Rien n’est précoché. Choisis 8P, 8A, 8B, 8C ou 8D.`;
+          : `<strong>Aucun choix sélectionné</strong><br>Rien n'est précoché. Choisis 8P, 8A, 8B, 8C ou 8D.`;
 
         $("choiceList").innerHTML = items.length
           ? items.map((p) => `
@@ -1300,7 +1291,7 @@ Je joins la capture / preuve de paiement à ce message.`;
         if (proof) {
           proof.textContent = country === "france"
             ? "Depuis la France, règle par Sendwave vers le Wave Sénégal de JB BEAUVILLE, puis envoie la preuve par WhatsApp."
-            : "Après paiement Wave, envoie la capture ou la preuve par WhatsApp. DIGIY vérifie puis accompagne l’activation de la visibilité EXPLORE et, si elle est choisie, de la fiche détaillée avec moteur métier.";
+            : "Après paiement Wave, envoie la capture ou la preuve par WhatsApp. DIGIY vérifie puis accompagne l'activation de la visibilité EXPLORE et, si elle est choisie, de la fiche détaillée avec moteur métier.";
         }
 
         $("benefits").innerHTML = (items.length
