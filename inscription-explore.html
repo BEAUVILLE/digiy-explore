@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f3d32">
-  <meta name="digiy-version" content="explore-palier-8p-19900-fiche-moteur-8000-20260723">
-  <title>Demande EXPLORE — Activation visibilité · France · Sénégal · CODE 8</title>
+  <meta name="digiy-version" content="explore-direct-sms-coordonnees-obligatoires-en-haut-20260724">
+  <title>Demande EXPLORE — Coordonnées d’abord · SMS direct</title>
 
   <style>
     * {
@@ -337,7 +337,7 @@
 
 
     .proInfoBox {
-      margin-top: 12px;
+      margin: 14px 0 18px;
       border: 1px solid rgba(250, 204, 21, .38);
       border-radius: 18px;
       background: rgba(250, 204, 21, .10);
@@ -392,6 +392,46 @@
     .proInfoField input:focus {
       border-color: rgba(250, 204, 21, .88);
       box-shadow: 0 0 0 3px rgba(250, 204, 21, .16);
+    }
+
+    .requiredMark {
+      color: #fecaca;
+      font-weight: 1000;
+    }
+
+    .sendBlocked {
+      opacity: .48 !important;
+      filter: grayscale(.28);
+      cursor: not-allowed !important;
+    }
+
+    .smsDirectHelp {
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(56, 189, 248, .30);
+      background: rgba(56, 189, 248, .10);
+      color: #e0f2fe;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .formWarning {
+      display: none;
+      margin-top: 10px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(248, 113, 113, .45);
+      background: rgba(127, 29, 29, .35);
+      color: #fee2e2;
+      line-height: 1.45;
+      font-weight: 950;
+    }
+
+    .formWarning.show {
+      display: block;
     }
 
     .line {
@@ -687,6 +727,41 @@
 
         <p>Choisis une seule formule de visibilité EXPLORE. Ajoute ensuite la fiche détaillée et le moteur métier uniquement si ton activité le demande.</p>
 
+        <div class="proInfoBox" id="proInfoBox" aria-label="Informations obligatoires EXPLORE">
+          <h3>1 · Vos coordonnées</h3>
+          <p>
+            Renseignez d’abord ces informations. Aucun SMS, WhatsApp ou envoi de preuve
+            ne peut partir sans elles. Les champs marqués <span class="requiredMark">*</span> sont obligatoires.
+          </p>
+
+          <div class="proInfoGrid">
+            <div class="proInfoField">
+              <label for="proName">Nom / responsable <span class="requiredMark">*</span></label>
+              <input id="proName" name="proName" autocomplete="name"
+                     placeholder="Ex : Mamadou Diop" required>
+            </div>
+
+            <div class="proInfoField">
+              <label for="proPhone">Téléphone / WhatsApp <span class="requiredMark">*</span></label>
+              <input id="proPhone" name="proPhone" type="tel" inputmode="tel" autocomplete="tel"
+                     placeholder="Ex : +221 77 000 00 00" required minlength="8">
+            </div>
+
+            <div class="proInfoField">
+              <label for="proZone">Zone / ville <span class="requiredMark">*</span></label>
+              <input id="proZone" name="proZone" autocomplete="address-level2"
+                     placeholder="Ex : Saly, Mbour, Dakar" required>
+            </div>
+
+            <div class="proInfoField">
+              <label for="proActivity">Lieu / activité <span class="requiredMark">*</span></label>
+              <input id="proActivity" name="proActivity" autocomplete="organization"
+                     placeholder="Ex : sortie pêche, guide, lieu à visiter" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">2 · PAYS ET FORMULE EXPLORE</div>
         <div class="countryBox" aria-label="Choix pays EXPLORE">
           <div class="countryTitle">🌍 Choisir le pays de règlement</div>
           <div class="countryGrid">
@@ -705,10 +780,10 @@
           </div>
         </div>
 
-        <div class="section">1 · VISIBILITÉ EXPLORE — CHOISIR 8P, 8A, 8B, 8C OU 8D</div>
+        <div class="section">3 · VISIBILITÉ EXPLORE — CHOISIR 8P, 8A, 8B, 8C OU 8D</div>
         <div class="prices" id="baseOptions"></div>
 
-        <div class="section">2 · FICHE DÉTAILLÉE + MOTEUR EXPLORE — FACULTATIFS</div>
+        <div class="section">4 · FICHE DÉTAILLÉE + MOTEUR EXPLORE — FACULTATIFS</div>
         <div class="prices" id="metierOptions"></div>
 
         <div class="section">📣 RÉSEAU abonné / FIRST non-abonné</div>
@@ -721,33 +796,6 @@
         <div class="box" id="selectedBox">
           <strong>Aucun choix sélectionné</strong><br>
           Rien n'est précoché. Choisis une formule 8P, 8A, 8B, 8C ou 8D.
-        </div>
-
-        <div class="proInfoBox" aria-label="Informations pro EXPLORE">
-          <h3>Infos pro / lieu</h3>
-          <p>Ces informations servent à identifier le paiement et la formule EXPLORE choisie.</p>
-
-          <div class="proInfoGrid">
-            <div class="proInfoField">
-              <label for="proName">Nom / responsable</label>
-              <input id="proName" autocomplete="name" placeholder="Ex : Mamadou Diop">
-            </div>
-
-            <div class="proInfoField">
-              <label for="proPhone">Téléphone / WhatsApp</label>
-              <input id="proPhone" inputmode="tel" autocomplete="tel" placeholder="Ex : +221 77 000 00 00">
-            </div>
-
-            <div class="proInfoField">
-              <label for="proZone">Zone / ville</label>
-              <input id="proZone" autocomplete="address-level2" placeholder="Ex : Saly, Mbour, Dakar">
-            </div>
-
-            <div class="proInfoField">
-              <label for="proActivity">Lieu / activité</label>
-              <input id="proActivity" autocomplete="organization" placeholder="Ex : sortie pêche, guide, lieu à visiter">
-            </div>
-          </div>
         </div>
 
         <div id="choiceList"></div>
@@ -811,12 +859,19 @@
 
         <div class="actions">
           <a class="btn green" id="btnWa">💬 WhatsApp</a>
-          <button class="btn" id="btnSms">📱 SMS</button>
+          <button class="btn gold" id="btnSms">📱 Ouvrir mon SMS déjà rempli</button>
           <button class="btn clear" id="btnClear">🧹 Effacer</button>
         </div>
 
+        <div class="smsDirectHelp">
+          Sur téléphone, aucun copier-coller : Messages s’ouvre avec le numéro DIGIY
+          et une demande courte déjà remplie. Il reste seulement à appuyer sur Envoyer.
+        </div>
+
+        <div class="formWarning" id="formWarning" role="alert" aria-live="assertive"></div>
+
         <div class="actions">
-          <button class="btn" id="btnCopyWave">📋 Copier paiement</button>
+          <button class="btn" id="btnCopyWave">Autre solution : copier le paiement</button>
           <a class="btn gold" id="btnProof">📸 Envoyer preuve</a>
           <a class="btn gold" href="https://pro-explore.digiylyfe.com/">🔐 Espace pro</a>
         </div>
@@ -835,6 +890,12 @@
       const SENDWAVE_LABEL = "Sendwave France → Wave Sénégal : JB BEAUVILLE · +221 77 134 28 89";
       const IDENTITY_KEY = "digiy_explore_payment_identity_v1";
       const COUNTRY_KEY = "digiy_explore_payment_country_v1";
+      const IS_IOS_OR_IPADOS =
+        /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const MOBILE_DEVICE =
+        /Android|Windows Phone|Mobile/i.test(navigator.userAgent) ||
+        IS_IOS_OR_IPADOS;
 
       const PLANS = [
         {
@@ -1190,6 +1251,94 @@
         return items.map((p) => `- ${p.code} · ${p.name} · ${planAmount(p)}`).join("\n") || "Aucun choix sélectionné";
       }
 
+      function requiredIdentityFields() {
+        return ["proName", "proPhone", "proZone", "proActivity"]
+          .map((id) => $(id))
+          .filter(Boolean);
+      }
+
+      function hasValidExploreChoice() {
+        return ["8P", "8A", "8B", "8C", "8D", "FIRST"]
+          .some((code) => selected.has(code));
+      }
+
+      function showFormWarning(message) {
+        const warning = $("formWarning");
+        if (!warning) return;
+        warning.textContent = message || "";
+        warning.classList.toggle("show", Boolean(message));
+      }
+
+      function validateBeforeSend(showMessage) {
+        const invalidField = requiredIdentityFields().find(
+          (field) => !String(field.value || "").trim() || !field.checkValidity()
+        );
+
+        if (invalidField) {
+          if (showMessage) {
+            showFormWarning("⚠️ Renseigne d’abord le nom, le téléphone, la ville et le lieu / activité.");
+            invalidField.focus({ preventScroll: true });
+            invalidField.scrollIntoView({ behavior: "smooth", block: "center" });
+            invalidField.reportValidity();
+          }
+          return false;
+        }
+
+        if (!hasValidExploreChoice()) {
+          if (showMessage) {
+            showFormWarning("⚠️ Choisis une formule EXPLORE 8P à 8D, ou FIRST, avant d’envoyer.");
+            $("baseOptions")?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          return false;
+        }
+
+        showFormWarning("");
+        return true;
+      }
+
+      function updateSendState() {
+        const ready = requiredIdentityFields().every(
+          (field) => String(field.value || "").trim() && field.checkValidity()
+        ) && hasValidExploreChoice();
+
+        ["btnWa", "btnSms", "btnProof"].forEach((id) => {
+          const el = $(id);
+          if (!el) return;
+          el.classList.toggle("sendBlocked", !ready);
+          el.setAttribute("aria-disabled", String(!ready));
+        });
+      }
+
+      function shortText(value, maxLength) {
+        const clean = String(value || "").replace(/\s+/g, " ").trim();
+        return clean.length > maxLength ? clean.slice(0, maxLength - 1) + "…" : clean;
+      }
+
+      function smsMsg() {
+        const d = identityData();
+        const total = totals();
+        const codes = chosen().map((p) => p.code).join(" + ") || "Aucun choix";
+
+        return [
+          "DEMANDE DIGIY EXPLORE",
+          "Pays: " + (country === "france" ? "France" : "Senegal"),
+          "Choix: " + codes,
+          "Total: " + total.label,
+          "Nom/responsable: " + shortText(d.name, 55),
+          "Telephone candidat: " + shortText(d.phone, 28),
+          "Zone/ville: " + shortText(d.zone, 45),
+          "Lieu/activite: " + shortText(d.activity, 75),
+          paymentNote() ? "Note: " + shortText(paymentNote(), 130) : "",
+          "Je demande a etre recontacte pour valider mon activation EXPLORE.",
+          "0% commission DIGIY."
+        ].filter(Boolean).join("\n");
+      }
+
+      function buildSmsHref(message) {
+        const separator = IS_IOS_OR_IPADOS ? "&" : "?";
+        return "sms:+" + TEL + separator + "body=" + encodeURIComponent(message);
+      }
+
       function msg() {
         const total = totals();
         return `Bonjour JB, je veux avancer avec DIGIY EXPLORE.
@@ -1308,6 +1457,7 @@ Je joins la capture / preuve de paiement à ce message.`;
 
         $("btnWa").href = "https://wa.me/" + TEL + "?text=" + encodeURIComponent(msg());
         $("btnProof").href = "https://wa.me/" + TEL + "?text=" + encodeURIComponent(proofMsg());
+        updateSendState();
 
         if (scroll && matchMedia("(max-width:850px)").matches) {
           summary.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1318,13 +1468,21 @@ Je joins la capture / preuve de paiement à ce message.`;
         button.addEventListener("click", () => setCountry(button.getAttribute("data-country"), true));
       });
 
-      $("btnSms").onclick = () => {
-        if (!navigator.clipboard) return;
-        navigator.clipboard.writeText(msg()).then(() => {
-          $("btnSms").textContent = "✅ Message SMS copié";
-          setTimeout(() => { $("btnSms").textContent = "📱 SMS"; }, 1600);
-        });
+      $("btnSms").onclick = (event) => {
+        event.preventDefault();
+        if (!validateBeforeSend(true)) return;
+        window.location.href = buildSmsHref(smsMsg());
       };
+
+      $("btnWa").addEventListener("click", (event) => {
+        if (!validateBeforeSend(true)) event.preventDefault();
+      });
+
+      $("btnProof").addEventListener("click", (event) => {
+        if (!validateBeforeSend(true)) event.preventDefault();
+      });
+
+      $("btnCopyWave").hidden = MOBILE_DEVICE;
 
       $("btnCopyWave").onclick = () => {
         if (!navigator.clipboard) return;
@@ -1337,6 +1495,12 @@ Je joins la capture / preuve de paiement à ce message.`;
       $("btnClear").onclick = () => {
         selected.clear();
         $("notePayment").value = "";
+        ["proName", "proPhone", "proZone", "proActivity"].forEach((id) => {
+          const field = $(id);
+          if (field) field.value = "";
+        });
+        try { localStorage.removeItem(IDENTITY_KEY); } catch (_) {}
+        showFormWarning("");
         update(true);
       };
 
@@ -1376,6 +1540,46 @@ Je joins la capture / preuve de paiement à ce message.`;
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
