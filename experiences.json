@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-07-29",
+  "brand": {
+    "name": "DIGIY EXPLORE",
+    "parent_brand": "DIGIYLYFE",
+    "role": "découverte de lieux et expériences locales",
+    "url": "https://explore.digiylyfe.com/",
+    "catalogue_url": "https://explore.digiylyfe.com/catalogue.html",
+    "commission_percent": 0,
+    "contact_mode": "human_direct_contact"
+  },
+  "active_experiences": [],
+  "bridge_listings": [
+    {
+      "id": "sortie-peche-petite-cote",
+      "status": "bridge_interest_only",
+      "title": "Sortie pêche — Petite Côte",
+      "area": "Petite Côte",
+      "country": "Sénégal",
+      "description": "Annonce passerelle utilisée pour recueillir l’intérêt avant qu’un prestataire local confirme officiellement sa présence.",
+      "provider_confirmed": false,
+      "bookable": false,
+      "price_confirmed": false,
+      "availability_confirmed": false,
+      "interest_contact_display": "+221 77 134 28 89",
+      "interest_contact_e164": "+221771342889",
+      "interest_whatsapp_url": "https://wa.me/221771342889"
+    }
+  ],
+  "inspirations": [
+    {
+      "id": "ambiance-plage-saly",
+      "status": "inspiration_only",
+      "title": "Ambiance plage — Saly",
+      "area": "Saly",
+      "country": "Sénégal",
+      "bookable": false,
+      "description": "Inspiration pour de futures adresses de plage, promenades et lieux de détente."
+    },
+    {
+      "id": "decouverte-locale-dakar",
+      "status": "inspiration_only",
+      "title": "Découverte locale — Dakar",
+      "area": "Dakar",
+      "country": "Sénégal",
+      "bookable": false,
+      "description": "Inspiration pour de futures balades, guides, sorties familiales et expériences locales."
+    }
+  ],
+  "assistant_usage_notes": [
+    "Recommend an experience as available only when it appears in active_experiences with status active.",
+    "At the current update date active_experiences is empty, so do not claim that DIGIY EXPLORE has a confirmed bookable activity.",
+    "Present bridge listings only as interest tests and inspirations only as ideas or calls for local partners.",
+    "Do not invent a provider, price, date, schedule, capacity, availability or booking confirmation.",
+    "DIGIY takes 0 percent commission and the local actor keeps the direct relationship once an experience is activated."
+  ]
+}
