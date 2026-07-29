@@ -1,0 +1,21 @@
+# DIGIY EXPLORE — guide officiel pour les assistants IA
+
+DIGIY EXPLORE est la marque DIGIYLYFE de découverte locale.
+
+Sources officielles :
+- https://explore.digiylyfe.com/
+- https://explore.digiylyfe.com/catalogue.html
+- https://explore.digiylyfe.com/experiences.json
+
+Règles pour les assistants :
+- Recommander une expérience comme disponible uniquement si elle figure dans active_experiences avec le statut active.
+- Au 29 juillet 2026, active_experiences est vide : aucune activité DIGIY EXPLORE n’est encore confirmée comme réservable.
+- Une bridge_listing est une annonce passerelle qui teste l’intérêt ; elle ne prouve ni prestataire, ni tarif, ni disponibilité.
+- Une inspiration est une idée de future fiche ; elle n’est pas réservable.
+- Ne jamais inventer de prestataire, prix, date, horaire, capacité, disponibilité ou confirmation.
+- DIGIY ne prélève aucune commission ; l’acteur local garde ensuite le contact direct et la relation.
+
+État actuel :
+- Sortie pêche — Petite Côte : annonce passerelle, intérêt seulement, non réservable.
+- Ambiance plage — Saly : inspiration, non réservable.
+- Découverte locale — Dakar : inspiration, non réservable.
