@@ -1,0 +1,1621 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#0f3d32">
+  <meta name="digiy-version" content="explore-direct-sms-coordonnees-obligatoires-en-haut-20260724">
+  <title>Demande EXPLORE — Coordonnées d’abord · SMS direct</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(145deg, #0f3d32, #06271f);
+      color: #edfff7;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 850;
+      padding-bottom: 92px;
+    }
+
+    .app {
+      max-width: 1060px;
+      margin: auto;
+      padding: 14px;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin: -14px -14px 14px;
+      padding: 12px 14px;
+      background: rgba(6, 39, 31, .94);
+      border-bottom: 1px solid rgba(255, 255, 255, .16);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: 1000;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn,
+    button,
+    .nav a {
+      min-height: 48px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .08);
+      color: #fff;
+      padding: 0 14px;
+      font: inherit;
+      font-weight: 1000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .gold {
+      background: linear-gradient(135deg, #facc15, #fb923c) !important;
+      color: #061b14 !important;
+      border: 0 !important;
+    }
+
+    .green {
+      background: linear-gradient(135deg, #22c55e, #facc15) !important;
+      color: #061b14 !important;
+      border: 0 !important;
+    }
+
+    .clear {
+      background: rgba(250, 204, 21, .12) !important;
+      color: #fff8dc !important;
+    }
+
+    .hero,
+    .card {
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 24px;
+      background: rgba(18, 63, 52, .95);
+      box-shadow: 0 18px 52px rgba(0, 0, 0, .28);
+    }
+
+    .hero {
+      padding: 18px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      line-height: 1.02;
+      margin: 0;
+      font-weight: 1000;
+    }
+
+    p {
+      color: rgba(237, 255, 247, .78);
+      line-height: 1.6;
+    }
+
+    .pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: rgba(56, 189, 248, .10);
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 14px;
+    }
+
+    .card {
+      padding: 16px;
+    }
+
+    .section {
+      margin: 16px 0 10px;
+      padding: 12px;
+      border: 1px solid rgba(250, 204, 21, .38);
+      background: rgba(250, 204, 21, .12);
+      border-radius: 16px;
+      color: #fff3b2;
+      font-weight: 1000;
+    }
+
+    .prices {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .option {
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .08);
+      padding: 13px;
+      display: grid;
+      gap: 7px;
+      text-align: left;
+      color: #fff;
+      min-height: 122px;
+      cursor: pointer;
+    }
+
+    .option.active {
+      border-color: #facc15;
+      background: rgba(250, 204, 21, .18);
+    }
+
+    .option.disabled {
+      opacity: .46;
+      cursor: not-allowed;
+      filter: grayscale(.15);
+    }
+
+    .code {
+      display: inline-flex;
+      width: max-content;
+      min-width: 54px;
+      height: 38px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #38bdf8, #facc15);
+      color: #061b14;
+      font-weight: 1000;
+    }
+
+    .code.extra {
+      background: linear-gradient(135deg, #22c55e, #facc15);
+      color: #061b14;
+    }
+
+    .amount {
+      color: #fff3b2;
+      font-weight: 1000;
+    }
+
+    .summary {
+      position: sticky;
+      top: 82px;
+    }
+
+    .box,
+    .payment {
+      margin-top: 12px;
+      border: 1px solid rgba(250, 204, 21, .38);
+      border-radius: 18px;
+      background: rgba(250, 204, 21, .10);
+      padding: 12px;
+    }
+
+    .payment {
+      background: linear-gradient(145deg, rgba(250, 204, 21, .14), rgba(34, 197, 94, .10));
+      border-color: rgba(250, 204, 21, .55);
+    }
+
+    .waveHero {
+      margin-top: 12px;
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #facc15, #f59e0b);
+      color: #061b14;
+      border: 1px solid rgba(250, 204, 21, .75);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .28);
+    }
+
+    .waveHero small {
+      display: block;
+      font-size: 13px;
+      font-weight: 1000;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .88;
+      margin-bottom: 7px;
+    }
+
+    .waveHero strong {
+      display: block;
+      font-size: clamp(24px, 5.6vw, 38px);
+      line-height: 1.12;
+      font-weight: 1000;
+      letter-spacing: -.035em;
+    }
+
+    .paymentTitle {
+      font-size: 20px;
+      color: #fff3b2;
+      font-weight: 1000;
+      margin-bottom: 8px;
+    }
+
+    .payLine {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .13);
+    }
+
+    .payLine:last-child {
+      border-bottom: 0;
+    }
+
+    .payLine span {
+      color: rgba(237, 255, 247, .78);
+    }
+
+    .proof {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(6, 39, 31, .70);
+      border: 1px dashed rgba(250, 204, 21, .45);
+      color: #fff8dc;
+      line-height: 1.45;
+      font-weight: 950;
+    }
+
+    .noteBox {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(250, 204, 21, .45);
+    }
+
+    .noteBox label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff3b2;
+      font-weight: 1000;
+    }
+
+    .noteBox textarea {
+      width: 100%;
+      min-height: 118px;
+      resize: vertical;
+      border: 1px solid rgba(250, 204, 21, .42);
+      border-radius: 16px;
+      background: rgba(6, 39, 31, .70);
+      color: #fff;
+      padding: 12px;
+      font: inherit;
+      font-weight: 850;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .noteBox textarea::placeholder {
+      color: rgba(255, 255, 255, .62);
+    }
+
+    .noteHelp {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(237, 255, 247, .82);
+      font-weight: 850;
+    }
+
+
+    .proInfoBox {
+      margin: 14px 0 18px;
+      border: 1px solid rgba(250, 204, 21, .38);
+      border-radius: 18px;
+      background: rgba(250, 204, 21, .10);
+      padding: 12px;
+    }
+
+    .proInfoBox h3 {
+      margin: 0 0 8px;
+      color: #fff3b2;
+      font-size: 20px;
+      line-height: 1.12;
+    }
+
+    .proInfoBox p {
+      margin: 0 0 12px;
+      color: rgba(237, 255, 247, .82);
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 850;
+    }
+
+    .proInfoGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .proInfoField label {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff3b2;
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    .proInfoField input {
+      width: 100%;
+      border: 1px solid rgba(250, 204, 21, .42);
+      border-radius: 16px;
+      background: rgba(6, 39, 31, .70);
+      color: #fff;
+      padding: 12px;
+      font: inherit;
+      font-weight: 850;
+      outline: none;
+    }
+
+    .proInfoField input::placeholder {
+      color: rgba(255, 255, 255, .62);
+    }
+
+    .proInfoField input:focus {
+      border-color: rgba(250, 204, 21, .88);
+      box-shadow: 0 0 0 3px rgba(250, 204, 21, .16);
+    }
+
+    .requiredMark {
+      color: #fecaca;
+      font-weight: 1000;
+    }
+
+    .sendBlocked {
+      opacity: .48 !important;
+      filter: grayscale(.28);
+      cursor: not-allowed !important;
+    }
+
+    .smsDirectHelp {
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(56, 189, 248, .30);
+      background: rgba(56, 189, 248, .10);
+      color: #e0f2fe;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .formWarning {
+      display: none;
+      margin-top: 10px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(248, 113, 113, .45);
+      background: rgba(127, 29, 29, .35);
+      color: #fee2e2;
+      line-height: 1.45;
+      font-weight: 950;
+    }
+
+    .formWarning.show {
+      display: block;
+    }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, .14);
+      padding: 8px 0;
+    }
+
+    .line.final {
+      font-size: 24px;
+      color: #fff3b2;
+      border-bottom: 0;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .floating {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 50;
+      border-radius: 18px;
+      min-height: 60px;
+    }
+
+
+
+    .countryBox {
+      margin: 14px 0;
+      border: 1px solid rgba(250, 204, 21, .34);
+      border-radius: 20px;
+      padding: 13px;
+      background: rgba(250, 204, 21, .10);
+      display: grid;
+      gap: 10px;
+    }
+
+    .countryTitle {
+      color: #fff3b2;
+      font-size: 18px;
+      font-weight: 1000;
+      line-height: 1.15;
+    }
+
+    .countryGrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .countryBtn {
+      min-height: 58px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .08);
+      color: #fff;
+      display: grid;
+      gap: 2px;
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .countryBtn strong {
+      color: #fff3b2;
+      font-size: 16px;
+      font-weight: 1000;
+    }
+
+    .countryBtn span {
+      color: rgba(237, 255, 247, .78);
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 900;
+    }
+
+    .countryBtn.active {
+      border-color: rgba(250, 204, 21, .86);
+      background: rgba(250, 204, 21, .22);
+      box-shadow: 0 12px 24px rgba(250, 204, 21, .12);
+    }
+
+    .countryNote,
+    .payBadge {
+      border-radius: 16px;
+      border: 1px dashed rgba(250, 204, 21, .34);
+      background: rgba(6, 39, 31, .48);
+      color: #fff8dc;
+      padding: 10px;
+      font-size: 13px;
+      line-height: 1.38;
+      font-weight: 950;
+    }
+
+    .gold-emphasis {
+      border-color: rgba(250, 204, 21, .78) !important;
+      background: linear-gradient(135deg, rgba(250, 204, 21, .28), rgba(251, 146, 60, .16)) !important;
+      color: #fff8dc !important;
+      box-shadow: 0 12px 28px rgba(250, 204, 21, .14) !important;
+    }
+
+    .exploreDoctrine {
+      margin: 0 0 14px;
+      border: 2px solid rgba(250, 204, 21, .58);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at top right, rgba(250, 204, 21, .22), transparent 38%),
+        linear-gradient(145deg, rgba(18, 63, 52, .98), rgba(6, 39, 31, .96));
+      box-shadow: 0 18px 52px rgba(0, 0, 0, .28);
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .exploreDoctrineTag {
+      display: inline-flex;
+      width: max-content;
+      max-width: 100%;
+      min-height: 34px;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, .68);
+      background: rgba(250, 204, 21, .16);
+      color: #fff3b2;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .exploreDoctrine h2 {
+      margin: 0;
+      color: #fff3b2;
+      font-size: clamp(28px, 4.8vw, 48px);
+      line-height: 1;
+      letter-spacing: -.04em;
+      font-weight: 1000;
+    }
+
+    .exploreDoctrine p {
+      margin: 0;
+      color: rgba(237, 255, 247, .84);
+      line-height: 1.62;
+      font-weight: 850;
+    }
+
+    .exploreDoctrineList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 9px;
+    }
+
+    .exploreDoctrineList span {
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: rgba(255, 255, 255, .09);
+      border-radius: 17px;
+      padding: 11px;
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 1000;
+    }
+
+    .exploreDoctrineQuote {
+      border-left: 4px solid #facc15;
+      background: rgba(0, 0, 0, .16);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #fff3b2 !important;
+      font-weight: 1000 !important;
+    }
+
+    @media (max-width: 850px) {
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        position: relative;
+      }
+
+      .prices {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .proInfoGrid,
+      .countryGrid,
+      .exploreDoctrineList {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .nav a {
+        flex: 1;
+      }
+
+      .payLine {
+        display: grid;
+        gap: 3px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="top">
+      <a class="brand" href="./index.html">🌍 DIGIY EXPLORE · demande</a>
+
+      <nav class="nav">
+        <a href="./index.html">← EXPLORE public</a>
+        <a href="https://digiy-hub.digiylyfe.com/">🧭 HUB</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Faire connaître mon lieu, mon activité, mon expérience.</h1>
+
+        <p>
+          DIGIY EXPLORE rend visibles les lieux, activités, excursions,
+          guides, plages, artisans et expériences locales.
+          Commence par une formule de visibilité EXPLORE : 8P à 19 900 FCFA / 45 €, puis 8A, 8B, 8C ou 8D selon l’ampleur du projet.
+          La fiche EXPLORE détaillée et le moteur métier restent une option distincte et facultative à +8 000 FCFA / +15 €.
+        </p>
+
+        <div class="pills">
+          <span class="pill gold-emphasis">8P · 19 900 FCFA / 45 €</span>
+          <span class="pill">8A · 30 000 FCFA / 49 €</span>
+          <span class="pill">8B · 60 000 FCFA / 89 €</span>
+          <span class="pill">8C · 120 000 FCFA / 149 €</span>
+          <span class="pill">8D · 150 000 FCFA / 199 €</span>
+          <span class="pill gold-emphasis">Aucun module imposé</span>
+          <span class="pill">QR / lien</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="waveHero">
+          <small>Paiement Wave / Sendwave</small>
+          <strong>Wave : JB BEAUVILLE · +221 77 134 28 89</strong>
+        </div>
+
+        <p>
+          Choix cumulables, date dans le message, sous-total, total, WhatsApp
+          ou SMS. Sénégal : Wave direct.
+          <strong class="gold-emphasis" style="display:inline-flex;padding:2px 8px;border-radius:999px;">France : Sendwave vers Wave Sénégal</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section class="exploreDoctrine" aria-label="Doctrine commerciale EXPLORE">
+      <span class="exploreDoctrineTag">8P À 8D · FICHE + MOTEUR +8 000 / +15 € · 0% COMMISSION</span>
+      <h2>Commencer par la visibilité. Monter selon le projet.</h2>
+      <p>
+        8P est le premier palier EXPLORE : carte de visibilité numérique, QR, lien partageable, contact direct et présence sur le site pour 19 900 FCFA / 45 €.
+        Les formules 8A à 8D renforcent ensuite la visibilité selon l’ampleur du projet.
+        Aucune formule de visibilité n’inclut automatiquement la fiche EXPLORE détaillée ni le moteur métier.
+        L’option à +8 000 FCFA / +15 € ajoute la fiche complète, l’organisation des contenus, les demandes, les expériences et le suivi opérationnel. PRO CARNET et RÉSEAU restent séparés.
+      </p>
+      <div class="exploreDoctrineList">
+        <span>8P · Carte de visibilité · 19 900 FCFA / 45 €</span>
+        <span>8A · Essentiel · 30 000 FCFA / 49 €</span>
+        <span>8B · Pro · 60 000 FCFA / 89 €</span>
+        <span>8C · Premium · 120 000 FCFA / 149 €</span>
+        <span>8D · Installation · 150 000 FCFA / 199 €</span>
+      </div>
+      <p class="exploreDoctrineQuote">
+        DIGIY EXPLORE ne vend pas une commission sur le territoire. DIGIY construit la route visible entre le visiteur et l’acteur local.
+      </p>
+    </section>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Activation EXPLORE</h2>
+
+        <p>Choisis une seule formule de visibilité EXPLORE. Ajoute ensuite la fiche détaillée et le moteur métier uniquement si ton activité le demande.</p>
+
+        <div class="proInfoBox" id="proInfoBox" aria-label="Informations obligatoires EXPLORE">
+          <h3>1 · Vos coordonnées</h3>
+          <p>
+            Renseignez d’abord ces informations. Aucun SMS, WhatsApp ou envoi de preuve
+            ne peut partir sans elles. Les champs marqués <span class="requiredMark">*</span> sont obligatoires.
+          </p>
+
+          <div class="proInfoGrid">
+            <div class="proInfoField">
+              <label for="proName">Nom / responsable <span class="requiredMark">*</span></label>
+              <input id="proName" name="proName" autocomplete="name"
+                     placeholder="Ex : Mamadou Diop" required>
+            </div>
+
+            <div class="proInfoField">
+              <label for="proPhone">Téléphone / WhatsApp <span class="requiredMark">*</span></label>
+              <input id="proPhone" name="proPhone" type="tel" inputmode="tel" autocomplete="tel"
+                     placeholder="Ex : +221 77 000 00 00" required minlength="8">
+            </div>
+
+            <div class="proInfoField">
+              <label for="proZone">Zone / ville <span class="requiredMark">*</span></label>
+              <input id="proZone" name="proZone" autocomplete="address-level2"
+                     placeholder="Ex : Saly, Mbour, Dakar" required>
+            </div>
+
+            <div class="proInfoField">
+              <label for="proActivity">Lieu / activité <span class="requiredMark">*</span></label>
+              <input id="proActivity" name="proActivity" autocomplete="organization"
+                     placeholder="Ex : sortie pêche, guide, lieu à visiter" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">2 · PAYS ET FORMULE EXPLORE</div>
+        <div class="countryBox" aria-label="Choix pays EXPLORE">
+          <div class="countryTitle">🌍 Choisir le pays de règlement</div>
+          <div class="countryGrid">
+            <button class="countryBtn active" type="button" data-country="senegal">
+              <strong>🇸🇳 Sénégal</strong>
+              <span>Tarifs FCFA · Wave direct</span>
+            </button>
+            <button class="countryBtn gold-emphasis" type="button" data-country="france">
+              <strong>🇫🇷 France</strong>
+              <span>Tarifs EUR · Sendwave vers Wave Sénégal</span>
+            </button>
+          </div>
+          <div class="countryNote" id="countryNote">
+            Sénégal : 8P 19 900 · 8A 30 000 · 8B 60 000 · 8C 120 000 · 8D 150 000 FCFA.
+            Fiche EXPLORE détaillée + moteur facultatifs : +8 000 FCFA.
+          </div>
+        </div>
+
+        <div class="section">3 · VISIBILITÉ EXPLORE — CHOISIR 8P, 8A, 8B, 8C OU 8D</div>
+        <div class="prices" id="baseOptions"></div>
+
+        <div class="section">4 · FICHE DÉTAILLÉE + MOTEUR EXPLORE — FACULTATIFS</div>
+        <div class="prices" id="metierOptions"></div>
+
+        <div class="section">📣 RÉSEAU abonné / FIRST non-abonné</div>
+        <div class="prices" id="reseauOptions"></div>
+      </section>
+
+      <aside class="card summary" id="summary">
+        <h2>Ce que ma formule EXPLORE m'apporte</h2>
+
+        <div class="box" id="selectedBox">
+          <strong>Aucun choix sélectionné</strong><br>
+          Rien n'est précoché. Choisis une formule 8P, 8A, 8B, 8C ou 8D.
+        </div>
+
+        <div id="choiceList"></div>
+
+        <div class="box">
+          <div class="line">
+            <span>Sous-total</span>
+            <strong id="subtotalText">0 FCFA</strong>
+          </div>
+
+          <div class="line">
+            <span>Ajustement / remise</span>
+            <strong>0 FCFA</strong>
+          </div>
+
+          <div class="line final">
+            <span>Total</span>
+            <strong id="totalText">0 FCFA</strong>
+          </div>
+        </div>
+
+        <div class="payment">
+          <div class="paymentTitle">💳 Paiement Wave</div>
+
+          <div class="waveHero">
+            <small>Nom et numéro de paiement</small>
+            <strong>Wave : JB BEAUVILLE · +221 77 134 28 89</strong>
+          </div>
+
+          <div class="payLine">
+            <span>Montant à payer</span>
+            <strong id="payTotal">0 FCFA</strong>
+          </div>
+
+          <div class="proof">
+            Après paiement Wave, envoie la capture ou la preuve par WhatsApp.
+            DIGIY vérifie puis accompagne l'activation de la visibilité EXPLORE et, si elle est choisie, de la fiche détaillée avec moteur métier.
+          </div>
+
+          <div class="payBadge gold-emphasis" id="payBadge">
+            🇸🇳 Sénégal : règlement Wave direct. 🇫🇷 France : règlement Sendwave vers Wave Sénégal.
+          </div>
+
+          <div class="noteBox">
+            <label for="notePayment">📝 Note / preuve paiement</label>
+
+            <textarea
+              id="notePayment"
+              placeholder="Ex : EXPLORE 8P — 19 900 FCFA / 45 € ; fiche + moteur ajoutés +8 000 FCFA / +15 € ; total 27 900 FCFA / 60 € — Mamadou Diop."></textarea>
+
+            <div class="noteHelp">
+              Cette note part dans le message WhatsApp / SMS pour identifier
+              clairement le paiement.
+            </div>
+          </div>
+        </div>
+
+        <div class="box" id="dateBox">Date de demande : —</div>
+
+        <ul id="benefits"></ul>
+
+        <div class="actions">
+          <a class="btn green" id="btnWa">💬 WhatsApp</a>
+          <button class="btn gold" id="btnSms">📱 Ouvrir mon SMS déjà rempli</button>
+          <button class="btn clear" id="btnClear">🧹 Effacer</button>
+        </div>
+
+        <div class="smsDirectHelp">
+          Sur téléphone, aucun copier-coller : Messages s’ouvre avec le numéro DIGIY
+          et une demande courte déjà remplie. Il reste seulement à appuyer sur Envoyer.
+        </div>
+
+        <div class="formWarning" id="formWarning" role="alert" aria-live="assertive"></div>
+
+        <div class="actions">
+          <button class="btn" id="btnCopyWave">Autre solution : copier le paiement</button>
+          <a class="btn gold" id="btnProof">📸 Envoyer preuve</a>
+          <a class="btn gold" href="https://pro-explore.digiylyfe.com/">🔐 Espace pro</a>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <button class="gold floating" id="btnFloating">📱 Voir total</button>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const TEL = "221771342889";
+      const WAVE_LABEL = "Wave Sénégal : JB BEAUVILLE · +221 77 134 28 89";
+      const SENDWAVE_LABEL = "Sendwave France → Wave Sénégal : JB BEAUVILLE · +221 77 134 28 89";
+      const IDENTITY_KEY = "digiy_explore_payment_identity_v1";
+      const COUNTRY_KEY = "digiy_explore_payment_country_v1";
+      const IS_IOS_OR_IPADOS =
+        /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const MOBILE_DEVICE =
+        /Android|Windows Phone|Mobile/i.test(navigator.userAgent) ||
+        IS_IOS_OR_IPADOS;
+
+      const PLANS = [
+        {
+          code: "8P",
+          cat: "base",
+          name: "EXPLORE 8P · Carte de visibilité",
+          fcfa: 19900,
+          eur: 45,
+          desc: "Premier palier EXPLORE : carte de visibilité numérique, QR, lien partageable, contact direct et présence sur le site, sans fiche détaillée ni moteur métier.",
+          bonus: [
+            "Carte de visibilité EXPLORE",
+            "QR officiel",
+            "Lien partageable",
+            "Contact direct",
+            "Présence sur le site DIGIYLYFE"
+          ]
+        },
+        {
+          code: "8A",
+          cat: "base",
+          name: "EXPLORE 8A · Essentiel",
+          fcfa: 30000,
+          eur: 49,
+          desc: "Visibilité essentielle renforcée pour un lieu, une activité ou une expérience locale.",
+          bonus: [
+            "Présence EXPLORE essentielle",
+            "QR officiel",
+            "Lien partageable",
+            "Contact direct"
+          ]
+        },
+        {
+          code: "8B",
+          cat: "base",
+          name: "EXPLORE 8B · Pro",
+          fcfa: 60000,
+          eur: 89,
+          desc: "Visibilité professionnelle pour une activité touristique ou culturelle plus structurée.",
+          bonus: [
+            "Présence EXPLORE professionnelle",
+            "QR officiel",
+            "Lien partageable",
+            "Contact direct"
+          ]
+        },
+        {
+          code: "8C",
+          cat: "base",
+          name: "EXPLORE 8C · Premium",
+          fcfa: 120000,
+          eur: 149,
+          desc: "Visibilité premium pour une expérience, un lieu ou une offre à forte exposition.",
+          bonus: [
+            "Présence EXPLORE premium",
+            "QR officiel",
+            "Lien partageable",
+            "Contact direct"
+          ]
+        },
+        {
+          code: "8D",
+          cat: "base",
+          name: "EXPLORE 8D · Installation",
+          fcfa: 150000,
+          eur: 199,
+          desc: "Visibilité d'installation pour une destination ou un projet EXPLORE structuré.",
+          bonus: [
+            "Présence EXPLORE installation",
+            "QR officiel",
+            "Lien partageable",
+            "Contact direct"
+          ]
+        },
+        {
+          code: "METIER",
+          cat: "metier",
+          name: "Option fiche + moteur EXPLORE",
+          fcfa: 8000,
+          eur: 15,
+          desc: "Option facultative : fiche EXPLORE détaillée et moteur métier pour contenus, demandes, expériences et suivi opérationnel.",
+          bonus: [
+            "Fiche EXPLORE détaillée",
+            "Moteur métier EXPLORE",
+            "Organisation des contenus",
+            "Demandes et expériences",
+            "Suivi opérationnel"
+          ]
+        },
+        {
+          code: "R7",
+          cat: "reseau",
+          name: "RÉSEAU abonné — 7 jours",
+          fcfa: 15000,
+          eur: 28,
+          desc: "Pour pro déjà abonné DIGIY.",
+          bonus: [
+            "Réservé abonnés",
+            "Visibilité 7 jours"
+          ]
+        },
+        {
+          code: "R15",
+          cat: "reseau",
+          name: "RÉSEAU abonné — 15 jours",
+          fcfa: 25000,
+          eur: 45,
+          desc: "Pour pro déjà abonné DIGIY.",
+          bonus: [
+            "Réservé abonnés",
+            "Visibilité 15 jours"
+          ]
+        },
+        {
+          code: "R30",
+          cat: "reseau",
+          name: "RÉSEAU abonné — 1 mois",
+          fcfa: 45000,
+          eur: 75,
+          desc: "Pour pro déjà abonné DIGIY.",
+          bonus: [
+            "Réservé abonnés",
+            "Visibilité 1 mois"
+          ]
+        },
+        {
+          code: "FIRST",
+          cat: "reseau",
+          name: "Mise en classe FIRST — non-abonné",
+          fcfa: 150000,
+          eur: 260,
+          desc: "Qualification, fiche/vitrine, QR, lien, messages prêts, visibilité qualifiée.",
+          bonus: [
+            "Réservé non-abonnés",
+            "Fiche premium",
+            "QR et lien"
+          ]
+        }
+      ];
+
+      const COMMON = [
+        "Présence DIGIYLYFE active",
+        "QR et lien partageable",
+        "Voix DIGIY et textes prêts",
+        "Validation humaine",
+        "0% commission",
+        "Paiement direct avec preuve WhatsApp"
+      ];
+
+      let selected = new Set();
+      let country = "senegal";
+
+      const $ = (id) => document.getElementById(id);
+      const summary = $("summary");
+
+      function moneyFcfa(n) {
+        return new Intl.NumberFormat("fr-FR").format(Number(n) || 0) + " FCFA";
+      }
+
+      function moneyEur(n) {
+        return new Intl.NumberFormat("fr-FR").format(Number(n) || 0) + " €";
+      }
+
+      function planAmount(plan) {
+        return country === "france" ? moneyEur(plan.eur) : moneyFcfa(plan.fcfa);
+      }
+
+      function chosen() {
+        return PLANS.filter((p) => selected.has(p.code));
+      }
+
+      function totals() {
+        const items = chosen();
+        if (country === "france") {
+          const eur = items.reduce((sum, plan) => sum + plan.eur, 0);
+          return { value: eur, label: moneyEur(eur) };
+        }
+        const fcfa = items.reduce((sum, plan) => sum + plan.fcfa, 0);
+        return { value: fcfa, label: moneyFcfa(fcfa) };
+      }
+
+      function zeroLabel() {
+        return country === "france" ? "0 €" : "0 FCFA";
+      }
+
+      function paymentLabel() {
+        return country === "france" ? SENDWAVE_LABEL : WAVE_LABEL;
+      }
+
+      function countryLabel() {
+        return country === "france" ? "France · Sendwave vers Wave Sénégal" : "Sénégal · Wave direct";
+      }
+
+      function date() {
+        return new Date().toLocaleString("fr-FR", {
+          dateStyle: "full",
+          timeStyle: "short"
+        });
+      }
+
+      function paymentNote() {
+        return ($("notePayment")?.value || "").trim();
+      }
+
+      function noteBlock() {
+        const note = paymentNote();
+        return note ? "\n\nNote / preuve : " + note : "";
+      }
+
+      function proValue(id) {
+        return ($(id)?.value || "").trim();
+      }
+
+      function identityData() {
+        return {
+          name: proValue("proName"),
+          phone: proValue("proPhone"),
+          zone: proValue("proZone"),
+          activity: proValue("proActivity")
+        };
+      }
+
+      function identityText() {
+        const d = identityData();
+        return [
+          "Nom / responsable : " + (d.name || "à compléter"),
+          "Téléphone / WhatsApp : " + (d.phone || "à compléter"),
+          "Zone / ville : " + (d.zone || "à compléter"),
+          "Lieu / activité : " + (d.activity || "à compléter")
+        ].join("\n");
+      }
+
+      function saveIdentity() {
+        try {
+          localStorage.setItem(IDENTITY_KEY, JSON.stringify({
+            ...identityData(),
+            updated_at: new Date().toISOString()
+          }));
+        } catch (_) {}
+      }
+
+      function loadIdentity() {
+        try {
+          const data = JSON.parse(localStorage.getItem(IDENTITY_KEY) || "{}");
+          if (data.name && $("proName")) $("proName").value = data.name;
+          if (data.phone && $("proPhone")) $("proPhone").value = data.phone;
+          if (data.zone && $("proZone")) $("proZone").value = data.zone;
+          if (data.activity && $("proActivity")) $("proActivity").value = data.activity;
+        } catch (_) {}
+      }
+
+      function setCountry(next, updateUrl) {
+        country = next === "france" ? "france" : "senegal";
+
+        document.querySelectorAll("[data-country]").forEach((button) => {
+          button.classList.toggle("active", button.getAttribute("data-country") === country);
+        });
+
+        const note = $("countryNote");
+        if (note) {
+          note.innerHTML = country === "france"
+            ? "🇫🇷 France : 8P <strong>45 €</strong> · 8A <strong>49 €</strong> · 8B <strong>89 €</strong> · 8C <strong>149 €</strong> · 8D <strong>199 €</strong>. Fiche + moteur EXPLORE facultatifs : <strong>+15 €</strong>."
+            : "🇸🇳 Sénégal : 8P <strong>19 900</strong> · 8A <strong>30 000</strong> · 8B <strong>60 000</strong> · 8C <strong>120 000</strong> · 8D <strong>150 000 FCFA</strong>. Fiche + moteur EXPLORE facultatifs : <strong>+8 000 FCFA</strong>.";
+        }
+
+        try {
+          localStorage.setItem(COUNTRY_KEY, country);
+          if (updateUrl) {
+            const u = new URL(location.href);
+            u.searchParams.set("pays", country);
+            history.replaceState({}, "", u.pathname + u.search + u.hash);
+          }
+        } catch (_) {}
+
+        update(false);
+      }
+
+      function render() {
+        ["base", "metier", "reseau"].forEach((cat) => {
+          const containerId =
+            cat === "base"
+              ? "baseOptions"
+              : cat === "metier"
+                ? "metierOptions"
+                : "reseauOptions";
+
+          const presenceSelected = ["8P","8A","8B","8C","8D"].some((code) => selected.has(code));
+
+          $(containerId).innerHTML = PLANS
+            .filter((p) => p.cat === cat)
+            .map((p) => {
+              const subscriberExtra = ["R7", "R15", "R30"].includes(p.code);
+              const unavailable =
+                (p.code === "METIER" && !presenceSelected) ||
+                (subscriberExtra && !presenceSelected);
+              const note = p.code === "METIER"
+                ? (country === "france"
+                    ? "Fiche + moteur facultatifs · +15 € / mois"
+                    : "Fiche + moteur facultatifs · +8 000 FCFA / mois")
+                : (subscriberExtra && !presenceSelected)
+                    ? "Réservé à un abonné EXPLORE actif"
+                    : "";
+
+              return `
+                <button
+                  class="option ${selected.has(p.code) ? "active" : ""} ${unavailable ? "disabled" : ""}"
+                  type="button"
+                  data-code="${p.code}"
+                  ${unavailable ? "disabled" : ""}
+                >
+                  <span class="code ${cat !== "base" ? "extra" : ""}">${p.code}</span>
+                  <b>${p.name}</b>
+                  <span class="amount">${planAmount(p)}</span>
+                  ${note ? `<span>${note}</span>` : ""}
+                  <span>${p.desc}</span>
+                </button>
+              `;
+            })
+            .join("");
+        });
+
+        document.querySelectorAll(".option").forEach((button) => {
+          button.onclick = () => {
+            const code = button.dataset.code;
+
+            const baseCodes = ["8P","8A","8B","8C","8D"];
+            const isBase = baseCodes.includes(code);
+            const hasBase = baseCodes.some((baseCode) => selected.has(baseCode));
+
+            if (code === "METIER" && !hasBase) return;
+
+            if (isBase) {
+              if (selected.has(code)) {
+                selected.delete(code);
+                selected.delete("METIER");
+                ["R7", "R15", "R30"].forEach((extraCode) => selected.delete(extraCode));
+              } else {
+                baseCodes.forEach((baseCode) => selected.delete(baseCode));
+                selected.add(code);
+              }
+            } else if (selected.has(code)) {
+              selected.delete(code);
+            } else {
+              selected.add(code);
+            }
+
+            update(true);
+          };
+        });
+      }
+
+      function choiceLines() {
+        const items = chosen();
+        return items.map((p) => `- ${p.code} · ${p.name} · ${planAmount(p)}`).join("\n") || "Aucun choix sélectionné";
+      }
+
+      function requiredIdentityFields() {
+        return ["proName", "proPhone", "proZone", "proActivity"]
+          .map((id) => $(id))
+          .filter(Boolean);
+      }
+
+      function hasValidExploreChoice() {
+        return ["8P", "8A", "8B", "8C", "8D", "FIRST"]
+          .some((code) => selected.has(code));
+      }
+
+      function showFormWarning(message) {
+        const warning = $("formWarning");
+        if (!warning) return;
+        warning.textContent = message || "";
+        warning.classList.toggle("show", Boolean(message));
+      }
+
+      function validateBeforeSend(showMessage) {
+        const invalidField = requiredIdentityFields().find(
+          (field) => !String(field.value || "").trim() || !field.checkValidity()
+        );
+
+        if (invalidField) {
+          if (showMessage) {
+            showFormWarning("⚠️ Renseigne d’abord le nom, le téléphone, la ville et le lieu / activité.");
+            invalidField.focus({ preventScroll: true });
+            invalidField.scrollIntoView({ behavior: "smooth", block: "center" });
+            invalidField.reportValidity();
+          }
+          return false;
+        }
+
+        if (!hasValidExploreChoice()) {
+          if (showMessage) {
+            showFormWarning("⚠️ Choisis une formule EXPLORE 8P à 8D, ou FIRST, avant d’envoyer.");
+            $("baseOptions")?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          return false;
+        }
+
+        showFormWarning("");
+        return true;
+      }
+
+      function updateSendState() {
+        const ready = requiredIdentityFields().every(
+          (field) => String(field.value || "").trim() && field.checkValidity()
+        ) && hasValidExploreChoice();
+
+        ["btnWa", "btnSms", "btnProof"].forEach((id) => {
+          const el = $(id);
+          if (!el) return;
+          el.classList.toggle("sendBlocked", !ready);
+          el.setAttribute("aria-disabled", String(!ready));
+        });
+      }
+
+      function shortText(value, maxLength) {
+        const clean = String(value || "").replace(/\s+/g, " ").trim();
+        return clean.length > maxLength ? clean.slice(0, maxLength - 1) + "…" : clean;
+      }
+
+      function smsMsg() {
+        const d = identityData();
+        const total = totals();
+        const codes = chosen().map((p) => p.code).join(" + ") || "Aucun choix";
+
+        return [
+          "DEMANDE DIGIY EXPLORE",
+          "Pays: " + (country === "france" ? "France" : "Senegal"),
+          "Choix: " + codes,
+          "Total: " + total.label,
+          "Nom/responsable: " + shortText(d.name, 55),
+          "Telephone candidat: " + shortText(d.phone, 28),
+          "Zone/ville: " + shortText(d.zone, 45),
+          "Lieu/activite: " + shortText(d.activity, 75),
+          paymentNote() ? "Note: " + shortText(paymentNote(), 130) : "",
+          "Je demande a etre recontacte pour valider mon activation EXPLORE.",
+          "0% commission DIGIY."
+        ].filter(Boolean).join("\n");
+      }
+
+      function buildSmsHref(message) {
+        const separator = IS_IOS_OR_IPADOS ? "&" : "?";
+        return "sms:+" + TEL + separator + "body=" + encodeURIComponent(message);
+      }
+
+      function msg() {
+        const total = totals();
+        return `Bonjour JB, je veux avancer avec DIGIY EXPLORE.
+
+Date de demande : ${date()}
+Pays / règlement : ${countryLabel()}
+Activation EXPLORE : après paiement de la formule de visibilité choisie
+
+Infos pro / lieu :
+${identityText()}
+
+Choix :
+${choiceLines()}
+
+Doctrine EXPLORE :
+- 8P, 8A, 8B, 8C ou 8D : choisir une seule formule de visibilité
+- 8P : carte de visibilité à 19 900 FCFA / 45 €, sans fiche détaillée ni moteur
+- Fiche détaillée + moteur EXPLORE : option facultative à +8 000 FCFA / +15 €
+- PRO CARNET et RÉSEAU : séparés
+
+Total : ${total.label}
+
+Règlement : ${paymentLabel()}${noteBlock()}
+
+Important : les tarifs France et Sénégal sont une grille pays, pas une conversion au taux de change.
+Important : DIGIY EXPLORE prend 0% commission. Le paiement concerne l'activation choisie.
+
+Après paiement, je vous envoie la preuve ici.
+
+Canal souhaité : WhatsApp ou SMS.`;
+      }
+
+      function proofMsg() {
+        const total = totals();
+        return `Bonjour JB, voici la preuve de paiement pour DIGIY EXPLORE.
+
+Date de demande : ${date()}
+Pays / règlement : ${countryLabel()}
+Activation EXPLORE : après paiement de la formule de visibilité choisie
+
+Infos pro / lieu :
+${identityText()}
+
+${paymentLabel()}
+Montant : ${total.label}
+
+Choix :
+${choiceLines()}${noteBlock()}
+
+Je joins la capture / preuve de paiement à ce message.`;
+      }
+
+      function update(scroll) {
+        render();
+
+        const hasBaseSelection = ["8P", "8A", "8B", "8C", "8D"].some((code) => selected.has(code));
+        if (!hasBaseSelection) {
+          selected.delete("METIER");
+          ["R7", "R15", "R30"].forEach((code) => selected.delete(code));
+        }
+
+        const items = chosen();
+        const total = totals();
+
+        $("selectedBox").innerHTML = items.length
+          ? `<strong>${items.length} choix sélectionné${items.length > 1 ? "s" : ""}</strong><br>${selected.has("METIER") ? "Visibilité EXPLORE + fiche détaillée et moteur" : ["8P","8A","8B","8C","8D"].some((code) => selected.has(code)) ? "Visibilité EXPLORE seule" : "Option de visibilité séparée"}`
+          : `<strong>Aucun choix sélectionné</strong><br>Rien n'est précoché. Choisis 8P, 8A, 8B, 8C ou 8D.`;
+
+        $("choiceList").innerHTML = items.length
+          ? items.map((p) => `
+              <div class="line">
+                <span>${p.code} · ${p.name}</span>
+                <b>${planAmount(p)}</b>
+              </div>
+            `).join("")
+          : `
+              <div class="line">
+                <span>Aucun choix</span>
+                <b>${zeroLabel()}</b>
+              </div>
+            `;
+
+        $("subtotalText").textContent = total.label;
+        $("totalText").textContent = total.label;
+        $("payTotal").textContent = total.label;
+        $("dateBox").textContent = "Date de demande : " + date();
+
+        const paymentTitle = document.querySelector(".paymentTitle");
+        if (paymentTitle) paymentTitle.textContent = country === "france" ? "💳 Paiement Sendwave → Wave Sénégal" : "💳 Paiement Wave";
+
+        const payBadge = $("payBadge");
+        if (payBadge) {
+          payBadge.innerHTML = country === "france"
+            ? "🇫🇷 Depuis la France : règle par <strong>Sendwave</strong> vers le <strong>Wave Sénégal de JB BEAUVILLE · +221 77 134 28 89</strong>."
+            : "🇸🇳 Au Sénégal : règle par <strong>Wave direct</strong> vers <strong>JB BEAUVILLE · +221 77 134 28 89</strong>.";
+        }
+
+        const proof = document.querySelector(".payment .proof");
+        if (proof) {
+          proof.textContent = country === "france"
+            ? "Depuis la France, règle par Sendwave vers le Wave Sénégal de JB BEAUVILLE, puis envoie la preuve par WhatsApp."
+            : "Après paiement Wave, envoie la capture ou la preuve par WhatsApp. DIGIY vérifie puis accompagne l'activation de la visibilité EXPLORE et, si elle est choisie, de la fiche détaillée avec moteur métier.";
+        }
+
+        $("benefits").innerHTML = (items.length
+          ? [
+              ...COMMON,
+              ...items
+                .filter((p) => p.code !== "METIER" || selected.has("METIER"))
+                .flatMap((p) => p.bonus)
+            ]
+          : [])
+          .slice(0, 22)
+          .map((x) => `<li>✅ ${x}</li>`)
+          .join("");
+
+        $("btnWa").href = "https://wa.me/" + TEL + "?text=" + encodeURIComponent(msg());
+        $("btnProof").href = "https://wa.me/" + TEL + "?text=" + encodeURIComponent(proofMsg());
+        updateSendState();
+
+        if (scroll && matchMedia("(max-width:850px)").matches) {
+          summary.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      document.querySelectorAll("[data-country]").forEach((button) => {
+        button.addEventListener("click", () => setCountry(button.getAttribute("data-country"), true));
+      });
+
+      $("btnSms").onclick = (event) => {
+        event.preventDefault();
+        if (!validateBeforeSend(true)) return;
+        window.location.href = buildSmsHref(smsMsg());
+      };
+
+      $("btnWa").addEventListener("click", (event) => {
+        if (!validateBeforeSend(true)) event.preventDefault();
+      });
+
+      $("btnProof").addEventListener("click", (event) => {
+        if (!validateBeforeSend(true)) event.preventDefault();
+      });
+
+      $("btnCopyWave").hidden = MOBILE_DEVICE;
+
+      $("btnCopyWave").onclick = () => {
+        if (!navigator.clipboard) return;
+        navigator.clipboard.writeText(paymentLabel()).then(() => {
+          $("btnCopyWave").textContent = "✅ Paiement copié";
+          setTimeout(() => { $("btnCopyWave").textContent = "📋 Copier paiement"; }, 1600);
+        });
+      };
+
+      $("btnClear").onclick = () => {
+        selected.clear();
+        $("notePayment").value = "";
+        ["proName", "proPhone", "proZone", "proActivity"].forEach((id) => {
+          const field = $(id);
+          if (field) field.value = "";
+        });
+        try { localStorage.removeItem(IDENTITY_KEY); } catch (_) {}
+        showFormWarning("");
+        update(true);
+      };
+
+      $("btnFloating").onclick = () => {
+        summary.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+
+      $("notePayment").addEventListener("input", () => update(false));
+
+      ["proName", "proPhone", "proZone", "proActivity"].forEach((id) => {
+        const el = $(id);
+        if (!el) return;
+        el.addEventListener("input", () => {
+          saveIdentity();
+          update(false);
+        });
+      });
+
+      loadIdentity();
+
+      let initialCountry = "senegal";
+      try {
+        const params = new URLSearchParams(location.search);
+        initialCountry = params.get("pays") || params.get("country") || localStorage.getItem(COUNTRY_KEY) || "senegal";
+      } catch (_) {}
+
+      setCountry(initialCountry, false);
+      update(false);
+    })();
+  </script>
+
+  <!-- 🎧 DIGIY ACCUEIL — bouton flottant de bienvenue -->
+  <script
+    src="https://digiy-accueil.digiylyfe.com/assets/js/digiy-welcome-floating.js"
+    data-module="EXPLORE"
+    defer>
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

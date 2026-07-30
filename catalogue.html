@@ -1,89 +1,59 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>DIGIY EXPLORE — Lieux et expériences du terrain</title>
-  <meta name="description" content="Catalogue officiel DIGIY EXPLORE : expériences actives, annonces passerelles et inspirations clairement distinguées. Contact humain et 0 % de commission DIGIY.">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#06130f">
+  <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://explore.digiylyfe.com/catalogue.html">
-  <link rel="alternate" type="application/json" href="https://explore.digiylyfe.com/experiences.json" title="Données DIGIY EXPLORE en JSON">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://explore.digiylyfe.com/catalogue.html">
-  <meta property="og:title" content="DIGIY EXPLORE — Découvrir le terrain">
-  <meta property="og:description" content="Les expériences confirmées, annonces passerelles et inspirations sont séparées pour éviter toute fausse disponibilité.">
-  <meta property="og:image" content="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif">
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@graph":[
-      {
-        "@type":"Organization",
-        "@id":"https://explore.digiylyfe.com/#brand",
-        "name":"DIGIY EXPLORE",
-        "url":"https://explore.digiylyfe.com/",
-        "description":"Marque DIGIYLYFE de découverte locale qui présente les lieux et expériences du terrain en distinguant clairement les activités confirmées, les annonces passerelles et les inspirations."
-      },
-      {
-        "@type":"CollectionPage",
-        "@id":"https://explore.digiylyfe.com/catalogue.html#page",
-        "name":"Catalogue officiel DIGIY EXPLORE",
-        "url":"https://explore.digiylyfe.com/catalogue.html",
-        "isPartOf":{"@id":"https://explore.digiylyfe.com/#brand"},
-        "description":"Aucune expérience active confirmée au 29 juillet 2026. Une annonce passerelle teste l’intérêt pour une sortie pêche sur la Petite Côte."
-      }
-    ]
-  }
-  </script>
+  <title>DIGIY EXPLORE — Catalogue</title>
+  <meta name="description" content="DIGIY EXPLORE — accès multilingue direct aux lieux, expériences, fiches et demandes du terrain.">
   <style>
-    :root{--bg:#06130f;--card:#10261e;--text:#f7fbf8;--muted:rgba(247,251,248,.76);--gold:#dcb45a;--green:#12b76a;--line:rgba(255,255,255,.13)}
-    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(220,180,90,.15),transparent 30%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1000px,100%);margin:auto;padding:24px 16px 44px}.hero,.status,.card,.rule{background:rgba(16,38,30,.97);border:1px solid var(--line);border-radius:24px;padding:22px;margin-top:16px}.brand{font-weight:950}.eyebrow{color:#f2cc78;font-size:12px;font-weight:900;text-transform:uppercase}.hero h1{font-size:clamp(36px,8vw,60px);line-height:1;margin:12px 0}.hero p,.status p,.card p,.rule p{color:var(--muted);line-height:1.65}.proofs,.actions{display:flex;gap:8px;flex-wrap:wrap}.proof,.badge{border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:850}.badge.bridge{color:#ffe39a;background:rgba(220,180,90,.10)}.badge.inspiration{color:#b8f5d5;background:rgba(18,183,106,.10)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.card img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:17px;margin-bottom:14px}.card h2{margin:8px 0;font-size:24px}.btn{display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:0 14px;border-radius:13px;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-weight:950}.btn.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+    :root{--bar-h:60px;--bg:#06130f;--gold:#dcb45a;--green:#12b76a;--ink:#f7fbf8;--line:rgba(255,255,255,.15)}
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+    .language-shell{height:var(--bar-h);padding:max(7px,env(safe-area-inset-top)) 9px 7px;background:linear-gradient(135deg,#06130f,#0b3024);border-bottom:1px solid rgba(220,180,90,.30);box-shadow:0 8px 28px rgba(0,0,0,.28);position:relative;z-index:20}
+    .language-inner{height:100%;display:flex;align-items:center;gap:8px;max-width:1180px;margin:auto;min-width:0}
+    .explore-mark{display:flex;align-items:center;gap:8px;flex:0 0 auto;color:#fff2bf;font-weight:1000;font-size:12px;letter-spacing:.04em;white-space:nowrap}
+    .explore-mark span{width:35px;height:35px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:18px}
+    .language-buttons{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;flex:1;justify-content:flex-end;min-width:0}
+    .language-buttons::-webkit-scrollbar{display:none}
+    .language-buttons button{flex:0 0 auto;min-height:36px;min-width:54px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 10px;font-weight:1000;font-size:11px;cursor:pointer}
+    .language-buttons button.active{background:linear-gradient(135deg,var(--gold),#f2cc78);border-color:rgba(220,180,90,.62);color:#062414;box-shadow:0 6px 16px rgba(0,0,0,.22)}
+    .frame-wrap{position:relative;width:100%;height:calc(100dvh - var(--bar-h));background:#06130f}
+    #exploreFrame{display:block;width:100%;height:100%;border:0;background:#06130f}
+    .loading{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 15% 0%,rgba(220,180,90,.15),transparent 48%),#06130f;color:#fff2bf;font-weight:1000;z-index:2;transition:opacity .18s ease}
+    .loading.hidden{opacity:0;pointer-events:none}
+    .loading span{padding:18px 22px;border-radius:20px;border:1px solid rgba(220,180,90,.28);background:rgba(255,255,255,.06)}
+    html[dir="rtl"] .language-inner{direction:rtl}
+    html[dir="rtl"] .language-buttons{justify-content:flex-start}
+    @media(max-width:720px){:root{--bar-h:63px}.explore-mark b{display:none}.language-buttons{justify-content:flex-start}.language-buttons button{min-width:51px;padding:0 8px}}
   </style>
+  <script src="./explore-i18n-data-1.js?v=20260730-explore7a"></script>
+  <script src="./explore-i18n-data-2.js?v=20260730-explore7a"></script>
+  <script src="./explore-i18n-data-3.js?v=20260730-explore7a"></script>
+  <script src="./explore-i18n-data-4.js?v=20260730-explore7a"></script>
+  <script src="./explore-7lang-engine.js?v=20260730-explore7a" defer></script>
 </head>
-<body>
-<main class="wrap">
-  <div class="brand">🌍 DIGIY EXPLORE · par DIGIYLYFE</div>
-  <section class="hero">
-    <div class="eyebrow">Découverte locale · contact humain</div>
-    <h1>Le terrain inspire.<br>Le statut protège la confiance.</h1>
-    <p>DIGIY EXPLORE distingue les expériences réellement confirmées, les annonces passerelles qui testent l’intérêt et les inspirations qui préparent de futures fiches.</p>
-    <div class="proofs"><span class="proof">Statut clair</span><span class="proof">Contact humain</span><span class="proof">0 % de commission DIGIY</span><span class="proof">Aucune fausse disponibilité</span></div>
-  </section>
-
-  <section class="status">
-    <div class="eyebrow">État officiel · 29 juillet 2026</div>
-    <h2>0 expérience active confirmée</h2>
-    <p>Aucune activité ne doit être présentée comme réservable ou disponible tant qu’un acteur local n’a pas officiellement validé sa fiche et son contact.</p>
-  </section>
-
-  <section class="grid">
-    <article class="card">
-      <img src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif" alt="Annonce passerelle sortie pêche Petite Côte" loading="lazy">
-      <span class="badge bridge">Annonce passerelle · non confirmée</span>
-      <h2>Sortie pêche — Petite Côte</h2>
-      <p>DIGIY recueille l’intérêt pour préparer une future mise en relation. Aucun prestataire, tarif, date ou disponibilité n’est encore confirmé.</p>
-      <div class="actions"><a class="btn" href="https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20suis%20int%C3%A9ress%C3%A9%20par%20une%20sortie%20p%C3%AAche%20sur%20la%20Petite%20C%C3%B4te." target="_blank" rel="noopener">Signaler mon intérêt</a></div>
-    </article>
-
-    <article class="card">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Inspiration plage à Saly" loading="lazy">
-      <span class="badge inspiration">Inspiration · non réservable</span>
-      <h2>Ambiance plage — Saly</h2>
-      <p>Une inspiration destinée aux adresses de plage, promenades et lieux de détente qui souhaitent devenir visibles sur DIGIY EXPLORE.</p>
-      <div class="actions"><a class="btn secondary" href="https://explore.digiylyfe.com/inscription-explore.html?v=code8">Proposer un lieu</a></div>
-    </article>
-
-    <article class="card">
-      <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80" alt="Inspiration découverte locale à Dakar" loading="lazy">
-      <span class="badge inspiration">Inspiration · non réservable</span>
-      <h2>Découverte locale — Dakar</h2>
-      <p>Une inspiration pour de futures balades, guides, sorties familiales et expériences locales clairement identifiées.</p>
-      <div class="actions"><a class="btn secondary" href="https://explore.digiylyfe.com/inscription-explore.html?v=code8">Proposer une expérience</a></div>
-    </article>
-  </section>
-
-  <section class="rule"><h2>Règle officielle</h2><p>Une annonce passerelle mesure l’intérêt ; une inspiration montre une possibilité. Seule une entrée portant le statut « active » dans le catalogue officiel peut être recommandée comme expérience disponible.</p></section>
-  <footer>DIGIY EXPLORE · le héros attire, les découvertes apparaissent, le terrain garde la main.</footer>
-</main>
+<body data-page="catalogue" data-core="catalogue-core.html">
+  <header class="language-shell" aria-label="DIGIY EXPLORE languages">
+    <div class="language-inner">
+      <div class="explore-mark"><span>🌍</span><b>DIGIY EXPLORE</b></div>
+      <nav class="language-buttons" aria-label="Choisir la langue">
+        <button type="button" data-shell-lang="fr">🇫🇷 FR</button>
+        <button type="button" data-shell-lang="en">🇬🇧 EN</button>
+        <button type="button" data-shell-lang="es">🇪🇸 ES</button>
+        <button type="button" data-shell-lang="de">🇩🇪 DE</button>
+        <button type="button" data-shell-lang="it">🇮🇹 IT</button>
+        <button type="button" data-shell-lang="nl">🇳🇱 NL</button>
+        <button type="button" data-shell-lang="ar">🌙 AR</button>
+      </nav>
+    </div>
+  </header>
+  <main class="frame-wrap">
+    <div class="loading" id="exploreLoading"><span>DIGIY EXPLORE…</span></div>
+    <iframe id="exploreFrame" title="DIGIY EXPLORE" loading="eager" allow="clipboard-read; clipboard-write"></iframe>
+  </main>
+  <noscript><p><a href="./catalogue-core.html">Ouvrir DIGIY EXPLORE</a></p></noscript>
 </body>
 </html>

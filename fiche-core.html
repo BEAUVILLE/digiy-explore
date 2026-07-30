@@ -1,0 +1,1591 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Voir le lieu — DIGIY EXPLORE</title>
+  <meta name="theme-color" content="#06130f"/>
+  <meta
+    name="description"
+    content="Je découvre un lieu avec son ambiance, ses photos, son repère utile, son QR public, contact direct préparé, carte et partage simple sur téléphone."
+  />
+
+  <script>
+    window.DIGIY_SUPABASE_URL = "https://wesqmwjjtsefyjnluosj.supabase.co";
+    window.DIGIY_SUPABASE_ANON_KEY = "sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3";
+    window.DIGIY_SUPABASE_ANON = window.DIGIY_SUPABASE_ANON_KEY;
+    window.DIGIY_MODULE = "EXPLORE";
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --bg:#06130f;
+      --bg2:#0a1f18;
+      --card:#0b241b;
+      --card2:#102b22;
+      --line:rgba(255,255,255,.11);
+      --ink:#f8fafc;
+      --muted:rgba(248,250,252,.78);
+      --soft:rgba(248,250,252,.58);
+      --gold:#d4af37;
+      --gold2:#f3d46b;
+      --ok:#22c55e;
+      --blue:#38bdf8;
+      --bad:#ef4444;
+      --radius:24px;
+      --shadow:0 24px 60px rgba(0,0,0,.30);
+      --font:"Outfit",Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+
+    body{
+      min-height:100vh;
+      color:var(--ink);
+      font-family:var(--font);
+      font-size:18px;
+      background:
+        radial-gradient(900px 520px at 8% -10%, rgba(212,175,55,.14), transparent 58%),
+        radial-gradient(850px 520px at 100% 0%, rgba(56,189,248,.10), transparent 55%),
+        radial-gradient(900px 520px at 100% 100%, rgba(34,197,94,.10), transparent 58%),
+        linear-gradient(180deg, #071510 0%, #06130f 48%, #04100c 100%);
+      padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
+    .wrap{
+      width:min(100%,1160px);
+      margin:0 auto;
+      padding:16px 14px 42px;
+      display:grid;
+      gap:16px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      min-width:0;
+    }
+
+    .logo{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(212,175,55,.24);
+      box-shadow:0 10px 28px rgba(0,0,0,.20);
+      background:#fff;
+      flex:0 0 auto;
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .kicker{
+      color:var(--gold2);
+      font-size:13px;
+      font-weight:1000;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin-bottom:4px;
+      white-space:nowrap;
+    }
+
+    .title{
+      font-size:clamp(24px,3vw,36px);
+      font-weight:1000;
+      line-height:1.05;
+      letter-spacing:-.04em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .sub{
+      margin-top:5px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.45;
+      font-weight:800;
+    }
+
+    .topActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      min-height:58px;
+      border:none;
+      border-radius:17px;
+      padding:14px 17px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      font-size:18px;
+      font-weight:1000;
+      cursor:pointer;
+      white-space:nowrap;
+      transition:filter .18s ease, transform .08s ease;
+      text-align:center;
+    }
+
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#13200d;
+      box-shadow:0 14px 30px rgba(212,175,55,.22);
+    }
+
+    .btn.secondary{
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--ink);
+    }
+
+    .btn.ghost{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      color:var(--ink);
+    }
+
+    .btn.green{
+      background:rgba(34,197,94,.14);
+      border:1px solid rgba(34,197,94,.30);
+      color:#bbf7d0;
+    }
+
+    .msg{
+      border-radius:18px;
+      padding:16px 18px;
+      font-size:17px;
+      line-height:1.5;
+      font-weight:900;
+      display:none;
+    }
+
+    .msg.show{display:block}
+    .msg.info{
+      color:#dbeafe;
+      border:1px solid rgba(96,165,250,.18);
+      background:rgba(59,130,246,.08);
+    }
+
+    .msg.bad{
+      color:#fecaca;
+      border:1px solid rgba(239,68,68,.18);
+      background:rgba(239,68,68,.08);
+    }
+
+    .msg.ok{
+      color:#bbf7d0;
+      border:1px solid rgba(34,197,94,.18);
+      background:rgba(34,197,94,.08);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:16px;
+    }
+
+    .heroMain{
+      display:grid;
+      gap:16px;
+      align-content:start;
+    }
+
+    .infoUnderPhoto{
+      grid-template-columns:1fr;
+      margin:0;
+      gap:16px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .cover{
+      position:relative;
+      min-height:430px;
+      background:#0d1914 center/cover no-repeat;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .coverFallback{
+      display:grid;
+      place-items:center;
+      min-height:430px;
+      color:var(--muted);
+      font-size:18px;
+      font-weight:900;
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,.10), transparent 30%),
+        linear-gradient(180deg,#10231b,#0a1712);
+    }
+
+    .coverShade{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.10) 22%,rgba(0,0,0,.62));
+    }
+
+    .coverContent{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:24px;
+      z-index:2;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.24);
+      background:rgba(212,175,55,.10);
+      color:var(--gold2);
+      font-size:14px;
+      font-weight:1000;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    .heroTitle{
+      margin:0 0 10px;
+      font-size:clamp(38px,6vw,64px);
+      line-height:1.00;
+      letter-spacing:-.055em;
+      text-shadow:0 6px 20px rgba(0,0,0,.26);
+    }
+
+    .heroLead{
+      margin:0;
+      color:#eef6f2;
+      font-size:20px;
+      line-height:1.55;
+      font-weight:850;
+      max-width:62ch;
+      text-shadow:0 4px 16px rgba(0,0,0,.24);
+    }
+
+    .sideCard{
+      padding:20px;
+      display:grid;
+      gap:12px;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015)),
+        linear-gradient(180deg,#0a1c16,#0d241c);
+    }
+
+    .qrCard{
+      border:1px solid rgba(212,175,55,.28);
+      border-radius:26px;
+      background:
+        radial-gradient(420px 180px at 50% 0%, rgba(212,175,55,.15), transparent 62%),
+        rgba(0,0,0,.15);
+      padding:18px;
+      display:grid;
+      gap:12px;
+      text-align:center;
+    }
+
+    .qrKicker{
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      margin:auto;
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,.28);
+      background:rgba(212,175,55,.11);
+      color:#fde68a;
+      font-size:16px;
+      font-weight:1000;
+    }
+
+    .qrImg{
+      width:min(100%,250px);
+      height:auto;
+      margin:auto;
+      display:block;
+      border-radius:22px;
+      background:#fff;
+      padding:12px;
+      border:1px solid rgba(212,175,55,.42);
+      box-shadow:0 14px 34px rgba(0,0,0,.34);
+    }
+
+    .qrTitle{
+      font-size:28px;
+      line-height:1.08;
+      font-weight:1000;
+      color:var(--gold2);
+    }
+
+    .qrText{
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.45;
+      font-weight:900;
+    }
+
+    .qrLink{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      padding:10px;
+      word-break:break-word;
+      font-size:13px;
+      line-height:1.35;
+      color:rgba(248,250,252,.72);
+      font-weight:900;
+    }
+
+    .qrActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .miniStat{
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:19px;
+      padding:15px;
+      background:rgba(255,255,255,.035);
+    }
+
+    .miniLabel{
+      color:var(--soft);
+      font-size:13px;
+      font-weight:1000;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+
+    .miniValue{
+      font-size:23px;
+      font-weight:1000;
+      line-height:1.15;
+      letter-spacing:-.035em;
+      word-break:break-word;
+    }
+
+    .miniHint{
+      margin-top:7px;
+      color:var(--muted);
+      font-size:16px;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:4px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:16px;
+    }
+
+    .cardBody{padding:22px}
+
+    .sectionTitle{
+      margin:0 0 12px;
+      font-size:clamp(28px,5.8vw,42px);
+      font-weight:1000;
+      letter-spacing:-.045em;
+      line-height:1.08;
+    }
+
+    .sectionSub{
+      margin:-4px 0 16px;
+      color:var(--muted);
+      font-size:18px;
+      font-weight:850;
+      line-height:1.55;
+    }
+
+    .text{
+      color:#eef6f2;
+      font-size:20px;
+      font-weight:800;
+      line-height:1.75;
+      word-break:break-word;
+    }
+
+    .muted{color:var(--muted)}
+
+    .grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .infoRow{
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.035);
+      border-radius:19px;
+      padding:16px;
+    }
+
+    .infoRow strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:7px;
+      color:#eef6f2;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-weight:1000;
+    }
+
+    .infoRow span{
+      color:var(--muted);
+      font-size:18px;
+      font-weight:850;
+      line-height:1.55;
+      word-break:break-word;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chip{
+      min-height:38px;
+      padding:0 13px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      background:rgba(212,175,55,.09);
+      border:1px solid rgba(212,175,55,.20);
+      color:var(--gold2);
+      font-size:15px;
+      font-weight:1000;
+      letter-spacing:.02em;
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .photo{
+      position:relative;
+      display:block;
+      border-radius:20px;
+      overflow:hidden;
+      min-height:220px;
+      background:#102019 center/cover no-repeat;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 14px 34px rgba(0,0,0,.22);
+    }
+
+    .photo::after{
+      content:"↗ Ouvrir";
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      background:rgba(0,0,0,.50);
+      color:#fff;
+      font-size:14px;
+      font-weight:1000;
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    .empty{
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius:20px;
+      padding:20px;
+      color:var(--muted);
+      font-size:18px;
+      font-weight:850;
+      line-height:1.6;
+      background:rgba(255,255,255,.025);
+    }
+
+    .mobilePublicFastRow{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .mobilePublicFastRow a,
+    .mobilePublicFastRow button{
+      min-height:56px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.055);
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:1000;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px;
+      cursor:pointer;
+      font-family:inherit;
+      font-size:16px;
+    }
+
+    .mobilePublicFastRow .primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#13200d;
+      border:none;
+    }
+
+    .foot{
+      margin-top:2px;
+      color:var(--muted);
+      font-size:15px;
+      font-weight:850;
+      line-height:1.6;
+      text-align:center;
+    }
+
+    #gallery,.hero,.layout,.infoUnderPhoto{scroll-margin-top:90px}
+
+    .publicBottomNav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:99990;
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
+      background:rgba(6,19,15,.95);
+      border-top:1px solid rgba(255,255,255,.10);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .publicBottomNavInner{
+      width:min(100%,760px);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:6px;
+    }
+
+    .publicBottomNav a,
+    .publicBottomNav button{
+      min-height:62px;
+      border-radius:17px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:3px;
+      color:rgba(248,250,252,.75);
+      font-size:12px;
+      font-weight:1000;
+      text-align:center;
+      border:1px solid transparent;
+      text-decoration:none;
+      background:transparent;
+      cursor:pointer;
+      font-family:inherit;
+      padding:0 4px;
+    }
+
+    .publicBottomNav .icoBottom{font-size:20px;line-height:1}
+
+    .publicBottomNav a.active,
+    .publicBottomNav button.active{
+      color:#13200d;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      border-color:rgba(243,212,107,.30);
+      box-shadow:0 12px 26px rgba(212,175,55,.18);
+    }
+
+    .shareToast{
+      position:fixed;
+      left:50%;
+      bottom:calc(96px + env(safe-area-inset-bottom,0px));
+      transform:translateX(-50%) translateY(12px);
+      z-index:99999;
+      opacity:0;
+      pointer-events:none;
+      transition:.22s ease;
+      max-width:calc(100vw - 24px);
+      padding:12px 18px;
+      border-radius:999px;
+      border:1px solid rgba(243,212,107,.28);
+      background:rgba(16,38,30,.97);
+      color:var(--gold2);
+      font-size:15px;
+      font-weight:1000;
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .shareToast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media(max-width:1040px){
+      .hero,.layout,.infoUnderPhoto{grid-template-columns:1fr}
+    }
+
+    @media(max-width:760px){
+      .gallery{grid-template-columns:1fr}
+    }
+
+    @media(max-width:640px){
+      body{font-size:18px}
+      .wrap{padding:12px 10px 36px}
+      .topbar{flex-direction:column}
+      .topActions{display:none}
+      .cover,.coverFallback{min-height:320px}
+      .coverContent{padding:18px}
+      .cardBody,.sideCard{padding:18px}
+      .heroTitle{font-size:clamp(38px,12vw,56px)}
+      .heroLead,.text{font-size:19px}
+      .btn{width:100%;min-height:62px;font-size:18px}
+      .actions{display:grid;grid-template-columns:1fr}
+      .qrActions{grid-template-columns:1fr}
+      .qrImg{width:min(82vw,270px)}
+      .mobilePublicFastRow{grid-template-columns:1fr 1fr}
+      .miniValue{font-size:22px}
+      .photo{min-height:240px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">
+          <img src="https://digiylyfe.net/wp-content/uploads/2026/03/digiylyfe_logo_qr.jpeg" alt="Logo DIGIYLYFE">
+        </div>
+        <div class="brandText">
+          <div class="kicker">Je découvre le coin</div>
+          <div class="title">Je découvre le lieu</div>
+          <div class="sub" id="subline">Lecture claire d’un lieu, d’une sortie ou d’une activité.</div>
+        </div>
+      </div>
+
+      <div class="topActions">
+        <a class="btn ghost" href="https://digiylyfe.com/">Site</a>
+        <a class="btn ghost" href="https://digiy-hub.digiylyfe.com/">HUB</a>
+        <a class="btn ghost" href="https://tarifs.digiylyfe.com/" target="_blank" rel="noopener noreferrer">Tarifs</a>
+        <a class="btn secondary" href="./index.html">Retour</a>
+        <a class="btn primary" href="https://pro-explore.digiylyfe.com/cockpit.html">Mon lieu</a>
+      </div>
+    </header>
+
+    <div id="msg" class="msg info"></div>
+
+    <section class="hero">
+      <div class="heroMain">
+        <article class="panel">
+          <div id="cover" class="coverFallback">Chargement du lieu…</div>
+        </article>
+
+        <section class="layout infoUnderPhoto">
+          <article class="panel">
+            <div class="cardBody">
+              <h2 class="sectionTitle">À savoir</h2>
+              <p class="sectionSub">Le résumé utile pour comprendre vite et décider.</p>
+
+              <div class="grid">
+                <div class="infoRow">
+                  <strong>En bref</strong>
+                  <span id="shortDescriptionBox">—</span>
+                </div>
+
+                <div class="text" id="fullDescriptionBox">—</div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel">
+            <div class="cardBody">
+              <h2 class="sectionTitle">Infos utiles</h2>
+              <p class="sectionSub">Contact, adresse, ambiance et mots utiles.</p>
+
+              <div class="grid">
+                <div class="infoRow">
+                  <strong>Adresse / repère</strong>
+                  <span id="addressBox">—</span>
+                </div>
+
+                <div class="infoRow">
+                  <strong>Ambiance</strong>
+                  <span id="kindBox">—</span>
+                </div>
+
+                <div class="infoRow">
+                  <strong>Mots du lieu</strong>
+                  <span id="tagsBox">
+                    <span class="muted">Aucun mot-clé.</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </div>
+
+      <aside class="panel sideCard">
+        <article class="qrCard" aria-label="QR de découverte du lieu">
+          <div class="qrKicker">📲 QR découverte</div>
+          <img id="qrImg" class="qrImg" alt="QR découverte DIGIY EXPLORE" src="">
+          <div class="qrTitle">Scanne pour découvrir ce lieu</div>
+          <div class="qrText">
+            Ambiance, photos, repère utile, contact direct et itinéraire.
+          </div>
+          <div class="qrLink" id="qrLinkText">Préparation du lien…</div>
+          <div class="qrActions">
+            <a class="btn primary" id="qrOpenBtn" href="#" target="_blank" rel="noopener">🧭 Ouvrir</a>
+            <button class="btn secondary" id="qrCopyBtn" type="button">📋 Copier</button>
+          </div>
+        </article>
+
+        <div class="miniStat">
+          <div class="miniLabel">Type de lieu</div>
+          <div class="miniValue" id="categoryBox">—</div>
+          <div class="miniHint">La famille du lieu ou de l’activité.</div>
+        </div>
+
+        <div class="miniStat">
+          <div class="miniLabel">Où c’est</div>
+          <div class="miniValue" id="locationBox">—</div>
+          <div class="miniHint">Ville, zone ou coin du terrain.</div>
+        </div>
+
+        <div class="miniStat">
+          <div class="miniLabel">Contact direct</div>
+          <div class="miniValue" id="contactBox">Protégé</div>
+          <div class="miniHint">Le lien de contact public est préparé sans afficher le numéro.</div>
+        </div>
+
+        <div class="miniStat">
+          <div class="miniLabel">Budget</div>
+          <div class="miniValue" id="priceBox">—</div>
+          <div class="miniHint">Prix, accès libre ou indication simple.</div>
+        </div>
+
+        <div class="actions">
+          <a id="callBtn" class="btn primary" href="./index.html">Contact direct</a>
+          <a id="waBtn" class="btn secondary" href="./index.html">WhatsApp</a>
+          <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Y aller</a>
+        </div>
+
+        <div class="mobilePublicFastRow">
+          <a href="./index.html">← Retour</a>
+          <a id="fastPhotos" href="#gallery">🖼️ Images</a>
+          <a class="primary" id="fastGo" href="./index.html">🧭 Y aller</a>
+          <button id="fastShare" type="button">📤 Partager</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel">
+      <div class="cardBody">
+        <h2 class="sectionTitle">Ambiance en images</h2>
+        <p class="sectionSub">Quelques images pour sentir l’ambiance du lieu avant de contacter ou d’y aller.</p>
+
+        <div id="gallery" class="gallery">
+          <div class="empty">Aucune photo disponible pour le moment.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="foot">
+      DIGIY EXPLORE • fiche publique • QR découverte • ambiance en images • contact direct • partage simple
+    </div>
+  </div>
+
+  <nav class="publicBottomNav" aria-label="Navigation lieu DIGIY EXPLORE">
+    <div class="publicBottomNavInner">
+      <a href="./index.html"><span class="icoBottom">←</span><span>Retour</span></a>
+      <a href="#gallery"><span class="icoBottom">🖼️</span><span>Images</span></a>
+      <a class="active" id="bottomGo" href="./index.html"><span class="icoBottom">🧭</span><span>Y aller</span></a>
+      <a id="bottomWhatsapp" href="./index.html"><span class="icoBottom">💬</span><span>WhatsApp</span></a>
+      <button id="bottomShare" type="button"><span class="icoBottom">📤</span><span>Partager</span></button>
+    </div>
+  </nav>
+
+  <div class="shareToast" id="shareToast">Lien prêt à partager</div>
+
+  <script>
+    (function(){
+      "use strict";
+
+      const PUBLIC_BASE = "https://explore.digiylyfe.com/";
+      const QR_API = "https://api.qrserver.com/v1/create-qr-code/";
+
+      const WHATSAPP_FALLBACKS = {
+        "test-digiy-explore-saly": "https://wa.me/221771342889?text=Bonjour%2C%20je%20viens%20de%20DIGIY%20EXPLORE.%20Je%20souhaite%20des%20informations%20sur%20Test%20DIGIY%20Explore%20Saly."
+      };
+
+      function fallbackWhatsappForSlug(slug){
+        const key = String(slug || "").trim().toLowerCase();
+        return WHATSAPP_FALLBACKS[key] || "";
+      }
+
+
+      const DEMO_PLACES = {
+        "sortie-peche-petite-cote": {
+          slug:"sortie-peche-petite-cote",
+          public_name:"Sortie en pêche — Petite Côte",
+          title:"Sortie en pêche — Petite Côte",
+          category_label:"🎣 Sortie",
+          city:"Saly",
+          zone:"Petite Côte",
+          price_label:"Sur demande",
+          short_description:"Une sortie en pêche au large, avec ambiance locale, air marin et vraie sensation du coin.",
+          full_description:"Une fiche vitrine DIGIY EXPLORE pour montrer comment un lieu, une sortie ou une expérience peut circuler proprement : photos, repère utile, contact direct, itinéraire et QR partageable. Le regard vient d’abord, puis le client clique quand il est prêt.",
+          address_text:"Petite Côte · Saly · Sénégal",
+          kind:"En mer",
+          tags:["pêche","mer","sortie","bateau","terrain"],
+          cover_url:"https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif",
+          gallery_urls:[
+            "https://orange-pig-270004.hostingersite.com/wp-content/uploads/2025/07/DIGIY-EXPLORE-Boat.gif"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "pause-plage-saly": {
+          slug:"pause-plage-saly",
+          public_name:"Pause plage — Saly",
+          title:"Pause plage — Saly",
+          category_label:"🏖️ Détente",
+          city:"Saly",
+          zone:"Petite Côte",
+          price_label:"Libre / selon lieu",
+          short_description:"Plage, lumière, promenade et repos. Un coin simple pour souffler et profiter.",
+          full_description:"Une fiche de démonstration pour montrer une adresse de détente côté EXPLORE : ambiance, repère, galerie et partage par QR.",
+          address_text:"Saly · Petite Côte · Sénégal",
+          kind:"Bord de mer",
+          tags:["plage","repos","balade","saly"],
+          cover_url:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "escapade-locale-dakar": {
+          slug:"escapade-locale-dakar",
+          public_name:"Escapade locale — Dakar",
+          title:"Escapade locale — Dakar",
+          category_label:"🌆 Découverte",
+          city:"Dakar",
+          zone:"Cap-Vert",
+          price_label:"Selon programme",
+          short_description:"Une porte d’entrée simple pour découvrir le rythme local, les coins utiles et les lieux qui valent le détour.",
+          full_description:"Une fiche vitrine pour montrer comment DIGIY EXPLORE peut présenter une sortie urbaine : repère, ambiance, galerie, contact et QR.",
+          address_text:"Dakar · Sénégal",
+          kind:"En ville",
+          tags:["découverte","ville","guidage","dakar"],
+          cover_url:"https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "restaurant-terrasse-saly": {
+          slug:"restaurant-terrasse-saly",
+          public_name:"Restaurant terrasse — Saly",
+          title:"Restaurant terrasse — Saly",
+          category_label:"🍽️ Restaurant",
+          city:"Saly",
+          zone:"Centre",
+          price_label:"Selon menu",
+          short_description:"Une terrasse simple pour manger, se poser, sentir l’ambiance locale et contacter sans détour.",
+          full_description:"Une fiche vitrine pour montrer une belle adresse terrain avec contact direct, galerie et QR partageable.",
+          address_text:"Saly Centre · Sénégal",
+          kind:"À table",
+          tags:["restaurant","terrasse","saly","local"],
+          cover_url:"https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "boutique-locale-mbour": {
+          slug:"boutique-locale-mbour",
+          public_name:"Boutique locale — Mbour",
+          title:"Boutique locale — Mbour",
+          category_label:"🛍️ Boutique",
+          city:"Mbour",
+          zone:"Marché",
+          price_label:"Selon produit",
+          short_description:"Une adresse de commerce local pour découvrir des produits utiles, de l’artisanat et du contact humain.",
+          full_description:"Une fiche vitrine pour montrer comment une boutique peut être vue, partagée et contactée directement.",
+          address_text:"Mbour · Marché · Sénégal",
+          kind:"Commerce local",
+          tags:["boutique","marché","commerce","artisanat"],
+          cover_url:"https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        },
+        "villa-detente-somone": {
+          slug:"villa-detente-somone",
+          public_name:"Villa détente — Somone",
+          title:"Villa détente — Somone",
+          category_label:"🏡 Séjour",
+          city:"Somone",
+          zone:"Petite Côte",
+          price_label:"Sur demande",
+          short_description:"Une adresse de séjour pour se poser, respirer et découvrir le coin autrement.",
+          full_description:"Une fiche vitrine pour montrer une adresse de séjour côté EXPLORE, partageable par QR et contact direct.",
+          address_text:"Somone · Petite Côte · Sénégal",
+          kind:"Séjour",
+          tags:["villa","séjour","somone","repos"],
+          cover_url:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+          gallery_urls:[
+            "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80"
+          ],
+          contact_url:"https://digiylyfe.com/",
+          public_contact_url:"https://digiylyfe.com/"
+        }
+      };
+
+      function demoPlaceBySlug(slug){
+        return DEMO_PLACES[String(slug || "").trim().toLowerCase()] || null;
+      }
+
+
+      const supabase = window.DIGIY_PUBLIC_EXPLORE_SB || window.supabase.createClient(
+        window.DIGIY_SUPABASE_URL,
+        window.DIGIY_SUPABASE_ANON_KEY,
+        {
+          auth:{
+            persistSession:false,
+            autoRefreshToken:false,
+            detectSessionInUrl:false,
+            storageKey:"digiy-explore-public-fiche-noauth",
+            storage:{ getItem:()=>null, setItem:()=>{}, removeItem:()=>{} }
+          }
+        }
+      );
+
+      window.DIGIY_PUBLIC_EXPLORE_SB = supabase;
+
+      const $ = (id) => document.getElementById(id);
+
+      const msg = $("msg");
+      const subline = $("subline");
+      const cover = $("cover");
+      const categoryBox = $("categoryBox");
+      const locationBox = $("locationBox");
+      const contactBox = $("contactBox");
+      const priceBox = $("priceBox");
+      const shortDescriptionBox = $("shortDescriptionBox");
+      const fullDescriptionBox = $("fullDescriptionBox");
+      const addressBox = $("addressBox");
+      const kindBox = $("kindBox");
+      const tagsBox = $("tagsBox");
+      const gallery = $("gallery");
+
+      const callBtn = $("callBtn");
+      const waBtn = $("waBtn");
+      const mapsBtn = $("mapsBtn");
+      const fastGo = $("fastGo");
+      const fastShare = $("fastShare");
+      const bottomGo = $("bottomGo");
+      const bottomWhatsapp = $("bottomWhatsapp");
+      const bottomShare = $("bottomShare");
+      const shareToast = $("shareToast");
+
+      const qrImg = $("qrImg");
+      const qrLinkText = $("qrLinkText");
+      const qrOpenBtn = $("qrOpenBtn");
+      const qrCopyBtn = $("qrCopyBtn");
+
+      function setMsg(text, type){
+        if(!text){
+          msg.className = "msg";
+          msg.textContent = "";
+          return;
+        }
+        msg.className = "msg show " + (type || "info");
+        msg.textContent = text;
+      }
+
+      function cleanPublicUrl(){
+        try{
+          const url = new URL(window.location.href);
+          let changed = false;
+          [
+            "phone","tel","owner_phone","owner_id","business_code",
+            "access_note","keybox_code","keybox_location","return",
+            "token","pin","module","from"
+          ].forEach(function(key){
+            if(url.searchParams.has(key)){
+              url.searchParams.delete(key);
+              changed = true;
+            }
+          });
+
+          if(changed){
+            history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+          }
+        }catch(_){}
+      }
+
+      function escapeHtml(value){
+        return String(value ?? "")
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
+      }
+
+      function textOf(){
+        return Array.from(arguments).find(v => String(v ?? "").trim()) || "";
+      }
+
+      function safeText(value, fallback){
+        const s = String(value ?? "").trim();
+        return s || fallback || "—";
+      }
+
+      function getSlug(){
+        cleanPublicUrl();
+        try{
+          const url = new URL(window.location.href);
+          return String(url.searchParams.get("slug") || "").trim();
+        }catch(_){
+          return "";
+        }
+      }
+
+      function normalizePhone(v){
+        const raw = String(v || "").replace(/[^\d]/g,"");
+        if(raw.length === 9) return "221" + raw;
+        return raw;
+      }
+
+      function qrUrlFor(target){
+        return QR_API + "?size=620x620&margin=16&data=" + encodeURIComponent(target);
+      }
+
+      function canonicalPlaceUrl(slug){
+        try{
+          const u = new URL("./fiche.html", window.location.href);
+          if(slug) u.searchParams.set("slug", slug);
+          [
+            "phone","tel","owner_phone","owner_id","business_code",
+            "access_note","keybox_code","keybox_location","return",
+            "token","pin","module","from"
+          ].forEach(k => u.searchParams.delete(k));
+          return u.toString();
+        }catch(_){
+          return window.location.href;
+        }
+      }
+
+      async function copyText(text){
+        const value = String(text || "").trim();
+        if(!value) throw new Error("empty_copy");
+        if(navigator.clipboard?.writeText){
+          await navigator.clipboard.writeText(value);
+          return true;
+        }
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.setAttribute("readonly","");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        if(!ok) throw new Error("copy_failed");
+        return true;
+      }
+
+      function showShareToast(text){
+        if(!shareToast) return;
+        shareToast.textContent = text || "Lien prêt à partager";
+        shareToast.classList.add("show");
+        clearTimeout(showShareToast._t);
+        showShareToast._t = setTimeout(() => shareToast.classList.remove("show"), 2200);
+      }
+
+      function buildMapsHref(lat,lng,address){
+        const la = Number(lat);
+        const lo = Number(lng);
+        if(Number.isFinite(la) && Number.isFinite(lo)){
+          return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(la + "," + lo);
+        }
+        const a = String(address || "").trim();
+        if(a) return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(a);
+        return "./index.html";
+      }
+
+      function readExternalLinks(place){
+        const raw = place?.external_links || place?.links || place?.public_links || [];
+        if(Array.isArray(raw)) return raw;
+
+        if(typeof raw === "string"){
+          const s = raw.trim();
+          if(!s) return [];
+          try{
+            const parsed = JSON.parse(s);
+            return Array.isArray(parsed) ? parsed : [];
+          }catch(_){
+            return s.startsWith("http") ? [s] : [];
+          }
+        }
+
+        return [];
+      }
+
+      function firstWhatsappFromExternalLinks(place){
+        const links = readExternalLinks(place);
+
+        for(const item of links){
+          const url = typeof item === "string"
+            ? item
+            : String(item?.url || item?.href || item?.link || "").trim();
+
+          const label = typeof item === "string"
+            ? ""
+            : String(item?.label || item?.type || item?.name || "").toLowerCase();
+
+          if(!url) continue;
+
+          try{
+            const u = new URL(url, window.location.href);
+            const host = u.hostname.toLowerCase();
+
+            if(host.includes("wa.me") || host.includes("whatsapp.com") || label.includes("whatsapp")){
+              return u.href;
+            }
+          }catch(_){}
+        }
+
+        return "";
+      }
+
+      function safePublicContactHref(place){
+        const externalWhatsapp = firstWhatsappFromExternalLinks(place);
+        if(externalWhatsapp) return externalWhatsapp;
+
+        const raw = String(
+          place?.contact_url ||
+          place?.public_contact_url ||
+          place?.whatsapp_url ||
+          ""
+        ).trim();
+
+        if(raw){
+          try{
+            const url = new URL(raw, window.location.href);
+            const host = url.hostname.toLowerCase();
+
+            if(/^https?:$/i.test(url.protocol)){
+              if(host.includes("wa.me") || host.includes("whatsapp.com")) return url.href;
+              if(!host.includes("digiylyfe.com")) return url.href;
+            }
+          }catch(_){}
+        }
+
+        const phone = normalizePhone(
+          place?.whatsapp ||
+          place?.phone ||
+          place?.contact_phone ||
+          place?.public_phone ||
+          ""
+        );
+
+        if(phone){
+          const label = place?.public_name || place?.title || place?.name || "ce lieu";
+          return "https://wa.me/" + phone + "?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE. Je souhaite des informations sur : " + label);
+        }
+
+        const fallback = fallbackWhatsappForSlug(place?.slug || getSlug());
+        if(fallback) return fallback;
+
+        return "https://wa.me/221771342889?text=" + encodeURIComponent("Bonjour, je viens de DIGIY EXPLORE.");
+      }
+
+      function buildPhoneHref(place){
+        const phone = normalizePhone(place?.phone || place?.contact_phone || place?.public_phone || "");
+        if(!phone) return "./index.html";
+        return "tel:+" + phone;
+      }
+
+      function placeName(place){
+        return safeText(place?.public_name || place?.name || place?.title, "Lieu DIGIY EXPLORE");
+      }
+
+      function placeCategory(place){
+        return safeText(place?.category_label || place?.category_name || place?.category_code || place?.subcategory || place?.type_label, "Lieu / activité");
+      }
+
+      function placeCity(place){
+        return safeText(place?.city || place?.town || place?.location_city, "Ville à préciser");
+      }
+
+      function placeZone(place){
+        return safeText(place?.zone || place?.district || place?.area || place?.neighborhood, "");
+      }
+
+      function placeLocation(place){
+        return [placeCity(place), placeZone(place)].filter(Boolean).join(" · ") || "Repère à préciser";
+      }
+
+      function placeShort(place){
+        return safeText(
+          place?.short_description || place?.summary || place?.description || place?.full_description,
+          "Un lieu à découvrir sur DIGIY EXPLORE."
+        );
+      }
+
+      function placeFull(place){
+        return safeText(
+          place?.full_description || place?.description || place?.short_description || place?.summary,
+          "La fiche donne les repères utiles : ambiance, localisation, contact direct et photos quand elles sont disponibles."
+        );
+      }
+
+      function placeAddress(place){
+        return safeText(place?.address_text || place?.address || place?.address_label || place?.location_label, "Adresse ou repère à préciser.");
+      }
+
+      function placeKind(place){
+        return safeText(place?.kind || place?.ambiance || place?.vibe || place?.type_label || placeCategory(place), "Ambiance à découvrir.");
+      }
+
+      function placeBudget(place){
+        return safeText(place?.price_label || place?.budget_label || place?.price_hint || place?.budget, "À demander");
+      }
+
+      function parsePhotos(place){
+        const candidates = [
+          place?.cover_url,
+          place?.photo_urls,
+          place?.photo_url,
+          place?.image_url,
+          place?.hero_url,
+          place?.gallery_urls,
+          place?.photos,
+          place?.images
+        ];
+
+        const out = [];
+
+        candidates.forEach(item => {
+          if(!item) return;
+
+          if(Array.isArray(item)){
+            item.forEach(x => {
+              if(typeof x === "string") out.push(x);
+              else if(x?.url) out.push(x.url);
+              else if(x?.src) out.push(x.src);
+            });
+            return;
+          }
+
+          if(typeof item === "string"){
+            const s = item.trim();
+            if(!s) return;
+
+            if((s.startsWith("[") && s.endsWith("]")) || (s.startsWith("{") && s.endsWith("}"))){
+              try{
+                const parsed = JSON.parse(s);
+                if(Array.isArray(parsed)){
+                  parsed.forEach(x => {
+                    if(typeof x === "string") out.push(x);
+                    else if(x?.url) out.push(x.url);
+                    else if(x?.src) out.push(x.src);
+                  });
+                  return;
+                }
+              }catch(_){}
+            }
+
+            s.split(/[\n,|]+/).map(x => x.trim()).filter(Boolean).forEach(x => out.push(x));
+          }
+        });
+
+        return Array.from(new Set(out.filter(url => /^https?:\/\//i.test(url)))).slice(0,8);
+      }
+
+      function parseTags(place){
+        const raw = place?.tags || place?.keywords || place?.mots_cles || "";
+        if(Array.isArray(raw)) return raw.map(String).filter(Boolean).slice(0,12);
+        return String(raw || "")
+          .split(/[,|#]+/)
+          .map(x => x.trim())
+          .filter(Boolean)
+          .slice(0,12);
+      }
+
+      function setQr(slug){
+        const target = canonicalPlaceUrl(slug);
+        qrImg.src = qrUrlFor(target);
+        qrOpenBtn.href = target;
+        qrLinkText.textContent = target;
+
+        qrCopyBtn.onclick = async () => {
+          try{
+            await copyText(target);
+            showShareToast("Lien de la fiche copié");
+            setMsg("✅ Lien de la fiche copié. Le QR ouvre cette fiche publique.", "ok");
+          }catch(_){
+            setMsg("⚠️ Copie bloquée sur ce navigateur. Le lien reste visible sous le QR.", "info");
+          }
+        };
+      }
+
+      async function shareCurrentPlace(label){
+        const title = document.title || "DIGIY EXPLORE";
+        const text = label ? "Regarde ce lieu sur DIGIY EXPLORE : " + label : "Regarde ce lieu sur DIGIY EXPLORE.";
+        const url = qrOpenBtn.href || window.location.href;
+
+        try{
+          if(navigator.share){
+            await navigator.share({ title, text, url });
+            return;
+          }
+          await copyText(url);
+          showShareToast("Lien copié pour partager");
+        }catch(_){
+          try{
+            await copyText(url);
+            showShareToast("Lien copié pour partager");
+          }catch(__){
+            showShareToast("Partage indisponible ici");
+          }
+        }
+      }
+
+      function renderCover(place){
+        const photos = parsePhotos(place);
+        const coverUrl = photos[0] || "";
+        const name = placeName(place);
+        const short = placeShort(place);
+
+        if(coverUrl){
+          cover.className = "cover";
+          cover.style.backgroundImage = "url('" + coverUrl.replaceAll("'", "%27") + "')";
+          cover.innerHTML = `
+            <div class="coverShade"></div>
+            <div class="coverContent">
+              <div class="badge">DIGIY EXPLORE · Lieu public</div>
+              <h1 class="heroTitle">${escapeHtml(name)}</h1>
+              <p class="heroLead">${escapeHtml(short)}</p>
+            </div>
+          `;
+          return;
+        }
+
+        cover.className = "cover";
+        cover.style.backgroundImage = "";
+        cover.innerHTML = `
+          <div class="coverShade"></div>
+          <div class="coverContent">
+            <div class="badge">DIGIY EXPLORE · Lieu public</div>
+            <h1 class="heroTitle">${escapeHtml(name)}</h1>
+            <p class="heroLead">${escapeHtml(short)}</p>
+          </div>
+        `;
+      }
+
+      function renderGallery(place){
+        const photos = parsePhotos(place);
+
+        if(!photos.length){
+          gallery.innerHTML = `<div class="empty">Aucune photo disponible pour le moment. La fiche reste partageable par QR et contact direct.</div>`;
+          return;
+        }
+
+        gallery.innerHTML = photos.map((url, idx) => `
+          <a
+            class="photo"
+            href="${escapeHtml(url)}"
+            target="_blank"
+            rel="noopener"
+            style="background-image:url('${escapeHtml(url).replaceAll("'", "%27")}')"
+            aria-label="Ouvrir la photo ${idx + 1}"
+          ></a>
+        `).join("");
+      }
+
+      function renderTags(place){
+        const tags = parseTags(place);
+
+        if(!tags.length){
+          tagsBox.innerHTML = `<span class="muted">Aucun mot-clé.</span>`;
+          return;
+        }
+
+        tagsBox.innerHTML = `<div class="chips">${tags.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join("")}</div>`;
+      }
+
+      function wirePublicActions(place){
+        const label = placeName(place);
+        const mapHref = buildMapsHref(place?.latitude, place?.longitude, placeAddress(place));
+        const contactHref = safePublicContactHref(place);
+        const phoneHref = buildPhoneHref(place);
+
+        callBtn.href = phoneHref || contactHref || "./index.html";
+        waBtn.href = contactHref || "./index.html";
+        mapsBtn.href = mapHref || "./index.html";
+
+        [waBtn, mapsBtn, fastGo, bottomGo, bottomWhatsapp].forEach(el => {
+          if(!el) return;
+          const href = el === mapsBtn || el === fastGo || el === bottomGo ? mapHref : contactHref;
+          el.href = href || "./index.html";
+          el.target = href && href.startsWith("http") ? "_blank" : "";
+          el.rel = href && href.startsWith("http") ? "noopener" : "";
+        });
+
+        if(contactHref && contactHref.startsWith("http")){
+          contactBox.textContent = "WhatsApp direct";
+        }else{
+          contactBox.textContent = "Protégé";
+        }
+
+        if(fastShare) fastShare.onclick = () => shareCurrentPlace(label);
+        if(bottomShare) bottomShare.onclick = () => shareCurrentPlace(label);
+      }
+
+      function renderPlace(place, slug){
+        const name = placeName(place);
+        const category = placeCategory(place);
+        const location = placeLocation(place);
+
+        document.title = name + " — DIGIY EXPLORE";
+        subline.textContent = location + " · " + category;
+
+        categoryBox.textContent = category;
+        locationBox.textContent = location;
+        priceBox.textContent = placeBudget(place);
+        shortDescriptionBox.textContent = placeShort(place);
+        fullDescriptionBox.textContent = placeFull(place);
+        addressBox.textContent = placeAddress(place);
+        kindBox.textContent = placeKind(place);
+
+        setQr(slug);
+        renderCover(place);
+        renderTags(place);
+        renderGallery(place);
+        wirePublicActions(place);
+      }
+
+      async function loadPlace(slug){
+        const demo = demoPlaceBySlug(slug);
+
+        try{
+          const { data, error } = await supabase.rpc("digiy_explore_public_place_by_slug", {
+            p_slug: slug
+          });
+
+          if(error) throw error;
+
+          if(data?.ok === true && data.place) return data.place;
+          if(data && typeof data === "object" && data.slug) return data;
+
+          if(demo) return demo;
+
+          throw new Error(data?.error || "place_not_found");
+        }catch(e){
+          if(demo) return demo;
+          throw e;
+        }
+      }
+
+      async function boot(){
+        cleanPublicUrl();
+        const slug = getSlug();
+
+        if(!slug){
+          setQr("");
+          setMsg("Choisis un lieu depuis EXPLORE pour ouvrir une fiche complète.", "info");
+          cover.className = "coverFallback";
+          cover.textContent = "Choisis un lieu depuis la liste EXPLORE.";
+          gallery.innerHTML = `<div class="empty">Aucune galerie chargée : aucun lieu précis n’est ouvert.</div>`;
+          return;
+        }
+
+        setQr(slug);
+        setMsg("Chargement du lieu…", "info");
+
+        try{
+          const place = await loadPlace(slug);
+          renderPlace(place, slug);
+          setMsg("", "ok");
+        }catch(e){
+          console.error(e);
+          setMsg("Impossible de charger ce lieu pour le moment. Le QR reste prêt vers cette fiche publique.", "bad");
+          cover.className = "coverFallback";
+          cover.textContent = "Lieu indisponible.";
+          gallery.innerHTML = `<div class="empty">Galerie indisponible pour le moment.</div>`;
+        }
+      }
+
+      boot();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
