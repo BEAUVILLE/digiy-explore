@@ -54,13 +54,22 @@
   }
 
   function patchUrl(value,doc){
+    var original=String(value||'');
+    if(!original||original.charAt(0)==='#'||/^javascript:/i.test(original)) return original;
     try{
-      var url=new URL(value,doc.baseURI||location.href);
+      var url=new URL(original,doc.baseURI||location.href);
+      var changed=false;
       ['text','body','subject'].forEach(function(key){
-        if(url.searchParams.has(key)) url.searchParams.set(key,replaceText(url.searchParams.get(key)));
+        if(!url.searchParams.has(key)) return;
+        var current=url.searchParams.get(key);
+        var next=replaceText(current);
+        if(next!==current){url.searchParams.set(key,next);changed=true;}
       });
-      return url.href;
-    }catch(e){return replaceText(value);}
+      return changed?url.href:original;
+    }catch(e){
+      var direct=replaceText(original);
+      return direct!==original?direct:original;
+    }
   }
 
   function patchNode(root,doc){
