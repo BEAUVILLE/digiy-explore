@@ -20,6 +20,8 @@
     .language-buttons::-webkit-scrollbar{display:none}
     .language-buttons button{flex:0 0 auto;min-height:36px;min-width:54px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 10px;font-weight:1000;font-size:11px;cursor:pointer}
     .language-buttons button.active{background:linear-gradient(135deg,var(--gold),#f2cc78);border-color:rgba(220,180,90,.62);color:#062414;box-shadow:0 6px 16px rgba(0,0,0,.22)}
+     .member-price{flex:0 0 auto;min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;border-radius:999px;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:11px;font-weight:1000;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.22)}
+
     .frame-wrap{position:relative;width:100%;height:calc(100dvh - var(--bar-h));background:#06130f}
     #exploreFrame{display:block;width:100%;height:100%;border:0;background:#06130f}
     .loading{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 15% 0%,rgba(220,180,90,.15),transparent 48%),#06130f;color:#fff2bf;font-weight:1000;z-index:2;transition:opacity .18s ease}
@@ -33,7 +35,7 @@
   <script src="./explore-i18n-data-2.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-3.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-4.js?v=20260730-explore7a"></script>
-  <script src="./explore-7lang-engine.js?v=20260811-pt-exit-v2" defer></script>
+  <script src="./explore-7lang-engine.js?v=20260812-explore-28000-v1" defer></script>
   <script src="./explore-world-europe.js?v=20260801-world1" defer></script>
   <script src="./explore-portes-cartouche.js?v=20260801-doors1" defer></script>
 </head>
@@ -41,6 +43,7 @@
   <header class="language-shell" aria-label="DIGIY EXPLORE languages">
     <div class="language-inner">
       <div class="explore-mark"><span>🌍</span><b>DIGIY EXPLORE</b></div>
+       <a class="member-price" href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener noreferrer" aria-label="Tarifs adhérents EXPLORE — 28 000 FCFA par mois">💳 28 000 FCFA/mois</a>
       <nav class="language-buttons" aria-label="Choisir la langue">
         <button type="button" data-shell-lang="fr">🇫🇷 FR</button>
         <button type="button" data-shell-lang="en">🇬🇧 EN</button>
@@ -56,6 +59,59 @@
     <div class="loading" id="exploreLoading"><span>DIGIY EXPLORE…</span></div>
     <iframe id="exploreFrame" title="DIGIY EXPLORE" loading="eager" allow="clipboard-read; clipboard-write"></iframe>
   </main>
+
+  <script>
+  (function(){
+    var TARIFS='https://digiylyfe.com/tarifs-adherents.html';
+    var frame=document.getElementById('exploreFrame');
+
+    function patchExploreCore(){
+      try{
+        var d=frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+        if(!d || !d.body) return;
+
+        /* Les anciennes portes d'inscription deviennent Tarifs adhérents. */
+        d.querySelectorAll('a[href*="inscription-explore.html"]').forEach(function(a){
+          a.href=TARIFS;
+          a.target='_blank';
+          a.rel='noopener noreferrer';
+        });
+
+        /* Bloc commercial visible, sans toucher aux découvertes ni aux contacts visiteurs. */
+        if(!d.getElementById('digiyExploreAdherent28000')){
+          var hero=d.querySelector('.hero-card');
+          if(hero){
+            var box=d.createElement('div');
+            box.id='digiyExploreAdherent28000';
+            box.innerHTML=
+              '<strong>🌍 ADHÉRENT EXPLORE · 28 000 FCFA / mois</strong>'+
+              '<span>Carte de visite digitale · 1 photo · QR · visibilité EXPLORE · WhatsApp · SMS · appel direct · 8 langues · 0 % commission.</span>'+
+              '<a href="'+TARIFS+'" target="_blank" rel="noopener noreferrer">💳 Tarifs adhérents</a>';
+            hero.appendChild(box);
+
+            var st=d.createElement('style');
+            st.id='digiyExploreAdherent28000Style';
+            st.textContent=
+              '#digiyExploreAdherent28000{margin-top:16px;padding:14px;border:1px solid rgba(220,180,90,.42);border-radius:20px;background:linear-gradient(135deg,rgba(220,180,90,.14),rgba(18,183,106,.10));display:flex;gap:10px;align-items:center;flex-wrap:wrap}'+
+              '#digiyExploreAdherent28000 strong{color:#fff2bf;font-size:15px;font-weight:1000}'+
+              '#digiyExploreAdherent28000 span{color:rgba(247,251,248,.82);font-size:13px;font-weight:850;line-height:1.45;flex:1 1 420px}'+
+              '#digiyExploreAdherent28000 a{min-height:42px;padding:0 14px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#dcb45a,#f2cc78);color:#062414;font-size:13px;font-weight:1000;text-decoration:none}';
+            d.head.appendChild(st);
+          }
+        }
+      }catch(e){}
+    }
+
+    if(frame){
+      frame.addEventListener('load',function(){
+        patchExploreCore();
+        setTimeout(patchExploreCore,300);
+        setTimeout(patchExploreCore,1200);
+      });
+    }
+  })();
+  </script>
+
   <noscript><p><a href="./index-core.html">Ouvrir DIGIY EXPLORE</a></p></noscript>
 </body>
 </html>
