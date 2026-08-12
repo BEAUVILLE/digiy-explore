@@ -9,33 +9,48 @@
   <title>DIGIY EXPLORE — Découvrir les bons coins</title>
   <meta name="description" content="DIGIY EXPLORE — accès multilingue direct aux lieux, expériences, fiches et demandes du terrain.">
   <style>
-    :root{--bar-h:60px;--bg:#06130f;--gold:#dcb45a;--green:#12b76a;--ink:#f7fbf8;--line:rgba(255,255,255,.15)}
+    :root{--bar-h:52px;--member-h:38px;--bg:#06130f;--gold:#dcb45a;--green:#12b76a;--ink:#f7fbf8;--line:rgba(255,255,255,.15)}
     *{box-sizing:border-box}
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
-    .language-shell{height:var(--bar-h);padding:max(7px,env(safe-area-inset-top)) 9px 7px;background:linear-gradient(135deg,#06130f,#0b3024);border-bottom:1px solid rgba(220,180,90,.30);box-shadow:0 8px 28px rgba(0,0,0,.28);position:relative;z-index:20}
-    .language-inner{height:100%;display:flex;align-items:center;gap:8px;max-width:1180px;margin:auto;min-width:0}
-    .explore-mark{display:flex;align-items:center;gap:8px;flex:0 0 auto;color:#fff2bf;font-weight:1000;font-size:12px;letter-spacing:.04em;white-space:nowrap}
-    .explore-mark span{width:35px;height:35px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:18px}
-    .language-buttons{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;flex:1;justify-content:flex-end;min-width:0}
-    .language-buttons::-webkit-scrollbar{display:none}
-    .language-buttons button{flex:0 0 auto;min-height:36px;min-width:54px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 10px;font-weight:1000;font-size:11px;cursor:pointer}
-    .language-buttons button.active{background:linear-gradient(135deg,var(--gold),#f2cc78);border-color:rgba(220,180,90,.62);color:#062414;box-shadow:0 6px 16px rgba(0,0,0,.22)}
-     .member-price{flex:0 0 auto;min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;border-radius:999px;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:11px;font-weight:1000;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.22)}
+    .language-shell{height:var(--bar-h);padding:max(5px,env(safe-area-inset-top)) 8px 5px;background:linear-gradient(135deg,#06130f,#0b3024);border-bottom:1px solid rgba(220,180,90,.22);position:relative;z-index:20}
+    .language-inner{height:100%;display:flex;align-items:center;gap:6px;max-width:1180px;margin:auto;min-width:0}
+    .explore-mark{display:flex;align-items:center;gap:6px;flex:0 0 auto;color:#fff2bf;font-weight:1000;font-size:11px;letter-spacing:.03em;white-space:nowrap}
+    .explore-mark span{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:16px}
+    .language-buttons{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;flex:1;min-width:0}
+    .language-buttons button{min-width:0;height:29px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 3px;font-weight:1000;font-size:9px;cursor:pointer;white-space:nowrap}
+    .language-buttons button.active{background:linear-gradient(135deg,var(--gold),#f2cc78);border-color:rgba(220,180,90,.62);color:#062414;box-shadow:0 4px 12px rgba(0,0,0,.18)}
 
-    .frame-wrap{position:relative;width:100%;height:calc(100dvh - var(--bar-h));background:#06130f}
+    .member-strip{height:var(--member-h);display:flex;align-items:center;justify-content:center;padding:4px 8px;background:#fff8dc;border-bottom:1px solid rgba(220,180,90,.40);position:relative;z-index:19}
+    .member-strip a{width:min(760px,100%);min-height:29px;display:flex;align-items:center;justify-content:center;gap:7px;border-radius:999px;background:linear-gradient(135deg,#f7dda0,#f2cc78);color:#173226;text-decoration:none;font-size:11px;font-weight:1000;letter-spacing:.01em;box-shadow:0 4px 12px rgba(6,19,15,.10);white-space:nowrap}
+    .member-strip strong{color:#0b5139}
+
+    .frame-wrap{position:relative;width:100%;height:calc(100dvh - var(--bar-h) - var(--member-h));background:#06130f}
     #exploreFrame{display:block;width:100%;height:100%;border:0;background:#06130f}
     .loading{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 15% 0%,rgba(220,180,90,.15),transparent 48%),#06130f;color:#fff2bf;font-weight:1000;z-index:2;transition:opacity .18s ease}
     .loading.hidden{opacity:0;pointer-events:none}
     .loading span{padding:18px 22px;border-radius:20px;border:1px solid rgba(220,180,90,.28);background:rgba(255,255,255,.06)}
     html[dir="rtl"] .language-inner{direction:rtl}
-    html[dir="rtl"] .language-buttons{justify-content:flex-start}
-    @media(max-width:720px){:root{--bar-h:63px}.explore-mark b{display:none}.language-buttons{justify-content:flex-start}.language-buttons button{min-width:51px;padding:0 8px}}
+    @media(max-width:720px){
+      :root{--bar-h:48px;--member-h:36px}
+      .language-shell{padding-left:5px;padding-right:5px}
+      .explore-mark b{display:none}
+      .explore-mark span{width:28px;height:28px;border-radius:9px;font-size:15px}
+      .language-inner{gap:4px}
+      .language-buttons{gap:2px}
+      .language-buttons button{height:27px;font-size:8px;padding:0 2px}
+      .member-strip{padding:3px 6px}
+      .member-strip a{min-height:28px;font-size:10px;gap:5px}
+    }
+    @media(max-width:390px){
+      .language-buttons button{font-size:7.5px}
+      .member-strip a{font-size:9px}
+    }
   </style>
   <script src="./explore-i18n-data-1.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-2.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-3.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-4.js?v=20260730-explore7a"></script>
-  <script src="./explore-7lang-engine.js?v=20260812-explore-28000-v1" defer></script>
+  <script src="./explore-7lang-engine.js?v=20260812-explore-world8-v2" defer></script>
   <script src="./explore-world-europe.js?v=20260801-world1" defer></script>
   <script src="./explore-portes-cartouche.js?v=20260801-doors1" defer></script>
 </head>
@@ -43,18 +58,25 @@
   <header class="language-shell" aria-label="DIGIY EXPLORE languages">
     <div class="language-inner">
       <div class="explore-mark"><span>🌍</span><b>DIGIY EXPLORE</b></div>
-       <a class="member-price" href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener noreferrer" aria-label="Tarifs adhérents EXPLORE — 28 000 FCFA par mois">💳 28 000 FCFA/mois</a>
       <nav class="language-buttons" aria-label="Choisir la langue">
-        <button type="button" data-shell-lang="fr">🇫🇷 FR</button>
-        <button type="button" data-shell-lang="en">🇬🇧 EN</button>
-        <button type="button" data-shell-lang="es">🇪🇸 ES</button>
-        <button type="button" data-shell-lang="de">🇩🇪 DE</button>
-        <button type="button" data-shell-lang="it">🇮🇹 IT</button>
-        <button type="button" data-shell-lang="nl">🇳🇱 NL</button>
-        <button type="button" data-shell-lang="ar">🌙 AR</button>
+        <button type="button" data-shell-lang="fr">FR</button>
+        <button type="button" data-shell-lang="en">EN</button>
+        <button type="button" data-shell-lang="es">ES</button>
+        <button type="button" data-shell-lang="pt">PT</button>
+        <button type="button" data-shell-lang="de">DE</button>
+        <button type="button" data-shell-lang="it">IT</button>
+        <button type="button" data-shell-lang="nl">NL</button>
+        <button type="button" data-shell-lang="ar">AR</button>
       </nav>
     </div>
   </header>
+
+  <div class="member-strip" aria-label="Adhésion professionnelle EXPLORE">
+    <a href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener noreferrer">
+      <strong>EXPLORE PRO</strong><span>· 28 000 FCFA · 75 € EUROPE</span><span>→</span>
+    </a>
+  </div>
+
   <main class="frame-wrap">
     <div class="loading" id="exploreLoading"><span>DIGIY EXPLORE…</span></div>
     <iframe id="exploreFrame" title="DIGIY EXPLORE" loading="eager" allow="clipboard-read; clipboard-write"></iframe>
@@ -77,25 +99,29 @@
           a.rel='noopener noreferrer';
         });
 
-        /* Bloc commercial visible, sans toucher aux découvertes ni aux contacts visiteurs. */
+        /* Le vieux sélecteur FR/EN du cœur est masqué : la coque WORLD8 est la seule barre de langues. */
+        var oldLang=d.querySelector('.lang-switch');
+        if(oldLang) oldLang.style.setProperty('display','none','important');
+
+        /* L'offre pro reste aussi visible dans le HERO, mais sans monopoliser la barre langues. */
         if(!d.getElementById('digiyExploreAdherent28000')){
           var hero=d.querySelector('.hero-card');
           if(hero){
             var box=d.createElement('div');
             box.id='digiyExploreAdherent28000';
             box.innerHTML=
-              '<strong>🌍 ADHÉRENT EXPLORE · 28 000 FCFA / mois</strong>'+
-              '<span>Carte de visite digitale · 1 photo · QR · visibilité EXPLORE · WhatsApp · SMS · appel direct · 8 langues · 0 % commission.</span>'+
-              '<a href="'+TARIFS+'" target="_blank" rel="noopener noreferrer">💳 Tarifs adhérents</a>';
+              '<strong>🌍 EXPLORE PRO · 28 000 FCFA / 75 € Europe</strong>'+
+              '<span>Carte digitale · QR · visibilité EXPLORE · contact direct · 8 langues · 0 % commission.</span>'+
+              '<a href="'+TARIFS+'" target="_blank" rel="noopener noreferrer">💳 Voir l’adhésion</a>';
             hero.appendChild(box);
 
             var st=d.createElement('style');
             st.id='digiyExploreAdherent28000Style';
             st.textContent=
-              '#digiyExploreAdherent28000{margin-top:16px;padding:14px;border:1px solid rgba(220,180,90,.42);border-radius:20px;background:linear-gradient(135deg,rgba(220,180,90,.14),rgba(18,183,106,.10));display:flex;gap:10px;align-items:center;flex-wrap:wrap}'+
-              '#digiyExploreAdherent28000 strong{color:#fff2bf;font-size:15px;font-weight:1000}'+
-              '#digiyExploreAdherent28000 span{color:rgba(247,251,248,.82);font-size:13px;font-weight:850;line-height:1.45;flex:1 1 420px}'+
-              '#digiyExploreAdherent28000 a{min-height:42px;padding:0 14px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#dcb45a,#f2cc78);color:#062414;font-size:13px;font-weight:1000;text-decoration:none}';
+              '#digiyExploreAdherent28000{margin-top:14px;padding:12px 13px;border:1px solid rgba(220,180,90,.42);border-radius:18px;background:linear-gradient(135deg,rgba(220,180,90,.14),rgba(18,183,106,.10));display:flex;gap:9px;align-items:center;flex-wrap:wrap}'+
+              '#digiyExploreAdherent28000 strong{color:#fff2bf;font-size:14px;font-weight:1000}'+
+              '#digiyExploreAdherent28000 span{color:rgba(247,251,248,.82);font-size:12px;font-weight:850;line-height:1.4;flex:1 1 360px}'+
+              '#digiyExploreAdherent28000 a{min-height:38px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#dcb45a,#f2cc78);color:#062414;font-size:12px;font-weight:1000;text-decoration:none}';
             d.head.appendChild(st);
           }
         }
