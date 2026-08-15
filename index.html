@@ -8,7 +8,7 @@
   <link rel="canonical" href="https://explore.digiylyfe.com/">
   <title>DIGIY EXPLORE — Découvrir les bons coins</title>
   <meta name="description" content="DIGIY EXPLORE — accès multilingue direct aux lieux, expériences, fiches et demandes du terrain.">
-  <meta name="digiy-build" content="explore-world8-adhesion-top-20260812-v2">
+  <meta name="digiy-build" content="explore-world8-nohub-20260815-v1">
   <style>
     :root{--bar-h:52px;--member-h:38px;--bg:#06130f;--gold:#dcb45a;--green:#12b76a;--ink:#f7fbf8;--line:rgba(255,255,255,.15)}
     *{box-sizing:border-box}
@@ -98,6 +98,13 @@
           a.href=TARIFS;
           a.target='_blank';
           a.rel='noopener noreferrer';
+        });
+
+        /* HUB = atelier futur : le retour public doit aller vers DIGIYLYFE. */
+        d.querySelectorAll('a[href^="https://digiy-hub.digiylyfe.com/"]').forEach(function(a){
+          a.href='https://digiylyfe.com/';
+          a.textContent='🏠 DIGIYLYFE';
+          a.removeAttribute('data-i18n');
         });
 
         /* Le vieux sélecteur FR/EN du cœur est masqué : la coque WORLD8 est la seule barre de langues. */
