@@ -1,0 +1,61 @@
+name: Patch EXPLORE contact fallbacks
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/patch-explore-fallback-links.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.event.head_commit.message != 'UI: add static contact fallbacks on EXPLORE'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add static fallback links
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import quote
+          import re
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+
+          general = 'Bonjour, je viens de DIGIY EXPLORE. Je souhaite une information sur un lieu ou proposer une visibilité sans engagement.'
+          fishing = 'Bonjour, je viens de DIGIY EXPLORE. Je suis intéressé par une sortie pêche sur la Petite Côte.'
+          saly = 'Bonjour, je viens de DIGIY EXPLORE. Je connais un lieu à Saly à faire découvrir.'
+          experience = 'Bonjour, je viens de DIGIY EXPLORE. Je veux proposer une expérience locale.'
+
+          def wa(message):
+              return 'https://wa.me/221771342889?text=' + quote(message, safe='')
+
+          def sms(message):
+              return 'sms:+221771342889?body=' + quote(message, safe='')
+
+          targets = {
+              'waExploreTop': wa(general),
+              'waExploreInfo': wa(general),
+              'smsExploreInfo': sms(general),
+              'waFishing': wa(fishing),
+              'smsFishing': sms(fishing),
+              'waPlaceSaly': wa(saly),
+              'waExperience': wa(experience),
+          }
+
+          for element_id, href in targets.items():
+              pattern = rf'(id="{re.escape(element_id)}"\s+href=")[^"]*(")'
+              text, count = re.subn(pattern, lambda m, href=href: m.group(1) + href + m.group(2), text, count=1)
+              if count != 1:
+                  raise SystemExit(f'{element_id}: expected 1 link, found {count}')
+
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit patch and remove temporary workflow
+        run: |
+          git config user.name "DIGIYLYFE Atelier"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/patch-explore-fallback-links.yml
+          git commit -m "UI: add static contact fallbacks on EXPLORE"
+          git push
