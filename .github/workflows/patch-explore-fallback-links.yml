@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/patch-explore-fallback-links.yml'
+      - '.github/patch-explore-fallback-links.trigger'
 permissions:
   contents: write
 jobs:
@@ -51,11 +51,11 @@ jobs:
 
           p.write_text(text, encoding='utf-8')
           PY
-      - name: Commit patch and remove temporary workflow
+      - name: Commit patch and remove temporary files
         run: |
           git config user.name "DIGIYLYFE Atelier"
           git config user.email "actions@users.noreply.github.com"
           git add index.html
-          git rm .github/workflows/patch-explore-fallback-links.yml
+          git rm .github/workflows/patch-explore-fallback-links.yml .github/patch-explore-fallback-links.trigger
           git commit -m "UI: add static contact fallbacks on EXPLORE"
           git push
