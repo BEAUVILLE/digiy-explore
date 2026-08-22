@@ -1,268 +1,320 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RÉSEAU DIGIY · Standard DIGIYLYFE V1 · Atelier</title>
-<style>
-:root{--green:#073f32;--green2:#0d634b;--gold:#d8ad46;--cream:#f6f1e5;--paper:#fffefa;--ink:#173b31;--muted:#6e8179;--line:#dfe8e2}
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink)}
-header{background:var(--green);color:#fff;border-bottom:4px solid var(--gold);padding:16px 14px}
-.wrap{max-width:980px;margin:auto}
-.headtop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.brandmark{font-size:26px} .brand{font-weight:950;font-size:22px} .sub{font-size:11px;color:#eadfae;margin-top:3px}
-.zero{border:1px solid var(--gold);border-radius:999px;padding:7px 10px;color:#f2d77e;font-size:10px;font-weight:900;text-align:center;white-space:nowrap}
-.nav,.langs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.nav a,.langs button{border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:850;text-decoration:none;cursor:pointer}
-.langs button{background:#fffefa;color:var(--green);border-color:#e1e8e4} .langs button.active{background:var(--gold);border-color:var(--gold)}
-.join{margin-top:10px;display:flex;justify-content:space-between;gap:10px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(216,173,70,.55);border-radius:13px;padding:9px 10px}
-.join div{display:flex;flex-direction:column;gap:2px} .join strong{font-size:11px} .join span{font-size:9px;color:#e8e2ca}
-.join a{background:var(--gold);color:var(--green);text-decoration:none;border-radius:999px;padding:8px 10px;font-size:9px;font-weight:950;text-align:center}
-main{max-width:980px;margin:auto;padding:16px 8px 40px}
-.section{display:flex;align-items:center;gap:9px;margin-bottom:9px} .section .ico{width:38px;height:38px;background:#e4efe8;border-radius:50%;display:grid;place-items:center}
-.section h1{font-size:18px;margin:0} .section p{font-size:10px;color:var(--muted);margin:2px 0 0}
-.doctrine{background:#fff8df;border:1px solid #ead28a;border-left:4px solid var(--gold);border-radius:11px;padding:9px 10px;font-size:9px;line-height:1.35;color:#5e5124;margin-bottom:10px}
-.doctrine strong{display:block;color:var(--green);font-size:10px;margin-bottom:3px}
-.listing{display:grid;grid-template-columns:34% 66%;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:10px 0;box-shadow:0 7px 18px rgba(7,63,50,.07)}
-.visual{position:relative;display:block;min-height:390px;background:#dce5df;overflow:hidden} .visual img{width:100%;height:100%;object-fit:cover;display:block}
-.visual-hint{position:absolute;bottom:7px;left:6px;right:6px;background:rgba(7,63,50,.9);color:#fff;border-radius:999px;padding:6px 5px;text-align:center;font-size:8px;font-weight:900}
-.info{padding:10px 9px} .eyebrow{color:var(--gold);font-size:7px;font-weight:950;letter-spacing:.7px;margin:0 0 3px}
-.name-row{display:block} h2{font-size:17px;margin:0;color:var(--green);line-height:1.05} .activity{font-size:9px;color:var(--muted);margin:3px 0}
-.area{display:inline-block;background:#e8f1eb;border-radius:999px;padding:4px 6px;font-size:8px;font-weight:850}
-.chips{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0 5px} .chip{font-size:7.5px;background:#eef4f0;border:1px solid #dfe8e2;border-radius:999px;padding:4px 5px;font-weight:750}
-.desc,.rule{font-size:8.5px;line-height:1.3;color:var(--muted);margin:5px 0} .rule{border-left:2px solid var(--gold);padding-left:6px}
-.direct{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px 0;margin:7px 0;display:grid;gap:3px}
-.direct div{display:grid;grid-template-columns:1.05fr .95fr;gap:4px;font-size:8px} .direct strong{color:var(--green);font-size:8.5px}
-.qrrow{display:flex;gap:7px;align-items:center;background:#edf5ef;border-radius:9px;padding:7px} .qr{width:54px;height:54px;background:white;padding:2px;border-radius:5px}
-.qrrow div{display:flex;flex-direction:column;gap:3px} .qrrow strong{font-size:8.5px} .qrrow span{font-size:7.5px;color:var(--muted);line-height:1.2}
-.actions{display:grid;grid-template-columns:1fr;gap:5px;margin-top:7px} .btn{text-decoration:none;border-radius:999px;padding:8px 7px;text-align:center;font-size:9px;font-weight:950}
-.primary{background:var(--green);color:#fff} .secondary{border:1px solid var(--green2);color:var(--green2);background:#fff} .whatsapp{border:1px solid #1d8b57;color:#1d8b57;background:#fff}
-footer{text-align:center;color:var(--muted);font-size:8px;padding:18px 5px}
-html[dir="rtl"] body{direction:rtl} html[dir="rtl"] .rule{border-left:0;border-right:2px solid var(--gold);padding-left:0;padding-right:6px}
-@media(min-width:651px){
-  main{padding:22px 14px 50px} .listing{grid-template-columns:34% 66%;border-radius:20px} .visual{min-height:440px} .info{padding:18px}
-  h2{font-size:25px} .activity{font-size:13px} .area{font-size:11px} .chip{font-size:11px;padding:6px 9px}
-  .desc,.rule{font-size:12px} .direct{grid-template-columns:repeat(3,1fr);gap:7px;padding:12px 0;margin:13px 0} .direct div{display:flex;flex-direction:column;text-align:center;font-size:10px}
-  .direct strong{font-size:11px} .qr{width:74px;height:74px} .qrrow strong{font-size:12px} .qrrow span{font-size:11px}
-  .actions{grid-template-columns:repeat(2,1fr);gap:8px} .btn{font-size:11px;padding:10px}
-  .doctrine{font-size:11px;padding:11px 12px} .section h1{font-size:22px} .section p{font-size:13px}
-}
-@media(max-width:380px){.listing{grid-template-columns:32% 68%} .visual{min-height:370px} .info{padding:8px 7px} h2{font-size:16px} .chip{font-size:7px;padding:3px 4px} .qr{width:48px;height:48px}}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="description" content="DIGIY EXPLORE — découvrir rapidement les lieux et expériences du terrain, contacter directement DIGIY et proposer un lieu sans engagement."/>
+  <meta name="theme-color" content="#06130f"/>
+  <meta name="digiy-build" content="explore-epure-lieux-haut-cartouche-20260727"/>
+  <title>DIGIY EXPLORE — Découvrir les bons coins</title>
+  <style>
+    :root{
+      --bg:#06130f;--bg2:#091e17;--card:#10261e;--line:rgba(255,255,255,.13);
+      --text:#f7fbf8;--muted:rgba(247,251,248,.76);--gold:#dcb45a;--gold2:#f2cc78;
+      --green:#12b76a;--shadow:0 20px 50px rgba(0,0,0,.30);--max:1180px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100vh;color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top left,rgba(220,180,90,.14),transparent 26%),radial-gradient(circle at top right,rgba(18,183,106,.10),transparent 24%),linear-gradient(180deg,var(--bg),var(--bg2));
+      font-size:17px;line-height:1.55
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    img{display:block;max-width:100%}
+    .wrap{width:min(var(--max),calc(100% - 28px));margin:0 auto}
 
-<style id="reseau-placeholder-style">
-.placeholder-slot{border:2px dashed #d8ad46;background:linear-gradient(180deg,#fffefa,#fff7e6)}
-.placeholder-visual{position:relative;background:linear-gradient(145deg,#073f32,#0c6049);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.placeholder-core{min-height:100%;width:100%;padding:18px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff}
-.placeholder-core .icon{font-size:44px;margin-bottom:10px}.placeholder-core strong{font-size:16px;line-height:1.08}.placeholder-core small{margin-top:8px;color:#eadfac;font-size:7px}
-.place-band{position:absolute;top:14px;left:-48px;right:-48px;transform:rotate(-12deg);background:#d8ad46;color:#073f32;text-align:center;font-size:10px;font-weight:1000;letter-spacing:.08em;padding:7px 0;box-shadow:0 10px 24px rgba(0,0,0,.18)}
-.qr-empty{display:grid;place-items:center;border:2px dashed #9db4a7;color:#6d7d77;font-size:9px;font-weight:950;background:#fff}
-.status-empty{margin:10px 0 14px;padding:10px 12px;border-radius:13px;background:#fff8df;border:1px solid #ead28a;color:#6b571d;font-size:9px;font-weight:900;line-height:1.35}
-@media(min-width:651px){.placeholder-core .icon{font-size:62px}.placeholder-core strong{font-size:24px}.placeholder-core small{font-size:10px}.place-band{font-size:14px;padding:9px 0}.status-empty{font-size:11px;padding:14px 16px}}
-</style>
+    .topbar{position:sticky;top:0;z-index:40;background:rgba(6,19,15,.86);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+    .topbar-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:1000;min-width:0}
+    .brand-badge{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#fff;color:#06130f;box-shadow:var(--shadow);flex:none}
+    .brand strong{display:block;line-height:1.05}
+    .brand small{display:block;color:var(--muted);font-weight:800;margin-top:3px}
+    .top-actions{display:flex;align-items:center;gap:8px}
 
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border-radius:999px;font-weight:1000;font-size:15px;text-align:center;border:1px solid var(--line);cursor:pointer}
+    .btn-primary{color:#062414;background:linear-gradient(135deg,var(--gold),var(--gold2));border-color:transparent}
+    .btn-green{color:#062414;background:linear-gradient(135deg,var(--green),var(--gold2));border-color:transparent}
+    .btn-ghost{background:rgba(255,255,255,.05)}
+    .lang-switch{display:flex;gap:5px;padding:4px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.045)}
+    .lang-switch button{border:0;border-radius:999px;min-height:36px;padding:0 11px;font-weight:1000;font-size:13px;cursor:pointer;color:var(--text);background:transparent}
+    .lang-switch button.active{background:#f7fbf8;color:#06130f}
+
+    .hero{padding:26px 0 14px}
+    .hero-card{padding:25px;border-radius:26px;border:1px solid var(--line);background:radial-gradient(circle at top right,rgba(220,180,90,.18),transparent 34%),linear-gradient(180deg,rgba(16,38,30,.98),rgba(11,29,23,.98));box-shadow:var(--shadow)}
+    .eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;border:1px solid rgba(220,180,90,.28);background:rgba(220,180,90,.09);color:#f5db9a;font-size:13px;font-weight:1000;text-transform:uppercase}
+    h1{margin:14px 0 10px;font-size:clamp(34px,5vw,60px);line-height:1.01;letter-spacing:-.045em}
+    .hero-text{margin:0;max-width:820px;color:var(--muted);font-size:18px;font-weight:820;line-height:1.65}
+    .hero-actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+    .hero-points{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+    .hero-point{padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.045);color:#fff7cc;font-size:13px;font-weight:950}
+
+    .section{padding:14px 0 24px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+    .section-head h2{margin:0;font-size:clamp(28px,3.5vw,42px);line-height:1.05}
+    .section-head p{margin:5px 0 0;color:var(--muted);font-weight:820;max-width:760px}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .spot{overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(16,38,30,.98),rgba(11,29,23,.98));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .spot-cover{aspect-ratio:16/10;background:#0b2018;overflow:hidden}
+    .spot-cover img{width:100%;height:100%;object-fit:cover}
+    .spot-body{padding:16px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .tag{display:inline-flex;width:max-content;min-height:30px;align-items:center;padding:0 10px;border-radius:999px;border:1px solid rgba(220,180,90,.22);background:rgba(220,180,90,.09);color:#f0d58e;font-size:12px;font-weight:950}
+    .spot-title{margin:0;font-size:22px;line-height:1.14}
+    .spot-desc{color:var(--muted);font-size:15px;line-height:1.58;font-weight:800;flex:1}
+    .spot-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:auto}
+    .spot-actions .btn{flex:1 1 145px}
+
+    .info-shell{padding:4px 0 28px}
+    .info-box{border:1px solid rgba(220,180,90,.34);border-radius:24px;background:linear-gradient(180deg,rgba(16,38,30,.96),rgba(11,29,23,.96));box-shadow:var(--shadow);overflow:hidden}
+    .info-box summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 19px;font-weight:1000;color:#fff7cc;background:rgba(220,180,90,.08)}
+    .info-box summary::-webkit-details-marker{display:none}
+    .info-box summary::after{content:"+";width:30px;height:30px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.08);font-size:22px}
+    .info-box[open] summary::after{content:"−"}
+    .info-content{padding:18px;display:grid;gap:16px}
+    .info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .info-card{padding:15px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.045)}
+    .info-card strong{display:block;color:#fff7cc;margin-bottom:6px}
+    .info-card span{color:var(--muted);font-size:14px;line-height:1.5;font-weight:800}
+    .info-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    footer{padding:0 0 30px;color:var(--muted);font-size:14px;font-weight:800}
+    .footer-row{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+    @media(max-width:900px){
+      .topbar-inner{align-items:flex-start;flex-wrap:wrap}.top-actions{width:100%;justify-content:space-between}
+      .grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}.spot{flex:0 0 min(86vw,360px);scroll-snap-align:start}
+      .info-grid{grid-template-columns:1fr}.hero-card{padding:21px}
+    }
+    @media(max-width:540px){
+      .wrap{width:min(var(--max),calc(100% - 18px))}.hero{padding-top:16px}.hero-actions{display:grid}.hero-actions .btn{width:100%}
+      .top-actions .btn-ghost{display:none}.lang-switch{margin-left:auto}.section-head{display:block}
+    }
+  </style>
 </head>
 <body>
-<header>
-<div class="wrap">
-  <div class="headtop">
-    <div><div class="brandmark">🔗</div><div class="brand">RÉSEAU DIGIY</div><div class="sub">Visibilité qualifiée · références terrain · contact direct</div></div>
-    <div class="zero">0 % COMMISSION<br>DIGIYLYFE</div>
-  </div>
-  <div class="nav">
-    <a href="https://digiylyfe.com/?lang=fr" target="_blank">🌍 DIGIYLYFE</a>
-    <a href="https://reseau-digiy.digiylyfe.com/" target="_blank">🔗 RÉSEAU DIGIY</a>
-  </div>
-  <div class="langs" id="langs">
-    <button data-lang="fr" class="active">🇫🇷 FR</button><button data-lang="en">🇬🇧 EN</button><button data-lang="es">🇪🇸 ES</button><button data-lang="pt">🇵🇹 PT</button>
-    <button data-lang="de">🇩🇪 DE</button><button data-lang="it">🇮🇹 IT</button><button data-lang="nl">🇳🇱 NL</button><button data-lang="ar">🇸🇦 AR</button>
-  </div>
-  <div class="join">
-    <div><strong data-i18n="joinq">Vous voulez faire circuler votre activité ?</strong><span data-i18n="jointext">Rejoignez RÉSEAU DIGIY comme adhérent et faites circuler votre présence avec un lien propre et partageable.</span></div>
-    <a href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" data-i18n="join">DEMANDE D’ADHÉSION · 28 000 FCFA / mois</a>
-  </div>
-</div>
-</header>
-<main>
-  <a data-digiy-return-home="1" href="https://digiylyfe.com/" aria-label="Retour DIGIYLYFE.COM" style="width:100%;min-height:52px;display:flex;align-items:center;justify-content:center;margin:0 0 14px;padding:11px 18px;border:2px solid #d8ad46;border-radius:999px;background:#073f32;color:#fff;text-decoration:none;font:950 15px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.02em;box-shadow:0 8px 20px rgba(7,63,50,.20)">← RETOUR DIGIYLYFE.COM</a>
-  <section class="section"><div class="ico">🛍️</div><div><h1 data-i18n="title">RÉSEAU DIGIY · ADHÉRENTS</h1><p data-i18n="subtitle">Visibilité qualifiée · Contact direct · 0 % commission</p></div></section>
-  <div class="doctrine"><strong>🛡️ <span data-i18n="role">RÔLE DE DIGIYLYFE</span></strong><span data-i18n="doctrine">RÉSEAU DIGIY met en lumière les adhérents et leurs liens publics. Chaque adhérent reste seul responsable de son activité, de ses tarifs, de ses obligations, de ses engagements et de la relation avec ses clients. DIGIYLYFE ne conclut pas l’affaire à sa place et ne perçoit aucune commission sur son activité.</span></div>
-  
-    
-    <div class="status-empty">
-      📭 <strong>Aucune publication RÉSEAU active aujourd’hui.</strong>
-      Les cartes ci-dessous sont des références terrain réelles, puis les emplacements libres pour les futurs adhérents.
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./">
+        <span class="brand-badge">🌍</span>
+        <span><strong data-i18n="brand_main">Je découvre le coin</strong><small>DIGIY EXPLORE</small></span>
+      </a>
+      <div class="top-actions">
+        <a class="btn btn-ghost" href="https://digiylyfe.com/" data-i18n="hub">← DIGIYLYFE.COM</a>
+        <div class="lang-switch" aria-label="Language switch">
+          <button id="lang-fr" class="active" type="button">FR</button>
+          <button id="lang-en" type="button">EN</button>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <article class="listing">
-      <a class="visual" href="https://part-chez-baptiste.digiylyfe.com/" target="_blank" rel="noopener">
-        <img src="https://digiylyfe.net/wp-content/uploads/2026/05/ChatGPT-Image-25-mai-2026-01_35_26.png" alt="CHEZ BAPTISTE · LOC">
-        <span class="visual-hint">↗ <span>VOIR LA RÉFÉRENCE</span></span>
-      </a>
-      <div class="info">
-        <p class="eyebrow">RÉFÉRENCE TERRAIN · DÉMONSTRATION</p>
-        <div class="name-row">
-          <div><h2>CHEZ BAPTISTE · LOC</h2><p class="activity">Location · Présence directe</p></div>
-          <span class="area">📍 Saly · Sénégal</span>
-        </div>
-        <div class="chips"><span class="chip">LOC</span><span class="chip">Saly</span><span class="chip">Contact direct</span><span class="chip">QR</span></div>
-        <p class="desc">Référence réelle de fiche logement avec contact direct propriétaire, QR et lien partageable.</p>
-        <p class="rule">Cette carte montre le niveau de finition DIGIY. Elle ne doit pas être confondue avec une publication RÉSEAU active et datée.</p>
-        <div class="direct">
-          <div><strong>Statut</strong><span>Référence de démonstration</span></div>
-          <div><strong>Relation</strong><span>Directe avec le professionnel</span></div>
-          <div><strong>0 %</strong><span>commission DIGIYLYFE</span></div>
-        </div>
-        <div class="qrrow">
-          <img class="qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeAQAAAAB6HIMaAAAB50lEQVR4nO2YMY4bMQxFn8wBtqSBHMBH0dxssTejgVzEN+CUBmT8FJKNFNlsFYTFDqYY+DcP39QXySY+fR6nzzX4Fr8SUQJYIknZBwyffvdRjvYEXRLQzmxcLTvHbpKyoLcnoLUdD7hCb5ewhKNt/xHoS/HYOd6Hh+X1ca4A9FfRhQdHg76VAPrjswGCDQSN/pMrHpuLoyDtKxP67y9QMhM2Zl4d3Ld+3xg/cvpMxdsBZccDj4ltyXCZYlT09oR/DFBit6bkce4c++NMyQRDCmWHrkSSKfAYUNJbJurwsOxSzA88hqsorQuXPR02VfYWW81MzPZguIYHVb01CQ9JJg36rASpKK2yDzowXFIowcOq0g6XJWPamwCWFKVVrExQvM6aZeVTtszEZbMS6EVPmWLWqkkDoJvCshf2tluCB/TZJKzyKEmLa9CnsdPkZW9BWun57y9sW8lQkPYEV+DedmDAW3Jv7X4JKSr2YNlXurqkeC0TVLUS1t7DNWdJy766hYK0CevymlHAbBVK9gmn566mA63tc4QcXNu55Owwr1pp+IoFYP1SjvYpHs1u79AHV1zDP+5tr+ftS+zt8vE4Y7d33fYN3qom2Bwe54yj7MNjzE6yIi2sNcKs2zDJsmbdtu9N/j8TfwHigo2hI2m5jQAAAABJRU5ErkJggg==" alt="QR CHEZ BAPTISTE · LOC">
-          <div><strong>QR · CHEZ BAPTISTE · LOC</strong><span>Scannez pour ouvrir la présence publique de cette référence.</span></div>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="https://part-chez-baptiste.digiylyfe.com/" target="_blank" rel="noopener">VOIR LA RÉFÉRENCE</a>
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-card">
+          <div class="eyebrow" data-i18n="eyebrow">Petite Côte · Dakar · Sénégal</div>
+          <h1 data-i18n="hero_title">Découvre les bons coins.<br>Choisis une expérience.<br>Parle au bon contact.</h1>
+          <p class="hero-text" data-i18n="hero_text">EXPLORE montre immédiatement les lieux, sorties et idées du terrain. Tu regardes, tu choisis, puis tu contactes DIGIY ou l’acteur local quand la porte est prête.</p>
+          <a data-digiy-return-home="1" href="https://digiylyfe.com/" aria-label="Retour DIGIYLYFE.COM" style="width:100%;min-height:52px;display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:11px 18px;border:2px solid #dcb45a;border-radius:999px;background:#10261e;color:#fff;text-decoration:none;font-weight:1000;font-size:15px;letter-spacing:.02em;box-shadow:0 8px 20px rgba(0,0,0,.22)">← RETOUR DIGIYLYFE.COM</a>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#spots" data-i18n="see_places">Voir les découvertes</a>
+            <a class="btn btn-green" href="./inscription-explore.html?v=code8" data-i18n="add_place">Proposer mon lieu</a>
+            <a class="btn btn-ghost" id="waExploreTop" href="#" target="_blank" rel="noopener noreferrer" data-i18n="whatsapp_digiy">WhatsApp DIGIY</a>
+          </div>
+          <div class="hero-points">
+            <span class="hero-point" data-i18n="point_1">Découverte gratuite</span>
+            <span class="hero-point" data-i18n="point_2">Contact humain</span>
+            <span class="hero-point">0% commission</span>
+          </div>
         </div>
       </div>
-    </article>
-    
+    </section>
 
-    <article class="listing">
-      <a class="visual" href="https://beauville.github.io/helage-plombier/" target="_blank" rel="noopener">
-        <img src="https://digiylyfe.net/wp-content/uploads/2026/05/metier-pro-1.png" alt="HELAGE · BUILD">
-        <span class="visual-hint">↗ <span>VOIR LA RÉFÉRENCE</span></span>
-      </a>
-      <div class="info">
-        <p class="eyebrow">RÉFÉRENCE TERRAIN · DÉMONSTRATION</p>
-        <div class="name-row">
-          <div><h2>HELAGE · BUILD</h2><p class="activity">Plomberie · Multi-services</p></div>
-          <span class="area">📍 Saly · Sénégal</span>
+    <section class="section" id="spots">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="section_title">À découvrir maintenant</h2>
+            <p data-i18n="section_text">Les portes utiles sont placées en premier. Les inspirations sont clairement signalées.</p>
+          </div>
         </div>
-        <div class="chips"><span class="chip">BUILD</span><span class="chip">Artisan</span><span class="chip">Fiche pro</span><span class="chip">Contact direct</span></div>
-        <p class="desc">Référence terrain BUILD montrant une fiche professionnelle simple, lisible et partageable.</p>
-        <p class="rule">Cette carte montre le niveau de finition DIGIY. Elle ne doit pas être confondue avec une publication RÉSEAU active et datée.</p>
-        <div class="direct">
-          <div><strong>Statut</strong><span>Référence de démonstration</span></div>
-          <div><strong>Relation</strong><span>Directe avec le professionnel</span></div>
-          <div><strong>0 %</strong><span>commission DIGIYLYFE</span></div>
-        </div>
-        <div class="qrrow">
-          <img class="qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeAQAAAAB6HIMaAAAB1UlEQVR4nO2YTWrdUAxGz33X0KEMXUCXouwsW5OXkgUU9IYBha+Dazcd9NFMSjSIMPhiTY5l+dPPEA/t7fbYB1/OfzlRAsz0MgFTsQ7g1ZHWJU1F4VIUzPQpKRvS3oAxnsA3jrfxPNMB7mP7RKCHtp33+y7YdGw/j/qe2+cBfdA59gN425kvTy2A/mIboCvEdX/GEovNxL0h7bsm/HkBTTVhWTIlQIqlEpI60qbrCqYUZYHFet6SdsUTLMAllYUUWMvYSgVYnJwJV0XrSJs+k5W3UzEVdb5Cy0xQFGBSgmmmX/wtadNroZ7nAMpidtSEG7BxjN0lbRwblMW39Ne9Z3XwKZVpdWLAyt6meivBKV9LE6a02t2WtIGpcACLqWitt0mZ1qdfmlB4WVu9RYoyrZGhcEyYutL6e2xZZ82kaXVIx6JMq/UCyqJvJizhsijOMlGs1G1Ki+msv0si8Nm3v2X1YMBZHRJWY9OQ9podylScmwSlt9VbYOY5OEgx0+eC70i7djUC6veT9KaZkA4+1xR59rfQNG8vp8XrGHoZrz9i7A4+9oYd47VZwocl+GaHYHDok4A+mLfrFyuovnp7g2OMwX3MZOyn2ALcn/rFdnxt8v+b8xdzdb+7eDrC/AAAAABJRU5ErkJggg==" alt="QR HELAGE · BUILD">
-          <div><strong>QR · HELAGE · BUILD</strong><span>Scannez pour ouvrir la présence publique de cette référence.</span></div>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="https://beauville.github.io/helage-plombier/" target="_blank" rel="noopener">VOIR LA RÉFÉRENCE</a>
+
+        <div class="grid">
+          <article class="spot">
+            <div class="spot-cover"><img src="https://digiylyfe.net/wp-content/uploads/2026/05/DIGIY-EXPLORE-Boat-1.gif" alt="Sortie pêche Petite Côte" loading="eager"></div>
+            <div class="spot-body">
+              <span class="tag" data-i18n="tag_bridge">Annonce passerelle</span>
+              <h3 class="spot-title" data-i18n="spot_1_title">Sortie pêche — Petite Côte</h3>
+              <div class="spot-desc" data-i18n="spot_1_desc">Une sortie en mer et une vraie ambiance locale. DIGIY recueille l’intérêt puis ouvre la mise en relation lorsque l’activité est disponible.</div>
+              <div class="spot-actions">
+                <a class="btn btn-ghost" id="waFishing" href="#" target="_blank" rel="noopener noreferrer" data-i18n="interested">Je suis intéressé</a>
+                <a class="btn btn-primary" id="smsFishing" href="#" data-i18n="sms_digiy">SMS DIGIY</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="spot">
+            <div class="spot-cover"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Ambiance plage Saly" loading="lazy"></div>
+            <div class="spot-body">
+              <span class="tag" data-i18n="tag_inspiration">Inspiration</span>
+              <h3 class="spot-title" data-i18n="spot_2_title">Ambiance plage — Saly</h3>
+              <div class="spot-desc" data-i18n="spot_2_desc">Une inspiration pour les adresses de plage, les promenades et les lieux de détente qui souhaitent devenir visibles.</div>
+              <div class="spot-actions">
+                <a class="btn btn-ghost" id="waPlaceSaly" href="#" target="_blank" rel="noopener noreferrer" data-i18n="suggest_place">Proposer un lieu</a>
+                <a class="btn btn-primary" href="./inscription-explore.html?v=code8" data-i18n="register_place">Demander une visibilité</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="spot">
+            <div class="spot-cover"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80" alt="Découverte locale Dakar" loading="lazy"></div>
+            <div class="spot-body">
+              <span class="tag" data-i18n="tag_inspiration">Inspiration</span>
+              <h3 class="spot-title" data-i18n="spot_3_title">Découverte locale — Dakar</h3>
+              <div class="spot-desc" data-i18n="spot_3_desc">Une inspiration pour les balades, guides, sorties familiales et expériences locales à présenter clairement.</div>
+              <div class="spot-actions">
+                <a class="btn btn-ghost" id="waExperience" href="#" target="_blank" rel="noopener noreferrer" data-i18n="suggest_experience">Proposer une expérience</a>
+                <a class="btn btn-primary" href="./inscription-explore.html?v=code8" data-i18n="register_top">Demande EXPLORE</a>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
-    </article>
-    
+    </section>
 
-    <article class="listing">
-      <a class="visual" href="https://astou-boutique.digiylyfe.com/" target="_blank" rel="noopener">
-        <img src="https://digiylyfe.net/wp-content/uploads/2026/05/RESEAU-3.jpg" alt="ASTOU BOUTIQUE · COMMERCE">
-        <span class="visual-hint">↗ <span>VOIR LA RÉFÉRENCE</span></span>
-      </a>
-      <div class="info">
-        <p class="eyebrow">RÉFÉRENCE TERRAIN · DÉMONSTRATION</p>
-        <div class="name-row">
-          <div><h2>ASTOU BOUTIQUE · COMMERCE</h2><p class="activity">Boutique locale · Vitrine</p></div>
-          <span class="area">📍 Saly · Sénégal</span>
-        </div>
-        <div class="chips"><span class="chip">Commerce</span><span class="chip">Vitrine</span><span class="chip">WhatsApp</span><span class="chip">Local</span></div>
-        <p class="desc">Commerce réel avec vitrine, produits, WhatsApp et relation directe avec le client.</p>
-        <p class="rule">Cette carte montre le niveau de finition DIGIY. Elle ne doit pas être confondue avec une publication RÉSEAU active et datée.</p>
-        <div class="direct">
-          <div><strong>Statut</strong><span>Référence de démonstration</span></div>
-          <div><strong>Relation</strong><span>Directe avec le professionnel</span></div>
-          <div><strong>0 %</strong><span>commission DIGIYLYFE</span></div>
-        </div>
-        <div class="qrrow">
-          <img class="qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeAQAAAAB6HIMaAAAB5UlEQVR4nO2YMW7cUAxEn8wPuPwGcoA9CnWDHCnwkXKDn6PkAAGocgEuJgW16zSGq8AsLKiQxGYwGs0MtYl3j9vT+zP4Gn40RAFgkiQLBxIHwLMjWpdkWpJyygJJJikaon0Ctm3n+DFgHHvCAI5tfCKgd4/xuLpuLhi5/Pj+iYA+VAK4BcwFrnCTLLCOShiAYIBAcLv83DdniqMntwAW/u8JtPSEwRTAwfVbDLgOuETN+qVD6RbTyrlMC7zwm9SP2xr6ddufgzx2IIG5OPaeurXAgjxvvaKB2ZBbpHt+BTmXSTmXmjoYkqQFZbOugKmcKzt6AveSUD1hmZbijIyWaFdOgUviLDkLyKa6XQlZRXGquLXo6WAUpdxDTeEWJN6yMZ7pkHhVGiCnmKurJ5wpJqnKmIKyiKZoTz04U9Ky0kbPryzuzVYyibnqSVNPiIdr+aON51xtv7JaHnOqFklwRU+/fQIGXF94Dsaxj2NjvtbDlh2s3v6ycDtzDfCW3FarUZUuC97U21G3g+MFsNRtkAPBBuMPt0v023Sezj5z7GOukm5C8st+99wdzv8JJiVelYamHexteHuB+Trmul6Wgt7cuqQskgNq5WmJtjI3oXrCW6J1RAvwoPTst1Mtdbt9/cn/b8O/3YqkQADBGh8AAAAASUVORK5CYII=" alt="QR ASTOU BOUTIQUE · COMMERCE">
-          <div><strong>QR · ASTOU BOUTIQUE · COMMERCE</strong><span>Scannez pour ouvrir la présence publique de cette référence.</span></div>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="https://astou-boutique.digiylyfe.com/" target="_blank" rel="noopener">VOIR LA RÉFÉRENCE</a>
-        </div>
+    <section class="info-shell">
+      <div class="wrap">
+        <details class="info-box">
+          <summary data-i18n="info_title">☰ Découvrir le fonctionnement de DIGIY EXPLORE</summary>
+          <div class="info-content">
+            <div class="info-grid">
+              <div class="info-card"><strong data-i18n="info_1_t">Découverte gratuite</strong><span data-i18n="info_1_x">Le visiteur consulte les lieux et signale son intérêt sans frais.</span></div>
+              <div class="info-card"><strong data-i18n="info_2_t">Demande sans engagement</strong><span data-i18n="info_2_x">Le professionnel peut proposer son lieu avant de valider une activation.</span></div>
+              <div class="info-card"><strong data-i18n="info_3_t">Activation CODE 8</strong><span data-i18n="info_3_x">La fiche, le QR et la visibilité deviennent payants seulement après validation du professionnel.</span></div>
+              <div class="info-card"><strong data-i18n="info_4_t">Annonce passerelle</strong><span data-i18n="info_4_x">DIGIY peut tester l’intérêt avant qu’un acteur local entre officiellement dans la vitrine.</span></div>
+              <div class="info-card"><strong>0% commission</strong><span data-i18n="info_5_x">DIGIY ne prélève aucune commission sur le visiteur ou le professionnel.</span></div>
+              <div class="info-card"><strong data-i18n="info_6_t">Le terrain garde la main</strong><span data-i18n="info_6_x">La fiche ouvre la porte ; l’acteur local conserve ensuite le contact et la relation.</span></div>
+            </div>
+            <div class="info-actions">
+              <a class="btn btn-green" href="./inscription-explore.html?v=code8" data-i18n="register_top">🌍 Demande EXPLORE</a>
+              <a class="btn btn-ghost" id="waExploreInfo" href="#" target="_blank" rel="noopener noreferrer" data-i18n="whatsapp_digiy">WhatsApp DIGIY</a>
+              <a class="btn btn-ghost" id="smsExploreInfo" href="#" data-i18n="sms_digiy">SMS DIGIY</a>
+              <a class="btn btn-ghost" href="https://digiylyfe.com/" data-i18n="back_site">Retour au site</a>
+            </div>
+          </div>
+        </details>
       </div>
-    </article>
-    
+    </section>
+  </main>
 
-    <article class="listing">
-      <a class="visual" href="https://galerie-chauffeurs.digiylyfe.com/catalogue.html" target="_blank" rel="noopener">
-        <img src="https://digiylyfe.net/wp-content/uploads/2026/05/RESEAU-4.jpg" alt="DIGIY DRIVER">
-        <span class="visual-hint">↗ <span>VOIR LA RÉFÉRENCE</span></span>
-      </a>
-      <div class="info">
-        <p class="eyebrow">RÉFÉRENCE TERRAIN · DÉMONSTRATION</p>
-        <div class="name-row">
-          <div><h2>DIGIY DRIVER</h2><p class="activity">Chauffeurs sur réservation</p></div>
-          <span class="area">📍 Petite Côte · Sénégal</span>
-        </div>
-        <div class="chips"><span class="chip">Driver</span><span class="chip">Galerie</span><span class="chip">QR</span><span class="chip">Contact direct</span></div>
-        <p class="desc">Galerie réelle de chauffeurs avec fiches, QR et contacts directs. Référence de finition DIGIY.</p>
-        <p class="rule">Cette carte montre le niveau de finition DIGIY. Elle ne doit pas être confondue avec une publication RÉSEAU active et datée.</p>
-        <div class="direct">
-          <div><strong>Statut</strong><span>Référence de démonstration</span></div>
-          <div><strong>Relation</strong><span>Directe avec le professionnel</span></div>
-          <div><strong>0 %</strong><span>commission DIGIYLYFE</span></div>
-        </div>
-        <div class="qrrow">
-          <img class="qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeAQAAAAB6HIMaAAAB30lEQVR4nO2YMW7jUAxEn0wBLukb5CjUzQLf7PsouQHVU5gtvuxssdlUi2WRD1WaZkBwZkgu4st3XL7G4Af8DkQJYBkQygDKZ72j2rG9QEgClKw8LAMwSdmwthdgWTb8ftweEDV/78v6Hwl9C+7vllF+B64fWwNCfwX9vgL7drzdqwWhPz9lSDLpFJfLJJOUDVX26Qm/f0BLT0DzJSYVaFqZJKkj2wx84Hp611CGaVTP2mYUSLKcXRHlwkfXThj4MI3yIQ2TgIK2tbVpCzlDLSwDH+Ut+1bDMiynvpBkGo1rizKUWGIa5VJG+aBjbS8QK6w+jjcVsQKwTh9ux5ZnkA2TcBVYgg/r6bcaL2VJwkf5sBkWDdnmGWfA5AlY9lXZzDJcU2KWQLRV2Zli+8K+AMcNS2rfeqrsDIiMIsrPUGuavMkcukyq2QAu07Ce861kGiZZcvrYNLGetdXgOYOV6zWDdd0dYpZ0NsCkPTl3ZPvcHaRR08cIJS3ZXtiXZVlWgv39mg94ACth2XBOuLxuNasPwJIVisdya8j2XBvP3SFfv6PlnPAE9+2azMNducrvLbPsEyw4bo8V7GObE28/tp+3GsuYDgbMw0K/TnjdapDG3H/LJ/OGfbv8XPL/GfgLnwKiR9rAOy0AAAAASUVORK5CYII=" alt="QR DIGIY DRIVER">
-          <div><strong>QR · DIGIY DRIVER</strong><span>Scannez pour ouvrir la présence publique de cette référence.</span></div>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="https://galerie-chauffeurs.digiylyfe.com/catalogue.html" target="_blank" rel="noopener">VOIR LA RÉFÉRENCE</a>
-        </div>
-      </div>
-    </article>
-    
-    <article class="listing placeholder-slot">
-      <a class="visual placeholder-visual" href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener">
-        <div class="place-band">PLACE À PRENDRE</div>
-        <div class="placeholder-core"><div class="icon">📢</div><strong>VOTRE ACTIVITÉ<br>À FAIRE CIRCULER</strong><small>Annonce · fiche · QR · lien partageable</small></div>
-      </a>
-      <div class="info">
-        <p class="eyebrow">EMPLACEMENT FUTUR · RÉSEAU</p>
-        <div class="name-row"><div><h2>PLACE À PRENDRE</h2><p class="activity">Artisan · Commerce · Service · Lieu</p></div><span class="area">📍 Votre zone</span></div>
-        <div class="chips"><span class="chip">Votre activité</span><span class="chip">Votre zone</span><span class="chip">Votre contact</span><span class="chip">Votre lien</span></div>
-        <p class="desc">Emplacement réservé à un futur adhérent qui souhaite faire circuler proprement son activité dans RÉSEAU DIGIY.</p>
-        <p class="rule">Aucune fausse publication n’est affichée. Cette place devient réelle uniquement après adhésion et validation.</p>
-        <div class="direct"><div><strong>Statut</strong><span>Place à prendre</span></div><div><strong>Contact</strong><span>À renseigner</span></div><div><strong>0 %</strong><span>commission DIGIYLYFE</span></div></div>
-        <div class="qrrow"><div class="qr qr-empty">QR</div><div><strong>QR · FUTUR ADHÉRENT</strong><span>Le QR sera posé quand la présence publique sera validée.</span></div></div>
-        <div class="actions"><a class="btn primary" href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener">🔗 ADHÉSION RÉSEAU · 28 000 FCFA / mois</a></div>
-      </div>
-    </article>
+  <footer>
+    <div class="wrap footer-row">
+      <div>DIGIY EXPLORE · <span data-i18n="footer_text">Le héros attire, les découvertes apparaissent, le terrain garde la main.</span></div>
+      <div><a href="https://digiylyfe.com/">HUB DIGIY</a></div>
+    </div>
+  </footer>
 
-    <article class="listing placeholder-slot">
-      <a class="visual placeholder-visual" href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener">
-        <div class="place-band">PLACE À PRENDRE</div>
-        <div class="placeholder-core"><div class="icon">🤝</div><strong>VOTRE OFFRE<br>ICI</strong><small>Présence propre · contact humain · partage direct</small></div>
-      </a>
-      <div class="info">
-        <p class="eyebrow">EMPLACEMENT FUTUR · RÉSEAU</p>
-        <div class="name-row"><div><h2>PLACE À PRENDRE</h2><p class="activity">Publication qualifiée · visibilité</p></div><span class="area">📍 Votre territoire</span></div>
-        <div class="chips"><span class="chip">Votre offre</span><span class="chip">Votre métier</span><span class="chip">Votre zone</span><span class="chip">Votre contact</span></div>
-        <p class="desc">Deuxième emplacement libre pour montrer immédiatement où une future présence RÉSEAU pourra apparaître.</p>
-        <p class="rule">L’adhérent garde son client, son argent et sa relation. DIGIY ne prend aucune commission sur son affaire.</p>
-        <div class="direct"><div><strong>Statut</strong><span>Place à prendre</span></div><div><strong>Relation</strong><span>Directe</span></div><div><strong>0 %</strong><span>commission DIGIYLYFE</span></div></div>
-        <div class="qrrow"><div class="qr qr-empty">QR</div><div><strong>QR · FUTURE PUBLICATION</strong><span>Le QR sera activé avec la présence validée.</span></div></div>
-        <div class="actions"><a class="btn primary" href="https://digiylyfe.com/tarifs-adherents.html" target="_blank" rel="noopener">🔗 ADHÉSION RÉSEAU · 28 000 FCFA / mois</a></div>
-      </div>
-    </article>
+  <script>
+  (function(){
+    "use strict";
 
-  <footer data-i18n="footer">MAQUETTE ATELIER RÉSEAU V1 · AUCUNE PUBLICATION ACTIVE · 4 RÉFÉRENCES TERRAIN + 2 PLACEHOLDERS PLACE À PRENDRE · MÊME MOULE STANDARD · MOBILE-FIRST · 8 LANGUES · ADHÉSION 28 000 · Aucun logiciel public · Aucun push.</footer>
-</main>
-<script>
-const T = {"fr": {"tag": "ADHÉRENT DIGIYLYFE", "title": "RÉSEAU DIGIY · ADHÉRENTS", "subtitle": "Visibilité qualifiée · Contact direct · 0 % commission", "joinq": "Vous voulez faire circuler votre activité ?", "join": "DEMANDE D’ADHÉSION · 28 000 FCFA / mois", "jointext": "Rejoignez RÉSEAU DIGIY comme adhérent et faites circuler votre présence avec un lien propre et partageable.", "role": "RÔLE DE DIGIYLYFE", "doctrine": "RÉSEAU DIGIY met en lumière les adhérents et leurs liens publics. Chaque adhérent reste seul responsable de son activité, de ses tarifs, de ses obligations, de ses engagements et de la relation avec ses clients. DIGIYLYFE ne conclut pas l’affaire à sa place et ne perçoit aucune commission sur son activité.", "contact": "Contact direct", "payment": "Paiement direct", "merchant": "au commerçant", "commission": "commission DIGIYLYFE", "availability": "Produits, disponibilité, prix et conditions : accord direct avec le commerçant, sous sa responsabilité.", "qr": "Scannez pour ouvrir et conserver sa présence DIGIYLYFE.", "card": "VOIR LA CARTE", "fiche": "VOIR LA FICHE", "site": "VOIR LE SITE", "wa": "WhatsApp direct", "footer": "MAQUETTE ATELIER RÉSEAU V1 · AUCUNE PUBLICATION ACTIVE · 4 RÉFÉRENCES TERRAIN + 2 PLACEHOLDERS PLACE À PRENDRE · MÊME MOULE STANDARD · MOBILE-FIRST · 8 LANGUES · ADHÉSION 28 000 · Aucun logiciel public · Aucun push."}, "en": {"tag": "DIGIYLYFE MEMBER", "title": "RÉSEAU DIGIY · MEMBERS", "subtitle": "Qualified visibility · Direct contact · 0% commission", "joinq": "Do you want your activity to circulate?", "join": "MEMBERSHIP REQUEST · 28,000 FCFA / month", "jointext": "Join RÉSEAU DIGIY as a member and circulate your presence with a clean, shareable link.", "role": "ROLE OF DIGIYLYFE", "doctrine": "RÉSEAU DIGIY highlights members and their public links. Each member remains solely responsible for their activity, prices, obligations, commitments and customer relationship. DIGIYLYFE does not close the deal on their behalf and takes no commission on their activity.", "contact": "Direct contact", "payment": "Direct payment", "merchant": "to merchant", "commission": "DIGIYLYFE commission", "availability": "Products, availability, prices and conditions: agreed directly with the merchant, under their responsibility.", "qr": "Scan to open and save their DIGIYLYFE presence.", "card": "VIEW CARD", "fiche": "VIEW PROFILE", "site": "VIEW SITE", "wa": "Direct WhatsApp", "footer": "WORKSHOP MOCKUP · MOBILE-FIRST · 8 LANGUAGES · MEMBERS · No public software · No push."}, "es": {"tag": "MIEMBRO DIGIYLYFE", "title": "RÉSEAU DIGIY · MIEMBROS", "subtitle": "Visibilidad cualificada · Contacto directo · 0 % comisión", "joinq": "¿Quieres dar visibilidad a tu actividad?", "join": "SOLICITUD DE ADHESIÓN · 28 000 FCFA / mes", "jointext": "Únete a DIGIYLYFE como miembro y prepara tu tarjeta de visita digital.", "role": "PAPEL DE DIGIYLYFE", "doctrine": "DIGIYLYFE publica la presencia digital de sus miembros. Cada comerciante es el único responsable de su actividad, productos, precios, obligaciones, stock, ventas, entregas y compromisos con sus clientes. DIGIYLYFE no vende en su nombre ni cobra sus ventas.", "contact": "Contacto directo", "payment": "Pago directo", "merchant": "al comerciante", "commission": "comisión DIGIYLYFE", "availability": "Productos, disponibilidad, precios y condiciones: acuerdo directo con el comerciante, bajo su responsabilidad.", "qr": "Escanea para abrir y guardar su presencia DIGIYLYFE.", "card": "VER TARJETA", "fiche": "VER FICHA", "site": "VER SITIO", "wa": "WhatsApp directo", "footer": "MAQUETA DE TALLER · MOBILE-FIRST · 8 IDIOMAS · MIEMBROS · Sin software público · Sin push."}, "pt": {"tag": "MEMBRO DIGIYLYFE", "title": "RÉSEAU DIGIY · MEMBROS", "subtitle": "Visibilidade qualificada · Contacto direto · 0% comissão", "joinq": "Quer dar visibilidade à sua atividade?", "join": "PEDIDO DE ADESÃO · 28 000 FCFA / mês", "jointext": "Junte-se à DIGIYLYFE como membro e prepare o seu cartão de visita digital.", "role": "PAPEL DA DIGIYLYFE", "doctrine": "A DIGIYLYFE publica a presença digital dos seus membros. Cada comerciante é o único responsável pela sua atividade, produtos, preços, obrigações, stock, vendas, entregas e compromissos com os clientes. A DIGIYLYFE não vende em seu nome nem recebe o pagamento das suas vendas.", "contact": "Contacto direto", "payment": "Pagamento direto", "merchant": "ao comerciante", "commission": "comissão DIGIYLYFE", "availability": "Produtos, disponibilidade, preços e condições: acordo direto com o comerciante, sob a sua responsabilidade.", "qr": "Digitalize para abrir e guardar a presença DIGIYLYFE.", "card": "VER CARTÃO", "fiche": "VER FICHA", "site": "VER SITE", "wa": "WhatsApp direto", "footer": "MAQUETE DE OFICINA · MOBILE-FIRST · 8 IDIOMAS · MEMBROS · Sem software público · Sem push."}, "de": {"tag": "DIGIYLYFE MITGLIED", "title": "RÉSEAU DIGIY · MITGLIEDER", "subtitle": "Qualifizierte Sichtbarkeit · Direkter Kontakt · 0 % Provision", "joinq": "Möchten Sie Ihre Tätigkeit sichtbar machen?", "join": "MITGLIEDSCHAFT ANFRAGEN · 28.000 FCFA / Monat", "jointext": "Werden Sie DIGIYLYFE-Mitglied und erstellen Sie Ihre digitale Visitenkarte.", "role": "ROLLE VON DIGIYLYFE", "doctrine": "DIGIYLYFE veröffentlicht die digitale Präsenz seiner Mitglieder. Jeder Händler ist allein verantwortlich für Tätigkeit, Produkte, Preise, Pflichten, Bestand, Verkäufe, Lieferungen und Zusagen gegenüber Kunden. DIGIYLYFE verkauft nicht in seinem Namen und nimmt keine Zahlungen für seine Verkäufe entgegen.", "contact": "Direkter Kontakt", "payment": "Direkte Zahlung", "merchant": "an den Händler", "commission": "DIGIYLYFE Provision", "availability": "Produkte, Verfügbarkeit, Preise und Bedingungen: direkte Vereinbarung mit dem Händler in dessen Verantwortung.", "qr": "Scannen, um die DIGIYLYFE-Präsenz zu öffnen und zu speichern.", "card": "KARTE ANSEHEN", "fiche": "PROFIL ANSEHEN", "site": "WEBSITE", "wa": "WhatsApp direkt", "footer": "WERKSTATT-MOCKUP · MOBILE-FIRST · 8 SPRACHEN · MITGLIEDER · Keine öffentliche Software · Kein Push."}, "it": {"tag": "ADERENTE DIGIYLYFE", "title": "RÉSEAU DIGIY · ADERENTI", "subtitle": "Visibilità qualificata · Contatto diretto · 0% commissione", "joinq": "Vuoi far circolare la tua attività?", "join": "RICHIESTA DI ADESIONE · 28 000 FCFA / mese", "jointext": "Entra in DIGIYLYFE come aderente e prepara il tuo biglietto da visita digitale.", "role": "RUOLO DI DIGIYLYFE", "doctrine": "DIGIYLYFE pubblica la presenza digitale dei suoi aderenti. Ogni commerciante resta l'unico responsabile della propria attività, prodotti, prezzi, obblighi, scorte, vendite, consegne e impegni verso i clienti. DIGIYLYFE non vende al suo posto e non incassa i pagamenti delle sue vendite.", "contact": "Contatto diretto", "payment": "Pagamento diretto", "merchant": "al commerciante", "commission": "commissione DIGIYLYFE", "availability": "Prodotti, disponibilità, prezzi e condizioni: accordo diretto con il commerciante, sotto la sua responsabilità.", "qr": "Scansiona per aprire e salvare la presenza DIGIYLYFE.", "card": "VEDI BIGLIETTO", "fiche": "VEDI SCHEDA", "site": "VEDI SITO", "wa": "WhatsApp diretto", "footer": "MOCKUP OFFICINA · MOBILE-FIRST · 8 LINGUE · ADERENTI · Nessun software pubblico · Nessun push."}, "nl": {"tag": "DIGIYLYFE LID", "title": "RÉSEAU DIGIY · LEDEN", "subtitle": "Gekwalificeerde zichtbaarheid · Direct contact · 0% commissie", "joinq": "Wil je jouw activiteit zichtbaar maken?", "join": "LIDMAATSCHAP AANVRAGEN · 28.000 FCFA / maand", "jointext": "Word lid van DIGIYLYFE en maak je digitale visitekaart klaar.", "role": "ROL VAN DIGIYLYFE", "doctrine": "DIGIYLYFE publiceert de digitale aanwezigheid van zijn leden. Elke handelaar blijft zelf verantwoordelijk voor zijn activiteit, producten, prijzen, verplichtingen, voorraad, verkoop, leveringen en afspraken met klanten. DIGIYLYFE verkoopt niet namens hem en ontvangt geen betalingen voor zijn verkopen.", "contact": "Direct contact", "payment": "Direct betalen", "merchant": "aan handelaar", "commission": "DIGIYLYFE commissie", "availability": "Producten, beschikbaarheid, prijzen en voorwaarden: rechtstreeks afgesproken met de handelaar, onder diens verantwoordelijkheid.", "qr": "Scan om de DIGIYLYFE-pagina te openen en te bewaren.", "card": "BEKIJK KAART", "fiche": "BEKIJK FICHE", "site": "BEKIJK SITE", "wa": "WhatsApp direct", "footer": "WERKPLAATS MOCKUP · MOBILE-FIRST · 8 TALEN · LEDEN · Geen publieke software · Geen push."}, "ar": {"tag": "عضو DIGIYLYFE", "title": "RÉSEAU DIGIY · الأعضاء", "subtitle": "ظهور مؤهل · تواصل مباشر · 0٪ عمولة", "joinq": "هل تريد نشر نشاطك؟", "join": "طلب العضوية · 28,000 فرنك CFA / شهر", "jointext": "انضم إلى DIGIYLYFE كعضو وجهّز بطاقة عملك الرقمية.", "role": "دور DIGIYLYFE", "doctrine": "تنشر DIGIYLYFE الحضور الرقمي لأعضائها. يبقى كل تاجر مسؤولاً وحده عن نشاطه ومنتجاته وأسعاره والتزاماته ومخزونه ومبيعاته وتسليماته وتعهداته تجاه العملاء. لا تبيع DIGIYLYFE نيابة عنه ولا تستلم مدفوعات مبيعاته.", "contact": "تواصل مباشر", "payment": "دفع مباشر", "merchant": "للتاجر", "commission": "عمولة DIGIYLYFE", "availability": "المنتجات والتوفر والأسعار والشروط: اتفاق مباشر مع التاجر وتحت مسؤوليته.", "qr": "امسح الرمز لفتح وحفظ حضور DIGIYLYFE.", "card": "عرض البطاقة", "fiche": "عرض الصفحة", "site": "عرض الموقع", "wa": "واتساب مباشر", "footer": "نموذج ورشة · للهاتف أولاً · 8 لغات · أعضاء · بدون برنامج عام · بدون نشر."}};
-function setLang(lang){
-  if(!T[lang]) lang='fr';
-  document.documentElement.lang=lang;
-  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k=el.dataset.i18n; if(T[lang][k]) el.textContent=T[lang][k];
-  });
-  document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-  const u=new URL(location.href); u.searchParams.set('lang',lang); history.replaceState(null,'',u);
-}
-document.querySelectorAll('#langs button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
-setLang(new URLSearchParams(location.search).get('lang')||'fr');
-</script>
+    const TXT = {
+      fr: {
+        pageTitle:"DIGIY EXPLORE — Découvrir les bons coins",
+        meta:"DIGIY EXPLORE — découvrir rapidement les lieux et expériences du terrain, contacter directement DIGIY et proposer un lieu sans engagement.",
+        brand_main:"Je découvre le coin", hub:"← DIGIYLYFE.COM", eyebrow:"Petite Côte · Dakar · Sénégal",
+        hero_title:"Découvre les bons coins.<br>Choisis une expérience.<br>Parle au bon contact.",
+        hero_text:"EXPLORE montre immédiatement les lieux, sorties et idées du terrain. Tu regardes, tu choisis, puis tu contactes DIGIY ou l’acteur local quand la porte est prête.",
+        see_places:"Voir les découvertes", add_place:"Proposer mon lieu", whatsapp_digiy:"WhatsApp DIGIY", sms_digiy:"SMS DIGIY",
+        point_1:"Découverte gratuite", point_2:"Contact humain", section_title:"À découvrir maintenant",
+        section_text:"Les portes utiles sont placées en premier. Les inspirations sont clairement signalées.",
+        tag_bridge:"Annonce passerelle", tag_inspiration:"Inspiration",
+        spot_1_title:"Sortie pêche — Petite Côte", spot_1_desc:"Une sortie en mer et une vraie ambiance locale. DIGIY recueille l’intérêt puis ouvre la mise en relation lorsque l’activité est disponible.",
+        interested:"Je suis intéressé", spot_2_title:"Ambiance plage — Saly", spot_2_desc:"Une inspiration pour les adresses de plage, les promenades et les lieux de détente qui souhaitent devenir visibles.",
+        suggest_place:"Proposer un lieu", register_place:"Demander une visibilité", spot_3_title:"Découverte locale — Dakar",
+        spot_3_desc:"Une inspiration pour les balades, guides, sorties familiales et expériences locales à présenter clairement.",
+        suggest_experience:"Proposer une expérience", register_top:"🌍 Demande EXPLORE", info_title:"☰ Découvrir le fonctionnement de DIGIY EXPLORE",
+        info_1_t:"Découverte gratuite", info_1_x:"Le visiteur consulte les lieux et signale son intérêt sans frais.",
+        info_2_t:"Demande sans engagement", info_2_x:"Le professionnel peut proposer son lieu avant de valider une activation.",
+        info_3_t:"Activation CODE 8", info_3_x:"La fiche, le QR et la visibilité deviennent payants seulement après validation du professionnel.",
+        info_4_t:"Annonce passerelle", info_4_x:"DIGIY peut tester l’intérêt avant qu’un acteur local entre officiellement dans la vitrine.",
+        info_5_x:"DIGIY ne prélève aucune commission sur le visiteur ou le professionnel.",
+        info_6_t:"Le terrain garde la main", info_6_x:"La fiche ouvre la porte ; l’acteur local conserve ensuite le contact et la relation.",
+        back_site:"Retour au site", footer_text:"Le héros attire, les découvertes apparaissent, le terrain garde la main."
+      },
+      en: {
+        pageTitle:"DIGIY EXPLORE — Discover the right spots",
+        meta:"DIGIY EXPLORE — quickly discover local places and experiences, contact DIGIY directly and suggest a place with no commitment.",
+        brand_main:"Discover the area", hub:"← DIGIYLYFE.COM", eyebrow:"Petite Côte · Dakar · Senegal",
+        hero_title:"Discover the right spots.<br>Choose an experience.<br>Speak to the right contact.",
+        hero_text:"EXPLORE immediately shows local places, outings and ideas. Look, choose, then contact DIGIY or the local actor when the door is ready.",
+        see_places:"View discoveries", add_place:"Suggest my place", whatsapp_digiy:"WhatsApp DIGIY", sms_digiy:"SMS DIGIY",
+        point_1:"Free discovery", point_2:"Human contact", section_title:"Discover now",
+        section_text:"Useful doors come first. Inspirations are clearly labelled.",
+        tag_bridge:"Bridge listing", tag_inspiration:"Inspiration",
+        spot_1_title:"Fishing trip — Petite Côte", spot_1_desc:"A sea outing with a real local atmosphere. DIGIY collects interest and opens the connection when the activity is available.",
+        interested:"I am interested", spot_2_title:"Beach atmosphere — Saly", spot_2_desc:"An inspiration for beach addresses, walks and relaxing places that want to become visible.",
+        suggest_place:"Suggest a place", register_place:"Request visibility", spot_3_title:"Local discovery — Dakar",
+        spot_3_desc:"An inspiration for walks, guides, family outings and local experiences to present clearly.",
+        suggest_experience:"Suggest an experience", register_top:"🌍 EXPLORE request", info_title:"☰ Discover how DIGIY EXPLORE works",
+        info_1_t:"Free discovery", info_1_x:"Visitors browse places and show interest at no cost.",
+        info_2_t:"No-commitment request", info_2_x:"Professionals can suggest a place before validating an activation.",
+        info_3_t:"CODE 8 activation", info_3_x:"The profile, QR and visibility become paid only after professional validation.",
+        info_4_t:"Bridge listing", info_4_x:"DIGIY can test interest before a local actor officially joins the showcase.",
+        info_5_x:"DIGIY takes no commission from the visitor or the professional.",
+        info_6_t:"The field stays in control", info_6_x:"The profile opens the door; the local actor keeps the contact and relationship.",
+        back_site:"Back to site", footer_text:"The hero attracts, discoveries appear, the field stays in control."
+      }
+    };
+
+    const MSG = {
+      fr:{general:"Bonjour, je viens de DIGIY EXPLORE. Je souhaite une information sur un lieu ou proposer une visibilité sans engagement.",fishing:"Bonjour, je viens de DIGIY EXPLORE. Je suis intéressé par une sortie pêche sur la Petite Côte.",saly:"Bonjour, je viens de DIGIY EXPLORE. Je connais un lieu à Saly à faire découvrir.",exp:"Bonjour, je viens de DIGIY EXPLORE. Je veux proposer une expérience locale."},
+      en:{general:"Hello, I come from DIGIY EXPLORE. I would like information about a place or to suggest visibility with no commitment.",fishing:"Hello, I come from DIGIY EXPLORE. I am interested in a fishing trip on the Petite Côte.",saly:"Hello, I come from DIGIY EXPLORE. I know a place in Saly to showcase.",exp:"Hello, I come from DIGIY EXPLORE. I want to suggest a local experience."}
+    };
+
+    function wa(text){return "https://wa.me/221771342889?text="+encodeURIComponent(text)}
+    function sms(text){return "sms:+221771342889?body="+encodeURIComponent(text)}
+
+    function setLinks(lang){
+      document.getElementById("waExploreTop").href=wa(MSG[lang].general);
+      document.getElementById("waExploreInfo").href=wa(MSG[lang].general);
+      document.getElementById("smsExploreInfo").href=sms(MSG[lang].general);
+      document.getElementById("waFishing").href=wa(MSG[lang].fishing);
+      document.getElementById("smsFishing").href=sms(MSG[lang].fishing);
+      document.getElementById("waPlaceSaly").href=wa(MSG[lang].saly);
+      document.getElementById("waExperience").href=wa(MSG[lang].exp);
+    }
+
+    function applyLang(lang,push){
+      lang=lang==="en"?"en":"fr";
+      document.documentElement.lang=lang;
+      document.title=TXT[lang].pageTitle;
+      const meta=document.querySelector('meta[name="description"]');
+      if(meta)meta.setAttribute("content",TXT[lang].meta);
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const value=TXT[lang][el.getAttribute("data-i18n")];
+        if(value==null)return;
+        if(value.includes("<br>"))el.innerHTML=value;else el.textContent=value;
+      });
+      document.getElementById("lang-fr").classList.toggle("active",lang==="fr");
+      document.getElementById("lang-en").classList.toggle("active",lang==="en");
+      setLinks(lang);
+      if(push){
+        const u=new URL(location.href);
+        if(lang==="fr")u.searchParams.delete("lang");else u.searchParams.set("lang","en");
+        history.replaceState({},"",u.pathname+u.search+u.hash);
+      }
+    }
+
+    document.getElementById("lang-fr").addEventListener("click",()=>applyLang("fr",true));
+    document.getElementById("lang-en").addEventListener("click",()=>applyLang("en",true));
+    applyLang(new URLSearchParams(location.search).get("lang")==="en"?"en":"fr",false);
+  })();
+  </script>
 </body>
 </html>
+
+
+
+
