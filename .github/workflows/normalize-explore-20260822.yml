@@ -16,7 +16,8 @@ jobs:
           from pathlib import Path
           core=Path('index-core.html')
           s=core.read_text(encoding='utf-8')
-          s=s.replace('        <a class="btn btn-ghost" href="https://digiy-hub.digiylyfe.com/" data-i18n="hub">🧭 HUB</a>\n','')
+          s=s.replace('https://digiy-hub.digiylyfe.com/','https://digiylyfe.com/')
+          s=s.replace('🧭 HUB','← DIGIYLYFE.COM')
           if 'data-digiy-return-home="1"' not in s:
               marker='          <div class="hero-actions">'
               button='          <a data-digiy-return-home="1" href="https://digiylyfe.com/" aria-label="Retour DIGIYLYFE.COM" style="width:100%;min-height:52px;display:flex;align-items:center;justify-content:center;margin:18px 0 0;padding:11px 18px;border:2px solid #dcb45a;border-radius:999px;background:#10261e;color:#fff;text-decoration:none;font-weight:1000;font-size:15px;letter-spacing:.02em;box-shadow:0 8px 20px rgba(0,0,0,.22)">← RETOUR DIGIYLYFE.COM</a>\n'
