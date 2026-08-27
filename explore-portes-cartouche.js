@@ -24,7 +24,13 @@
 
   function language(){
     var value='';
-    try{value=localStorage.getItem('digiy-lang')||localStorage.getItem(STORE)||'';}catch(e){}
+    try{
+      value=(new URLSearchParams(location.search).get('lang')||'').slice(0,2).toLowerCase();
+      if(SUPPORTED.indexOf(value)>=0) return value;
+      value=(localStorage.getItem(STORE)||'').slice(0,2).toLowerCase();
+      if(SUPPORTED.indexOf(value)>=0) return value;
+      value=(localStorage.getItem('digiy-lang')||'').slice(0,2).toLowerCase();
+    }catch(e){}
     value=(value||document.documentElement.lang||'fr').slice(0,2).toLowerCase();
     return SUPPORTED.indexOf(value)>=0?value:'fr';
   }
