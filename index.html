@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#06130f">
   <meta name="robots" content="index,follow">
+  <meta name="digiy-build" content="explore-world8-place-20260827">
   <link rel="canonical" href="https://explore.digiylyfe.com/">
   <title>DIGIY EXPLORE — Découvrir les bons coins</title>
   <meta name="description" content="DIGIY EXPLORE — accès multilingue direct aux lieux, expériences, fiches et demandes du terrain.">
@@ -12,12 +13,12 @@
     :root{--bar-h:52px;--member-h:38px;--bg:#06130f;--gold:#dcb45a;--green:#12b76a;--ink:#f7fbf8;--line:rgba(255,255,255,.15)}
     *{box-sizing:border-box}
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
-    .language-shell{height:var(--bar-h);padding:max(5px,env(safe-area-inset-top)) 8px 5px;background:linear-gradient(135deg,#06130f,#0b3024);border-bottom:1px solid rgba(220,180,90,.22);position:relative;z-index:20}
+    .language-shell{display:block!important;height:var(--bar-h);padding:max(5px,env(safe-area-inset-top)) 8px 5px;background:linear-gradient(135deg,#06130f,#0b3024);border-bottom:1px solid rgba(220,180,90,.22);position:relative;z-index:20}
     .language-inner{height:100%;display:flex;align-items:center;gap:6px;max-width:1180px;margin:auto;min-width:0}
     .explore-mark{display:flex;align-items:center;gap:6px;flex:0 0 auto;color:#fff2bf;font-weight:1000;font-size:11px;letter-spacing:.03em;white-space:nowrap}
     .explore-mark span{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:16px}
-    .language-buttons{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;flex:1;min-width:0}
-    .language-buttons button{min-width:0;height:29px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 3px;font-weight:1000;font-size:9px;cursor:pointer;white-space:nowrap}
+    .language-buttons{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;flex:1;min-width:0}
+    .language-buttons button{display:block!important;min-width:0;height:29px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 3px;font-weight:1000;font-size:9px;cursor:pointer;white-space:nowrap}
     .language-buttons button.active{background:linear-gradient(135deg,var(--gold),#f2cc78);border-color:rgba(220,180,90,.62);color:#062414;box-shadow:0 4px 12px rgba(0,0,0,.18)}
 
     .member-strip{height:var(--member-h);display:flex;align-items:center;justify-content:center;padding:4px 8px;background:#fff8dc;border-bottom:1px solid rgba(220,180,90,.40);position:relative;z-index:19}
@@ -50,9 +51,9 @@
   <script src="./explore-i18n-data-2.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-3.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-4.js?v=20260730-explore7a"></script>
-  <script src="./explore-7lang-engine.js?v=20260812-explore-world8-v2" defer></script>
+  <script src="./explore-7lang-engine.js?v=20260827-world8-restore" defer></script>
   <script src="./explore-world-europe.js?v=20260801-world1" defer></script>
-  <script src="./explore-portes-cartouche.js?v=20260801-doors1" defer></script>
+  <script src="./explore-portes-cartouche.js?v=20260827-take-place" defer></script>
 </head>
 <body data-page="index" data-core="index-core.html">
   <header class="language-shell" aria-label="DIGIY EXPLORE languages">
