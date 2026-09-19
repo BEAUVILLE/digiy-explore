@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#06130f">
+<title>DIGIY EXPLORE · Accès propriétaire</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
+<style>
+:root{--bg:#06130f;--card:#0b241b;--gold:#d4af37;--gold2:#f3d46b;--ink:#f8fafc;--muted:rgba(248,250,252,.72);--line:rgba(255,255,255,.12)}
+*{box-sizing:border-box}html,body{margin:0}body{min-height:100vh;display:grid;place-items:center;padding:16px;background:linear-gradient(180deg,#071510,#04100c);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink)}
+.card{width:min(100%,440px);background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 18px 45px rgba(0,0,0,.28)}
+.brand{font-size:22px;font-weight:950;color:var(--gold2)}h1{font-size:24px;margin:14px 0 6px}.lead{font-size:12px;line-height:1.5;color:var(--muted)}
+.langs{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0}.langs button{border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}.langs button.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419}
+input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit;margin-top:10px;background:#102b22;color:#fff}.send,.back{width:100%;display:flex;align-items:center;justify-content:center;border-radius:999px;padding:12px;font-weight:950;text-decoration:none;margin-top:10px}.send{border:0;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419;cursor:pointer}.back{border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff}
+.msg{display:none;margin-top:10px;padding:10px;border-radius:11px;font-size:11px;line-height:1.4}.msg.show{display:block}.ok{background:rgba(34,197,94,.1);color:#bbf7d0}.bad{background:rgba(239,68,68,.1);color:#fecaca}
+html[dir="rtl"] body{direction:rtl}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="brand">🌍 DIGIY EXPLORE</div>
+<div class="langs"><button data-lang="fr">FR</button><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="pt">PT</button><button data-lang="it">IT</button><button data-lang="de">DE</button><button data-lang="nl">NL</button><button data-lang="ar">AR</button></div>
+<h1 data-i18n="title">Accès propriétaire</h1>
+<p class="lead" data-i18n="lead">Saisissez l’email autorisé pour ce lieu. Vous recevrez un lien unique de connexion.</p>
+<input id="email" type="email" autocomplete="email" placeholder="email@exemple.com">
+<button class="send" id="send" type="button" data-i18n="send">Envoyer le magic link</button>
+<div id="msg" class="msg"></div>
+<a class="back" id="back" href="./fiche.html" data-i18n="back">← Retour au lieu</a>
+</main>
+<script>
+(()=>{
+const sb=window.supabase.createClient("https://wesqmwjjtsefyjnluosj.supabase.co","sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id),p=new URL(location.href).searchParams;const site=(p.get("site")||"").trim();const ret=p.get("return")||"./fiche.html";let lang=p.get("lang")||localStorage.getItem("digiy_lang")||"fr";
+const T={fr:{title:"Accès propriétaire",lead:"Saisissez l’email autorisé pour ce lieu. Vous recevrez un lien unique de connexion.",send:"Envoyer le magic link",back:"← Retour au lieu",sent:"Lien envoyé. Vérifiez votre email.",missing:"Lieu EXPLORE manquant.",email:"Email requis."},en:{title:"Owner access",lead:"Enter the authorized email for this place. You will receive a one-time sign-in link.",send:"Send magic link",back:"← Back to place",sent:"Link sent. Check your email.",missing:"EXPLORE place missing.",email:"Email required."},es:{title:"Acceso propietario",lead:"Introduzca el email autorizado para este lugar. Recibirá un enlace único.",send:"Enviar magic link",back:"← Volver al lugar",sent:"Enlace enviado. Revise su email.",missing:"Falta el lugar EXPLORE.",email:"Email requerido."},pt:{title:"Acesso do proprietário",lead:"Introduza o email autorizado para este local. Receberá um link único.",send:"Enviar magic link",back:"← Voltar ao local",sent:"Link enviado. Verifique o email.",missing:"Local EXPLORE em falta.",email:"Email obrigatório."},it:{title:"Accesso proprietario",lead:"Inserisci l’email autorizzata per questo luogo. Riceverai un link unico.",send:"Invia magic link",back:"← Torna al luogo",sent:"Link inviato. Controlla l’email.",missing:"Luogo EXPLORE mancante.",email:"Email richiesta."},de:{title:"Inhaberzugang",lead:"Autorisierte E-Mail für diesen Ort eingeben. Sie erhalten einen einmaligen Login-Link.",send:"Magic Link senden",back:"← Zurück zum Ort",sent:"Link gesendet. E-Mail prüfen.",missing:"EXPLORE-Ort fehlt.",email:"E-Mail erforderlich."},nl:{title:"Eigenaartoegang",lead:"Voer het geautoriseerde e-mailadres voor deze locatie in. U ontvangt een eenmalige link.",send:"Magic link sturen",back:"← Terug naar locatie",sent:"Link verzonden. Controleer uw e-mail.",missing:"EXPLORE-locatie ontbreekt.",email:"E-mail vereist."},ar:{title:"دخول المالك",lead:"أدخل البريد الإلكتروني المصرح به لهذا المكان. سيصلك رابط دخول لمرة واحدة.",send:"إرسال رابط الدخول",back:"العودة إلى المكان →",sent:"تم إرسال الرابط. تحقق من بريدك.",missing:"مكان EXPLORE غير محدد.",email:"البريد الإلكتروني مطلوب."}};
+if(!T[lang])lang="fr";const tr=k=>T[lang]?.[k]||T.fr[k]||k;
+function apply(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tr(el.dataset.i18n));document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));localStorage.setItem("digiy_lang",lang)}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;apply()});
+try{const u=new URL(ret,location.origin);if(u.origin===location.origin||u.hostname.endsWith(".digiylyfe.com"))$("back").href=u.href}catch(_){}
+function msg(t,type="bad"){const e=$("msg");e.textContent=t;e.className="msg show "+type}
+$("send").onclick=async()=>{if(!site){msg(tr("missing"));return}const email=$("email").value.trim();if(!email){msg(tr("email"));return}$("send").disabled=true;const redirect=new URL("./gestion-explore-v2.html",location.href);redirect.searchParams.set("site",site);redirect.searchParams.set("lang",lang);redirect.searchParams.set("return",$("back").href);const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:redirect.href}});$("send").disabled=false;if(error){msg(error.message);return}msg(tr("sent"),"ok")};apply();
+})();
+</script>
+</body>
+</html>
