@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06130f">
+<title>DIGIY EXPLORE · MASTER V2</title>
+<meta name="description" content="DIGIY EXPLORE · découverte locale · contact direct · 0 % commission DIGIYLYFE.">
+<script>
+window.DIGIY_EXPLORE_CONFIG={siteSlug:"__MASTER__",get masterMode(){return this.siteSlug==="__MASTER__";}};
+if(window.DIGIY_EXPLORE_CONFIG.masterMode){const m=document.createElement("meta");m.name="robots";m.content="noindex,nofollow";document.head.appendChild(m);}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
+<style>
+:root{--bg:#06130f;--card:#0b241b;--card2:#102b22;--gold:#d4af37;--gold2:#f3d46b;--ink:#f8fafc;--muted:rgba(248,250,252,.72);--line:rgba(255,255,255,.12);--green:#22c55e}
+*{box-sizing:border-box}html,body{margin:0}body{min-height:100vh;background:linear-gradient(180deg,#071510,#04100c);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}
+.wrap{width:min(100% - 24px,920px);margin:auto}header{padding:18px 0;border-bottom:1px solid rgba(212,175,55,.3);background:#06130f}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.brand{font-size:23px;font-weight:950;color:var(--gold2)}.sub{font-size:11px;color:var(--muted);margin-top:4px}.zero{border:1px solid var(--gold);color:var(--gold2);border-radius:999px;padding:7px 10px;font-size:10px;font-weight:900;text-align:center}
+.langs{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}.langs button{border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}.langs button.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419}
+main{padding:16px 0 42px}.top{display:flex;justify-content:space-between;gap:8px;margin-bottom:12px}.pill{border:1px solid var(--line);border-radius:999px;padding:9px 12px;background:rgba(255,255,255,.05);font-size:10px;font-weight:900;cursor:pointer}.home{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419}
+.card{border:1px solid var(--line);border-radius:24px;background:var(--card);overflow:hidden;box-shadow:0 22px 52px rgba(0,0,0,.28)}.hero{height:300px;background:#102019;position:relative}.hero img{width:100%;height:100%;object-fit:cover}.fallback{height:100%;display:grid;place-items:center;font-size:74px}.shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.78))}.heroText{position:absolute;left:0;right:0;bottom:0;padding:20px}.eyebrow{color:var(--gold2);font-size:10px;font-weight:950;letter-spacing:.08em}.title{font-size:32px;line-height:1.04;margin:5px 0}.lead{font-size:13px;color:#ecf6f0;line-height:1.5;margin:0}
+.body{padding:18px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}.chip{padding:6px 9px;border-radius:999px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.22);font-size:10px;font-weight:850;color:var(--gold2)}
+.grid{display:grid;gap:10px}.box{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:15px;padding:12px}.box strong{display:block;font-size:10px;color:var(--gold2);margin-bottom:6px;text-transform:uppercase}.box div{font-size:12px;color:#e6f1eb;line-height:1.45;white-space:pre-line}.status{display:inline-flex;padding:6px 9px;border-radius:999px;background:rgba(34,197,94,.13);border:1px solid rgba(34,197,94,.28);color:#bbf7d0;font-weight:900}
+.note{margin-top:12px;padding:11px;border-radius:14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);font-size:11px;line-height:1.45;color:#fff3bf}.actions{display:grid;gap:8px;margin-top:14px}.btn{border-radius:999px;padding:12px;text-align:center;font-size:11px;font-weight:950}.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419}.wa{border:1px solid rgba(34,197,94,.45);color:#bbf7d0;background:rgba(34,197,94,.08)}.disabled{opacity:.4;pointer-events:none}
+.msg{display:none;margin:12px 0;padding:10px;border-radius:12px;font-size:11px}.msg.show{display:block}.ok{background:rgba(34,197,94,.1);color:#bbf7d0}.bad{background:rgba(239,68,68,.1);color:#fecaca}
+dialog{border:0;border-radius:18px;width:min(92vw,440px);padding:0;background:#fff;color:#173b31}dialog::backdrop{background:rgba(0,0,0,.55)}.modal{padding:18px}.modal h2{margin:0 0 6px}.modal p{font-size:12px;color:#667b73;line-height:1.4}.modal input{width:100%;padding:12px;border:1px solid #dfe8e2;border-radius:11px;font:inherit}.row{display:flex;gap:8px;margin-top:10px}.row button{flex:1;border-radius:999px;padding:10px;border:1px solid #dfe8e2;font-weight:900;cursor:pointer}.send{background:#073f32!important;color:#fff}
+footer{text-align:center;color:var(--muted);font-size:9px;padding:20px}html[dir="rtl"] body{direction:rtl}
+@media(min-width:700px){.hero{height:420px}.grid{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr 1fr}.title{font-size:42px}.body{padding:24px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="head"><div><div class="brand">🌍 DIGIY EXPLORE</div><div class="sub" data-i18n="sub">Découvrir le territoire · contact direct</div></div><div class="zero">0 % COMMISSION<br>DIGIYLYFE</div></div>
+<div class="langs"><button data-lang="fr">FR</button><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="pt">PT</button><button data-lang="it">IT</button><button data-lang="de">DE</button><button data-lang="nl">NL</button><button data-lang="ar">AR</button></div>
+</div></header>
+
+<main class="wrap">
+<div class="top"><a class="pill home" href="https://digiylyfe.com/" data-i18n="home">← DIGIYLYFE</a><button class="pill" id="ownerBtn" type="button" data-i18n="owner">🔐 Accès propriétaire</button></div>
+<div id="pageMsg" class="msg"></div>
+<article class="card">
+<div class="hero" id="hero"><div class="fallback">🌍</div><div class="shade"></div><div class="heroText"><div class="eyebrow" id="category">EXPLORE</div><h1 class="title" id="name">Nom du lieu</h1><p class="lead" id="description">Découvrir un lieu, une activité ou une expérience du territoire.</p></div></div>
+<div class="body">
+<div class="chips" id="chips"></div>
+<div class="grid">
+<section class="box"><strong data-i18n="where">Où ?</strong><div id="where">—</div></section>
+<section class="box"><strong data-i18n="hours">Horaires</strong><div id="hours">—</div></section>
+<section class="box"><strong data-i18n="price">Tarif indicatif</strong><div id="price">—</div></section>
+<section class="box"><strong data-i18n="availability">Disponibilité</strong><div><span class="status" id="availability">—</span></div></section>
+</div>
+<div class="note"><strong data-i18n="today">Info du moment :</strong> <span id="availabilityNote">—</span></div>
+<div class="note" data-i18n="doctrine">Horaires, tarifs, disponibilités et conditions sont confirmés directement avec le professionnel. DIGIYLYFE n’encaisse pas la prestation.</div>
+<div class="actions"><a class="btn primary disabled" id="callBtn" href="#" data-i18n="call">Appeler directement</a><a class="btn wa disabled" id="waBtn" href="#" target="_blank" rel="noopener" data-i18n="wa">WhatsApp direct</a></div>
+</div>
+</article>
+</main>
+<footer>© DIGIYLYFE · EXPLORE · <span data-i18n="footer">Le territoire ouvre la porte, le professionnel garde la main.</span></footer>
+
+<dialog id="ownerDialog"><div class="modal">
+<h2 data-i18n="ownerTitle">Accès propriétaire</h2><p data-i18n="ownerText">Saisissez l’email autorisé. Un lien de connexion unique vous sera envoyé.</p>
+<input id="ownerEmail" type="email" autocomplete="email" placeholder="email@exemple.com">
+<div id="ownerMsg" class="msg"></div>
+<div class="row"><button id="closeOwner" type="button" data-i18n="close">Fermer</button><button id="sendMagic" class="send" type="button" data-i18n="send">Envoyer le lien</button></div>
+</div></dialog>
+
+<script>
+(()=>{
+const CORE={url:"https://wesqmwjjtsefyjnluosj.supabase.co",key:"sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3",table:"digiy_explore_places"};
+const CFG=window.DIGIY_EXPLORE_CONFIG;
+const sb=window.supabase.createClient(CORE.url,CORE.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
+const D={
+fr:{sub:"Découvrir le territoire · contact direct",home:"← DIGIYLYFE",owner:"🔐 Accès propriétaire",where:"Où ?",hours:"Horaires",price:"Tarif indicatif",availability:"Disponibilité",today:"Info du moment :",doctrine:"Horaires, tarifs, disponibilités et conditions sont confirmés directement avec le professionnel. DIGIYLYFE n’encaisse pas la prestation.",call:"Appeler directement",wa:"WhatsApp direct",footer:"Le territoire ouvre la porte, le professionnel garde la main.",ownerTitle:"Accès propriétaire",ownerText:"Saisissez l’email autorisé. Un lien de connexion unique vous sera envoyé.",close:"Fermer",send:"Envoyer le lien",sent:"Lien envoyé. Vérifiez votre email.",master:"MASTER atelier : configurez uniquement siteSlug.",notfound:"Cette présence EXPLORE n’est pas disponible."},
+en:{sub:"Discover the territory · direct contact",home:"← DIGIYLYFE",owner:"🔐 Owner access",where:"Where?",hours:"Hours",price:"Indicative price",availability:"Availability",today:"Current info:",doctrine:"Hours, prices, availability and conditions are confirmed directly with the professional. DIGIYLYFE does not collect payment.",call:"Call directly",wa:"WhatsApp direct",footer:"The territory opens the door; the professional stays in control.",ownerTitle:"Owner access",ownerText:"Enter the authorized email. A one-time sign-in link will be sent.",close:"Close",send:"Send link",sent:"Link sent. Check your email.",master:"Workshop MASTER: configure only siteSlug.",notfound:"This EXPLORE presence is unavailable."},
+es:{sub:"Descubrir el territorio · contacto directo",home:"← DIGIYLYFE",owner:"🔐 Acceso propietario",where:"¿Dónde?",hours:"Horarios",price:"Precio indicativo",availability:"Disponibilidad",today:"Info actual:",doctrine:"Horarios, precios, disponibilidad y condiciones se confirman directamente con el profesional. DIGIYLYFE no cobra la prestación.",call:"Llamar directamente",wa:"WhatsApp directo",footer:"El territorio abre la puerta; el profesional mantiene el control.",ownerTitle:"Acceso propietario",ownerText:"Introduzca el email autorizado. Recibirá un enlace único.",close:"Cerrar",send:"Enviar enlace",sent:"Enlace enviado. Revise su email.",master:"MASTER de taller: configure solo siteSlug.",notfound:"Esta presencia EXPLORE no está disponible."},
+pt:{sub:"Descobrir o território · contacto direto",home:"← DIGIYLYFE",owner:"🔐 Acesso do proprietário",where:"Onde?",hours:"Horários",price:"Preço indicativo",availability:"Disponibilidade",today:"Info do momento:",doctrine:"Horários, preços, disponibilidade e condições são confirmados diretamente com o profissional. A DIGIYLYFE não recebe o pagamento.",call:"Ligar diretamente",wa:"WhatsApp direto",footer:"O território abre a porta; o profissional mantém o controlo.",ownerTitle:"Acesso do proprietário",ownerText:"Introduza o email autorizado. Será enviado um link único.",close:"Fechar",send:"Enviar link",sent:"Link enviado. Verifique o email.",master:"MASTER de oficina: configure apenas siteSlug.",notfound:"Esta presença EXPLORE não está disponível."},
+it:{sub:"Scoprire il territorio · contatto diretto",home:"← DIGIYLYFE",owner:"🔐 Accesso proprietario",where:"Dove?",hours:"Orari",price:"Prezzo indicativo",availability:"Disponibilità",today:"Info del momento:",doctrine:"Orari, prezzi, disponibilità e condizioni sono confermati direttamente con il professionista. DIGIYLYFE non incassa la prestazione.",call:"Chiama direttamente",wa:"WhatsApp diretto",footer:"Il territorio apre la porta; il professionista mantiene il controllo.",ownerTitle:"Accesso proprietario",ownerText:"Inserisci l’email autorizzata. Riceverai un link unico.",close:"Chiudi",send:"Invia link",sent:"Link inviato. Controlla l’email.",master:"MASTER laboratorio: configura solo siteSlug.",notfound:"Questa presenza EXPLORE non è disponibile."},
+de:{sub:"Das Gebiet entdecken · direkter Kontakt",home:"← DIGIYLYFE",owner:"🔐 Inhaberzugang",where:"Wo?",hours:"Öffnungszeiten",price:"Richtpreis",availability:"Verfügbarkeit",today:"Aktuelle Info:",doctrine:"Öffnungszeiten, Preise, Verfügbarkeit und Bedingungen werden direkt mit dem Profi bestätigt. DIGIYLYFE kassiert die Leistung nicht.",call:"Direkt anrufen",wa:"WhatsApp direkt",footer:"Das Gebiet öffnet die Tür; der Profi behält die Kontrolle.",ownerTitle:"Inhaberzugang",ownerText:"Autorisierte E-Mail eingeben. Ein einmaliger Login-Link wird gesendet.",close:"Schließen",send:"Link senden",sent:"Link gesendet. E-Mail prüfen.",master:"Werkstatt-MASTER: nur siteSlug konfigurieren.",notfound:"Diese EXPLORE-Präsenz ist nicht verfügbar."},
+nl:{sub:"Ontdek het gebied · direct contact",home:"← DIGIYLYFE",owner:"🔐 Eigenaartoegang",where:"Waar?",hours:"Openingstijden",price:"Indicatieve prijs",availability:"Beschikbaarheid",today:"Actuele info:",doctrine:"Openingstijden, prijzen, beschikbaarheid en voorwaarden worden rechtstreeks met de professional bevestigd. DIGIYLYFE int de betaling niet.",call:"Direct bellen",wa:"WhatsApp direct",footer:"Het gebied opent de deur; de professional houdt de controle.",ownerTitle:"Eigenaartoegang",ownerText:"Voer het geautoriseerde e-mailadres in. Er wordt een eenmalige link gestuurd.",close:"Sluiten",send:"Link sturen",sent:"Link verzonden. Controleer uw e-mail.",master:"Werkplaats-MASTER: configureer alleen siteSlug.",notfound:"Deze EXPLORE-aanwezigheid is niet beschikbaar."},
+ar:{sub:"اكتشف المنطقة · تواصل مباشر",home:"DIGIYLYFE →",owner:"🔐 دخول المالك",where:"أين؟",hours:"الأوقات",price:"السعر التقريبي",availability:"التوفر",today:"معلومة الآن:",doctrine:"يتم تأكيد الأوقات والأسعار والتوفر والشروط مباشرة مع المهني. DIGIYLYFE لا تستلم ثمن الخدمة.",call:"اتصال مباشر",wa:"واتساب مباشر",footer:"المنطقة تفتح الباب والمهني يبقى صاحب القرار.",ownerTitle:"دخول المالك",ownerText:"أدخل البريد الإلكتروني المصرح به. سيتم إرسال رابط دخول لمرة واحدة.",close:"إغلاق",send:"إرسال الرابط",sent:"تم إرسال الرابط. تحقق من بريدك.",master:"MASTER الورشة: اضبط siteSlug فقط.",notfound:"حضور EXPLORE هذا غير متاح."}
+};
+let lang=new URL(location.href).searchParams.get("lang")||localStorage.getItem("digiy_lang")||"fr";if(!D[lang])lang="fr";
+const tr=k=>D[lang]?.[k]||D.fr[k]||k;\nconst AV={fr:{available:"Disponible",reservation:"Sur réservation",full:"Complet",closed:"Fermé temporairement",to_confirm:"À confirmer"},en:{available:"Available",reservation:"By reservation",full:"Full",closed:"Temporarily closed",to_confirm:"To confirm"},es:{available:"Disponible",reservation:"Con reserva",full:"Completo",closed:"Cerrado temporalmente",to_confirm:"Por confirmar"},pt:{available:"Disponível",reservation:"Por reserva",full:"Lotado",closed:"Fechado temporariamente",to_confirm:"A confirmar"},it:{available:"Disponibile",reservation:"Su prenotazione",full:"Completo",closed:"Chiuso temporaneamente",to_confirm:"Da confermare"},de:{available:"Verfügbar",reservation:"Nach Reservierung",full:"Ausgebucht",closed:"Vorübergehend geschlossen",to_confirm:"Zu bestätigen"},nl:{available:"Beschikbaar",reservation:"Op reservatie",full:"Vol",closed:"Tijdelijk gesloten",to_confirm:"Te bevestigen"},ar:{available:"متاح",reservation:"بالحجز",full:"مكتمل",closed:"مغلق مؤقتًا",to_confirm:"للتأكيد"}};\nfunction availabilityLabel(v){const raw=String(v||"").trim();const aliases={"Disponible":"available","Sur réservation":"reservation","Complet":"full","Fermé temporairement":"closed","À confirmer":"to_confirm"};const k=aliases[raw]||raw;return AV[lang]?.[k]||raw.replaceAll("_"," ")||"—";}
+function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tr(el.dataset.i18n));document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));localStorage.setItem("digiy_lang",lang)}
+document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>{lang=b.dataset.lang;applyLang()}));
+function msg(text,type="bad"){const el=$("pageMsg");el.textContent=text;el.className="msg show "+type}
+function safe(s){return String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+function phone(v){return String(v||"").replace(/\D/g,"")}
+function render(x){
+$("name").textContent=x.public_name||"—";$("category").textContent=[x.category_code,x.subcategory].filter(Boolean).join(" · ")||"EXPLORE";$("description").textContent=x.short_description||"—";$("where").textContent=[x.address_text,x.zone,x.city].filter(Boolean).join(" · ")||"—";$("hours").textContent=x.hours||"—";$("price").textContent=x.price_hint||"—";$("availability").textContent=availabilityLabel(x.availability_status);$("availabilityNote").textContent=x.availability_note||"—";
+const tags=Array.isArray(x.tags)?x.tags:[];$("chips").innerHTML=tags.slice(0,8).map(t=>'<span class="chip">'+safe(t)+'</span>').join("");
+if(x.cover_url)$("hero").innerHTML='<img src="'+safe(x.cover_url)+'" alt=""><div class="shade"></div><div class="heroText"><div class="eyebrow" id="category">'+safe([x.category_code,x.subcategory].filter(Boolean).join(" · ")||"EXPLORE")+'</div><h1 class="title" id="name">'+safe(x.public_name||"—")+'</h1><p class="lead" id="description">'+safe(x.short_description||"—")+'</p></div>';
+const p=phone(x.phone||x.whatsapp);if(p){$("callBtn").href="tel:+"+p;$("callBtn").classList.remove("disabled");$("waBtn").href="https://wa.me/"+p+"?text="+encodeURIComponent("Bonjour, je vous contacte depuis votre présence DIGIY EXPLORE.");$("waBtn").classList.remove("disabled")}
+}
+async function load(){applyLang();if(CFG.masterMode){render({public_name:"NOM DU LIEU / ACTIVITÉ",category_code:"EXPLORE",subcategory:"Catégorie",short_description:"Présentation courte du lieu ou de l’expérience.",city:"Ville / territoire",zone:"Zone",hours:"Horaires à renseigner",price_hint:"Tarif à confirmer",availability_status:"À renseigner",availability_note:"Information terrain du moment",tags:["Découvrir","Contact direct"]});msg(tr("master"),"ok");return}
+const {data,error}=await sb.from(CORE.table).select("slug,public_name,category_code,subcategory,short_description,city,zone,address_text,phone,whatsapp,cover_url,photo_urls,tags,price_hint,hours,availability_status,availability_note,is_published,status,is_active").eq("slug",CFG.siteSlug).eq("is_published",true).eq("status","published").eq("is_active",true).maybeSingle();if(error||!data){msg(tr("notfound"));return}render(data)}
+const dlg=$("ownerDialog");$("ownerBtn").onclick=()=>dlg.showModal();$("closeOwner").onclick=()=>dlg.close();dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+$("sendMagic").onclick=async()=>{const box=$("ownerMsg");box.className="msg";if(CFG.masterMode){box.textContent=tr("master");box.className="msg show bad";return}const email=$("ownerEmail").value.trim();if(!email){box.textContent="Email requis.";box.className="msg show bad";return}$("sendMagic").disabled=true;const redirect=new URL("gestion-explore-v2.html",location.href);redirect.searchParams.set("site",CFG.siteSlug);redirect.searchParams.set("lang",lang);redirect.searchParams.set("return",location.href);const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:redirect.href}});$("sendMagic").disabled=false;if(error){box.textContent=error.message;box.className="msg show bad";return}box.textContent=tr("sent");box.className="msg show ok"};
+load();
+})();
+</script>
+</body>
+</html>
