@@ -1047,6 +1047,7 @@
       const bottomWhatsapp = $("bottomWhatsapp");
       const bottomShare = $("bottomShare");
       const shareToast = $("shareToast");
+      const ownerAccessBtn = $("ownerAccessBtn");
 
       const qrImg = $("qrImg");
       const qrLinkText = $("qrLinkText");
@@ -1523,6 +1524,13 @@
         kindBox.textContent = placeKind(place);
 
         setQr(slug);
+        if(ownerAccessBtn){
+          const ownerUrl = new URL("./acces-proprietaire-v2.html", window.location.href);
+          ownerUrl.searchParams.set("site", slug);
+          ownerUrl.searchParams.set("return", canonicalPlaceUrl(slug));
+          ownerAccessBtn.href = ownerUrl.toString();
+          ownerAccessBtn.hidden = false;
+        }
         renderCover(place);
         renderTags(place);
         renderGallery(place);
