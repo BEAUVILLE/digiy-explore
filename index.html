@@ -102,6 +102,22 @@
         var oldLang=d.querySelector('.lang-switch');
         if(oldLang) oldLang.style.setProperty('display','none','important');
 
+        var fishingTitle=Array.from(d.querySelectorAll('.spot-title')).find(function(el){
+          return /sortie\s*p[êe]che/i.test(el.textContent||'');
+        });
+        if(fishingTitle){
+          var fishingCard=fishingTitle.closest('.spot');
+          var fishingActions=fishingCard&&fishingCard.querySelector('.spot-actions');
+          if(fishingActions&&!fishingActions.querySelector('[data-digiy-fiche-jb]')){
+            var ficheLink=d.createElement('a');
+            ficheLink.className='btn btn-primary';
+            ficheLink.href='./fiche.html?slug=sortie-peche-jb-baptiste-760a00ad';
+            ficheLink.textContent='Voir la fiche';
+            ficheLink.setAttribute('data-digiy-fiche-jb','1');
+            fishingActions.insertBefore(ficheLink,fishingActions.firstChild);
+          }
+        }
+
         if(!d.getElementById('digiyExploreAdherent19900')){
           var hero=d.querySelector('.hero-card');
           if(hero){
