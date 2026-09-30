@@ -763,6 +763,21 @@
                 </div>
 
                 <div class="infoRow">
+                  <strong>Horaires</strong>
+                  <span id="hoursBox">À confirmer</span>
+                </div>
+
+                <div class="infoRow">
+                  <strong>Disponibilité</strong>
+                  <span id="availabilityBox">À confirmer</span>
+                </div>
+
+                <div class="infoRow" id="availabilityNoteRow" hidden>
+                  <strong>Note du moment</strong>
+                  <span id="availabilityNoteBox">—</span>
+                </div>
+
+                <div class="infoRow">
                   <strong>Ambiance</strong>
                   <span id="kindBox">—</span>
                 </div>
@@ -1058,6 +1073,10 @@
       const bottomShare = $("bottomShare");
       const shareToast = $("shareToast");
       const ownerAccessBtn = $("ownerAccessBtn");
+      const hoursBox = $("hoursBox");
+      const availabilityBox = $("availabilityBox");
+      const availabilityNoteBox = $("availabilityNoteBox");
+      const availabilityNoteRow = $("availabilityNoteRow");
       const websiteBtn = $("websiteBtn");
       const bookingBtn = $("bookingBtn");
 
@@ -1546,6 +1565,16 @@
         fullDescriptionBox.textContent = placeFull(place);
         addressBox.textContent = placeAddress(place);
         kindBox.textContent = placeKind(place);
+        if(hoursBox) hoursBox.textContent = safeText(place?.hours || place?.opening_hours, "À confirmer");
+        if(availabilityBox){
+          const av={available:"Disponible",reservation:"Sur réservation",full:"Complet",closed:"Fermé temporairement",to_confirm:"À confirmer"}[String(place?.availability_status||"").trim()] || safeText(place?.availability_status,"À confirmer");
+          availabilityBox.textContent=av;
+        }
+        if(availabilityNoteBox && availabilityNoteRow){
+          const note=String(place?.availability_note||"").trim();
+          availabilityNoteBox.textContent=note||"—";
+          availabilityNoteRow.hidden=!note;
+        }
 
         setQr(slug);
         if(ownerAccessBtn){
