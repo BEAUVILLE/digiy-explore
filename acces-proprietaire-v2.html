@@ -39,7 +39,12 @@ function apply(){document.documentElement.lang=lang;document.documentElement.dir
 document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;apply()});
 try{const u=new URL(ret,location.origin);if(u.origin===location.origin||u.hostname.endsWith(".digiylyfe.com"))$("back").href=u.href}catch(_){}
 function msg(t,type="bad"){const e=$("msg");e.textContent=t;e.className="msg show "+type}
-$("send").onclick=async()=>{if(!site){msg(tr("missing"));return}const email=$("email").value.trim();if(!email){msg(tr("email"));return}$("send").disabled=true;const redirect=new URL("./gestion-explore-v2.html",location.href);redirect.searchParams.set("site",site);redirect.searchParams.set("lang",lang);redirect.searchParams.set("return",$("back").href);const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:redirect.href}});$("send").disabled=false;if(error){msg(error.message);return}msg(tr("sent"),"ok")};apply();
+function saveContext(){if(site)localStorage.setItem("digiy_explore_owner_site",site);localStorage.setItem("digiy_explore_owner_lang",lang);localStorage.setItem("digiy_explore_owner_return",$("back").href)}
+function goManage(){const savedSite=site||localStorage.getItem("digiy_explore_owner_site")||"";if(!savedSite)return;const u=new URL("./gestion-explore-v2.html",location.href);u.searchParams.set("site",savedSite);u.searchParams.set("lang",localStorage.getItem("digiy_explore_owner_lang")||lang||"fr");const rr=localStorage.getItem("digiy_explore_owner_return");if(rr)u.searchParams.set("return",rr);location.replace(u.href)}
+$("send").onclick=async()=>{if(!site){msg(tr("missing"));return}const email=$("email").value.trim();if(!email){msg(tr("email"));return}$("send").disabled=true;saveContext();const redirect=new URL("./acces-proprietaire-v2.html",location.href);redirect.search="";redirect.hash="";const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:redirect.href}});$("send").disabled=false;if(error){msg(error.message);return}msg(tr("sent"),"ok")};
+sb.auth.getSession().then(({data})=>{if(data.session)goManage()});
+sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==="SIGNED_IN"||event==="INITIAL_SESSION"))setTimeout(goManage,0)});
+apply();
 })();
 </script>
 </body>
