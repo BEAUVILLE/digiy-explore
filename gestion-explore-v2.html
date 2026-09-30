@@ -44,12 +44,20 @@ html[dir="rtl"] body{direction:rtl}
 <h2 style="margin-top:0">📅 Calendrier terrain</h2>
 <div class="hint">La semaine est visible d’un coup d’œil. Ajustez chaque jour selon le terrain.</div>
 <div id="ownerWeek" style="display:grid;gap:10px;margin-top:14px"></div>
-<details style="margin-top:14px">
-<summary style="cursor:pointer;font-weight:900;color:var(--gold2)">+ Planifier une autre date</summary>
-<label>Date</label><input id="calDay" type="date">
+<details style="margin-top:14px" open>
+<summary style="cursor:pointer;font-weight:900;color:var(--gold2)">📆 Calendrier mensuel</summary>
+<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin:12px 0">
+<button class="btn" id="calPrev" type="button">←</button>
+<strong id="calMonthLabel"></strong>
+<button class="btn" id="calNext" type="button">→</button>
+</div>
+<div id="monthGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
+<div id="selectedDateBox" style="margin-top:14px" hidden>
+<div style="font-weight:950" id="selectedDateLabel"></div>
 <label>Statut</label><select id="calStatus"><option value="available">Disponible</option><option value="to_confirm">À confirmer</option><option value="full">Complet</option><option value="closed">Fermé</option></select>
 <label>Note</label><input id="calNote" type="text" maxlength="180" placeholder="Ex. Départ 7h · météo à confirmer">
-<button class="save" id="calSave" type="button">Enregistrer la date</button>
+<button class="save" id="calSave" type="button">Enregistrer cette date</button>
+</div>
 </details>
 <div id="calList" class="hint" style="margin-top:12px"></div>
 </section>
@@ -109,11 +117,39 @@ async function loadCalendar(){
    if(await saveCalendarDay(day,status,inp.value.trim()))await loadCalendar();
  });
 }
-$("calDay").value=localIso(new Date());
+let calendarCursor=new Date(),selectedCalendarDay="";
+function monthName(d){return d.toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}
+async function renderMonth(){
+ const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),start=(first.getDay()+6)%7;
+ $("calMonthLabel").textContent=monthName(calendarCursor);
+ const from=localIso(first),days=last.getDate();
+ const {data}=await sb.rpc("digiy_explore_owner_calendar_v1",{p_slug:siteSlug,p_from:from,p_days:31});
+ const map=new Map((data||[]).map(r=>[r.day,r]));
+ const heads=["L","M","M","J","V","S","D"].map(x=>'<div style="text-align:center;font-weight:900;color:var(--gold2)">'+x+'</div>').join("");
+ let cells=heads;
+ for(let i=0;i<start;i++)cells+='<div></div>';
+ for(let d=1;d<=days;d++){
+   const dt=new Date(y,m,d),iso=localIso(dt),r=map.get(iso),st=r?.status||"";
+   const badge={available:"✅",to_confirm:"❔",full:"⛔",closed:"✖"}[st]||"";
+   cells+='<button type="button" data-cal-day="'+iso+'" style="min-height:52px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);color:#fff;font-weight:900;cursor:pointer">'+d+(badge?'<div style="font-size:11px">'+badge+'</div>':'')+'</button>';
+ }
+ $("monthGrid").innerHTML=cells;
+ $("monthGrid").querySelectorAll("[data-cal-day]").forEach(btn=>btn.onclick=()=>{
+   selectedCalendarDay=btn.dataset.calDay;
+   const r=map.get(selectedCalendarDay)||{};
+   $("selectedDateBox").hidden=false;
+   $("selectedDateLabel").textContent=new Date(selectedCalendarDay+"T12:00:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+   $("calStatus").value=r.status||"to_confirm";
+   $("calNote").value=r.note||"";
+ });
+}
+$("calPrev").onclick=()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()-1,1);renderMonth()};
+$("calNext").onclick=()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+1,1);renderMonth()};
 $("calSave").onclick=async()=>{
- if(await saveCalendarDay($("calDay").value,$("calStatus").value,$("calNote").value.trim())){$("calNote").value="";await loadCalendar()}
+ if(!selectedCalendarDay){$("calList").textContent="Choisis une date dans le calendrier.";return}
+ if(await saveCalendarDay(selectedCalendarDay,$("calStatus").value,$("calNote").value.trim())){await Promise.all([loadCalendar(),renderMonth()])}
 };
-$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot().then(loadCalendar);
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot().then(async()=>{await loadCalendar();await renderMonth()});
 })();
 </script>
 </body>
