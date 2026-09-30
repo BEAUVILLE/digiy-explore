@@ -39,6 +39,16 @@ html[dir="rtl"] body{direction:rtl}
 <label><span data-i18n="note">Note du moment</span><span class="hint" data-i18n="noteHint">Une info utile : créneau, météo, départ, fermeture exceptionnelle, etc.</span></label><textarea id="note" maxlength="500"></textarea>
 <button class="save" id="saveBtn" type="button" data-i18n="save">Enregistrer</button>
 </section>
+
+<section class="card" id="calendarCard" style="margin-top:14px">
+<h2 style="margin-top:0">📅 Calendrier terrain</h2>
+<div class="hint">Planifiez une date : disponible, à confirmer, complet ou fermé.</div>
+<label>Date</label><input id="calDay" type="date">
+<label>Statut</label><select id="calStatus"><option value="available">Disponible</option><option value="to_confirm">À confirmer</option><option value="full">Complet</option><option value="closed">Fermé</option></select>
+<label>Note</label><input id="calNote" type="text" maxlength="180" placeholder="Ex. Départ 7h · météo à confirmer">
+<button class="save" id="calSave" type="button">Enregistrer la date</button>
+<div id="calList" class="hint" style="margin-top:12px"></div>
+</section>
 </main>
 <script>
 (()=>{
@@ -65,7 +75,19 @@ function msg(text,type="bad"){const el=$("msg");el.textContent=text;el.className
 const ret=params.get("return");if(ret){try{const u=new URL(ret,location.origin);if(u.origin===location.origin||u.hostname.endsWith(".digiylyfe.com"))$("returnBtn").href=u.href}catch(_){}}else{const u=new URL("./master-v2.html",location.href);u.searchParams.set("lang",lang);$("returnBtn").href=u.href}
 async function boot(){applyLang();if(!siteSlug){msg(tr("noSite"));return}msg(tr("loading"),"ok");const {data:{user:cu},error:ue}=await sb.auth.getUser();if(ue||!cu){msg(tr("noSession"));return}user=cu;try{const allowed=await window.DIGIY_OWNER_PHONE_MFA.guard({supabase:sb,beforeId:"editor"});if(!allowed)return}catch(e){msg(e?.message||String(e));return}const {data,error}=await sb.from(CORE.table).select("slug,auth_user_id,public_name,category_code,short_description,full_description,city,zone,address_text,phone,whatsapp,hours,price_hint,availability_status,availability_note").eq("slug",siteSlug).eq("auth_user_id",user.id).maybeSingle();if(error||!data){msg(tr("forbidden"));return}$("placeName").textContent=data.public_name||"DIGIY EXPLORE";$("ownerInfo").textContent=[data.category_code,user.email].filter(Boolean).join(" · ");$("shortDesc").value=data.short_description||"";$("fullDesc").value=data.full_description||"";$("city").value=data.city||"";$("zone").value=data.zone||"";$("address").value=data.address_text||"";$("phone").value=data.phone||"";$("whatsapp").value=data.whatsapp||"";$("hours").value=data.hours||"";$("price").value=data.price_hint||"";$("availability").value=data.availability_status||"";$("note").value=data.availability_note||"";$("editor").hidden=false;$("msg").className="msg"}
 $("saveBtn").onclick=async()=>{if(!user)return;$("saveBtn").disabled=true;const patch={short_description:$("shortDesc").value.trim(),full_description:$("fullDesc").value.trim(),city:$("city").value.trim(),zone:$("zone").value.trim(),address_text:$("address").value.trim(),phone:$("phone").value.trim(),whatsapp:$("whatsapp").value.trim(),hours:$("hours").value.trim(),price_hint:$("price").value.trim(),availability_status:$("availability").value,availability_note:$("note").value.trim(),availability_updated_at:new Date().toISOString()};const {data,error}=await sb.from(CORE.table).update(patch).eq("slug",siteSlug).eq("auth_user_id",user.id).select("slug").maybeSingle();$("saveBtn").disabled=false;if(error||!data){msg(error?.message||tr("forbidden"));return}msg(tr("saved"),"ok")}
-$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot();
+async function loadCalendar(){
+ const from=new Date().toISOString().slice(0,10);
+ const {data,error}=await sb.rpc("digiy_explore_owner_calendar_v1",{p_slug:siteSlug,p_from:from,p_days:14});
+ if(error){$("calList").textContent="⚠️ "+error.message;return}
+ $("calList").innerHTML=(data||[]).map(r=>"<div style='margin:6px 0'><b>"+r.day+"</b> · "+({available:"Disponible",to_confirm:"À confirmer",full:"Complet",closed:"Fermé"}[r.status]||r.status)+(r.note?" · "+r.note:"")+"</div>").join("")||"Aucune date planifiée.";
+}
+$("calDay").value=new Date().toISOString().slice(0,10);
+$("calSave").onclick=async()=>{
+ const {error}=await sb.rpc("digiy_explore_owner_set_calendar_day_v1",{p_slug:siteSlug,p_day:$("calDay").value,p_status:$("calStatus").value,p_note:$("calNote").value.trim()});
+ if(error){$("calList").textContent="⚠️ "+error.message;return}
+ $("calNote").value="";await loadCalendar();
+};
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot().then(loadCalendar);
 })();
 </script>
 </body>
