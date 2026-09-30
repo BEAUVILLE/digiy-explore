@@ -835,6 +835,14 @@
 
     <section class="panel">
       <div class="cardBody">
+        <h2 class="sectionTitle">📅 Cette semaine</h2>
+        <p class="sectionSub">Disponibilité terrain sur les 7 prochains jours.</p>
+        <div id="publicCalendar" class="chips"><span class="chip">Planning à confirmer</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="cardBody">
         <h2 class="sectionTitle">Ambiance en images</h2>
         <p class="sectionSub">Quelques images pour sentir l’ambiance du lieu avant de contacter ou d’y aller.</p>
 
@@ -1537,6 +1545,29 @@
         wirePublicActions(place);
       }
 
+      async function loadPublicCalendar(slug){
+        const box=document.getElementById("publicCalendar");
+        if(!box) return;
+        const now=new Date();
+        const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+        const from=iso(now);
+        try{
+          const {data,error}=await supabase.rpc("digiy_explore_public_calendar_v1",{p_slug:slug,p_from:from,p_days:7});
+          if(error) throw error;
+          const map=new Map((data||[]).map(r=>[r.day,r]));
+          const names=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+          box.innerHTML=Array.from({length:7},(_,i)=>{
+            const d=new Date(now);d.setDate(now.getDate()+i);
+            const key=iso(d),r=map.get(key),status=r?.status||"to_confirm";
+            const dayLabel=i===0?"Aujourd’hui":i===1?"Demain":names[d.getDay()]+" "+d.getDate();
+            const statusLabel={available:"Disponible",to_confirm:"À confirmer",full:"Complet",closed:"Fermé"}[status]||status;
+            return '<span class="chip"><b>'+escapeHtml(dayLabel)+'</b> · '+escapeHtml(statusLabel)+(r?.note?' · '+escapeHtml(r.note):'')+'</span>';
+          }).join("");
+        }catch(e){
+          box.innerHTML='<span class="chip">Planning à confirmer</span>';
+        }
+      }
+
       async function loadPlace(slug){
         const demo = demoPlaceBySlug(slug);
 
@@ -1578,6 +1609,7 @@
         try{
           const place = await loadPlace(slug);
           renderPlace(place, slug);
+          loadPublicCalendar(slug);
           setMsg("", "ok");
         }catch(e){
           console.error(e);
