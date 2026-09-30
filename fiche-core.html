@@ -822,6 +822,8 @@
           <a id="callBtn" class="btn primary" href="./index.html">Contact direct</a>
           <a id="waBtn" class="btn secondary" href="./index.html">WhatsApp</a>
           <a id="mapsBtn" class="btn ghost" href="./index.html" target="_blank" rel="noopener">Y aller</a>
+          <a id="websiteBtn" class="btn ghost" href="#" target="_blank" rel="noopener" hidden>🌐 Site officiel</a>
+          <a id="bookingBtn" class="btn ghost" href="#" target="_blank" rel="noopener" hidden>🎟️ Réserver</a>
         </div>
 
         <div class="mobilePublicFastRow">
@@ -1056,6 +1058,8 @@
       const bottomShare = $("bottomShare");
       const shareToast = $("shareToast");
       const ownerAccessBtn = $("ownerAccessBtn");
+      const websiteBtn = $("websiteBtn");
+      const bookingBtn = $("bookingBtn");
 
       const qrImg = $("qrImg");
       const qrLinkText = $("qrLinkText");
@@ -1487,15 +1491,27 @@
         tagsBox.innerHTML = `<div class="chips">${tags.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join("")}</div>`;
       }
 
+      function externalLinkByType(place,type){
+        const links=readExternalLinks(place);
+        for(const item of links){
+          if(typeof item==="object" && String(item?.type||"").toLowerCase()===type && item?.url) return String(item.url);
+        }
+        return "";
+      }
+
       function wirePublicActions(place){
         const label = placeName(place);
-        const mapHref = buildMapsHref(place?.latitude, place?.longitude, placeAddress(place));
+        const mapHref = externalLinkByType(place,"maps") || buildMapsHref(place?.latitude, place?.longitude, placeAddress(place));
         const contactHref = safePublicContactHref(place);
         const phoneHref = buildPhoneHref(place);
 
         callBtn.href = phoneHref || contactHref || "./index.html";
         waBtn.href = contactHref || "./index.html";
         mapsBtn.href = mapHref || "./index.html";
+        const siteUrl=String(place?.website_url || externalLinkByType(place,"website") || "").trim();
+        if(siteUrl){websiteBtn.href=siteUrl;websiteBtn.hidden=false}else websiteBtn.hidden=true;
+        const bookingUrl=externalLinkByType(place,"booking");
+        if(bookingUrl){bookingBtn.href=bookingUrl;bookingBtn.hidden=false}else bookingBtn.hidden=true;
 
         [waBtn, mapsBtn, fastGo, bottomGo, bottomWhatsapp].forEach(el => {
           if(!el) return;
