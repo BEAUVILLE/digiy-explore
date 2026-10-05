@@ -33,6 +33,19 @@ html[dir="rtl"] body{direction:rtl}
 (()=>{
 const sb=window.supabase.createClient("https://wesqmwjjtsefyjnluosj.supabase.co","sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id),p=new URL(location.href).searchParams;const site=(p.get("site")||"").trim();const ret=p.get("return")||"./fiche.html";let lang=p.get("lang")||localStorage.getItem("digiy_lang")||"fr";
+const FIRST_OWNER_EMAIL_SHA256={
+  "pap-piscine-saly":"727d5adb1087e2d89d397de1dfeae9d7a1008cc12a2e8384fa20c8534f925b54"
+};
+async function sha256Hex(value){
+  const bytes=new TextEncoder().encode(String(value||"").trim().toLowerCase());
+  const hash=await crypto.subtle.digest("SHA-256",bytes);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function firstOwnerActivationAllowed(siteSlug,email){
+  const expected=FIRST_OWNER_EMAIL_SHA256[siteSlug];
+  if(!expected)return false;
+  return (await sha256Hex(email))===expected;
+}
 const T={fr:{title:"Accès propriétaire",lead:"Saisissez l’email autorisé pour ce lieu. Vous recevrez un lien unique de connexion.",send:"Envoyer le magic link",back:"← Retour au lieu",sent:"Lien envoyé. Vérifiez votre email.",missing:"Lieu EXPLORE manquant.",email:"Email requis."},en:{title:"Owner access",lead:"Enter the authorized email for this place. You will receive a one-time sign-in link.",send:"Send magic link",back:"← Back to place",sent:"Link sent. Check your email.",missing:"EXPLORE place missing.",email:"Email required."},es:{title:"Acceso propietario",lead:"Introduzca el email autorizado para este lugar. Recibirá un enlace único.",send:"Enviar magic link",back:"← Volver al lugar",sent:"Enlace enviado. Revise su email.",missing:"Falta el lugar EXPLORE.",email:"Email requerido."},pt:{title:"Acesso do proprietário",lead:"Introduza o email autorizado para este local. Receberá um link único.",send:"Enviar magic link",back:"← Voltar ao local",sent:"Link enviado. Verifique o email.",missing:"Local EXPLORE em falta.",email:"Email obrigatório."},it:{title:"Accesso proprietario",lead:"Inserisci l’email autorizzata per questo luogo. Riceverai un link unico.",send:"Invia magic link",back:"← Torna al luogo",sent:"Link inviato. Controlla l’email.",missing:"Luogo EXPLORE mancante.",email:"Email richiesta."},de:{title:"Inhaberzugang",lead:"Autorisierte E-Mail für diesen Ort eingeben. Sie erhalten einen einmaligen Login-Link.",send:"Magic Link senden",back:"← Zurück zum Ort",sent:"Link gesendet. E-Mail prüfen.",missing:"EXPLORE-Ort fehlt.",email:"E-Mail erforderlich."},nl:{title:"Eigenaartoegang",lead:"Voer het geautoriseerde e-mailadres voor deze locatie in. U ontvangt een eenmalige link.",send:"Magic link sturen",back:"← Terug naar locatie",sent:"Link verzonden. Controleer uw e-mail.",missing:"EXPLORE-locatie ontbreekt.",email:"E-mail vereist."},ar:{title:"دخول المالك",lead:"أدخل البريد الإلكتروني المصرح به لهذا المكان. سيصلك رابط دخول لمرة واحدة.",send:"إرسال رابط الدخول",back:"العودة إلى المكان →",sent:"تم إرسال الرابط. تحقق من بريدك.",missing:"مكان EXPLORE غير محدد.",email:"البريد الإلكتروني مطلوب."}};
 if(!T[lang])lang="fr";const tr=k=>T[lang]?.[k]||T.fr[k]||k;
 function apply(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tr(el.dataset.i18n));document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));localStorage.setItem("digiy_lang",lang)}
@@ -41,7 +54,7 @@ try{const u=new URL(ret,location.origin);if(u.origin===location.origin||u.hostna
 function msg(t,type="bad"){const e=$("msg");e.textContent=t;e.className="msg show "+type}
 function saveContext(){if(site)localStorage.setItem("digiy_explore_owner_site",site);localStorage.setItem("digiy_explore_owner_lang",lang);localStorage.setItem("digiy_explore_owner_return",$("back").href)}
 function goManage(){const savedSite=site||localStorage.getItem("digiy_explore_owner_site")||"";if(!savedSite)return;const u=new URL("./gestion-explore-v2.html",location.href);u.searchParams.set("site",savedSite);u.searchParams.set("lang",localStorage.getItem("digiy_explore_owner_lang")||lang||"fr");const rr=localStorage.getItem("digiy_explore_owner_return");if(rr)u.searchParams.set("return",rr);location.replace(u.href)}
-$("send").onclick=async()=>{if(!site){msg(tr("missing"));return}const email=$("email").value.trim();if(!email){msg(tr("email"));return}$("send").disabled=true;saveContext();const redirect=new URL("./acces-proprietaire-v2.html",location.href);redirect.search="";redirect.hash="";const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:redirect.href}});$("send").disabled=false;if(error){msg(error.message);return}msg(tr("sent"),"ok")};
+$("send").onclick=async()=>{if(!site){msg(tr("missing"));return}const email=$("email").value.trim();if(!email){msg(tr("email"));return}$("send").disabled=true;saveContext();const redirect=new URL("./acces-proprietaire-v2.html",location.href);redirect.search="";redirect.hash="";const allowFirstCreate=await firstOwnerActivationAllowed(site,email);const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:allowFirstCreate,emailRedirectTo:redirect.href}});$("send").disabled=false;if(error){msg(error.message);return}msg(tr("sent"),"ok")};
 sb.auth.getSession().then(({data})=>{if(data.session)goManage()});
 sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==="SIGNED_IN"||event==="INITIAL_SESSION"))setTimeout(goManage,0)});
 apply();
