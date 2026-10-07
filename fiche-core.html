@@ -1550,12 +1550,67 @@
         if(bottomShare) bottomShare.onclick = () => shareCurrentPlace(label);
       }
 
+      function updatePlaceMachineMetadata(place, slug){
+        const name = placeName(place);
+        const category = placeCategory(place);
+        const city = placeCity(place);
+        const zone = placeZone(place);
+        const description = placeShort(place);
+        const photos = parsePhotos(place);
+        const tags = parseTags(place);
+        const canonicalUrl = canonicalPlaceUrl(slug);
+
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if(metaDescription) metaDescription.setAttribute("content", description);
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if(!canonical){
+          canonical = document.createElement("link");
+          canonical.rel = "canonical";
+          document.head.appendChild(canonical);
+        }
+        canonical.href = canonicalUrl;
+
+        const schema = {
+          "@context":"https://schema.org",
+          "@type":"Place",
+          "name":name,
+          "description":description,
+          "url":canonicalUrl,
+          "image":photos.length ? photos : undefined,
+          "address":{
+            "@type":"PostalAddress",
+            "streetAddress":placeAddress(place),
+            "addressLocality":city
+          },
+          "geo":place?.latitude && place?.longitude ? {
+            "@type":"GeoCoordinates",
+            "latitude":place.latitude,
+            "longitude":place.longitude
+          } : undefined,
+          "additionalType":category || undefined,
+          "keywords":tags.length ? tags.join(", ") : undefined,
+          "telephone":normalizePhone(place?.phone || place?.contact_phone || place?.public_phone || "") || undefined
+        };
+        if(zone) schema.address.addressRegion = zone;
+        Object.keys(schema).forEach(key => schema[key] === undefined && delete schema[key]);
+
+        let jsonLd = document.getElementById("digiy-explore-schema");
+        if(!jsonLd){
+          jsonLd = document.createElement("script");
+          jsonLd.type = "application/ld+json";
+          jsonLd.id = "digiy-explore-schema";
+          document.head.appendChild(jsonLd);
+        }
+        jsonLd.textContent = JSON.stringify(schema);
+      }
+
       function renderPlace(place, slug){
         const name = placeName(place);
         const category = placeCategory(place);
         const location = placeLocation(place);
 
         document.title = name + " — DIGIY EXPLORE";
+        updatePlaceMachineMetadata(place, slug);
         subline.textContent = location + " · " + category;
 
         categoryBox.textContent = category;
