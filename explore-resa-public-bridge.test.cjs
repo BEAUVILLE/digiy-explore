@@ -13,13 +13,13 @@ class El{
  append(node){this.children.push(node)}
 }
 function setup(){
- const elIds=['resaAppointmentsSection','resaAppointmentsStatus','resaAppointmentsSlots','resaAppointmentsGo','bookingBtn'];
+ const elIds=['resaAppointmentsSection','resaAppointmentsStatus','resaAppointmentsSlots','resaAppointmentsGo','resaAppointmentsIntro','bookingBtn'];
  const elements=Object.fromEntries(elIds.map(x=>[x,new El()]));
  const win={};const doc={getElementById(id){return elements[id]},createElement(tag){const n=new El();n.tag=tag;return n}};
  vm.runInNewContext(script,{window:win,document:doc,URL,Date,console},{timeout:2000});
  return {api:win.DIGIYExploreResa,elements};
 }
-const link=(slug='actif-pro-saly')=>({external_links:[{type:'resa',url:'https://resa-table-resto.digiylyfe.com/planning.html?slug='+slug}]});
+const link=(slug='actif-pro-saly')=>({is_active:true,is_published:true,category_code:'service',external_links:[{type:'resa',url:'https://resa-table-resto.digiylyfe.com/planning.html?slug='+slug}]});
 const week=(slug,day)=>({ok:true,slug,slots:[{date:day,time:'09:00',available:true},{date:day,time:'10:30',available:true},{date:day,time:'12:00',available:false}]});
 
 test('source EXPlORE: pont sans écriture, transaction ou création d un rendez-vous',()=>{
@@ -88,4 +88,51 @@ test('slots hors 7 jours, données incorrectes et nom pro inconnu sont exclus',(
  assert.equal(api.parsePublishedSlots({ok:true,slug:'y',slots:[]},'z',day),null);
  const out=api.parsePublishedSlots({ok:true,slug:'z',slots:[{date:'1999-01-01',time:'09:00',available:true},{date:day,time:'09:00',available:true}]},'z',day);
  assert.equal(out.length,1);
+});
+
+test('ancienne fiche pêche : héritage automatique de la demande directe sans agenda RÉSA',async()=>{
+ const {api,elements}=setup();
+ const oldPublicPlace={
+  slug:'sortie-peche-jb-baptiste-760a00ad',
+  public_name:'Sortie pêche JB Baptiste',
+  category_code:'service',
+  is_active:true,is_published:true,
+  phone:'+221 77 123 45 67',external_links:[]
+ };
+ let queries=0;
+ const res=await api.mount(oldPublicPlace,oldPublicPlace.slug,{rpc:()=>{queries++;throw Error('RPC interdite sans lien')}}); 
+ assert.equal(res.shown,true);
+ assert.equal(res.mode,'direct_contact');
+ assert.equal(res.available,0);
+ assert.equal(queries,0);
+ assert.equal(elements.resaAppointmentsSection.hidden,false);
+ assert.equal(elements.resaAppointmentsGo.hidden,false);
+ assert.match(elements.resaAppointmentsGo.href,/^https:\/\/wa\.me\/221771234567\?text=/);
+ assert.match(decodeURIComponent(elements.resaAppointmentsGo.href),/disponibilités/);
+ assert.match(elements.resaAppointmentsGo.textContent,/Demander une disponibilité/);
+ assert.match(elements.resaAppointmentsStatus.textContent,/Aucun créneau horaire RÉSA publié/);
+ assert.match(elements.resaAppointmentsIntro.textContent,/directement/);
+ assert.equal(elements.resaAppointmentsSlots.children.length,0);
+ assert.match(page,/id="resaAppointmentsIntro"/);
+});
+
+test('aucune fausse demande si fiche test/non publiée ou contact manquant; métiers spécialisés préservés',async()=>{
+ const {api,elements}=setup();
+ const base={is_active:true,is_published:true,category_code:'service',public_name:'Service',external_links:[]};
+ for(const p of [
+  {...base,is_published:false,phone:'221771234567'},
+  {...base,is_active:false,phone:'221771234567'},
+  {...base,__demo:true,phone:'221771234567'},
+  {...base,phone:''},
+  {...base,phone:'123'},
+  {...base,subcategory:'chauffeur VTC',phone:'221771234567'},
+  {...base,subcategory:'restaurant',phone:'221771234567'},
+  {...base,category_code:'lieu',phone:'221771234567'}
+ ]){
+  const r=await api.mount(p,'identifiant-pro',{rpc:async()=>{throw Error('no RPC')}});
+  assert.equal(r.shown,false,JSON.stringify(p));
+  assert.equal(elements.resaAppointmentsSection.hidden,true);
+  assert.equal(elements.resaAppointmentsGo.hidden,true);
+  assert.equal(elements.resaAppointmentsGo.href,'');
+ }
 });
