@@ -11,6 +11,7 @@ class El{
  constructor(){this.hidden=true;this.href='';this.textContent='';this.children=[];}
  replaceChildren(...nodes){this.children=nodes}
  append(node){this.children.push(node)}
+ removeAttribute(key){if(key==='href')this.href=''}
 }
 function setup(){
  const elIds=['resaAppointmentsSection','resaAppointmentsStatus','resaAppointmentsSlots','resaAppointmentsGo','resaAppointmentsIntro','bookingBtn'];
