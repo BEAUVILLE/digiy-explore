@@ -28,6 +28,20 @@ Le professionnel peut modifier seulement :
 - son statut de disponibilité ;
 - une courte note d’actualité / disponibilité.
 
+## Héritage automatique des anciennes fiches EXPLORE (correctif 9 octobre 2026)
+
+**Une fiche publiée antérieurement bénéficie du modèle commun `fiche-core.html` sans devoir être recréée.** Cependant, la réservation automatique n'est pas activée par héritage : l'absence de lien `external_links` RÉSA et de créneau publiés doit rester visible honnêtement.
+
+**Deux parcours sur la même section client :**
+
+- **Planning RÉSA validé et publié** : afficher seulement les créneaux réels renvoyés par la RPC autorisée, puis renvoyer au planning RÉSA ; la consultation seule ne vaut pas confirmation.
+- **Ancienne fiche de service réelle, active et publiée, sans planning RÉSA** : si la fiche porte son **propre contact téléphonique/WhatsApp public valide**, afficher « Demander une disponibilité » menant **directement au professionnel**. Aucune fausse heure, aucun engagement de disponibilité et aucune RPC de réservation. Exemple contrôlé en lecture seule : `sortie-peche-jb-baptiste-760a00ad`, profil publié avec téléphone réel et zéro lien RÉSA.
+- **Pas de profil actif, site de démonstration, coordonnées professionnelles manquantes ou catégorie hors services/activités** : masquer ce CTA ; ne jamais basculer automatiquement vers un téléphone de secours ou un faux agenda. Les moteurs RESTO, LOC et DRIVER restent spécialisés.
+
+Le lien direct du professionnel est construit à partir du numéro **public de sa fiche** et non d'une clé d'administration, d'une adresse propriétaire ou d'un contact DIGIYLYFE générique. Les nouveaux professionnels et les anciens partagent ainsi le même parcours sans migration des fiches ni des photos/QR.
+
+Ce correctif est uniquement **une amélioration du parcours de prise de contact** tant que la transaction SQL RÉSA n'est pas activée. Il ne crée aucune prestation, réservation, évaluation ou disponibilité en production.
+
 ## Extension EXPLORE → RÉSA MULTI : rendez-vous visibles sans moteur concurrent
 
 **Doctrine validée le 9 octobre 2026 :** EXPLORE est la porte de découverte, la fiche met les prestations en valeur et **un vrai planning RÉSA peut apparaître directement sur la fiche**. Le client consulte des heures réellement ouvertes, puis choisit dans le planning RÉSA. Le professionnel garde la maîtrise de ses horaires, de ses prestations et de la confirmation. EXPLORE ne gère **aucune réservation, aucun paiement, aucune note client et aucun accès propriétaire RÉSA**.
