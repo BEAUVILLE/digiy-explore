@@ -700,6 +700,8 @@
       .miniValue{font-size:22px}
       .photo{min-height:240px}
     }
+    /* Le CTA ne doit jamais apparaître avant la réponse RÉSA publiée. */
+  #resaAppointmentsSection[hidden],#resaAppointmentsGo[hidden]{display:none!important}
   </style>
 </head>
 
@@ -897,7 +899,7 @@
 
   <div class="shareToast" id="shareToast">Lien prêt à partager</div>
 
-  <script src="./explore-resa-public-bridge.js" defer></script>
+  <script src="./explore-resa-public-bridge.js"></script>
   <script>
     (function(){
       "use strict";
