@@ -49,6 +49,26 @@ function parsePublishedSlots(data,expectedSlug,day0){
 function localDay(d){
  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+// Rétrocompatibilité : un vrai service EXPLORE sans agenda RÉSA activé
+// peut proposer le contact direct, mais jamais de créneau fabriqué.
+function eligibleLegacyService(place){
+ if(!place||place.is_published!==true||place.is_active!==true||place.__demo===true)return false;
+ const kind=String(place.category_code||'').toLowerCase().trim();
+ if(!['service','services','activity','activite','activité','experience','expérience'].includes(kind))return false;
+ const specialty=String(place.subcategory||place.category_label||'').toLowerCase();
+ return !/(restaurant|resto|h[oô]tel|h[eé]bergement|logement|location|driver|chauffeur|taxi|vtc)/.test(specialty);
+}
+function legacyDirectContact(place){
+ if(!eligibleLegacyService(place))return null;
+ const raw=String(place.whatsapp||place.phone||place.public_phone||'').trim();
+ const phone=raw.replace(/[^0-9]/g,'');
+ // Ne jamais utiliser le numéro générique de secours : seul un vrai numéro
+ // public de cette fiche peut servir au CTA de prise de contact.
+ if(!/^[0-9]{7,18}$/.test(phone))return null;
+ const name=String(place.public_name||place.title||'ce professionnel').slice(0,120);
+ const msg='Bonjour, je viens de votre fiche DIGIY EXPLORE. Je souhaite connaître vos disponibilités pour '+name+'.';
+ return 'https://wa.me/'+phone+'?text='+encodeURIComponent(msg);
+}
 function text(tag,content,cls){
  const e=document.createElement(tag);
  if(cls)e.className=cls;
@@ -61,14 +81,26 @@ async function mount(place,exploreSlug,db){
  const status=document.getElementById('resaAppointmentsStatus');
  const container=document.getElementById('resaAppointmentsSlots');
  const go=document.getElementById('resaAppointmentsGo');
+ const intro=document.getElementById('resaAppointmentsIntro');
  if(!section||!status||!container||!go)return {shown:false,reason:'missing_dom'};
  const myGeneration=++generation;
- section.hidden=true;go.hidden=true;container.replaceChildren();
+ section.hidden=true;go.hidden=true;go.removeAttribute?.('href');container.replaceChildren();
+ if(!place||place.is_published!==true||place.is_active!==true||place.__demo===true)
+   return {shown:false,reason:'not_published'};
  const ref=parseApprovedResaLink(place);
- if(!ref||!db||typeof db.rpc!=='function')return {shown:false,reason:'not_authorized_or_unavailable'};
- // EXPLORE uses only published place data, but must never create an EXTERNAL booking
- // link from demo-place examples or arbitrary client-supplied query params.
- if(place?.__demo===true)return {shown:false,reason:'demo'};
+ if(!ref){
+  const contact=legacyDirectContact(place);
+  if(!contact)return {shown:false,reason:'no_bookable_agenda_or_direct_contact'};
+  section.hidden=false;
+  if(intro)intro.textContent='Ce professionnel n’a pas encore publié de planning de rendez-vous. La demande se fait directement auprès de lui.';
+  status.textContent='Aucun créneau horaire RÉSA publié pour cette activité. Contactez le professionnel pour convenir d’une disponibilité.';
+  go.href=contact;
+  go.target='_blank';go.rel='noopener noreferrer';go.hidden=false;
+  go.textContent='💬 Demander une disponibilité';
+  return {shown:true,mode:'direct_contact',available:0};
+ }
+ if(!db||typeof db.rpc!=='function')return {shown:false,reason:'no_public_calendar_reader'};
+ if(intro)intro.textContent='Choisissez parmi ses vraies disponibilités publiées. Le professionnel conserve ses règles de réservation.';
  const from=localDay(new Date());
  let response;
  try{response=await db.rpc('digiy_resa_public_week_v1',{p_slug:ref.slug,p_start_date:from})}
@@ -96,5 +128,5 @@ async function mount(place,exploreSlug,db){
  if(old&&old.href===ref.href){old.textContent='📅 Voir les créneaux'}
  return {shown:true,available:slots.length};
 }
-root.DIGIYExploreResa=Object.freeze({parseApprovedResaLink,parsePublishedSlots,localDay,mount});
+root.DIGIYExploreResa=Object.freeze({parseApprovedResaLink,parsePublishedSlots,eligibleLegacyService,legacyDirectContact,localDay,mount});
 })(typeof window!=='undefined'?window:globalThis);
