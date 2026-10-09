@@ -858,6 +858,17 @@
       </div>
     </section>
 
+    <section class="panel" id="resaAppointmentsSection" aria-labelledby="resaAppointmentsTitle" hidden>
+      <div class="cardBody">
+        <h2 class="sectionTitle" id="resaAppointmentsTitle">📅 Rendez-vous du professionnel</h2>
+        <p class="sectionSub">Choisissez parmi ses vraies disponibilités publiées. Le professionnel conserve ses règles de réservation.</p>
+        <p id="resaAppointmentsStatus" aria-live="polite">Vérification des disponibilités…</p>
+        <div class="chips" id="resaAppointmentsSlots" aria-label="Créneaux de rendez-vous publiés"></div>
+        <p><a class="btn primary" id="resaAppointmentsGo" href="#" target="_blank" rel="noopener noreferrer" hidden>📅 Voir le planning et choisir un créneau</a></p>
+        <p class="miniHint">La consultation du planning ne confirme pas à elle seule une réservation. Contact et paiement directs · 0 % commission.</p>
+      </div>
+    </section>
+
     <section class="panel">
       <div class="cardBody">
         <h2 class="sectionTitle">Ambiance en images</h2>
@@ -886,6 +897,7 @@
 
   <div class="shareToast" id="shareToast">Lien prêt à partager</div>
 
+  <script src="./explore-resa-public-bridge.js" defer></script>
   <script>
     (function(){
       "use strict";
@@ -1710,6 +1722,11 @@
           const place = await loadPlace(slug);
           renderPlace(place, slug);
           loadPublicCalendar(slug);
+          // Le pont RÉSA s'active uniquement si un lien public volontaire
+          // pointe vers un planning publié avec de vrais créneaux.
+          if(window.DIGIYExploreResa){
+            window.DIGIYExploreResa.mount(place, slug, supabase);
+          }
           setMsg("", "ok");
         }catch(e){
           console.error(e);
