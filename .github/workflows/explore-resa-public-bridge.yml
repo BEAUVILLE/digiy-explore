@@ -1,0 +1,30 @@
+name: EXPLORE → RÉSA planning public contract
+on:
+  pull_request:
+    paths:
+      - 'fiche-core.html'
+      - 'explore-resa-public-bridge.js'
+      - 'explore-resa-public-bridge.test.cjs'
+      - 'MASTER-EXPLORE-V2.md'
+      - '.github/workflows/explore-resa-public-bridge.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'fiche-core.html'
+      - 'explore-resa-public-bridge.js'
+      - 'explore-resa-public-bridge.test.cjs'
+      - 'MASTER-EXPLORE-V2.md'
+      - '.github/workflows/explore-resa-public-bridge.yml'
+permissions:
+  contents: read
+jobs:
+  real-slots-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vérifier les liens pro et créneaux réels, sans SQL
+        run: node --test explore-resa-public-bridge.test.cjs
