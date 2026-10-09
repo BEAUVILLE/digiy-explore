@@ -28,9 +28,33 @@ Le professionnel peut modifier seulement :
 - son statut de disponibilité ;
 - une courte note d’actualité / disponibilité.
 
+## Extension EXPLORE → RÉSA MULTI : rendez-vous visibles sans moteur concurrent
+
+**Doctrine validée le 9 octobre 2026 :** EXPLORE est la porte de découverte, la fiche met les prestations en valeur et **un vrai planning RÉSA peut apparaître directement sur la fiche**. Le client consulte des heures réellement ouvertes, puis choisit dans le planning RÉSA. Le professionnel garde la maîtrise de ses horaires, de ses prestations et de la confirmation. EXPLORE ne gère **aucune réservation, aucun paiement, aucune note client et aucun accès propriétaire RÉSA**.
+
+**La semaine EXPLORE existante** (`digiy_explore_public_calendar_v1`) décrit la disponibilité *terrain* et ne constitue pas un agenda de rendez-vous. **La section RÉSA supplémentaire** interroge en lecture seule `digiy_resa_public_week_v1` (profil actif et publié, créneaux réellement ouverts), avec heure et date affichées, sans inventer de disponibilités.
+
+### Activation métier ciblée, sans lien arbitraire
+
+- Un administrateur valide explicitement, dans les liens publics de la fiche EXPLORE (`external_links`), un lien de type `resa` ou `booking` vers `https://resa-table-resto.digiylyfe.com/planning.html?slug=SLUG_RESA`. Le slug EXPLORE et le slug RÉSA **ne sont pas supposés identiques** ; on n'invente aucune association par simple ressemblance de noms.
+- Le navigateur accepte **uniquement** ce domaine HTTPS exact et ce chemin public, avec `slug` au format attendu, sans token, redirect, paramètre privé ou lien propriétaire.
+- Après confirmation via la RPC **publique en lecture seule**, EXPLORE affiche seulement les horaires réellement ouverts, avec CTA « Voir le planning et choisir un créneau ». S'il n'y a pas de profil RÉSA publié, de lien administrateur ou si la RPC échoue, **pas de planning ni de CTA fictifs**.
+- Un planning actif mais sans disponibilité affiche « Aucun rendez-vous disponible publié » ; le **contact direct reste présent**.
+- **Attention :** `planning.html` permet aujourd'hui de choisir et contacter, **pas d'affirmer une réservation enregistrée ou confirmée**. La vraie réservation automatique universelle est encore en SQL candidat isolé ; ne jamais promettre son activation sur EXPLORE.
+- **RESTO, LOC, DRIVER et autres métiers spécialisés** conservent leurs moteurs de réservation propres ; un lien de réservation métier externe éventuel n'est pas interprété comme un planning RÉSA commun.
+- La fiche publique garde QR, photos, contacts, magic-link propriétaire, PWA et huit langues existantes. Aucun champ propriétaire ni secret ne doit apparaître dans l'URL publique. L'atelier reste libre de ses périodes de fermeture et d'absence.
+
+### Valeur pour le professionnel
+
+**« Votre fiche EXPLORE vous rend visible. Lorsque votre planning RÉSA est activé et publié, les clients peuvent voir vos disponibilités et choisir eux-mêmes un créneau, sans échanges inutiles. »**
+
+Ce module est une **passerelle de lecture et de communication**, pas une deuxième base de rendez-vous. Avant un BAT client/pro réel et la généralisation, contrôler lien administrateur, isolation des professionnels, heures/fuseaux métiers, mobile, droits RPC, absence de faux slots et confirmation chez le professionnel.
+
+Fichiers : `fiche-core.html`, `explore-resa-public-bridge.js` et `explore-resa-public-bridge.test.cjs`. Aucun SQL ni donnée réelle modifiés par ce portage.
+
 ## Limites validées
-- pas de gestion de réservation dans EXPLORE ;
-- pas de calendrier lourd ;
+- pas de gestion ou de confirmation de réservation **dans EXPLORE** : uniquement consultation et lien vers le planning RÉSA spécialisé ;
+- pas de calendrier **transactionnel propre à EXPLORE** : calendrier terrain conservé, planning horaire RÉSA externe en lecture seule ;
 - pas de caisse ;
 - pas de paiement DIGIYLYFE ;
 - pas de modification propriétaire du nom, de la catégorie, de la ville, des photos, de la publication ou de la vérification ;
