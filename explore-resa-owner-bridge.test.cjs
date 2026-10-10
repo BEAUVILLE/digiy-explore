@@ -115,7 +115,7 @@ test('only V9 client_request_id bookings appear, with per-owner authorized V5 ac
  const row=el.resaOwnerBookings.children[0];
  const buttons=row.children.find(x=>x.className==='resa-owner-actions').children;
  await buttons[0].listeners.click();
- assert.deepEqual(rpcCalls.filter(x=>x.name==='digiy_resa_universal_owner_manage_v2').map(x=>x.args),
+ assert.deepEqual(JSON.parse(JSON.stringify(rpcCalls.filter(x=>x.name==='digiy_resa_universal_owner_manage_v2').map(x=>x.args))),
   [{p_booking_id:b.id,p_action:'confirmed',p_note_text:null}]);
  assert.doesNotMatch(ownerSrc,/digiy_resa_create_booking|\.insert\s*\(|service_role|payment_intent|carnet_movement/);
 });
