@@ -137,3 +137,95 @@ test('aucune fausse demande si fiche test/non publiée ou contact manquant; mét
   assert.equal(elements.resaAppointmentsGo.href,'');
  }
 });
+
+test('V9 server gate ON: only real published options lead to the secure appointment form',async()=>{
+ const {api,elements}=setup(),day=api.dakarDay(new Date());
+ const calls=[];
+ const db={rpc:async(name,args)=>{
+  calls.push(name);
+  if(name==='digiy_resa_universal_pilot_gate_v1'){
+   assert.equal(args.p_slug,'pilot-saly');
+   return {data:{ok:true,enabled:true,slug:'pilot-saly',time_zone:'Africa/Dakar'}};
+  }
+  if(name==='digiy_resa_universal_public_options_v1'){
+   assert.equal(args.p_start_date,day);
+   return {data:{ok:true,slug:'pilot-saly',time_zone:'Africa/Dakar',
+    services:[{service_id:'service-real-1',name:'Prestation réelle'}],
+    slots:[
+      {date:day,time:'09:00',available:true,service_ids:['service-real-1']},
+      {date:day,time:'10:00',available:false,service_ids:['service-real-1']},
+      {date:day,time:'11:00',available:true,service_ids:['not-a-published-service']},
+      {date:day,time:'12:00',available:true,service_ids:['service-real-1']}
+    ]}};
+  }
+  throw Error('historical RPC must not run when V9 is enabled');
+ }};
+ elements.bookingBtn.href='https://resa-table-resto.digiylyfe.com/planning.html?slug=pilot-saly';
+ const result=await api.mount(link('pilot-saly'),'unrelated-explore-slug',db);
+ assert.equal(result.shown,true);
+ assert.equal(result.mode,'pilot');
+ assert.equal(result.available,2);
+ assert.deepEqual(calls,['digiy_resa_universal_pilot_gate_v1','digiy_resa_universal_public_options_v1']);
+ assert.equal(elements.resaAppointmentsGo.href,
+  'https://resa-table-resto.digiylyfe.com/rdv-universel.html?slug=pilot-saly');
+ assert.equal(elements.bookingBtn.href,elements.resaAppointmentsGo.href);
+ assert.match(elements.resaAppointmentsGo.textContent,/Poser mon rendez-vous/);
+ assert.match(elements.resaAppointmentsStatus.textContent,/ne réserve rien/);
+ assert.equal(elements.resaAppointmentsSlots.children.length,2);
+});
+test('V9 gate OFF or unavailable: never advertise a recorded RDV, keep historical planning',async()=>{
+ const {api,elements}=setup(),day=api.localDay(new Date());
+ for(const response of [
+  {data:{ok:true,enabled:false}},
+  {error:{message:'RPC unavailable'}},
+  {data:{ok:true,enabled:true,slug:'different-slug',time_zone:'Africa/Dakar'}},
+  {data:{ok:true,enabled:true,slug:'actif-pro-saly',time_zone:'Europe/Paris'}}
+ ]){
+  const calls=[];
+  const db={rpc:async(name)=>{
+   calls.push(name);
+   if(name==='digiy_resa_universal_pilot_gate_v1')return response;
+   if(name==='digiy_resa_public_week_v1')return {data:week('actif-pro-saly',day)};
+   throw Error('pilot public options must not be called');
+  }};
+  const r=await api.mount(link(),'different',db);
+  assert.equal(r.shown,true);assert.equal(r.available,2);
+  assert.equal(elements.resaAppointmentsGo.href,
+   'https://resa-table-resto.digiylyfe.com/planning.html?slug=actif-pro-saly');
+  assert.doesNotMatch(elements.resaAppointmentsGo.textContent,/Poser mon rendez-vous/);
+  assert.deepEqual(calls,['digiy_resa_universal_pilot_gate_v1','digiy_resa_public_week_v1']);
+ }
+});
+test('V9 gate ON but V2 fails or lists no real service: no booking CTA',async()=>{
+ const {api,elements}=setup(),day=api.dakarDay(new Date());
+ const base={ok:true,slug:'pilot-saly',time_zone:'Africa/Dakar',services:[],
+  slots:[{date:day,time:'09:00',available:true,service_ids:['orphan-service']}]};
+ for(const options of [
+  {error:{message:'unavailable'}},
+  {data:{...base}},
+  {data:{...base,services:[{service_id:'real'}],slots:[{date:day,time:'09:00',available:false,service_ids:['real']}]}},
+  {data:{...base,slug:'some-other-pilot'}}
+ ]){
+  const db={rpc:async name=>{
+   if(name==='digiy_resa_universal_pilot_gate_v1')
+    return {data:{ok:true,enabled:true,slug:'pilot-saly',time_zone:'Africa/Dakar'}};
+   if(name==='digiy_resa_universal_public_options_v1')return options;
+   throw Error('legacy must not run after successful gate');
+  }};
+  const result=await api.mount(link('pilot-saly'),'explore',db);
+  assert.equal(result.shown,true);
+  assert.equal(result.available,0);
+  assert.equal(elements.resaAppointmentsGo.hidden,true);
+  assert.equal(elements.resaAppointmentsGo.href,'');
+ }
+});
+test('V9 booking URL has no token or owner secret, never calls reserve or PAY',()=>{
+ const {api}=setup();
+ const ref=api.parseApprovedResaLink(link('pilot-saly'));
+ assert.ok(ref);
+ assert.doesNotMatch(script,/digiy_resa_universal_request_v1|digiy_resa_universal_owner_manage_v2|\.insert\s*\(|pay_movements|supabase_service_role/);
+ assert.match(script,/digiy_resa_universal_pilot_gate_v1/);
+ assert.match(script,/digiy_resa_universal_public_options_v1/);
+ assert.match(script,/rdv-universel\.html/);
+ assert.equal(api.dakarDay(new Date('2026-10-09T23:40:00Z')),'2026-10-09');
+});
