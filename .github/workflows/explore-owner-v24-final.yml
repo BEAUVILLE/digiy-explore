@@ -1,0 +1,33 @@
+name: EXPLORE V24 — proprio, RÉSA et TRUST
+on:
+  pull_request:
+    paths:
+      - 'explore-owner-v24.js'
+      - 'explore-owner-v24.test.cjs'
+      - 'gestion-explore-v2.html'
+      - 'fiche-core.html'
+      - '.github/workflows/explore-owner-v24-final.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'explore-owner-v24.js'
+      - 'explore-owner-v24.test.cjs'
+      - 'gestion-explore-v2.html'
+      - 'fiche-core.html'
+      - '.github/workflows/explore-owner-v24-final.yml'
+permissions:
+  contents: read
+jobs:
+  final-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vérifier syntaxe et contrat EXPLORE V24
+        run: |
+          node --check explore-owner-v24.js
+          node --check explore-owner-v24.test.cjs
+          node --test explore-owner-v24.test.cjs explore-resa-owner-bridge.test.cjs explore-resa-public-bridge.test.cjs
