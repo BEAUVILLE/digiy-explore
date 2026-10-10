@@ -144,6 +144,10 @@ async function mount(place,exploreSlug,db){
  if(myGeneration!==generation)return {shown:false,reason:'stale_response'};
  if(pilot.mode!=='legacy'){
   section.hidden=false;
+  const old=document.getElementById('bookingBtn');
+  // A V9-enabled venue must never advertise a legacy "Réserver" URL
+  // when its authoritative catalogue has no usable reservation options.
+  if(old&&old.href===ref.href)old.hidden=true;
   if(pilot.mode==='pilot_unavailable'){
    status.textContent='Le planning de réservation est temporairement indisponible. Aucun rendez-vous n’a été posé.';
    return {shown:true,mode:'pilot_unavailable',available:0};
@@ -159,9 +163,8 @@ async function mount(place,exploreSlug,db){
   status.textContent='Créneaux ouverts sur le serveur. Pour bloquer un rendez-vous, remplissez le formulaire RÉSA sécurisé ; consulter cette liste ne réserve rien.';
   go.href=pilot.href;go.hidden=false;go.target='_blank';go.rel='noopener noreferrer';
   go.textContent='✅ Poser mon rendez-vous · Paiement sur place';
-  const old=document.getElementById('bookingBtn');
   if(old&&old.href===ref.href){
-   old.href=pilot.href;old.textContent='📅 Poser mon rendez-vous';
+   old.href=pilot.href;old.textContent='📅 Poser mon rendez-vous';old.hidden=false;
   }
   return {shown:true,mode:'pilot',available:pilot.slots.length};
  }
