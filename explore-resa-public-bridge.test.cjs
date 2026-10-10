@@ -169,6 +169,7 @@ test('V9 server gate ON: only real published options lead to the secure appointm
  assert.equal(elements.resaAppointmentsGo.href,
   'https://resa-table-resto.digiylyfe.com/rdv-universel.html?slug=pilot-saly');
  assert.equal(elements.bookingBtn.href,elements.resaAppointmentsGo.href);
+ assert.equal(elements.bookingBtn.hidden,false);
  assert.match(elements.resaAppointmentsGo.textContent,/Poser mon rendez-vous/);
  assert.match(elements.resaAppointmentsStatus.textContent,/ne réserve rien/);
  assert.equal(elements.resaAppointmentsSlots.children.length,2);
@@ -212,11 +213,15 @@ test('V9 gate ON but V2 fails or lists no real service: no booking CTA',async()=
    if(name==='digiy_resa_universal_public_options_v1')return options;
    throw Error('legacy must not run after successful gate');
   }};
+  // The original booking link is present on existing public fiche pages.
+  elements.bookingBtn.href='https://resa-table-resto.digiylyfe.com/planning.html?slug=pilot-saly';
+  elements.bookingBtn.hidden=false;
   const result=await api.mount(link('pilot-saly'),'explore',db);
   assert.equal(result.shown,true);
   assert.equal(result.available,0);
   assert.equal(elements.resaAppointmentsGo.hidden,true);
   assert.equal(elements.resaAppointmentsGo.href,'');
+  assert.equal(elements.bookingBtn.hidden,true,'no misleading legacy booking button while V9 is ON');
  }
 });
 test('V9 booking URL has no token or owner secret, never calls reserve or PAY',()=>{
