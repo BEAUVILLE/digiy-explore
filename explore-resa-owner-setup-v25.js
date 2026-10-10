@@ -170,6 +170,39 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
   if(!slots.length)slotsList.append(make(doc,'p','Aucun créneau saisi. Le calendrier terrain EXPLORE ne réserve pas automatiquement.','hint'));
   return true;
  };
+ const exploreDates=by('resaSetupExploreDates');
+ async function loadExploreDates(){
+  if(!exploreDates)return;
+  exploreDates.replaceChildren();
+  exploreDates.append(make(doc,'p','Journées déjà disponibles dans EXPLORE : reprenez seulement la date. Les heures et les prestations doivent être saisies dans RÉSA.','hint'));
+  let result;
+  try{
+   result=await sb.rpc('digiy_explore_owner_calendar_v1',{
+    p_slug:siteSlug,p_from:dayDakar(),p_days:14
+   });
+  }catch(_){
+   exploreDates.append(make(doc,'p','Calendrier EXPLORE indisponible. Vous pouvez saisir la date manuellement.','hint'));
+   return;
+  }
+  if(result.error||!Array.isArray(result.data)){
+   exploreDates.append(make(doc,'p','Impossible de charger les dates EXPLORE. La saisie manuelle reste possible.','hint'));
+   return;
+  }
+  const today=dayDakar(),limit=addDays(today,13);
+  const available=result.data.filter(r=>r&&r.status==='available'&&DAY.test(String(r.day||''))
+    &&r.day>=today&&r.day<=limit);
+  for(const row of available.slice(0,14)){
+   const textDate=row.day+(row.note?' · '+String(row.note).slice(0,100):'');
+   const button=make(doc,'button',textDate);
+   button.type='button';button.className='btn';
+   button.addEventListener('click',()=>{
+    fields.day.value=row.day;
+    status('Journée EXPLORE reprise : '+row.day+'. Choisissez vos heures réelles ; aucun créneau n’a encore été enregistré.');
+   });
+   exploreDates.append(button);
+  }
+  if(!available.length)exploreDates.append(make(doc,'p','Aucune journée déclarée disponible pour les 14 prochains jours.','hint'));
+ }
  fields.serviceCancel.onclick=clearEdit;
  fields.serviceSave.onclick=async()=>{
   if(busy)return;
@@ -206,6 +239,7 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
  fields.day.max=addDays(fields.day.min,56);
  clearEdit();
  const loaded=await load();
+ if(loaded)await loadExploreDates();
  return {ok:loaded,mode:loaded?'owner_setup':'read_failed',published:profile.is_published};
 }
 root.DIGIYExploreResaSetup=Object.freeze({dayDakar,addDays,validService,validSlot,actualOwner,initialize});
