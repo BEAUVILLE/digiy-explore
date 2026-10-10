@@ -1,0 +1,30 @@
+name: EXPLORE V25 — RÉSA prestations et créneaux
+on:
+  pull_request:
+    paths:
+      - 'explore-resa-owner-setup-v25.js'
+      - 'explore-resa-owner-setup-v25.test.cjs'
+      - 'gestion-explore-v2.html'
+      - '.github/workflows/explore-resa-owner-setup-v25.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'explore-resa-owner-setup-v25.js'
+      - 'explore-resa-owner-setup-v25.test.cjs'
+      - 'gestion-explore-v2.html'
+      - '.github/workflows/explore-resa-owner-setup-v25.yml'
+permissions:
+  contents: read
+jobs:
+  owner-real-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sécurité navigateur et non-régression RÉSA
+        run: |
+          node --check explore-resa-owner-setup-v25.js
+          node --test explore-resa-owner-setup-v25.test.cjs explore-owner-v24.test.cjs explore-resa-owner-bridge.test.cjs explore-resa-public-bridge.test.cjs
