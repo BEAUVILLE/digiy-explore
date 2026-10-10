@@ -31,6 +31,7 @@ function validService(name,minutes,price){
 }
 function validSlot(day,start,end,now=new Date()){
  if(!DAY.test(String(day||''))||!HOUR.test(String(start||''))||!HOUR.test(String(end||'')))return false;
+ if(!Number.isFinite(Date.parse(day+'T12:00:00Z'))||addDays(day,0)!==day)return false;
  const today=dayDakar(now);
  if(day<today||day>addDays(today,56)||end<=start)return false;
  if(day===today&&start<=new Intl.DateTimeFormat('en-GB',{
