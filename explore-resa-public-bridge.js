@@ -6,6 +6,7 @@
 'use strict';
 const ALLOWED_HOST='resa-table-resto.digiylyfe.com';
 const ALLOWED_PATH='/planning.html';
+const SECURE_PATH='/rdv-universel.html';
 const SLUG=/^[a-z0-9][a-z0-9_-]{1,149}$/;
 function links(place){
  let raw=place?.external_links??place?.links??place?.public_links??[];
@@ -49,6 +50,41 @@ function parsePublishedSlots(data,expectedSlug,day0){
 function localDay(d){
  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+function dakarDay(now=new Date()){
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Dakar',
+  year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
+ const x={};for(const p of parts)if(p.type!=='literal')x[p.type]=p.value;
+ return x.year+'-'+x.month+'-'+x.day;
+}
+// A public secure booking CTA is NEVER inferred from a URL or slot alone.
+// It requires the server-owned V8 activation flag AND valid V2 options.
+async function securePilotOptions(db,ref,from){
+ let gate;
+ try{gate=await db.rpc('digiy_resa_universal_pilot_gate_v1',{p_slug:ref.slug})}
+ catch(_){return {mode:'legacy'}}
+ if(gate?.error||gate?.data?.ok!==true||gate?.data?.enabled!==true||
+    gate?.data?.slug!==ref.slug||gate?.data?.time_zone!=='Africa/Dakar'){
+   return {mode:'legacy'};
+ }
+ let response;
+ try{response=await db.rpc('digiy_resa_universal_public_options_v1',{p_slug:ref.slug,p_start_date:from})}
+ catch(_){return {mode:'pilot_unavailable'}}
+ if(response?.error||response?.data?.ok!==true||response.data.slug!==ref.slug||
+    response.data.time_zone!=='Africa/Dakar'||!Array.isArray(response.data.services)){
+   return {mode:'pilot_unavailable'};
+ }
+ const services=new Set(response.data.services
+  .filter(s=>typeof s?.service_id==='string'&&s.service_id.length>0)
+  .map(s=>s.service_id));
+ const slots=parsePublishedSlots(response.data,ref.slug,from);
+ if(slots===null)return {mode:'pilot_unavailable'};
+ const valid=new Set((response.data.slots||[])
+  .filter(s=>s&&Array.isArray(s.service_ids)&&s.service_ids.some(id=>services.has(id)))
+  .map(s=>String(s.date)+'T'+String(s.time)));
+ return {mode:'pilot',slots:slots.filter(s=>valid.has(s.date+'T'+s.time)),
+   href:'https://'+ALLOWED_HOST+SECURE_PATH+'?slug='+encodeURIComponent(ref.slug)};
+}
+
 // Rétrocompatibilité : un vrai service EXPLORE sans agenda RÉSA activé
 // peut proposer le contact direct, mais jamais de créneau fabriqué.
 function eligibleLegacyService(place){
@@ -101,7 +137,34 @@ async function mount(place,exploreSlug,db){
  }
  if(!db||typeof db.rpc!=='function')return {shown:false,reason:'no_public_calendar_reader'};
  if(intro)intro.textContent='Choisissez parmi ses vraies disponibilités publiées. Le professionnel conserve ses règles de réservation.';
- const from=localDay(new Date());
+ const from=dakarDay();
+ // The immutable launch-control RPC is the ONLY authority for real bookings.
+ // When V9 is not installed or pilot is OFF, preserve existing legacy view.
+ const pilot=await securePilotOptions(db,ref,from);
+ if(myGeneration!==generation)return {shown:false,reason:'stale_response'};
+ if(pilot.mode!=='legacy'){
+  section.hidden=false;
+  if(pilot.mode==='pilot_unavailable'){
+   status.textContent='Le planning de réservation est temporairement indisponible. Aucun rendez-vous n’a été posé.';
+   return {shown:true,mode:'pilot_unavailable',available:0};
+  }
+  if(intro)intro.textContent='Créneaux enregistrables sur RÉSA MULTI pour ce professionnel, sous réserve de confirmation après votre demande.';
+  for(const slot of pilot.slots){
+   container.append(text('span',slot.date+' · '+slot.time,'chip'));
+  }
+  if(!pilot.slots.length){
+   status.textContent='Aucun créneau réservable publié pour les 7 prochains jours. Aucun rendez-vous n’a été posé.';
+   return {shown:true,mode:'pilot',available:0};
+  }
+  status.textContent='Créneaux ouverts sur le serveur. Pour bloquer un rendez-vous, remplissez le formulaire RÉSA sécurisé ; consulter cette liste ne réserve rien.';
+  go.href=pilot.href;go.hidden=false;go.target='_blank';go.rel='noopener noreferrer';
+  go.textContent='✅ Poser mon rendez-vous · Paiement sur place';
+  const old=document.getElementById('bookingBtn');
+  if(old&&old.href===ref.href){
+   old.href=pilot.href;old.textContent='📅 Poser mon rendez-vous';
+  }
+  return {shown:true,mode:'pilot',available:pilot.slots.length};
+ }
  let response;
  try{response=await db.rpc('digiy_resa_public_week_v1',{p_slug:ref.slug,p_start_date:from})}
  catch(_){return {shown:false,reason:'rpc_error'}}
@@ -128,5 +191,5 @@ async function mount(place,exploreSlug,db){
  if(old&&old.href===ref.href){old.textContent='📅 Voir les créneaux'}
  return {shown:true,available:slots.length};
 }
-root.DIGIYExploreResa=Object.freeze({parseApprovedResaLink,parsePublishedSlots,eligibleLegacyService,legacyDirectContact,localDay,mount});
+root.DIGIYExploreResa=Object.freeze({parseApprovedResaLink,parsePublishedSlots,eligibleLegacyService,legacyDirectContact,localDay,dakarDay,securePilotOptions,mount});
 })(typeof window!=='undefined'?window:globalThis);
