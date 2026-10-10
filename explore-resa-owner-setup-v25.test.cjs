@@ -9,7 +9,7 @@ const page=fs.readFileSync(path.join(__dirname,'gestion-explore-v2.html'),'utf8'
 function setup(){
  const window={confirm:()=>true},doc={};
  const names=['resaSetupCard','resaSetupStatus','resaSetupServices','resaSetupSlots','resaServiceName','resaServiceDuration',
- 'resaServicePrice','resaServiceSave','resaServiceCancel','resaSetupExploreDates','resaSlotDay','resaSlotStart','resaSlotEnd','resaSlotSave','resaSetupHint'];
+ 'resaServicePrice','resaServiceSave','resaServiceCancel','resaSetupExploreDates','resaSetupCalendarWarnings','resaSlotDay','resaSlotStart','resaSlotEnd','resaSlotSave','resaSetupHint'];
  const el=Object.fromEntries(names.map(id=>[id,{id,hidden:true,value:'',disabled:false,children:[],replaceChildren(){this.children=[]},append(...a){this.children.push(...a)}}]));
  doc.getElementById=id=>el[id]||null;
  doc.createElement=tag=>({tag,children:[],textContent:'',disabled:false,hidden:false,append(...a){this.children.push(...a)},addEventListener(type,fn){(this.listeners||(this.listeners={}))[type]=fn}});
@@ -148,6 +148,43 @@ test('V27 owner click prefills valid written hours only, never saves a slot',asy
  assert.equal(el.resaSlotEnd.value,'');
  assert.equal(sb.calls.filter(x=>x.action==='insert'||x.action==='update').length,0);
 });
+test('V29 catches only future real schedule differences and does not create reservations',async()=>{
+ const {api,doc,el}=setup();
+ const day1=api.addDays(api.dayDakar(),1),day2=api.addDays(api.dayDakar(),2);
+ const matchingDay=api.addDays(api.dayDakar(),3),missingDay=api.addDays(api.dayDakar(),4);
+ const slots=[
+  {slug:place.slug,slot_date:day1,start_time:'09:00:00',end_time:'13:00:00',status:'open'},
+  {slug:place.slug,slot_date:day2,start_time:'10:00:00',end_time:'13:00:00',status:'open'},
+  {slug:place.slug,slot_date:matchingDay,start_time:'09:00:00',end_time:'13:00:00',status:'open'},
+  {slug:place.slug,slot_date:missingDay,start_time:'09:00:00',end_time:'13:00:00',status:'open'}
+ ];
+ const calendarDays=[
+  {day:day1,status:'closed',note:'Fermé'},
+  {day:day2,status:'available',note:'DEPART 09H RETOUR 13H'},
+  {day:matchingDay,status:'available',note:'DEPART 09H RETOUR 13H'}
+ ];
+ const issues=api.calendarConflicts(calendarDays,slots);
+ assert.equal(issues.length,2);
+ assert.equal(issues[0].kind,'availability');
+ assert.equal(issues[1].kind,'hours');
+ const db=fakeDb({calendarDays,slots});
+ const opened=await api.initialize({document:doc,supabase:db,user,place,siteSlug:place.slug,ownerVerified:true});
+ assert.equal(opened.ok,true);
+ assert.match(el.resaSetupCalendarWarnings.children[0].textContent,/2 écart/);
+ assert.match(el.resaSetupCalendarWarnings.children[1].textContent,/reste ouvert/);
+ assert.match(el.resaSetupCalendarWarnings.children[2].textContent,/diffère/);
+ assert.equal(db.calls.filter(x=>x.action==='insert'||x.action==='update').length,0);
+});
+test('V29 reports no discrepancy when the real calendars agree',async()=>{
+ const {api,doc,el}=setup();
+ const day=api.addDays(api.dayDakar(),1);
+ const calendarDays=[{day,status:'available',note:'DEPART 09H RETOUR 13H'}];
+ const slots=[{slug:place.slug,slot_date:day,start_time:'09:00:00',end_time:'13:00:00',status:'open'}];
+ const sb=fakeDb({calendarDays,slots});
+ const result=await api.initialize({document:doc,supabase:sb,user,place,siteSlug:place.slug,ownerVerified:true});
+ assert.equal(result.ok,true);
+ assert.match(el.resaSetupCalendarWarnings.children[0].textContent,/Aucun écart détecté/);
+});
 test('page wires setup only after MFA and real owner profile; no fake record on load',()=>{
  assert.match(page,/DIGIY_OWNER_PHONE_MFA\.guard/);
  assert.match(page,/DIGIYExploreResaSetup\.initialize/);
@@ -155,6 +192,7 @@ test('page wires setup only after MFA and real owner profile; no fake record on 
  assert.match(page,/id="resaSetupCard"[^>]*hidden/);
  assert.match(page,/id="resaSlotSave"/);
  assert.match(page,/id="resaSetupExploreDates"/);
+ assert.match(page,/id="resaSetupCalendarWarnings"/);
  assert.doesNotMatch(script,/service_role|\.delete\s*\(|client_request_id|digiy_resa_create_booking/);
  assert.doesNotMatch(script,/innerHTML\s*=/);
  assert.match(script,/is_active:false/);

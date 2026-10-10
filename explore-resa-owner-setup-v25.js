@@ -55,6 +55,30 @@ function explicitDepartureReturn(note){
  if(!start||!end||end<=start)return null;
  return {start,end};
 }
+// Advisory only: EXPLORE and RÉSA are distinct calendars. Never auto-mutate.
+function calendarConflicts(calendarRows,slotRows,now=new Date()){
+ const today=dayDakar(now),limit=addDays(today,13);
+ const days=new Map((Array.isArray(calendarRows)?calendarRows:[])
+  .filter(x=>x&&DAY.test(String(x.day||''))&&x.day>=today&&x.day<=limit)
+  .map(x=>[x.day,x]));
+ const findings=[];
+ for(const s of Array.isArray(slotRows)?slotRows:[]){
+  if(!s||s.status!=='open'||!DAY.test(String(s.slot_date||'')))continue;
+  const start=String(s.start_time||'').slice(0,5),end=String(s.end_time||'').slice(0,5);
+  if(!validSlot(s.slot_date,start,end,now))continue;
+  const row=days.get(s.slot_date);
+  if(!row)continue;
+  if(['closed','full','to_confirm'].includes(row.status)){
+   findings.push({day:s.slot_date,start,end,kind:'availability',status:row.status});
+   continue;
+  }
+  if(row.status!=='available')continue;
+  const hours=explicitDepartureReturn(row.note);
+  if(hours&&(hours.start!==start||hours.end!==end))
+   findings.push({day:s.slot_date,start,end,kind:'hours',expected:hours});
+ }
+ return findings;
+}
 function actualOwner(profile,place,user,siteSlug){
  return Boolean(profile?.slug&&SLUG.test(profile.slug)&&profile.slug===siteSlug
   &&place?.slug===siteSlug&&place?.is_active===true&&profile.is_active===true
@@ -177,7 +201,7 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
      const q=await ownedQuery(SLOTS).update({status:slot.status==='open'?'closed':'open'})
        .eq('slug',siteSlug).eq('id',slot.id).select('id').maybeSingle();
      if(q.error||!q.data?.id)throw q.error||Error('denied');
-     await load();
+     if(await load())await loadExploreDates();
     }catch(e){status(friendly(e))}finally{setBusy(false)}
    });
    article.append(action);slotsList.append(article);
@@ -186,9 +210,11 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
   return true;
  };
  const exploreDates=by('resaSetupExploreDates');
+ const consistency=by('resaSetupCalendarWarnings');
  async function loadExploreDates(){
   if(!exploreDates)return;
   exploreDates.replaceChildren();
+  if(consistency)consistency.replaceChildren();
   exploreDates.append(make(doc,'p','Journées déjà disponibles dans EXPLORE : reprenez seulement la date. Les heures et les prestations doivent être saisies dans RÉSA.','hint'));
   let result;
   try{
@@ -204,6 +230,23 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
    return;
   }
   const today=dayDakar(),limit=addDays(today,13);
+  if(consistency){
+   const discrepancies=calendarConflicts(result.data,slots);
+   if(discrepancies.length){
+    consistency.append(make(doc,'strong','⚠️ '+discrepancies.length+
+      ' écart(s) entre EXPLORE et RÉSA — vérifiez avant de publier.'));
+    for(const conflict of discrepancies){
+     const description=conflict.kind==='availability'
+      ? conflict.day+' · RÉSA '+conflict.start+'–'+conflict.end+
+        ' reste ouvert alors qu’EXPLORE indique « '+conflict.status+' ».'
+      : conflict.day+' · RÉSA '+conflict.start+'–'+conflict.end+
+        ' diffère de la note EXPLORE '+conflict.expected.start+'–'+conflict.expected.end+'.';
+     consistency.append(make(doc,'p',description+' Aucun changement automatique.','hint'));
+    }
+   }else{
+    consistency.append(make(doc,'p','Aucun écart détecté sur les créneaux futurs rapprochés entre les deux calendriers.','hint'));
+   }
+  }
   const available=result.data.filter(r=>r&&r.status==='available'&&DAY.test(String(r.day||''))
     &&r.day>=today&&r.day<=limit);
   for(const row of available.slice(0,14)){
@@ -255,7 +298,8 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
     slug:siteSlug,slot_date:day,start_time:start,end_time:end,status:'open',capacity:1
    }).select('id').maybeSingle();
    if(q.error||!q.data?.id)throw q.error||Error('denied');
-   fields.start.value='';fields.end.value='';await load();
+   fields.start.value='';fields.end.value='';
+   if(await load())await loadExploreDates();
   }catch(e){status(friendly(e))}finally{setBusy(false)}
  };
  fields.day.min=dayDakar();
@@ -265,5 +309,5 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
  if(loaded)await loadExploreDates();
  return {ok:loaded,mode:loaded?'owner_setup':'read_failed',published:profile.is_published};
 }
-root.DIGIYExploreResaSetup=Object.freeze({dayDakar,addDays,validService,validSlot,explicitDepartureReturn,actualOwner,initialize});
+root.DIGIYExploreResaSetup=Object.freeze({dayDakar,addDays,validService,validSlot,explicitDepartureReturn,calendarConflicts,actualOwner,initialize});
 })(typeof window!=='undefined'?window:globalThis);
