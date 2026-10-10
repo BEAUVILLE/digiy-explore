@@ -63,6 +63,14 @@ test('DIGIY TRUST EXPLORE affiche zéro faux avis et uniquement sur les fiches p
  assert.match(publicPage,/id="digiyTrustExploreStatus"/);
  assert.match(publicPage,/Aucune note vérifiée disponible/);
  assert.match(publicPage,/Le rapport qualité-prix est une catégorie distincte/);
+ assert.match(publicPage,/vérifié indépendamment/);
+ assert.match(publicPage,/sans commentaire public/);
+ assert.match(manage,/id="trustOwnerCard"[^>]*hidden/);
+ assert.match(manage,/\$\("trustOwnerCard"\)\.hidden=false/);
+ assert.match(manage,/réservation RÉSA confirmée ou marquée/);
+ assert.match(manage,/vérification indépendante du client/);
+ assert.match(manage,/rapport qualité-prix<\/strong>/);
+ assert.doesNotMatch(manage,/id="trustSubmit"|id="trustReviewForm"|digiy_trust_public_write/);
  assert.match(publicPage,/place\?\.is_active===true && place\?\.is_published===true/);
  assert.doesNotMatch(publicPage,/digiy_trust_public_write|trust_submitted/);
 });
