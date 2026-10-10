@@ -5,6 +5,8 @@ on:
       - 'explore-owner-v24.js'
       - 'explore-owner-v24.test.cjs'
       - 'gestion-explore-v2.html'
+      - 'acces-proprietaire-v2.html'
+      - 'explore-owner-magic-link-v31.test.cjs'
       - 'fiche-core.html'
       - '.github/workflows/explore-owner-v24-final.yml'
   push:
@@ -13,6 +15,8 @@ on:
       - 'explore-owner-v24.js'
       - 'explore-owner-v24.test.cjs'
       - 'gestion-explore-v2.html'
+      - 'acces-proprietaire-v2.html'
+      - 'explore-owner-magic-link-v31.test.cjs'
       - 'fiche-core.html'
       - '.github/workflows/explore-owner-v24-final.yml'
 permissions:
@@ -30,4 +34,4 @@ jobs:
         run: |
           node --check explore-owner-v24.js
           node --check explore-owner-v24.test.cjs
-          node --test explore-owner-v24.test.cjs explore-resa-owner-bridge.test.cjs explore-resa-public-bridge.test.cjs
+          node --test explore-owner-v24.test.cjs explore-owner-magic-link-v31.test.cjs explore-resa-owner-bridge.test.cjs explore-resa-public-bridge.test.cjs
