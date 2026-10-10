@@ -701,7 +701,7 @@
       .photo{min-height:240px}
     }
     /* Le CTA ne doit jamais apparaître avant la réponse RÉSA publiée. */
-  #resaAppointmentsSection[hidden],#resaAppointmentsGo[hidden]{display:none!important}
+  #resaAppointmentsSection[hidden],#resaAppointmentsGo[hidden],#digiyTrustExploreStatus[hidden]{display:none!important}
   </style>
 </head>
 
@@ -868,6 +868,14 @@
         <div class="chips" id="resaAppointmentsSlots" aria-label="Créneaux de rendez-vous publiés"></div>
         <p><a class="btn primary" id="resaAppointmentsGo" href="#" target="_blank" rel="noopener noreferrer" hidden>📅 Voir le planning et choisir un créneau</a></p>
         <p class="miniHint">La consultation du planning ne confirme pas à elle seule une réservation. Contact et paiement directs · 0 % commission.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="digiyTrustExploreStatus" aria-label="DIGIY TRUST" hidden>
+      <div class="cardBody">
+        <h2 class="sectionTitle">⭐ DIGIY TRUST · Avis clients</h2>
+        <p class="sectionSub">Évaluations express après une prestation réellement effectuée et un client vérifié. Le rapport qualité-prix est une catégorie distincte.</p>
+        <p class="miniHint" id="digiyTrustExploreEmpty">Aucune note vérifiée disponible pour cette fiche. Les notes ne seront affichées qu'après une attestation indépendante. Aucun commentaire public ni note fictive.</p>
       </div>
     </section>
 
@@ -1723,7 +1731,9 @@
         try{
           const place = await loadPlace(slug);
           renderPlace(place, slug);
-          loadPublicCalendar(slug);
+           const trust=document.getElementById("digiyTrustExploreStatus");
+           if(trust)trust.hidden=!(place?.is_active===true && place?.is_published===true && place?.__demo!==true);
+           loadPublicCalendar(slug);
           // Le pont RÉSA s'active uniquement si un lien public volontaire
           // pointe vers un planning publié avec de vrais créneaux.
           if(window.DIGIYExploreResa){
