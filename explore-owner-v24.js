@@ -19,7 +19,7 @@
   if(!place||!profile||!user?.id)return false;
   if(place.auth_user_id!==user.id||profile.auth_user_id!==user.id)return false;
   if(place.slug!==profile.slug||!SLUG.test(String(profile.slug||'')))return false;
-  return place.is_active===true && profile.is_active===true;
+  return place.is_active===true && profile.is_active===true && profile.is_published===true;
  }
  function approvedBookingUrl(slug){
   if(!SLUG.test(String(slug||'')))return null;
