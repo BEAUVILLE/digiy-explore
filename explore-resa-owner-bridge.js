@@ -91,6 +91,8 @@ async function initialize(args){
     b.type='button';b.className='btn';
     b.addEventListener('click',async()=>{
      if(b.disabled)return;
+     if(['cancelled','done','no_show'].includes(action) && typeof root.confirm==='function' &&
+        !root.confirm('Confirmer le changement de statut ? Cette action sera enregistrée auprès du serveur.'))return;
      b.disabled=true;
      status.textContent='Enregistrement auprès du serveur…';
      try{
