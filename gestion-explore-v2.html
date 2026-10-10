@@ -117,6 +117,12 @@ html[dir="rtl"] body{direction:rtl}
   <div id="resaOwnerBookings" aria-label="Rendez-vous du professionnel"></div>
   <p class="hint">Paiement et contact directs · 0 % commission · Pas de caisse. Le professionnel décide de la confirmation.</p>
 </section>
+<section class="card" id="trustOwnerCard" aria-labelledby="trustOwnerTitle" style="margin-top:14px" hidden>
+  <h2 id="trustOwnerTitle" style="margin-top:0">⭐ DIGIY TRUST · Évaluations clients</h2>
+  <p class="hint">DIGIY TRUST est en préparation. Aucune note vérifiée n'est publiée automatiquement. Une réservation RÉSA confirmée ou marquée « terminée » par le professionnel ne suffit jamais à attester qu'une prestation a été réalisée.</p>
+  <p class="hint">Après une véritable prestation et une vérification indépendante du client, l'évaluation express pourra porter sur la ponctualité, la qualité, l'accueil, la disponibilité, la proximité, le suivi et le <strong>rapport qualité-prix</strong>, noté comme critère distinct. Le prix le plus bas n'est pas le critère.</p>
+  <p class="hint">Les étoiles ne seront publiées qu'après validation serveur et modération équitable. Pas de commentaire public, d'avis fictif, d'envoi d'invitation ou de collecte active dans cette version.</p>
+</section>
 </main>
 <script>
 (()=>{
@@ -156,7 +162,7 @@ $("websiteUrl").value=data.website_url||links.find(x=>x?.type==="website")?.url|
 $("mapsUrl").value=links.find(x=>x?.type==="maps")?.url||"";
 $("bookingUrl").value=links.find(x=>x?.type==="booking")?.url||"";
 $("photoUrls").value=(Array.isArray(data.photo_urls)?data.photo_urls:[]).join("\n");
-$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}if(window.DIGIYExploreResaSetup){window.DIGIYExploreResaSetup.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).then(state=>{if(state?.ok&&typeof state.refreshCalendar==='function')resaSetupSession=state}).catch(()=>{$("resaSetupCard").hidden=true})}discoverResaOwnerLink(data,cu);return true}
+$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("trustOwnerCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}if(window.DIGIYExploreResaSetup){window.DIGIYExploreResaSetup.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).then(state=>{if(state?.ok&&typeof state.refreshCalendar==='function')resaSetupSession=state}).catch(()=>{$("resaSetupCard").hidden=true})}discoverResaOwnerLink(data,cu);return true}
 async function discoverResaOwnerLink(place,cu){
  const btn=$("suggestResaLink"),note=$("resaLinkInfo");
  btn.hidden=true;
