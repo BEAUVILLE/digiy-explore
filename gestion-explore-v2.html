@@ -142,7 +142,7 @@ async function discoverResaOwnerLink(place,cu){
  if(current && current!==approved)return;
  try{
   const {data:profile,error}=await sb.from("digiy_resa_profiles")
-   .select("slug,auth_user_id,is_active")
+   .select("slug,auth_user_id,is_active,is_published")
    .eq("slug",place.slug).eq("auth_user_id",cu.id).eq("is_active",true).maybeSingle();
   if(error||!guard.profileAllowsLink({place,profile,user:cu}))return;
   btn.hidden=false;
