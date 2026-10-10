@@ -40,6 +40,21 @@ function validSlot(day,start,end,now=new Date()){
  const [h1,m1]=start.split(':').map(Number),[h2,m2]=end.split(':').map(Number);
  return h2*60+m2-(h1*60+m1)<=480;
 }
+// Accept a suggested slot only when BOTH real times are explicit in the owner's note.
+function explicitDepartureReturn(note){
+ const normalized=String(note||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+ const pick=keyword=>{
+  const pattern=new RegExp('\\b'+keyword+'\\s+(\\d{1,2})(?:(?:\\s*H\\s*|\\s*:\\s*)(\\d{0,2}))?(?!\\d)');
+  const match=normalized.match(pattern);
+  if(!match)return null;
+  const h=Number(match[1]),m=match[2]?Number(match[2]):0;
+  if(h>23||m>59)return null;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+ };
+ const start=pick('DEPART'),end=pick('RETOUR');
+ if(!start||!end||end<=start)return null;
+ return {start,end};
+}
 function actualOwner(profile,place,user,siteSlug){
  return Boolean(profile?.slug&&SLUG.test(profile.slug)&&profile.slug===siteSlug
   &&place?.slug===siteSlug&&place?.is_active===true&&profile.is_active===true
@@ -192,12 +207,20 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
   const available=result.data.filter(r=>r&&r.status==='available'&&DAY.test(String(r.day||''))
     &&r.day>=today&&r.day<=limit);
   for(const row of available.slice(0,14)){
-   const textDate=row.day+(row.note?' · '+String(row.note).slice(0,100):'');
+   const parsed=explicitDepartureReturn(row.note);
+   const usable=parsed&&validSlot(row.day,parsed.start,parsed.end)?parsed:null;
+   const textDate=row.day+(usable?' · '+usable.start+'–'+usable.end:'')+
+     (row.note?' · '+String(row.note).slice(0,100):'');
    const button=make(doc,'button',textDate);
    button.type='button';button.className='btn';
    button.addEventListener('click',()=>{
     fields.day.value=row.day;
-    status('Journée EXPLORE reprise : '+row.day+'. Choisissez vos heures réelles ; aucun créneau n’a encore été enregistré.');
+    // Reset stale hours when the next chosen day does not have explicit valid times.
+    fields.start.value=usable?usable.start:'';
+    fields.end.value=usable?usable.end:'';
+    status(usable
+     ?'Date et horaires notés dans EXPLORE préremplis ('+usable.start+'–'+usable.end+'). Vérifiez votre prestation, puis enregistrez ce créneau.'
+     :'Journée EXPLORE reprise : '+row.day+'. Saisissez vos heures réelles avant tout enregistrement.');
    });
    exploreDates.append(button);
   }
@@ -242,5 +265,5 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
  if(loaded)await loadExploreDates();
  return {ok:loaded,mode:loaded?'owner_setup':'read_failed',published:profile.is_published};
 }
-root.DIGIYExploreResaSetup=Object.freeze({dayDakar,addDays,validService,validSlot,actualOwner,initialize});
+root.DIGIYExploreResaSetup=Object.freeze({dayDakar,addDays,validService,validSlot,explicitDepartureReturn,actualOwner,initialize});
 })(typeof window!=='undefined'?window:globalThis);
