@@ -116,6 +116,38 @@ test('available EXPLORE dates fill only a RÉSA date, never create a booking',as
  assert.equal(sb.calls.filter(x=>x.action==='insert'||x.action==='update').length,0);
  assert.equal(sb.calls.filter(x=>x.action==='rpc'&&x.name==='digiy_explore_owner_calendar_v1').length,1);
 });
+test('V27 parses only exact written departure and return hours',()=>{
+ const p=setup().api.explicitDepartureReturn;
+ assert.deepEqual(JSON.parse(JSON.stringify(p('DEPART 09H RETOUR 13H'))),{start:'09:00',end:'13:00'});
+ assert.deepEqual(JSON.parse(JSON.stringify(p('Départ 09 H retour 13H beau temps'))),{start:'09:00',end:'13:00'});
+ assert.deepEqual(JSON.parse(JSON.stringify(p('DEPART 09H30 RETOUR 13:15'))),{start:'09:30',end:'13:15'});
+ for(const note of ['DEPART 09H','RETOUR 13H','BEAU TEMPS','DEPART 25H RETOUR 13H',
+  'DEPART 13H RETOUR 09H','DEPART 09H RETOUR 26H','']){
+  assert.equal(p(note),null,note);
+ }
+});
+test('V27 owner click prefills valid written hours only, never saves a slot',async()=>{
+ const {api,doc,el}=setup();
+ const today=api.dayDakar(),day1=api.addDays(today,1),day2=api.addDays(today,2);
+ const sb=fakeDb({calendarDays:[
+  {day:day1,status:'available',note:'DEPART 09 H RETOUR 13H BEAU TEMPS'},
+  {day:day2,status:'available',note:'BEAU TEMPS'},
+  {day:api.addDays(today,3),status:'closed',note:'DEPART 09H RETOUR 13H'}
+ ]});
+ const x=await api.initialize({document:doc,supabase:sb,user,place,siteSlug:place.slug,ownerVerified:true});
+ assert.equal(x.ok,true);
+ const shortcuts=el.resaSetupExploreDates.children.filter(x=>x.tag==='button');
+ assert.equal(shortcuts.length,2);
+ shortcuts[0].listeners.click();
+ assert.equal(el.resaSlotDay.value,day1);
+ assert.equal(el.resaSlotStart.value,'09:00');
+ assert.equal(el.resaSlotEnd.value,'13:00');
+ shortcuts[1].listeners.click();
+ assert.equal(el.resaSlotDay.value,day2);
+ assert.equal(el.resaSlotStart.value,'');
+ assert.equal(el.resaSlotEnd.value,'');
+ assert.equal(sb.calls.filter(x=>x.action==='insert'||x.action==='update').length,0);
+});
 test('page wires setup only after MFA and real owner profile; no fake record on load',()=>{
  assert.match(page,/DIGIY_OWNER_PHONE_MFA\.guard/);
  assert.match(page,/DIGIYExploreResaSetup\.initialize/);
