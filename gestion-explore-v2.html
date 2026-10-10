@@ -8,12 +8,19 @@
 <title>DIGIY EXPLORE · Gestion propriétaire</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
 <script src="./owner-phone-mfa-v1.js"></script>
+<script src="./explore-resa-public-bridge.js"></script>
+<script src="./explore-resa-owner-bridge.js"></script>
 <style>
 :root{--bg:#06130f;--card:#0b241b;--gold:#d4af37;--gold2:#f3d46b;--ink:#f8fafc;--muted:rgba(248,250,252,.72);--line:rgba(255,255,255,.12);--green:#22c55e;--red:#ef4444}
 *{box-sizing:border-box}html,body{margin:0}body{min-height:100vh;background:linear-gradient(180deg,#071510,#04100c);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{width:min(100% - 24px,760px);margin:auto}header{padding:18px 0;border-bottom:1px solid rgba(212,175,55,.3);background:#06130f}.brand{font-size:21px;font-weight:950;color:var(--gold2)}.sub{font-size:11px;color:var(--muted);margin-top:4px}.langs{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}.langs button{border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}.langs button.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419}
 main{padding:18px 0 42px}.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}.btn{border:1px solid var(--line);border-radius:999px;padding:10px 13px;background:rgba(255,255,255,.05);color:#fff;font:900 11px system-ui;cursor:pointer;text-decoration:none}.card{border:1px solid var(--line);border-radius:22px;background:var(--card);padding:18px;box-shadow:0 22px 52px rgba(0,0,0,.28)}h1{font-size:23px;margin:0 0 4px}.who{font-size:11px;color:var(--muted);margin-bottom:15px}.lock{padding:11px;border-radius:14px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);font-size:11px;line-height:1.45;color:#fff3bf}
 label{display:block;margin:14px 0 6px;font-size:11px;font-weight:950;color:var(--gold2)}.hint{display:block;color:var(--muted);font-size:9px;font-weight:600;margin-top:3px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#102b22;color:#fff;font:inherit}textarea{min-height:100px;resize:vertical}.save{width:100%;margin-top:16px;border:0;border-radius:999px;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419;font-weight:950;cursor:pointer}.save:disabled{opacity:.5}
 .msg{display:none;margin:12px 0;padding:11px;border-radius:12px;font-size:11px;line-height:1.4}.msg.show{display:block}.ok{background:rgba(34,197,94,.1);color:#bbf7d0}.bad{background:rgba(239,68,68,.1);color:#fecaca}
+.resa-owner-booking{padding:12px;border:1px solid var(--line);border-radius:12px;margin:12px 0;background:rgba(255,255,255,.035)}
+.resa-owner-booking p{line-height:1.5;font-size:12px;overflow-wrap:anywhere}
+.resa-owner-actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.resa-owner-booking textarea{min-height:66px}
+#resaOwnerCard[hidden],#linksMediaCard[hidden],#calendarCard[hidden]{display:none!important}
 html[dir="rtl"] body{direction:rtl}
 </style>
 </head>
@@ -40,7 +47,7 @@ html[dir="rtl"] body{direction:rtl}
 <button class="save" id="saveBtn" type="button" data-i18n="save">Enregistrer</button>
 </section>
 
-<section class="card" id="linksMediaCard" style="margin-top:14px">
+<section class="card" id="linksMediaCard" style="margin-top:14px" hidden>
 <h2 style="margin-top:0">🔗 Liens publics & photos</h2>
 <div class="hint">Enrichissez votre présence sans changer la structure de la fiche.</div>
 <label>Site officiel</label><input id="websiteUrl" type="url" placeholder="https://...">
@@ -51,7 +58,7 @@ html[dir="rtl"] body{direction:rtl}
 <div id="linksMediaMsg" class="hint" style="margin-top:10px"></div>
 </section>
 
-<section class="card" id="calendarCard" style="margin-top:14px">
+<section class="card" id="calendarCard" style="margin-top:14px" hidden>
 <h2 style="margin-top:0">📅 Calendrier terrain</h2>
 <div class="hint">La semaine est visible d’un coup d’œil. Ajustez chaque jour selon le terrain.</div>
 <div id="ownerWeek" style="display:grid;gap:10px;margin-top:14px"></div>
@@ -71,6 +78,14 @@ html[dir="rtl"] body{direction:rtl}
 </div>
 </details>
 <div id="calList" class="hint" style="margin-top:12px"></div>
+</section>
+<section class="card" id="resaOwnerCard" style="margin-top:14px" hidden>
+  <h2 style="margin-top:0">📅 Mes rendez-vous RÉSA</h2>
+  <p class="hint">Ce suivi distinct du calendrier terrain ne fonctionne qu’avec un vrai compte RÉSA relié à cette fiche et les fonctions sécurisées V9. Aucun rendez-vous, paiement ou disponibilité n’est inventé.</p>
+  <p id="resaOwnerStatus" role="status" aria-live="polite"></p>
+  <a id="resaOwnerPublicLink" class="btn" hidden target="_blank" rel="noopener noreferrer">Voir le planning public</a>
+  <div id="resaOwnerBookings" aria-label="Rendez-vous du professionnel"></div>
+  <p class="hint">Paiement et contact directs · 0 % commission · Pas de caisse. Le professionnel décide de la confirmation.</p>
 </section>
 </main>
 <script>
@@ -102,7 +117,7 @@ $("websiteUrl").value=data.website_url||links.find(x=>x?.type==="website")?.url|
 $("mapsUrl").value=links.find(x=>x?.type==="maps")?.url||"";
 $("bookingUrl").value=links.find(x=>x?.type==="booking")?.url||"";
 $("photoUrls").value=(Array.isArray(data.photo_urls)?data.photo_urls:[]).join("\n");
-$("editor").hidden=false;$("msg").className="msg"}
+$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}return true}
 $("saveBtn").onclick=async()=>{if(!user)return;$("saveBtn").disabled=true;const patch={short_description:$("shortDesc").value.trim(),full_description:$("fullDesc").value.trim(),city:$("city").value.trim(),zone:$("zone").value.trim(),address_text:$("address").value.trim(),phone:$("phone").value.trim(),whatsapp:$("whatsapp").value.trim(),hours:$("hours").value.trim(),price_hint:$("price").value.trim(),availability_status:$("availability").value,availability_note:$("note").value.trim(),availability_updated_at:new Date().toISOString()};const {data,error}=await sb.from(CORE.table).update(patch).eq("slug",siteSlug).eq("auth_user_id",user.id).select("slug").maybeSingle();$("saveBtn").disabled=false;if(error||!data){msg(error?.message||tr("forbidden"));return}msg(tr("saved"),"ok")}
 $("saveLinksMedia").onclick=async()=>{
   const photos=$("photoUrls").value.split(/\n+/).map(x=>x.trim()).filter(Boolean);
@@ -177,7 +192,7 @@ $("calSave").onclick=async()=>{
  if(!selectedCalendarDay){$("calList").textContent="Choisis une date dans le calendrier.";return}
  if(await saveCalendarDay(selectedCalendarDay,$("calStatus").value,$("calNote").value.trim())){await Promise.all([loadCalendar(),renderMonth()])}
 };
-$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot().then(async()=>{await loadCalendar();await renderMonth()});
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot().then(async verified=>{if(verified===true){await loadCalendar();await renderMonth()}});
 })();
 </script>
 </body>

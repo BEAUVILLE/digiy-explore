@@ -1,0 +1,41 @@
+name: EXPLORE → RÉSA V9 propriétaire sécurisé
+on:
+  pull_request:
+    paths:
+      - 'gestion-explore-v2.html'
+      - 'explore-resa-owner-bridge.js'
+      - 'explore-resa-owner-bridge.test.cjs'
+      - 'explore-resa-public-bridge.js'
+      - 'explore-resa-public-bridge.test.cjs'
+      - 'docs/EXPLORE_RESA_OWNER_V9_GATE_20261010.md'
+      - '.github/workflows/explore-resa-owner-bridge.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'gestion-explore-v2.html'
+      - 'explore-resa-owner-bridge.js'
+      - 'explore-resa-owner-bridge.test.cjs'
+      - 'explore-resa-public-bridge.js'
+      - 'explore-resa-public-bridge.test.cjs'
+      - 'docs/EXPLORE_RESA_OWNER_V9_GATE_20261010.md'
+      - '.github/workflows/explore-resa-owner-bridge.yml'
+permissions:
+  contents: read
+jobs:
+  owner-resa-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntaxe JavaScript
+        run: |
+          node --check explore-resa-public-bridge.js
+          node --check explore-resa-owner-bridge.js
+          node --check explore-resa-owner-bridge.test.cjs
+      - name: EXPLORE historique et propriétaire RÉSA V9
+        run: |
+          node --test explore-resa-public-bridge.test.cjs
+          node --test explore-resa-owner-bridge.test.cjs
