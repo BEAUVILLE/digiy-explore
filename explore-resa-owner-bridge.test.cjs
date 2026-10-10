@@ -26,7 +26,7 @@ function setup(){
  const context={window,document,URL,Date,Intl};
  vm.runInNewContext(publicSrc,context,{timeout:1000});
  vm.runInNewContext(ownerSrc,context,{timeout:1000});
- return {api:window.DIGIYExploreResaOwner,el,document};
+ return {api:window.DIGIYExploreResaOwner,el,document,window};
 }
 const place={slug:'pro-explore-saly',external_links:[{type:'booking',url:'https://resa-table-resto.digiylyfe.com/planning.html?slug=pro-resa-saly'}]};
 const user={id:'owner-a'};
@@ -98,7 +98,7 @@ test('missing V9 RPC keeps the interface read-only and never creates a booking',
  assert.equal(el.resaOwnerBookings.children.length,0);
 });
 test('only V9 client_request_id bookings appear, with per-owner authorized V5 actions',async()=>{
- const {api,el,document}=setup();
+ const {api,el,document,window}=setup();
  const b={id:'real-uuid-1',client_request_id:'new-request-uuid',booking_date:'2099-10-20',
   booking_time:'10:30:00',customer_name:'Client de test',customer_phone:'000000000',
   service_name:'Atelier',status:'pending',note_text:''};
@@ -114,6 +114,9 @@ test('only V9 client_request_id bookings appear, with per-owner authorized V5 ac
  assert.deepEqual([...api.transitions('confirmed')],['done','no_show','cancelled']);
  const row=el.resaOwnerBookings.children[0];
  const buttons=row.children.find(x=>x.className==='resa-owner-actions').children;
+ window.confirm=()=>false;
+ await buttons[1].listeners.click();
+ assert.equal(rpcCalls.filter(x=>x.name==='digiy_resa_universal_owner_manage_v2').length,0,'annulation refusée sans confirmation');
  await buttons[0].listeners.click();
  assert.deepEqual(JSON.parse(JSON.stringify(rpcCalls.filter(x=>x.name==='digiy_resa_universal_owner_manage_v2').map(x=>x.args))),
   [{p_booking_id:b.id,p_action:'confirmed',p_note_text:null}]);
