@@ -9,7 +9,7 @@ const page=fs.readFileSync(path.join(__dirname,'gestion-explore-v2.html'),'utf8'
 function setup(){
  const window={confirm:()=>true},doc={};
  const names=['resaSetupCard','resaSetupStatus','resaSetupServices','resaSetupSlots','resaServiceName','resaServiceDuration',
- 'resaServicePrice','resaServiceSave','resaServiceCancel','resaSlotDay','resaSlotStart','resaSlotEnd','resaSlotSave','resaSetupHint'];
+ 'resaServicePrice','resaServiceSave','resaServiceCancel','resaSetupExploreDates','resaSlotDay','resaSlotStart','resaSlotEnd','resaSlotSave','resaSetupHint'];
  const el=Object.fromEntries(names.map(id=>[id,{id,hidden:true,value:'',disabled:false,children:[],replaceChildren(){this.children=[]},append(...a){this.children.push(...a)}}]));
  doc.getElementById=id=>el[id]||null;
  doc.createElement=tag=>({tag,children:[],textContent:'',disabled:false,hidden:false,append(...a){this.children.push(...a)},addEventListener(type,fn){(this.listeners||(this.listeners={}))[type]=fn}});
@@ -19,7 +19,7 @@ function setup(){
 const user={id:'user-owner-a'};
 const place={slug:'sortie-peche-jb-baptiste-760a00ad',auth_user_id:user.id,is_active:true};
 const profile={slug:place.slug,auth_user_id:user.id,is_active:true,is_published:false};
-function fakeDb({ownerProfile=profile,services=[],slots=[],error=null}={}){
+function fakeDb({ownerProfile=profile,services=[],slots=[],calendarDays=[],error=null}={}){
  const calls=[];
  return {calls,
   from(table){
@@ -33,6 +33,7 @@ function fakeDb({ownerProfile=profile,services=[],slots=[],error=null}={}){
   },
   async rpc(name,args){
    calls.push({action:'rpc',name,args});
+   if(name==='digiy_explore_owner_calendar_v1')return {data:calendarDays,error:null};
    return {data:{ok:true,enabled:false},error:null};
   }
  };
@@ -94,12 +95,34 @@ test('owner can publish only real future 1-place slots of a saved service',async
   slug:place.slug,slot_date:api.addDays(api.dayDakar(),1),start_time:'09:00',end_time:'11:00',status:'open',capacity:1
  });
 });
+test('available EXPLORE dates fill only a RÉSA date, never create a booking',async()=>{
+ const {api,doc,el}=setup();
+ const today=api.dayDakar(),tomorrow=api.addDays(today,1),next=api.addDays(today,2);
+ const sb=fakeDb({calendarDays:[
+  {day:tomorrow,status:'available',note:'Départ réel à définir'},
+  {day:next,status:'closed',note:'Fermeture'},
+  {day:api.addDays(today,-1),status:'available',note:'Passé'}
+ ]});
+ const x=await api.initialize({document:doc,supabase:sb,user,place,siteSlug:place.slug,ownerVerified:true});
+ assert.equal(x.ok,true);
+ const shortcuts=el.resaSetupExploreDates.children.filter(x=>x.tag==='button');
+ assert.equal(shortcuts.length,1);
+ assert.match(shortcuts[0].textContent,/Départ réel à définir/);
+ assert.equal(el.resaSlotDay.value,'');
+ shortcuts[0].listeners.click();
+ assert.equal(el.resaSlotDay.value,tomorrow);
+ assert.equal(el.resaSlotStart.value,'');
+ assert.equal(el.resaSlotEnd.value,'');
+ assert.equal(sb.calls.filter(x=>x.action==='insert'||x.action==='update').length,0);
+ assert.equal(sb.calls.filter(x=>x.action==='rpc'&&x.name==='digiy_explore_owner_calendar_v1').length,1);
+});
 test('page wires setup only after MFA and real owner profile; no fake record on load',()=>{
  assert.match(page,/DIGIY_OWNER_PHONE_MFA\.guard/);
  assert.match(page,/DIGIYExploreResaSetup\.initialize/);
  assert.match(page,/explore-resa-owner-setup-v25\.js/);
  assert.match(page,/id="resaSetupCard"[^>]*hidden/);
  assert.match(page,/id="resaSlotSave"/);
+ assert.match(page,/id="resaSetupExploreDates"/);
  assert.doesNotMatch(script,/service_role|\.delete\s*\(|client_request_id|digiy_resa_create_booking/);
  assert.doesNotMatch(script,/innerHTML\s*=/);
  assert.match(script,/is_active:false/);
