@@ -11,6 +11,7 @@
 <script src="./explore-owner-v24.js"></script>
 <script src="./explore-resa-public-bridge.js"></script>
 <script src="./explore-resa-owner-bridge.js"></script>
+<script src="./explore-resa-owner-setup-v25.js"></script>
 <style>
 :root{--bg:#06130f;--card:#0b241b;--gold:#d4af37;--gold2:#f3d46b;--ink:#f8fafc;--muted:rgba(248,250,252,.72);--line:rgba(255,255,255,.12);--green:#22c55e;--red:#ef4444}
 *{box-sizing:border-box}html,body{margin:0}body{min-height:100vh;background:linear-gradient(180deg,#071510,#04100c);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{width:min(100% - 24px,760px);margin:auto}header{padding:18px 0;border-bottom:1px solid rgba(212,175,55,.3);background:#06130f}.brand{font-size:21px;font-weight:950;color:var(--gold2)}.sub{font-size:11px;color:var(--muted);margin-top:4px}.langs{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}.langs button{border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}.langs button.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#102419}
@@ -21,7 +22,7 @@ label{display:block;margin:14px 0 6px;font-size:11px;font-weight:950;color:var(-
 .resa-owner-booking p{line-height:1.5;font-size:12px;overflow-wrap:anywhere}
 .resa-owner-actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .resa-owner-booking textarea{min-height:66px}
-#resaOwnerCard[hidden],#linksMediaCard[hidden],#calendarCard[hidden],#suggestResaLink[hidden]{display:none!important}
+#resaOwnerCard[hidden],#resaSetupCard[hidden],#resaServiceCancel[hidden],#linksMediaCard[hidden],#calendarCard[hidden],#suggestResaLink[hidden]{display:none!important}
 html[dir="rtl"] body{direction:rtl}
 </style>
 </head>
@@ -82,6 +83,30 @@ html[dir="rtl"] body{direction:rtl}
 </details>
 <div id="calList" class="hint" style="margin-top:12px"></div>
 </section>
+<section class="card" id="resaSetupCard" style="margin-top:14px" hidden>
+  <h2 style="margin-top:0">🛠️ Préparer mes prestations & créneaux RÉSA</h2>
+  <p class="hint">Réservé au professionnel connecté : saisissez uniquement vos vraies prestations, vos durées et vos disponibilités. Sans publication ni activation du pilote, aucun client ne peut réserver.</p>
+  <p id="resaSetupHint" class="lock"></p>
+  <p id="resaSetupStatus" role="status" aria-live="polite"></p>
+  <h3>Mes prestations</h3>
+  <div id="resaSetupServices" aria-label="Prestations déjà enregistrées"></div>
+  <label for="resaServiceName">Nom réel de la prestation</label>
+  <input id="resaServiceName" type="text" maxlength="120" autocomplete="off" placeholder="Ex. Sortie pêche accompagnée">
+  <label for="resaServiceDuration">Durée en minutes (5 à 480)</label>
+  <input id="resaServiceDuration" type="number" min="5" max="480" step="1" value="30" inputmode="numeric">
+  <label for="resaServicePrice">Tarif en FCFA (facultatif)</label>
+  <input id="resaServicePrice" type="number" min="0" max="5000000" step="1" inputmode="numeric" placeholder="Laisser vide si sur demande">
+  <button id="resaServiceSave" class="save" type="button">Ajouter cette prestation</button>
+  <button id="resaServiceCancel" class="btn" type="button" hidden style="margin-top:8px">Annuler la modification</button>
+  <h3 style="margin-top:22px">Mes créneaux réels · heure de Saly / Dakar</h3>
+  <p class="hint">Choisissez une date, une heure de début et de fin. Un créneau ne doit pas chevaucher un autre. La capacité V9 est limitée à un rendez-vous par créneau.</p>
+  <label for="resaSlotDay">Date réelle</label><input id="resaSlotDay" type="date">
+  <label for="resaSlotStart">Début</label><input id="resaSlotStart" type="time" step="300">
+  <label for="resaSlotEnd">Fin</label><input id="resaSlotEnd" type="time" step="300">
+  <button id="resaSlotSave" class="save" type="button">Enregistrer ce créneau</button>
+  <div id="resaSetupSlots" style="margin-top:14px" aria-label="Créneaux réels déjà saisis"></div>
+  <p class="hint">Ce planning RÉSA est distinct du calendrier terrain. Modifier ou fermer un créneau ne confirme et n'annule pas un rendez-vous existant. Paiement direct · 0 % commission.</p>
+</section>
 <section class="card" id="resaOwnerCard" style="margin-top:14px" hidden>
   <h2 style="margin-top:0">📅 Mes rendez-vous RÉSA</h2>
   <p class="hint">Ce suivi distinct du calendrier terrain ne fonctionne qu’avec un vrai compte RÉSA relié à cette fiche et les fonctions sécurisées V9. Aucun rendez-vous, paiement ou disponibilité n’est inventé.</p>
@@ -129,7 +154,7 @@ $("websiteUrl").value=data.website_url||links.find(x=>x?.type==="website")?.url|
 $("mapsUrl").value=links.find(x=>x?.type==="maps")?.url||"";
 $("bookingUrl").value=links.find(x=>x?.type==="booking")?.url||"";
 $("photoUrls").value=(Array.isArray(data.photo_urls)?data.photo_urls:[]).join("\n");
-$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}discoverResaOwnerLink(data,cu);return true}
+$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}if(window.DIGIYExploreResaSetup){window.DIGIYExploreResaSetup.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaSetupCard").hidden=true})}discoverResaOwnerLink(data,cu);return true}
 async function discoverResaOwnerLink(place,cu){
  const btn=$("suggestResaLink"),note=$("resaLinkInfo");
  btn.hidden=true;
