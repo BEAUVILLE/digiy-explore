@@ -42,22 +42,47 @@ async function initialize(args){
   return {ok:false,reason:'owner_not_verified'};
  section.hidden=false;
  const reference=validateReference(place);
- if(!reference){
-  status.textContent='Aucun planning RÉSA relié à cette fiche. Votre calendrier terrain EXPLORE reste disponible ; il ne réserve pas de créneau automatiquement.';
+ // A matching unpublished RÉSA profile can be managed privately without a
+ // public EXPLORE booking link. This path is restricted to the same real
+ // EXPLORE Auth owner and slug; legacy explicitly approved links are preserved.
+ const privateSameSlug=!reference && place.auth_user_id===user.id &&
+  place.is_active===true && place.slug===args.siteSlug;
+ if(!reference&&!privateSameSlug){
+  status.textContent='Aucun planning RÉSA relié à cette fiche. Le calendrier terrain EXPLORE reste disponible sans créer de réservation.';
   return {ok:true,mode:'not_linked'};
  }
- status.textContent='Vérification de votre accès au planning RÉSA…';
- const {data:profile,error:pe}=await sb.from('digiy_resa_profiles')
-  .select('slug,auth_user_id,is_active,is_published,display_name')
-  .eq('slug',reference.slug).eq('auth_user_id',user.id).eq('is_active',true).maybeSingle();
- if(pe||!profile||profile.auth_user_id!==user.id||profile.slug!==reference.slug){
-  status.textContent='Ce planning RÉSA n’est pas encore rattaché à votre compte propriétaire. Aucun rendez-vous privé n’est affiché. Contactez l’équipe DIGIYLYFE pour valider le lien.';
+ if(place.auth_user_id&&place.auth_user_id!==user.id){
+  return {ok:false,reason:'owner_not_verified'};
+ }
+ const targetSlug=reference?.slug||args.siteSlug;
+ status.textContent='Vérification de votre accès propriétaire RÉSA…';
+ let profileResult;
+ try{
+  profileResult=await sb.from('digiy_resa_profiles')
+   .select('slug,auth_user_id,is_active,is_published,display_name')
+   .eq('slug',targetSlug).eq('auth_user_id',user.id).eq('is_active',true).maybeSingle();
+ }catch(_){
+  status.textContent='Vérification du compte RÉSA indisponible. Aucun rendez-vous privé affiché.';
   return {ok:true,mode:'ownership_unconfirmed'};
  }
- // Link remains a public *view* only, not an owner's secret or a claim token.
- link.href=reference.href;link.hidden=false;link.rel='noopener noreferrer';link.target='_blank';
- link.textContent='📅 Voir le planning RÉSA public';
- const gate=await sb.rpc('digiy_resa_universal_pilot_gate_v1',{p_slug:reference.slug});
+ const {data:profile,error:pe}=profileResult;
+ if(pe||!profile||profile.is_active!==true||profile.auth_user_id!==user.id||profile.slug!==targetSlug){
+  status.textContent='Ce planning RÉSA n’est pas encore rattaché à votre compte propriétaire. Aucun rendez-vous privé affiché.';
+  return {ok:true,mode:'ownership_unconfirmed'};
+ }
+ // Never expose a public planning URL for an unpublished RÉSA profile.
+ // Legacy approved links remain usable once the RÉSA profile is published.
+ if(reference&&profile.is_published===true){
+  link.href=reference.href;link.hidden=false;link.rel='noopener noreferrer';link.target='_blank';
+  link.textContent='📅 Voir le planning RÉSA public';
+ }
+ let gate;
+ try{
+  gate=await sb.rpc('digiy_resa_universal_pilot_gate_v1',{p_slug:targetSlug});
+ }catch(_){
+  status.textContent='RÉSA sécurisé indisponible : aucun nouveau rendez-vous affiché.';
+  return {ok:true,mode:'v9_unavailable'};
+ }
  if(gate.error || gate.data?.ok!==true){
   status.textContent='RÉSA V9 n’est pas encore installé pour les rendez-vous sécurisés. Le calendrier EXPLORE ne crée aucune réservation.';
   return {ok:true,mode:'v9_unavailable'};
@@ -67,17 +92,24 @@ async function initialize(args){
  const day=localDateInDakar();
  const refresh=async()=>{
   list.replaceChildren();
-  const res=await sb.from('digiy_resa_bookings')
-   .select('id,booking_date,booking_time,customer_name,customer_phone,service_name,status,note_text,client_request_id')
-   .eq('slug',reference.slug).not('client_request_id','is',null)
-   .gte('booking_date',day)
-   .order('booking_date',{ascending:true}).order('booking_time',{ascending:true}).limit(50);
+  let res;
+  try{
+   res=await sb.from('digiy_resa_bookings')
+    .select('id,booking_date,booking_time,customer_name,customer_phone,service_name,status,note_text,client_request_id')
+    .eq('slug',targetSlug).not('client_request_id','is',null)
+    .gte('booking_date',day)
+    .order('booking_date',{ascending:true}).order('booking_time',{ascending:true}).limit(50);
+  }catch(_){
+   status.textContent='Lecture des rendez-vous indisponible. Aucun dossier n’a été modifié.';
+   return {ok:false,reason:'read_failed'};
+  }
   if(res.error){
    status.textContent='Lecture du planning indisponible : aucun rendez-vous n’a été modifié.';
    return {ok:false,reason:'read_failed'};
   }
   const rows=Array.isArray(res.data)?res.data:[];
   status.textContent=(enabled?'Pilote RÉSA activé. ':'Pilote RÉSA fermé. ')
+    +(!profile.is_published?'Préparation privée ; la fiche RÉSA n’est pas publiée. ':'')
     +(rows.length?rows.length+' rendez-vous sécurisé(s) à suivre.':'Aucun nouveau rendez-vous sécurisé à suivre.')
     +' Paiement direct au professionnel, jamais enregistré automatiquement.';
   for(const row of rows){
