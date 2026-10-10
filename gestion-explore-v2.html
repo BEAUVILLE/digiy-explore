@@ -122,7 +122,7 @@ html[dir="rtl"] body{direction:rtl}
 (()=>{
 const CORE={url:"https://wesqmwjjtsefyjnluosj.supabase.co",key:"sb_publishable_tGHItRgeWDmGjnd0CK1DVQ_BIep4Ug3",table:"digiy_explore_places"};
 const sb=window.supabase.createClient(CORE.url,CORE.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const $=id=>document.getElementById(id);const params=new URL(location.href).searchParams;const siteSlug=(params.get("site")||"").trim();let lang=params.get("lang")||localStorage.getItem("digiy_lang")||"fr";let user=null,ownerPlace=null;
+const $=id=>document.getElementById(id);const params=new URL(location.href).searchParams;const siteSlug=(params.get("site")||"").trim();let lang=params.get("lang")||localStorage.getItem("digiy_lang")||"fr";let user=null,ownerPlace=null,resaSetupSession=null;
 if(siteSlug){const publicUrl=new URL("./fiche.html",location.href);publicUrl.searchParams.set("slug",siteSlug);$("viewPublicBtn").href=publicUrl.href;}
 const D={
 fr:{manage:"Gestion propriétaire",sub:"Profil · contact · horaires · disponibilité",back:"← Retour à la fiche",logout:"Déconnexion",lock:"Vous gérez ici vos informations publiques et opérationnelles. Nom principal, catégorie, photos, publication et structure restent protégés.",shortDesc:"Description courte",shortDescHint:"Une phrase claire pour présenter l’activité.",fullDesc:"Description complète",fullDescHint:"Présentez l’expérience, le lieu ou le service plus en détail.",city:"Ville",zone:"Zone / quartier",address:"Adresse / repère",addressHint:"Un repère simple et utile pour le visiteur.",phone:"Téléphone public",whatsapp:"WhatsApp public",hours:"Horaires du moment",hoursHint:"Ex. 10h–19h · Fermé lundi · Sur réservation.",price:"Tarif indicatif",priceHint:"Ex. À partir de 15 000 FCFA · Gratuit · Sur demande.",availability:"Disponibilité",availabilityHint:"Choisissez une information simple et vraie aujourd’hui.",note:"Note du moment",noteHint:"Une info utile : créneau, météo, départ, fermeture exceptionnelle, etc.",save:"Enregistrer",saved:"Modifications enregistrées.",noSession:"Ouvrez cette page depuis le lien reçu par email.",noSite:"Aucune présence EXPLORE n’est indiquée dans ce lien.",forbidden:"Aucune présence EXPLORE ne correspond à ce compte.",loading:"Chargement…"},
@@ -156,7 +156,7 @@ $("websiteUrl").value=data.website_url||links.find(x=>x?.type==="website")?.url|
 $("mapsUrl").value=links.find(x=>x?.type==="maps")?.url||"";
 $("bookingUrl").value=links.find(x=>x?.type==="booking")?.url||"";
 $("photoUrls").value=(Array.isArray(data.photo_urls)?data.photo_urls:[]).join("\n");
-$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}if(window.DIGIYExploreResaSetup){window.DIGIYExploreResaSetup.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaSetupCard").hidden=true})}discoverResaOwnerLink(data,cu);return true}
+$("editor").hidden=false;$("linksMediaCard").hidden=false;$("calendarCard").hidden=false;$("msg").className="msg";if(window.DIGIYExploreResaOwner){window.DIGIYExploreResaOwner.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).catch(()=>{$("resaOwnerCard").hidden=true})}if(window.DIGIYExploreResaSetup){window.DIGIYExploreResaSetup.initialize({document:document,supabase:sb,user:cu,place:data,siteSlug:siteSlug,ownerVerified:true}).then(state=>{if(state?.ok&&typeof state.refreshCalendar==='function')resaSetupSession=state}).catch(()=>{$("resaSetupCard").hidden=true})}discoverResaOwnerLink(data,cu);return true}
 async function discoverResaOwnerLink(place,cu){
  const btn=$("suggestResaLink"),note=$("resaLinkInfo");
  btn.hidden=true;
@@ -215,7 +215,14 @@ function localIso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(
 async function saveCalendarDay(day,status,note){
  const {error}=await sb.rpc("digiy_explore_owner_set_calendar_day_v1",{p_slug:siteSlug,p_day:day,p_status:status,p_note:note||""});
  if(error){$("calList").textContent="⚠️ "+error.message;return false}
- $("calList").textContent="✅ Calendrier mis à jour.";return true;
+ $("calList").textContent="✅ Calendrier mis à jour.";
+ // Owner-only read-only refresh after actual EXPLORE write. Never submits a reservation.
+ if(resaSetupSession?.refreshCalendar){
+  try{await resaSetupSession.refreshCalendar()}catch(_){
+   $("calList").textContent="✅ Enregistré. Rechargez la page pour revoir les écarts avec RÉSA.";
+  }
+ }
+ return true;
 }
 async function loadCalendar(){
  const today=new Date(),from=localIso(today);
