@@ -185,6 +185,22 @@ test('V29 reports no discrepancy when the real calendars agree',async()=>{
  assert.equal(result.ok,true);
  assert.match(el.resaSetupCalendarWarnings.children[0].textContent,/Aucun écart détecté/);
 });
+test('V30 owner calendar refresh detects a new closed day without any RÉSA write',async()=>{
+ const {api,doc,el}=setup();
+ const date=api.addDays(api.dayDakar(),1);
+ const calendarDays=[{day:date,status:'available',note:'DEPART 09H RETOUR 13H'}];
+ const slots=[{slug:place.slug,slot_date:date,start_time:'09:00:00',end_time:'13:00:00',status:'open'}];
+ const sb=fakeDb({calendarDays,slots});
+ const state=await api.initialize({document:doc,supabase:sb,user,place,siteSlug:place.slug,ownerVerified:true});
+ assert.equal(state.ok,true);
+ assert.equal(typeof state.refreshCalendar,'function');
+ assert.match(el.resaSetupCalendarWarnings.children[0].textContent,/Aucun écart détecté/);
+ calendarDays[0].status='closed';
+ await state.refreshCalendar();
+ assert.match(el.resaSetupCalendarWarnings.children[0].textContent,/1 écart/);
+ assert.match(el.resaSetupCalendarWarnings.children[1].textContent,/reste ouvert/);
+ assert.equal(sb.calls.filter(x=>x.action==='insert'||x.action==='update').length,0);
+});
 test('page wires setup only after MFA and real owner profile; no fake record on load',()=>{
  assert.match(page,/DIGIY_OWNER_PHONE_MFA\.guard/);
  assert.match(page,/DIGIYExploreResaSetup\.initialize/);
@@ -193,6 +209,7 @@ test('page wires setup only after MFA and real owner profile; no fake record on 
  assert.match(page,/id="resaSlotSave"/);
  assert.match(page,/id="resaSetupExploreDates"/);
  assert.match(page,/id="resaSetupCalendarWarnings"/);
+ assert.match(page,/await resaSetupSession\.refreshCalendar\(\)/);
  assert.doesNotMatch(script,/service_role|\.delete\s*\(|client_request_id|digiy_resa_create_booking/);
  assert.doesNotMatch(script,/innerHTML\s*=/);
  assert.match(script,/is_active:false/);

@@ -307,7 +307,8 @@ async function initialize({document:doc,supabase:sb,user,place,siteSlug,ownerVer
  clearEdit();
  const loaded=await load();
  if(loaded)await loadExploreDates();
- return {ok:loaded,mode:loaded?'owner_setup':'read_failed',published:profile.is_published};
+ return {ok:loaded,mode:loaded?'owner_setup':'read_failed',published:profile.is_published,
+  refreshCalendar:loaded?async()=>{await loadExploreDates();return true}:null};
 }
 root.DIGIYExploreResaSetup=Object.freeze({dayDakar,addDays,validService,validSlot,explicitDepartureReturn,calendarConflicts,actualOwner,initialize});
 })(typeof window!=='undefined'?window:globalThis);
