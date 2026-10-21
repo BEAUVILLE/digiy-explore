@@ -96,12 +96,12 @@
         door(doc,{href:'https://digiy-hub.digiylyfe.com/',icon:'🧭',title:t.hub,note:t.hubNote})
       );
 
-      var spots=doc.getElementById('spots');
+      var spots=doc.getElementById('professional-requests');
       if(spots&&spots.parentNode) spots.parentNode.insertBefore(block,spots);
       else{
         var main=doc.querySelector('main');
-        if(main) main.prepend(block);
-        else doc.body.prepend(block);
+        if(main) main.appendChild(block);
+        else doc.body.appendChild(block);
       }
       mountedDoc=doc;
     }catch(e){}
