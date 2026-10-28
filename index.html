@@ -79,7 +79,16 @@
 
   <script>
   (function(){
-    var TARIFS='https://digiylyfe.com/tarifs-adherents-1.html?country=fr';
+    function officialTarifs(){
+      var src=new URLSearchParams(location.search);
+      var raw=String(src.get('country')||src.get('pays')||'sn').toLowerCase();
+      var country=raw==='fr'||raw==='france'?'fr':raw==='us'||raw==='usa'?'us':'sn';
+      var lang=String(document.documentElement.lang||src.get('lang')||'fr').slice(0,2).toLowerCase();
+      if(!['fr','en','es','pt','de','it','nl','ar'].includes(lang)) lang='fr';
+      var url=new URL('https://digiylyfe.com/tarifs-adherents-1.html');
+      url.searchParams.set('country',country);url.searchParams.set('lang',lang);
+      return url.toString();
+    }
     var frame=document.getElementById('exploreFrame');
 
     function patchExploreCore(){
@@ -87,8 +96,8 @@
         var d=frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
         if(!d || !d.body) return;
 
-        d.querySelectorAll('a[href*="https://digiylyfe.com/tarifs-adherents-1.html?country=fr"]').forEach(function(a){
-          a.href=TARIFS;
+        d.querySelectorAll('a[href*="digiylyfe.com/tarifs-adherents-1.html"]').forEach(function(a){
+          a.href=officialTarifs();
           a.target='_blank';
           a.rel='noopener noreferrer';
         });
@@ -118,9 +127,9 @@
             var box=d.createElement('div');
             box.id='digiyExploreAdherent19900';
             box.innerHTML=
-              '<strong>🌍 EXPLORE PRO · 19 900 FCFA / mois · 45 € / mois Europe</strong>'+
+              '<strong>🌍 EXPLORE PRO · Voir les tarifs adhérents selon le pays</strong>'+
               '<span>Carte digitale · QR · visibilité EXPLORE · contact direct · 8 langues · 0 % commission.</span>'+
-              '<a href="'+TARIFS+'" target="_blank" rel="noopener noreferrer">💳 Voir l’adhésion</a>';
+              '<a href="'+officialTarifs()+'" target="_blank" rel="noopener noreferrer">💳 Consulter les tarifs adhérents</a>';
             hero.appendChild(box);
 
             var st=d.createElement('style');
