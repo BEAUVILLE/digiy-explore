@@ -412,10 +412,76 @@
     if(q)return valid(q);
     try{return valid(localStorage.getItem(STORE)||'fr');}catch(e){return 'fr';}
   }
+  var golfCard={
+  "en": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Golf instructor",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Beginners’ lessons · Private and group lessons · Technique improvement · All skill levels.",
+    "Voir la carte": "View card",
+    "WhatsApp direct": "Direct WhatsApp",
+    "Appeler": "Call"
+  },
+  "es": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Profesor de golf",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Iniciación · Clases individuales y en grupo · Perfeccionamiento técnico · Todos los niveles.",
+    "Voir la carte": "Ver tarjeta",
+    "WhatsApp direct": "WhatsApp directo",
+    "Appeler": "Llamar"
+  },
+  "pt": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Professor de golfe",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Iniciação · Aulas individuais e em grupo · Aperfeiçoamento técnico · Todos os níveis.",
+    "Voir la carte": "Ver cartão",
+    "WhatsApp direct": "WhatsApp direto",
+    "Appeler": "Ligar"
+  },
+  "it": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Maestro di golf",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Introduzione · Lezioni individuali e di gruppo · Miglioramento tecnico · Tutti i livelli.",
+    "Voir la carte": "Vedi biglietto",
+    "WhatsApp direct": "WhatsApp diretto",
+    "Appeler": "Chiama"
+  },
+  "de": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Golflehrer",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Einsteiger · Einzel- und Gruppenunterricht · Technik verbessern · Alle Spielstärken.",
+    "Voir la carte": "Karte ansehen",
+    "WhatsApp direct": "Direkt per WhatsApp",
+    "Appeler": "Anrufen"
+  },
+  "nl": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Golfinstructeur",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Beginners · Privé- en groepslessen · Techniek verbeteren · Alle niveaus.",
+    "Voir la carte": "Bekijk kaart",
+    "WhatsApp direct": "Rechtstreeks via WhatsApp",
+    "Appeler": "Bellen"
+  },
+  "ar": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — مدرب غولف",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "دروس للمبتدئين · دروس فردية وجماعية · تحسين التقنية · جميع المستويات.",
+    "Voir la carte": "عرض البطاقة",
+    "WhatsApp direct": "واتساب مباشر",
+    "Appeler": "اتصال"
+  },
+  "wo": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — Jàngalekatu golf",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "Njëkk a tàmbali · Njàngum kenn ak mbooloo · Gën a man golf · Ñépp man nañu ci bokk.",
+    "Voir la carte": "Xool kaart bi",
+    "WhatsApp direct": "WhatsApp jub",
+    "Appeler": "Woo"
+  },
+  "zh": {
+    "Cainack DIOUF — Professeur de golf": "Cainack DIOUF — 高尔夫教练",
+    "Initiation · perfectionnement · cours individuels · cours en groupe · tous niveaux.": "入门课程 · 一对一及小组课程 · 技术提升 · 适合所有水平。",
+    "Voir la carte": "查看名片",
+    "WhatsApp direct": "WhatsApp 直接联系",
+    "Appeler": "拨打电话"
+  }
+};
   function translated(value,lang){
     var raw=String(value==null?'':value);
     if(lang==='fr')return raw;
     var clean=norm(raw);
+    if(golfCard[lang]&&Object.hasOwn(golfCard[lang],clean))return golfCard[lang][clean];
     if(lang==='wo'||lang==='zh')return Object.hasOwn(world10,clean)?world10[clean][lang]:raw;
     var row=exact[clean];
     if(row)return row[langIndex[lang]]||raw;
@@ -428,7 +494,7 @@
   }
   function looksFrench(value){
     var clean=norm(value);
-    if(exact[clean]||Object.hasOwn(world10,clean))return true;
+    if(exact[clean]||Object.hasOwn(world10,clean)||Object.hasOwn(golfCard.en,clean))return true;
     return partial.some(function(r){var fr=norm(r[0]);return fr.length>10&&clean.indexOf(fr)>=0;});
   }
   function rememberText(node){
