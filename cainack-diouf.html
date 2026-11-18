@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cainack Diouf · DIGIY EXPLORE</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#06130f;color:#fff;font:1rem system-ui,sans-serif}
+main{max-width:630px;margin:auto;padding:16px}nav,.actions{display:flex;flex-wrap:wrap;gap:8px;margin-block:12px}
+a{color:#ffe29a}nav a,.actions a{padding:10px 12px;border:1px solid #b69950;border-radius:10px;text-decoration:none}
+[aria-current=true]{background:#ffe29a;color:#06130f}
+article{background:#113428;border:1px solid #b69950;border-radius:16px;padding:16px}
+.portrait{max-width:360px;aspect-ratio:1;margin:auto;border-radius:12px;background:url("https://digiylyfe.com/assets/Carte%20promotionnelle%20de%20golf%20tropicale.png") 36% 14.6% / 214% auto no-repeat}
+h1{margin-block-end:4px}h2{font-size:1.25rem;margin-block-start:0;color:#ffe29a}
+li{margin-block:6px}.brand{color:#ffe29a;font-weight:750}
+</style>
+</head>
+<body><main>
+<p class="brand">DIGIY EXPLORE · GOLF · SALY</p>
+<nav aria-label="DIGIY EXPLORE languages"><a href="?lang=fr" data-card-lang="fr">FR</a><a href="?lang=en" data-card-lang="en">EN</a><a href="?lang=es" data-card-lang="es">ES</a><a href="?lang=pt" data-card-lang="pt">PT</a><a href="?lang=it" data-card-lang="it">IT</a><a href="?lang=de" data-card-lang="de">DE</a><a href="?lang=nl" data-card-lang="nl">NL</a><a href="?lang=ar" data-card-lang="ar">AR</a><a href="?lang=wo" data-card-lang="wo">WO</a><a href="?lang=zh" data-card-lang="zh">ZH</a></nav>
+<article>
+<div class="portrait" role="img" aria-label="Cainack Diouf"></div>
+<h1>Cainack Diouf</h1>
+<h2 data-copy="0">Professeur de golf</h2>
+<p>Saly · Mbour · Sénégal</p>
+<ul><li data-copy="1">Initiation</li><li data-copy="2">Cours individuels</li><li data-copy="3">Cours en groupe</li><li data-copy="4">Perfectionnement technique</li><li data-copy="5">Tous niveaux</li></ul>
+<div class="actions"><a data-copy="6" href="tel:+221774233488">Appeler</a><a href="https://wa.me/221774233488" rel="noopener" target="_blank">WhatsApp</a><a data-copy="7" href="https://digiylyfe.com/assets/Carte%20promotionnelle%20de%20golf%20tropicale.png" rel="noopener" target="_blank">Voir la carte originale</a></div>
+</article>
+<p><a data-copy="8" id="back" href="./">Retour à EXPLORE</a></p>
+</main>
+<script>
+(function(){
+ const copy={
+  "fr": "Professeur de golf|Initiation|Cours individuels|Cours en groupe|Perfectionnement technique|Tous niveaux|Appeler|Voir la carte originale|Retour à EXPLORE",
+  "en": "Golf instructor|Beginners’ lessons|Private lessons|Group lessons|Technique improvement|All skill levels|Call|View original card|Back to EXPLORE",
+  "es": "Profesor de golf|Iniciación|Clases individuales|Clases en grupo|Perfeccionamiento técnico|Todos los niveles|Llamar|Ver tarjeta original|Volver a EXPLORE",
+  "pt": "Professor de golfe|Iniciação|Aulas individuais|Aulas em grupo|Aperfeiçoamento técnico|Todos os níveis|Ligar|Ver cartão original|Voltar a EXPLORE",
+  "it": "Maestro di golf|Introduzione al golf|Lezioni individuali|Lezioni di gruppo|Perfezionamento tecnico|Tutti i livelli|Chiama|Vedi il biglietto originale|Torna a EXPLORE",
+  "de": "Golflehrer|Golf für Anfänger|Einzelunterricht|Gruppenunterricht|Technik verbessern|Alle Spielstärken|Anrufen|Originalkarte ansehen|Zurück zu EXPLORE",
+  "nl": "Golfinstructeur|Beginnerslessen|Privélessen|Groepslessen|Techniek verbeteren|Alle niveaus|Bellen|Originele kaart bekijken|Terug naar EXPLORE",
+  "ar": "مدرب غولف|دروس للمبتدئين|دروس فردية|دروس جماعية|تحسين التقنية|جميع المستويات|اتصال|عرض البطاقة الأصلية|العودة إلى EXPLORE",
+  "wo": "Jàngalekatu golf|Njëkk a tàmbali golf|Njàngum kenn|Njàngum mbooloo|Gën a man golf|Ñépp man nañu ci bokk|Woo|Xool kaart bu njëkk bi|Dellu ci EXPLORE",
+  "zh": "高尔夫教练|入门课程|一对一课程|小组课程|技术提升|适合所有水平|拨打电话|查看原始名片|返回 EXPLORE"
+};
+ const explicit=new URL(location.href).searchParams.get('lang');
+ let saved;
+ try{saved=localStorage.getItem('digiy_explore_lang_7');}catch(_){}
+ const requested=explicit||saved;
+ const lang=Object.hasOwn(copy,requested)?requested:'fr';
+ document.documentElement.lang=lang;
+ document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+ document.querySelector('[data-card-lang="'+lang+'"]').setAttribute('aria-current','true');
+ const labels=copy[lang].split('|');
+ document.querySelectorAll('[data-copy]').forEach(element=>{
+   element.textContent=labels[Number(element.dataset.copy)];
+ });
+ document.getElementById('back').href='./?lang='+lang;
+})();
+</script></body></html>
