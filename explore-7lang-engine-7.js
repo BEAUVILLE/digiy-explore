@@ -287,6 +287,114 @@
   "Bonjour, je viens de DIGIY EXPLORE. Je suis intéressé par une sortie pêche sur la Petite Côte.": {
     "wo": "Nanga def, DIGIY EXPLORE laa jóge. Bëgg naa dem napp ci Petite Côte.",
     "zh": "您好，我通过 DIGIY EXPLORE 联系您，想了解小海岸的钓鱼出游。"
+  },
+  "Je découvre le coin": {
+    "wo": "Xam gox bi",
+    "zh": "探索当地"
+  },
+  "Je découvre le lieu": {
+    "wo": "Xam bérab bi",
+    "zh": "了解这个地点"
+  },
+  "Lecture claire d’un lieu, d’une sortie ou d’une activité.": {
+    "wo": "Xibaar yu leer ci bérab walla liggéey.",
+    "zh": "清楚了解地点、出游或活动。"
+  },
+  "Chargement du lieu…": {
+    "wo": "Ñu ngi sëf xibaaru bérab bi…",
+    "zh": "正在加载地点…"
+  },
+  "Lieu indisponible.": {
+    "wo": "Bérab bi jàppandiku wul.",
+    "zh": "此地点暂不可用。"
+  },
+  "Choisis un lieu depuis la liste EXPLORE.": {
+    "wo": "Tànnal bérab ci limu EXPLORE.",
+    "zh": "请从 EXPLORE 列表选择地点。"
+  },
+  "En bref": {
+    "wo": "Ci gàttal",
+    "zh": "简介"
+  },
+  "Adresse / repère": {
+    "wo": "Adrees / màndarga",
+    "zh": "地址 / 地标"
+  },
+  "Horaires": {
+    "wo": "Waxtu yi",
+    "zh": "营业时间"
+  },
+  "Disponibilité": {
+    "wo": "Féex gi",
+    "zh": "可用状态"
+  },
+  "Note du moment": {
+    "wo": "Xibaaru léegi",
+    "zh": "最新说明"
+  },
+  "Ambiance": {
+    "wo": "Melokaan",
+    "zh": "现场氛围"
+  },
+  "Mots du lieu": {
+    "wo": "Baatu bérab bi",
+    "zh": "地点标签"
+  },
+  "Aucun mot-clé.": {
+    "wo": "Amul baat bu ñu teg.",
+    "zh": "暂无标签。"
+  },
+  "À confirmer": {
+    "wo": "War nañu koo dëggal",
+    "zh": "待确认"
+  },
+  "Disponible": {
+    "wo": "Féex na",
+    "zh": "可用"
+  },
+  "Complet": {
+    "wo": "Fees na",
+    "zh": "已满"
+  },
+  "Fermé": {
+    "wo": "Tëju na",
+    "zh": "已关闭"
+  },
+  "Protégé": {
+    "wo": "Ñu ngi koy aar",
+    "zh": "受保护"
+  },
+  "📲 QR découverte": {
+    "wo": "📲 QR ngir xam bérab bi",
+    "zh": "📲 地点二维码"
+  },
+  "Scanne pour découvrir ce lieu": {
+    "wo": "Eskane QR bi ngir xam bérab bii",
+    "zh": "扫码了解此地点"
+  },
+  "Lien prêt à partager": {
+    "wo": "Lëkkalekaay bi man nañu koo séddale",
+    "zh": "链接可分享"
+  },
+  "Quelques images pour sentir l’ambiance du lieu avant de contacter ou d’y aller.": {
+    "wo": "Ay nataal ngir xam melokaanu bérab bi bala ngay jokkoo walla dem fa.",
+    "zh": "在联系或前往之前，先通过照片了解现场氛围。"
+  },
+  "Une sortie en pêche au large, avec ambiance locale, air marin et vraie sensation du coin.": {
+    "wo": "Dem napp ci géej, xam melokaanu gox bi te noyyi ngelawu géej.",
+    "zh": "出海钓鱼，感受当地氛围与海风。"
+  },
+  "Une fiche vitrine DIGIY EXPLORE pour montrer comment un lieu, une sortie ou une expérience peut circuler proprement : photos, repère utile, contact direct, itinéraire et QR partageable. Le regard vient d’abord, puis le client clique quand il est prêt.": {
+    "wo": "Kart DIGIY EXPLORE ngir wone bérab walla génn ak ay nataal, màndarga, jokkoo jub, yoon ak QR bu ñu man a séddale. Kiliyaan bi day xool ba pare te tànn.",
+    "zh": "DIGIY EXPLORE 展示档案，提供照片、地标、直接联系、路线和可分享二维码，方便访客先浏览再决定。"
+  },
+  "Plage, lumière, promenade et repos. Un coin simple pour souffler et profiter.": {
+    "wo": "Tefes, leer, doxantu ak noppalu. Bérab bu yomb ngir noppalu.",
+    "zh": "海滩、阳光、漫步与休息。放松身心的好去处。"
+  },
+  "Une fiche de démonstration pour montrer une adresse de détente côté EXPLORE : ambiance, repère, galerie et partage par QR.": {
+    "wo": "Kartu misaal ngir wone bérabu noppalu ci EXPLORE: melokaan, màndarga, nataal ak séddale QR.",
+    "zh": "EXPLORE 休闲地点示例，展示氛围、地标、图库和二维码分享。"
   }
 };
   META.index.wo=['DIGIY EXPLORE — Xam bérab yu baax yi','Seetal bérab ak liggéey yu nekk ci gox bi.'];
