@@ -113,8 +113,9 @@ function text(tag,content,cls){
 }
 let generation=0;
 function withResaLanguage(href){
- const params=new URLSearchParams(root.location?.search||'');
- const lang=(params.get('lang')||'').toLowerCase();
+ const search=root.location?.search;
+ if(!search)return href;
+ const lang=(new URL(search,href).searchParams.get('lang')||'').toLowerCase();
  if(!/^(fr|en|es|pt|it|de|nl|ar|wo|zh)$/.test(lang))return href;
  const url=new URL(href);
  url.searchParams.set('lang',lang);
