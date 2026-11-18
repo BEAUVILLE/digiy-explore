@@ -63,11 +63,11 @@ html[dir="rtl"] body{direction:rtl}
 </section>
 
 <section class="card" id="calendarCard" style="margin-top:14px" hidden>
-<h2 style="margin-top:0">📅 Calendrier terrain</h2>
-<div class="hint">La semaine est visible d’un coup d’œil. Ajustez chaque jour selon le terrain.</div>
+<h2 style="margin-top:0" data-i18n="calTitle">📅 Calendrier terrain</h2>
+<div class="hint" data-i18n="calLead">La semaine est visible d’un coup d’œil. Ajustez chaque jour selon le terrain.</div>
 <div id="ownerWeek" style="display:grid;gap:10px;margin-top:14px"></div>
 <details style="margin-top:14px" open>
-<summary style="cursor:pointer;font-weight:900;color:var(--gold2)">📆 Calendrier mensuel</summary>
+<summary style="cursor:pointer;font-weight:900;color:var(--gold2)" data-i18n="calMonthly">📆 Calendrier mensuel</summary>
 <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin:12px 0">
 <button class="btn" id="calPrev" type="button">←</button>
 <strong id="calMonthLabel"></strong>
@@ -76,9 +76,9 @@ html[dir="rtl"] body{direction:rtl}
 <div id="monthGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
 <div id="selectedDateBox" style="margin-top:14px" hidden>
 <div style="font-weight:950" id="selectedDateLabel"></div>
-<label>Statut</label><select id="calStatus"><option value="available">Disponible</option><option value="to_confirm">À confirmer</option><option value="full">Complet</option><option value="closed">Fermé</option></select>
-<label>Note</label><input id="calNote" type="text" maxlength="180" placeholder="Ex. Départ 7h · météo à confirmer">
-<button class="save" id="calSave" type="button">Enregistrer cette date</button>
+<label data-i18n="calState">Statut</label><select id="calStatus"><option value="available" data-cal-availability="available">Disponible</option><option value="to_confirm" data-cal-availability="to_confirm">À confirmer</option><option value="full" data-i18n="calFull">Complet</option><option value="closed" data-i18n="calClosed">Fermé</option></select>
+<label data-i18n="calNoteLabel">Note</label><input id="calNote" type="text" maxlength="180" placeholder="Ex. Départ 7h · météo à confirmer">
+<button class="save" id="calSave" type="button" data-i18n="calSaveDate">Enregistrer cette date</button>
 </div>
 </details>
 <div id="calList" class="hint" style="margin-top:12px"></div>
@@ -142,6 +142,139 @@ de:{manage:"Inhaberverwaltung",sub:"Einfach: Zeiten · Preis · Verfügbarkeit �
 nl:{manage:"Eigenaarsbeheer",sub:"Eenvoudig: tijden · prijs · beschikbaarheid · notitie",back:"← Terug naar profiel",logout:"Uitloggen",lock:"Hier bewerkt u alleen informatie die vaak verandert. Naam, categorie, foto's, publicatie en structuur blijven beschermd.",hours:"Actuele tijden",hoursHint:"Bijv. 10–19u · Maandag gesloten · Op reservatie.",price:"Indicatieve prijs",priceHint:"Bijv. Vanaf 15.000 FCFA · Gratis · Op aanvraag.",availability:"Beschikbaarheid",availabilityHint:"Kies eenvoudige informatie die vandaag klopt.",note:"Actuele notitie",noteHint:"Nuttige info: tijdslot, weer, vertrek, uitzonderlijke sluiting, enz.",save:"Opslaan",saved:"Wijzigingen opgeslagen.",noSession:"Open deze pagina via de link in uw e-mail.",noSite:"Geen EXPLORE-aanwezigheid opgegeven in de link.",forbidden:"Geen EXPLORE-aanwezigheid hoort bij dit account.",loading:"Laden…"},
 ar:{manage:"إدارة المالك",sub:"بسيط: الأوقات · السعر · التوفر · ملاحظة",back:"العودة إلى الملف →",logout:"تسجيل الخروج",lock:"يمكن تعديل المعلومات التي تتغير كثيرًا فقط. الاسم والتصنيف والصور والنشر والبنية تبقى محمية.",hours:"الأوقات الحالية",hoursHint:"مثال: 10–19 · مغلق الاثنين · بالحجز.",price:"السعر التقريبي",priceHint:"مثال: ابتداءً من 15000 فرنك · مجاني · حسب الطلب.",availability:"التوفر",availabilityHint:"اختر معلومة بسيطة وصحيحة اليوم.",note:"ملاحظة الآن",noteHint:"معلومة مفيدة: وقت، طقس، انطلاق، إغلاق استثنائي، إلخ.",save:"حفظ",saved:"تم حفظ التعديلات.",noSession:"افتح هذه الصفحة من الرابط المرسل إلى بريدك.",noSite:"لا يوجد حضور EXPLORE محدد في هذا الرابط.",forbidden:"لا يوجد حضور EXPLORE مرتبط بهذا الحساب.",loading:"جار التحميل…"}
 };
+const calendarText={
+  "fr": {
+    "calTitle": "Calendrier terrain",
+    "calLead": "Consultez la semaine et ajustez chaque jour.",
+    "calMonthly": "Calendrier mensuel",
+    "calState": "Statut",
+    "calNoteLabel": "Note",
+    "calFull": "Complet",
+    "calClosed": "Fermé",
+    "calSaveDate": "Enregistrer cette date",
+    "calPick": "Choisissez une date dans le calendrier.",
+    "calSaved": "Calendrier mis à jour.",
+    "calError": "Impossible de mettre à jour le calendrier."
+  },
+  "en": {
+    "calTitle": "Field calendar",
+    "calLead": "View the week and adjust each day.",
+    "calMonthly": "Monthly calendar",
+    "calState": "Status",
+    "calNoteLabel": "Note",
+    "calFull": "Full",
+    "calClosed": "Closed",
+    "calSaveDate": "Save this date",
+    "calPick": "Choose a date in the calendar.",
+    "calSaved": "Calendar updated.",
+    "calError": "Could not update the calendar."
+  },
+  "es": {
+    "calTitle": "Calendario de actividad",
+    "calLead": "Consulta la semana y ajusta cada día.",
+    "calMonthly": "Calendario mensual",
+    "calState": "Estado",
+    "calNoteLabel": "Nota",
+    "calFull": "Completo",
+    "calClosed": "Cerrado",
+    "calSaveDate": "Guardar esta fecha",
+    "calPick": "Elige una fecha en el calendario.",
+    "calSaved": "Calendario actualizado.",
+    "calError": "No se pudo actualizar el calendario."
+  },
+  "pt": {
+    "calTitle": "Calendário de atividade",
+    "calLead": "Consulte a semana e ajuste cada dia.",
+    "calMonthly": "Calendário mensal",
+    "calState": "Estado",
+    "calNoteLabel": "Nota",
+    "calFull": "Lotado",
+    "calClosed": "Fechado",
+    "calSaveDate": "Salvar esta data",
+    "calPick": "Escolha uma data no calendário.",
+    "calSaved": "Calendário atualizado.",
+    "calError": "Não foi possível atualizar o calendário."
+  },
+  "it": {
+    "calTitle": "Calendario attività",
+    "calLead": "Consulta la settimana e modifica ogni giorno.",
+    "calMonthly": "Calendario mensile",
+    "calState": "Stato",
+    "calNoteLabel": "Nota",
+    "calFull": "Completo",
+    "calClosed": "Chiuso",
+    "calSaveDate": "Salva questa data",
+    "calPick": "Scegli una data nel calendario.",
+    "calSaved": "Calendario aggiornato.",
+    "calError": "Impossibile aggiornare il calendario."
+  },
+  "de": {
+    "calTitle": "Aktivitätskalender",
+    "calLead": "Sieh die Woche an und passe jeden Tag an.",
+    "calMonthly": "Monatskalender",
+    "calState": "Status",
+    "calNoteLabel": "Notiz",
+    "calFull": "Ausgebucht",
+    "calClosed": "Geschlossen",
+    "calSaveDate": "Dieses Datum speichern",
+    "calPick": "Wähle ein Datum im Kalender.",
+    "calSaved": "Kalender aktualisiert.",
+    "calError": "Kalender konnte nicht aktualisiert werden."
+  },
+  "nl": {
+    "calTitle": "Activiteitenkalender",
+    "calLead": "Bekijk de week en pas elke dag aan.",
+    "calMonthly": "Maandkalender",
+    "calState": "Status",
+    "calNoteLabel": "Notitie",
+    "calFull": "Vol",
+    "calClosed": "Gesloten",
+    "calSaveDate": "Sla deze datum op",
+    "calPick": "Kies een datum in de kalender.",
+    "calSaved": "Kalender bijgewerkt.",
+    "calError": "Kalender kon niet worden bijgewerkt."
+  },
+  "ar": {
+    "calTitle": "تقويم النشاط",
+    "calLead": "اعرض الأسبوع واضبط كل يوم.",
+    "calMonthly": "التقويم الشهري",
+    "calState": "الحالة",
+    "calNoteLabel": "ملاحظة",
+    "calFull": "ممتلئ",
+    "calClosed": "مغلق",
+    "calSaveDate": "حفظ هذا التاريخ",
+    "calPick": "اختر تاريخًا في التقويم.",
+    "calSaved": "تم تحديث التقويم.",
+    "calError": "تعذّر تحديث التقويم."
+  },
+  "wo": {
+    "calTitle": "Palaanu liggéey bi",
+    "calLead": "Xoolal ayu-bés bi te soppi fan yi.",
+    "calMonthly": "Palaanu weer wi",
+    "calState": "Tolluwaay",
+    "calNoteLabel": "Kàddu",
+    "calFull": "Fees na",
+    "calClosed": "Tëju na",
+    "calSaveDate": "Denc bés bii",
+    "calPick": "Tànnal bés ci palaan bi.",
+    "calSaved": "Yeesal nañu palaan bi.",
+    "calError": "Mënuñu yeesal palaan bi."
+  },
+  "zh": {
+    "calTitle": "活动日程",
+    "calLead": "查看一周日程并逐日调整。",
+    "calMonthly": "月历",
+    "calState": "状态",
+    "calNoteLabel": "备注",
+    "calFull": "已满",
+    "calClosed": "已关闭",
+    "calSaveDate": "保存此日期",
+    "calPick": "请在日历中选择日期。",
+    "calSaved": "日历已更新。",
+    "calError": "无法更新日历。"
+  }
+};
+for(const [locale,copy] of Object.entries(calendarText))Object.assign(D[locale],copy);
 if(!Object.hasOwn(D,lang))lang="fr";const tr=k=>D[lang]?.[k]||D.fr[k]||k;
 const AV={
  wo:{available:"Féex na",limited:"Barab yi néew nañu / laajal lu jiitu",unavailable:"Fees na walla tëju na",to_confirm:"War nañu koo dëggal"},
@@ -156,7 +289,7 @@ const AV={
  ar:{available:"متاح",limited:"محدود / بالحجز",unavailable:"ممتلئ أو مغلق",to_confirm:"للتأكيد"}
 };
 function fillAvailability(){const sel=$("availability");if(!sel)return;const current=window.DIGIYExploreOwnerV24.normalizeAvailability(sel.value);sel.innerHTML='<option value="">—</option>'+Object.entries(AV[lang]||AV.fr).map(([v,l])=>'<option value="'+v+'">'+l+'</option>').join("");sel.value=current;}
-function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tr(el.dataset.i18n));document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));fillAvailability();for(const id of ["viewPublicBtn","returnBtn"]){const link=$(id);const url=new URL(link.href,location.href);url.searchParams.set("lang",lang);link.href=url.href}localStorage.setItem("digiy_lang",lang)}
+function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tr(el.dataset.i18n));document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));fillAvailability();document.querySelectorAll("[data-cal-availability]").forEach(el=>el.textContent=(AV[lang]||AV.fr)[el.dataset.calAvailability]);for(const id of ["viewPublicBtn","returnBtn"]){const link=$(id);const url=new URL(link.href,location.href);url.searchParams.set("lang",lang);link.href=url.href}localStorage.setItem("digiy_lang",lang)}
 document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>{lang=b.dataset.lang;applyLang()}));
 function msg(text,type="bad"){const el=$("msg");el.textContent=text;el.className="msg show "+type}
 const ret=params.get("return");if(ret){try{const u=new URL(ret,location.origin);if(u.origin===location.origin||u.hostname.endsWith(".digiylyfe.com"))$("returnBtn").href=u.href}catch(_){}}else{const u=new URL("./master-v2.html",location.href);u.searchParams.set("lang",lang);$("returnBtn").href=u.href}
@@ -209,7 +342,7 @@ $("saveLinksMedia").onclick=async()=>{
     p_booking_url:$("bookingUrl").value.trim(),
     p_photo_urls:photos
   });
-  $("linksMediaMsg").textContent=error?"⚠️ "+error.message:"✅ Liens et photos mis à jour. Aucune réservation automatique.";
+  $("linksMediaMsg").textContent=error?"⚠️ "+(lang==="fr"?error.message:tr("calError")):"✅ Liens et photos mis à jour. Aucune réservation automatique.";
   if(!error && ownerPlace){
     const {data:refreshed}=await sb.from(CORE.table).select("slug,external_links,auth_user_id,is_active")
       .eq("slug",siteSlug).eq("auth_user_id",user.id).maybeSingle();
@@ -224,8 +357,8 @@ $("saveLinksMedia").onclick=async()=>{
 function localIso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 async function saveCalendarDay(day,status,note){
  const {error}=await sb.rpc("digiy_explore_owner_set_calendar_day_v1",{p_slug:siteSlug,p_day:day,p_status:status,p_note:note||""});
- if(error){$("calList").textContent="⚠️ "+error.message;return false}
- $("calList").textContent="✅ Calendrier mis à jour.";
+ if(error){$("calList").textContent="⚠️ "+(lang==="fr"?error.message:tr("calError"));return false}
+ $("calList").textContent="✅ "+tr("calSaved");
  // Owner-only read-only refresh after actual EXPLORE write. Never submits a reservation.
  if(resaSetupSession?.refreshCalendar){
   try{await resaSetupSession.refreshCalendar()}catch(_){
@@ -237,7 +370,7 @@ async function saveCalendarDay(day,status,note){
 async function loadCalendar(){
  const today=new Date(),from=localIso(today);
  const {data,error}=await sb.rpc("digiy_explore_owner_calendar_v1",{p_slug:siteSlug,p_from:from,p_days:14});
- if(error){$("calList").textContent="⚠️ "+error.message;return}
+ if(error){$("calList").textContent="⚠️ "+(lang==="fr"?error.message:tr("calError"));return}
  const map=new Map((data||[]).map(r=>[r.day,r]));
  const names=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
  $("ownerWeek").innerHTML=Array.from({length:7},(_,i)=>{
@@ -259,7 +392,7 @@ async function loadCalendar(){
  });
 }
 let calendarCursor=new Date(),selectedCalendarDay="";
-function monthName(d){return d.toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}
+function monthName(d){return d.toLocaleDateString(lang==="fr"?"fr-FR":lang,{month:"long",year:"numeric"})}
 async function renderMonth(){
  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),start=(first.getDay()+6)%7;
  $("calMonthLabel").textContent=monthName(calendarCursor);
@@ -279,7 +412,7 @@ async function renderMonth(){
    selectedCalendarDay=btn.dataset.calDay;
    const r=map.get(selectedCalendarDay)||{};
    $("selectedDateBox").hidden=false;
-   $("selectedDateLabel").textContent=new Date(selectedCalendarDay+"T12:00:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+   $("selectedDateLabel").textContent=new Date(selectedCalendarDay+"T12:00:00").toLocaleDateString(lang==="fr"?"fr-FR":lang,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
    $("calStatus").value=r.status||"to_confirm";
    $("calNote").value=r.note||"";
  });
@@ -287,7 +420,7 @@ async function renderMonth(){
 $("calPrev").onclick=()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()-1,1);renderMonth()};
 $("calNext").onclick=()=>{calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+1,1);renderMonth()};
 $("calSave").onclick=async()=>{
- if(!selectedCalendarDay){$("calList").textContent="Choisis une date dans le calendrier.";return}
+ if(!selectedCalendarDay){$("calList").textContent=tr("calPick");return}
  if(await saveCalendarDay(selectedCalendarDay,$("calStatus").value,$("calNote").value.trim())){await Promise.all([loadCalendar(),renderMonth()])}
 };
 $("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.href=$("returnBtn").href};boot().then(async verified=>{if(verified===true){await loadCalendar();await renderMonth()}});
