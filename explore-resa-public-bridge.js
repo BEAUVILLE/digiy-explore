@@ -112,6 +112,15 @@ function text(tag,content,cls){
  return e;
 }
 let generation=0;
+function withResaLanguage(href){
+ const search=root.location?.search;
+ if(!search)return href;
+ const lang=(new URL(search,href).searchParams.get('lang')||'').toLowerCase();
+ if(!/^(fr|en|es|pt|it|de|nl|ar|wo|zh)$/.test(lang))return href;
+ const url=new URL(href);
+ url.searchParams.set('lang',lang);
+ return url.href;
+}
 async function mount(place,exploreSlug,db){
  const section=document.getElementById('resaAppointmentsSection');
  const status=document.getElementById('resaAppointmentsStatus');
@@ -161,10 +170,10 @@ async function mount(place,exploreSlug,db){
    return {shown:true,mode:'pilot',available:0};
   }
   status.textContent='Créneaux ouverts sur le serveur. Pour bloquer un rendez-vous, remplissez le formulaire RÉSA sécurisé ; consulter cette liste ne réserve rien.';
-  go.href=pilot.href;go.hidden=false;go.target='_blank';go.rel='noopener noreferrer';
+  go.href=withResaLanguage(pilot.href);go.hidden=false;go.target='_blank';go.rel='noopener noreferrer';
   go.textContent='✅ Poser mon rendez-vous · Paiement sur place';
   if(old&&old.href===ref.href){
-   old.href=pilot.href;old.textContent='📅 Poser mon rendez-vous';old.hidden=false;
+   old.href=withResaLanguage(pilot.href);old.textContent='📅 Poser mon rendez-vous';old.hidden=false;
   }
   return {shown:true,mode:'pilot',available:pilot.slots.length};
  }
@@ -176,7 +185,7 @@ async function mount(place,exploreSlug,db){
  const slots=parsePublishedSlots(response?.data,ref.slug,from);
  if(slots===null)return {shown:false,reason:'not_published'};
  section.hidden=false;
- go.href=ref.href;
+ go.href=withResaLanguage(ref.href);
  if(!slots.length){
   status.textContent='Aucun rendez-vous disponible publié pour les 7 prochains jours. Vous pouvez contacter directement le professionnel.';
   return {shown:true,available:0};
@@ -191,7 +200,7 @@ async function mount(place,exploreSlug,db){
  // A dedicated booking link may exist in EXPLORE already. We adjust only its
  // wording after the authoritative publication/slot check succeeds.
  const old=document.getElementById('bookingBtn');
- if(old&&old.href===ref.href){old.textContent='📅 Voir les créneaux'}
+ if(old&&old.href===ref.href){old.href=withResaLanguage(ref.href);old.textContent='📅 Voir les créneaux'}
  return {shown:true,available:slots.length};
 }
 root.DIGIYExploreResa=Object.freeze({parseApprovedResaLink,parsePublishedSlots,eligibleLegacyService,legacyDirectContact,localDay,dakarDay,securePilotOptions,mount});
