@@ -17,7 +17,7 @@
     .language-inner{height:100%;display:flex;align-items:center;gap:6px;max-width:1180px;margin:auto;min-width:0}
     .explore-mark{display:flex;align-items:center;gap:6px;flex:0 0 auto;color:#fff2bf;font-weight:1000;font-size:11px;letter-spacing:.03em;white-space:nowrap}
     .explore-mark span{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#f2cc78);color:#062414;font-size:16px}
-    .language-buttons{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;flex:1;min-width:0}
+    .language-buttons{display:grid!important;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px;flex:1;min-width:0}
     .language-buttons button{display:block!important;min-width:0;height:29px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:#fff;padding:0 3px;font-weight:1000;font-size:9px;cursor:pointer;white-space:nowrap}
     .language-buttons button.active{background:linear-gradient(135deg,var(--gold),#f2cc78);border-color:rgba(220,180,90,.62);color:#062414;box-shadow:0 4px 12px rgba(0,0,0,.18)}
 
@@ -51,7 +51,7 @@
   <script src="./explore-i18n-data-2.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-3.js?v=20260730-explore7a"></script>
   <script src="./explore-i18n-data-4.js?v=20260730-explore7a"></script>
-  <script src="./explore-7lang-engine.js?v=20260827-lang-buttons-live" defer></script>
+  <script src="./explore-7lang-engine.js?v=20261118-world10" defer></script>
   <script src="./explore-world-europe.js?v=20260801-world1" defer></script>
   <script src="./explore-portes-cartouche.js?v=20261021-professionnels-v1" defer></script>
 </head>
@@ -68,6 +68,8 @@
         <button type="button" data-shell-lang="it">IT</button>
         <button type="button" data-shell-lang="nl">NL</button>
         <button type="button" data-shell-lang="ar">AR</button>
+        <button type="button" data-shell-lang="wo">WO</button>
+        <button type="button" data-shell-lang="zh">ZH</button>
       </nav>
     </div>
   </header>
@@ -84,7 +86,7 @@
       var raw=String(src.get('country')||src.get('pays')||'sn').toLowerCase();
       var country=raw==='fr'||raw==='france'?'fr':raw==='us'||raw==='usa'?'us':'sn';
       var lang=String(document.documentElement.lang||src.get('lang')||'fr').slice(0,2).toLowerCase();
-      if(!['fr','en','es','pt','de','it','nl','ar'].includes(lang)) lang='fr';
+      if(!['fr','en','es','pt','de','it','nl','ar','wo','zh'].includes(lang)) lang='fr';
       var url=new URL('https://digiylyfe.com/tarifs-adherents-1.html');
       url.searchParams.set('country',country);url.searchParams.set('lang',lang);
       return url.toString();
@@ -128,7 +130,7 @@
             box.id='digiyExploreAdherent19900';
             box.innerHTML=
               '<strong>🌍 EXPLORE PRO · Voir les tarifs adhérents selon le pays</strong>'+
-              '<span>Carte digitale · QR · visibilité EXPLORE · contact direct · 8 langues · 0 % commission.</span>'+
+              '<span>Carte digitale · QR · visibilité EXPLORE · contact direct · 0 % commission.</span>'+
               '<a href="'+officialTarifs()+'" target="_blank" rel="noopener noreferrer">💳 Consulter les tarifs adhérents</a>';
             hero.appendChild(box);
 

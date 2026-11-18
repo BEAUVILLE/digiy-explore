@@ -4,7 +4,7 @@
   if(window.__DIGIY_EXPLORE_7LANG__) return;
   window.__DIGIY_EXPLORE_7LANG__=true;
 
-  var SUPPORTED=["fr", "en", "es", "de", "it", "nl", "ar"];
+  var SUPPORTED=["fr", "en", "es", "de", "it", "nl", "ar", "wo", "zh"];
   var STORE='digiy_explore_lang_7';
   var ROWS=window.DIGIY_EXPLORE_I18N_ROWS||[];
   var META={"index": {"fr": ["DIGIY EXPLORE — Découvrir les bons coins", "DIGIY EXPLORE — découvrir rapidement les lieux et expériences du terrain, contacter directement DIGIY et proposer un lieu sans engagement."], "en": ["DIGIY EXPLORE — Discover the right spots", "DIGIY EXPLORE — quickly discover local places and experiences, contact DIGIY directly and suggest a place with no commitment."], "es": ["DIGIY EXPLORE — Descubre los mejores lugares", "DIGIY EXPLORE — descubre rápidamente lugares y experiencias locales, contacta directamente con DIGIY y propone un lugar sin compromiso."], "de": ["DIGIY EXPLORE — Gute Orte entdecken", "DIGIY EXPLORE — lokale Orte und Erlebnisse schnell entdecken, DIGIY direkt kontaktieren und unverbindlich einen Ort vorschlagen."], "it": ["DIGIY EXPLORE — Scopri i posti giusti", "DIGIY EXPLORE — scopri rapidamente luoghi ed esperienze locali, contatta direttamente DIGIY e proponi un luogo senza impegno."], "nl": ["DIGIY EXPLORE — Ontdek de beste plekken", "DIGIY EXPLORE — ontdek snel lokale plekken en ervaringen, neem direct contact op met DIGIY en stel vrijblijvend een plek voor."], "ar": ["DIGIY EXPLORE — اكتشف الأماكن الجيدة", "DIGIY EXPLORE — اكتشف بسرعة الأماكن والتجارب المحلية، وتواصل مباشرة مع DIGIY واقترح مكانًا دون التزام."]}, "catalogue": {"fr": ["DIGIY EXPLORE — Lieux et expériences du terrain", "Catalogue officiel DIGIY EXPLORE : expériences actives, annonces passerelles et inspirations clairement distinguées."], "en": ["DIGIY EXPLORE — Local places and experiences", "Official DIGIY EXPLORE catalogue: active experiences, bridge listings and inspirations clearly distinguished."], "es": ["DIGIY EXPLORE — Lugares y experiencias locales", "Catálogo oficial DIGIY EXPLORE: experiencias activas, anuncios puente e inspiraciones claramente diferenciados."], "de": ["DIGIY EXPLORE — Orte und Erlebnisse vor Ort", "Offizieller DIGIY EXPLORE-Katalog: aktive Erlebnisse, Brückenanzeigen und Inspirationen klar unterschieden."], "it": ["DIGIY EXPLORE — Luoghi ed esperienze locali", "Catalogo ufficiale DIGIY EXPLORE: esperienze attive, annunci ponte e ispirazioni chiaramente distinti."], "nl": ["DIGIY EXPLORE — Lokale plekken en ervaringen", "Officiële DIGIY EXPLORE-catalogus: actieve ervaringen, brugvermeldingen en inspiraties duidelijk onderscheiden."], "ar": ["DIGIY EXPLORE — أماكن وتجارب محلية", "كتالوج DIGIY EXPLORE الرسمي: تجارب نشطة وإعلانات تمهيدية وإلهامات مميزة بوضوح."]}, "fiche": {"fr": ["Voir le lieu — DIGIY EXPLORE", "Découvrez un lieu avec son ambiance, ses photos, son repère utile, son QR public et son contact direct."], "en": ["View the place — DIGIY EXPLORE", "Discover a place with its atmosphere, photos, useful landmark, public QR and direct contact."], "es": ["Ver el lugar — DIGIY EXPLORE", "Descubre un lugar con su ambiente, fotos, referencia útil, QR público y contacto directo."], "de": ["Ort ansehen — DIGIY EXPLORE", "Entdecke einen Ort mit Atmosphäre, Fotos, Orientierungspunkt, öffentlichem QR und direktem Kontakt."], "it": ["Vedi il luogo — DIGIY EXPLORE", "Scopri un luogo con atmosfera, foto, riferimento utile, QR pubblico e contatto diretto."], "nl": ["Bekijk de plek — DIGIY EXPLORE", "Ontdek een plek met sfeer, foto’s, herkenningspunt, openbare QR en direct contact."], "ar": ["عرض المكان — DIGIY EXPLORE", "اكتشف مكانًا بأجوائه وصوره وعلامته المفيدة ورمز QR العام والتواصل المباشر."]}, "inscription": {"fr": ["Demande EXPLORE — Activation directe", "Demande DIGIY EXPLORE : coordonnées, formule de visibilité, paiement direct et preuve WhatsApp ou SMS."], "en": ["EXPLORE request — Direct activation", "DIGIY EXPLORE request: contact details, visibility plan, direct payment and WhatsApp or SMS proof."], "es": ["Solicitud EXPLORE — Activación directa", "Solicitud DIGIY EXPLORE: datos, fórmula de visibilidad, pago directo y comprobante por WhatsApp o SMS."], "de": ["EXPLORE-Anfrage — Direkte Aktivierung", "DIGIY EXPLORE-Anfrage: Kontaktdaten, Sichtbarkeitspaket, Direktzahlung und Nachweis per WhatsApp oder SMS."], "it": ["Richiesta EXPLORE — Attivazione diretta", "Richiesta DIGIY EXPLORE: dati, formula di visibilità, pagamento diretto e prova via WhatsApp o SMS."], "nl": ["EXPLORE-aanvraag — Directe activering", "DIGIY EXPLORE-aanvraag: contactgegevens, zichtbaarheidspakket, directe betaling en bewijs via WhatsApp of sms."], "ar": ["طلب EXPLORE — تفعيل مباشر", "طلب DIGIY EXPLORE: بيانات الاتصال وخطة الظهور والدفع المباشر والإثبات عبر واتساب أو SMS."]}};
@@ -31,6 +31,168 @@
   });
   partial.sort(function(a,b){return norm(b[0]).length-norm(a[0]).length;});
 
+  var world10 = {
+  "Découvre les bons coins.": {
+    "wo": "Xam bérab yu baax yi.",
+    "zh": "发现值得去的好地方。"
+  },
+  "Choisis une expérience.": {
+    "wo": "Tànnal li nga bëgg a def.",
+    "zh": "选择你的体验。"
+  },
+  "Parle au bon contact.": {
+    "wo": "Jokkoo ak ki war.",
+    "zh": "直接联系合适的人。"
+  },
+  "Voir les découvertes": {
+    "wo": "Xool bérab yi",
+    "zh": "查看推荐体验"
+  },
+  "Voir la fiche": {
+    "wo": "Xool kart bi",
+    "zh": "查看档案"
+  },
+  "Voir la carte": {
+    "wo": "Xool kaart bi",
+    "zh": "查看名片"
+  },
+  "Appeler": {
+    "wo": "Woo",
+    "zh": "拨打电话"
+  },
+  "À découvrir maintenant": {
+    "wo": "Li nga man a gis léegi",
+    "zh": "现在就去探索"
+  },
+  "Sortie pêche — Petite Côte": {
+    "wo": "Dem napp — Petite Côte",
+    "zh": "钓鱼出游 — 小海岸"
+  },
+  "Je suis intéressé": {
+    "wo": "Bëgg naa xam ci lu gën a bari",
+    "zh": "我感兴趣"
+  },
+  "Retour au site": {
+    "wo": "Dellu ci sit bi",
+    "zh": "返回网站"
+  },
+  "Retour": {
+    "wo": "Dellu",
+    "zh": "返回"
+  },
+  "Proposer un lieu": {
+    "wo": "Joxe xalaatu bérab",
+    "zh": "推荐地点"
+  },
+  "Proposer mon lieu": {
+    "wo": "Won sama bérab",
+    "zh": "推荐我的地点"
+  },
+  "Proposer une activité": {
+    "wo": "Joxe xalaatu liggéey",
+    "zh": "推荐活动"
+  },
+  "Proposer une expérience": {
+    "wo": "Joxe xalaatu li ñu man a def",
+    "zh": "推荐体验"
+  },
+  "Informations professionnelles": {
+    "wo": "Xibaaru liggéey",
+    "zh": "经营者信息"
+  },
+  "🔐 Accès propriétaire": {
+    "wo": "🔐 Duggukaayu boroom bi",
+    "zh": "🔐 经营者入口"
+  },
+  "Contact direct": {
+    "wo": "Jokkoo jub",
+    "zh": "直接联系"
+  },
+  "Y aller": {
+    "wo": "Dem fa",
+    "zh": "前往此处"
+  },
+  "Partager": {
+    "wo": "Séddale",
+    "zh": "分享"
+  },
+  "Images": {
+    "wo": "Nataal yi",
+    "zh": "图片"
+  },
+  "À savoir": {
+    "wo": "Li nga war a xam",
+    "zh": "须知"
+  },
+  "Infos utiles": {
+    "wo": "Xibaar yu am solo",
+    "zh": "实用信息"
+  },
+  "Ambiance en images": {
+    "wo": "Melokaanu bérab bi ci nataal",
+    "zh": "现场图片"
+  },
+  "📋 Copier": {
+    "wo": "📋 Duppi",
+    "zh": "📋 复制"
+  },
+  "🧭 Ouvrir": {
+    "wo": "🧭 Ubbi",
+    "zh": "🧭 打开"
+  },
+  "↗ Ouvrir": {
+    "wo": "↗ Ubbi",
+    "zh": "↗ 打开"
+  },
+  "Tarifs": {
+    "wo": "Njëg yi",
+    "zh": "价格"
+  },
+  "📅 Cette semaine": {
+    "wo": "📅 Ayu-bés bii",
+    "zh": "📅 本周"
+  },
+  "Disponibilité terrain sur les 7 prochains jours.": {
+    "wo": "Waxtu yi féex ci juróom-ñaari fan yi di ñëw.",
+    "zh": "未来七天的可用情况。"
+  },
+  "📅 Voir le planning et choisir un créneau": {
+    "wo": "📅 Xool palaan bi te tànn waxtu",
+    "zh": "📅 查看日程并选择时段"
+  },
+  "💬 Demander une disponibilité": {
+    "wo": "💬 Laaj waxtu wu féex",
+    "zh": "💬 询问可用时间"
+  },
+  "📅 Rendez-vous du professionnel": {
+    "wo": "📅 Ndaje yi ak ki di liggéey",
+    "zh": "📅 服务人员的预约"
+  },
+  "Vérification des disponibilités…": {
+    "wo": "Ñu ngi seet waxtu yi féex…",
+    "zh": "正在查询可用时间…"
+  },
+  "EXPLORE montre immédiatement les lieux, sorties et idées du terrain. Tu regardes, tu choisis, puis tu contactes DIGIY ou l’acteur local quand la porte est prête.": {
+    "wo": "EXPLORE day wone bérab yi ak li nga man a def. Xoolal, tànnal, te jokkoo ak DIGIY walla ki di liggéey ci gox bi.",
+    "zh": "EXPLORE 展示本地地点、出游和活动。浏览并选择后，可联系 DIGIY 或当地经营者。"
+  },
+  "Contact, adresse, ambiance et mots utiles.": {
+    "wo": "Jokkoo, adrees ak melokaanu bérab bi.",
+    "zh": "联系方式、地址和现场氛围。"
+  },
+  "Le résumé utile pour comprendre vite et décider.": {
+    "wo": "Ci gàttal, li nga soxla ngir tànn.",
+    "zh": "快速了解并作出选择。"
+  },
+  "💳 Consulter les tarifs adhérents": {
+    "wo": "💳 Xool njëgu bokk",
+    "zh": "💳 查看会员价格"
+  }
+};
+  META.index.wo=['DIGIY EXPLORE — Xam bérab yu baax yi','Seetal bérab ak liggéey yu nekk ci gox bi.'];
+  META.index.zh=['DIGIY EXPLORE — 探索好去处','发现当地地点与体验。'];
+  META.fiche.wo=['Xool bérab bi — DIGIY EXPLORE','Xoolal bérab bi ak anam wi ngay jokkoo ak boroom bi.'];
+  META.fiche.zh=['查看地点 — DIGIY EXPLORE','查看地点信息并直接联系经营者。'];
   function valid(v){
     v=String(v||'').slice(0,2).toLowerCase();
     return SUPPORTED.indexOf(v)>=0?v:'fr';
@@ -44,6 +206,7 @@
     var raw=String(value==null?'':value);
     if(lang==='fr')return raw;
     var clean=norm(raw);
+    if(lang==='wo'||lang==='zh')return Object.hasOwn(world10,clean)?world10[clean][lang]:raw;
     var row=exact[clean];
     if(row)return row[langIndex[lang]]||raw;
     var result=clean;
@@ -55,7 +218,7 @@
   }
   function looksFrench(value){
     var clean=norm(value);
-    if(exact[clean])return true;
+    if(exact[clean]||Object.hasOwn(world10,clean))return true;
     return partial.some(function(r){var fr=norm(r[0]);return fr.length>10&&clean.indexOf(fr)>=0;});
   }
   function rememberText(node){
@@ -160,6 +323,8 @@
       it:{general:'Ciao, vengo da DIGIY EXPLORE. Vorrei informazioni su un luogo o proporre visibilità senza impegno.',fishing:'Ciao, vengo da DIGIY EXPLORE. Sono interessato a un’uscita di pesca sulla Petite Côte.',saly:'Ciao, vengo da DIGIY EXPLORE. Conosco un luogo a Saly da far scoprire.',exp:'Ciao, vengo da DIGIY EXPLORE. Voglio proporre un’esperienza locale.'},
       nl:{general:'Hallo, ik kom via DIGIY EXPLORE. Ik wil informatie over een plek of vrijblijvend zichtbaarheid voorstellen.',fishing:'Hallo, ik kom via DIGIY EXPLORE. Ik heb interesse in een visuitstap aan de Petite Côte.',saly:'Hallo, ik kom via DIGIY EXPLORE. Ik ken een plek in Saly om voor te stellen.',exp:'Hallo, ik kom via DIGIY EXPLORE. Ik wil een lokale ervaring voorstellen.'},
       ar:{general:'مرحبًا، أتيت من DIGIY EXPLORE. أود معلومات عن مكان أو اقتراح ظهور دون التزام.',fishing:'مرحبًا، أتيت من DIGIY EXPLORE. أنا مهتم برحلة صيد على الساحل الصغير.',saly:'مرحبًا، أتيت من DIGIY EXPLORE. أعرف مكانًا في سالي يستحق التعريف.',exp:'مرحبًا، أتيت من DIGIY EXPLORE. أريد اقتراح تجربة محلية.'}
+      ,wo:{general:'Nanga def, DIGIY EXPLORE laa jóge. Bëgg naa ay xibaar ci bérab bi.',fishing:'Nanga def, DIGIY EXPLORE laa jóge. Bëgg naa dem napp ci Petite Côte.',saly:'Nanga def, xam naa bérab bu nekk Saly bu ma bëgg a won.',exp:'Nanga def, bëgg naa won li ñu man a def ci sama gox.'},
+      zh:{general:'您好，我通过 DIGIY EXPLORE 联系您，想咨询地点信息。',fishing:'您好，我通过 DIGIY EXPLORE 联系您，想了解小海岸的钓鱼出游。',saly:'您好，我想推荐萨利的一个地点。',exp:'您好，我想推荐一项当地体验。'}
     }[lang];
     function wa(id,text){var el=doc.getElementById(id);if(el)el.href='https://wa.me/221771342889?text='+encodeURIComponent(text);}
     function sms(id,text){var el=doc.getElementById(id);if(el)el.href='sms:+221771342889?body='+encodeURIComponent(text);}
