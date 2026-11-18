@@ -187,12 +187,114 @@
   "💳 Consulter les tarifs adhérents": {
     "wo": "💳 Xool njëgu bokk",
     "zh": "💳 查看会员价格"
+  },
+  "Le terrain inspire.": {
+    "wo": "Gox bi day joxe ay xalaat.",
+    "zh": "从当地发现灵感。"
+  },
+  "Le statut protège la confiance.": {
+    "wo": "Tolluwaayu fi nekk day aar kóolute gi.",
+    "zh": "清楚标明状态，才能让人信任。"
+  },
+  "Découverte locale · contact humain": {
+    "wo": "Xam gox bi · jokkoo ak nit",
+    "zh": "本地探索 · 真人联系"
+  },
+  "Statut clair": {
+    "wo": "Tolluwaay bu leer",
+    "zh": "状态清晰"
+  },
+  "Contact humain": {
+    "wo": "Jokkoo ak nit",
+    "zh": "真人联系"
+  },
+  "0 % de commission DIGIY": {
+    "wo": "0 % komisoŋ DIGIY",
+    "zh": "DIGIY 佣金为 0%"
+  },
+  "Aucune fausse disponibilité": {
+    "wo": "Amul waxtu bu ñu sos",
+    "zh": "无虚假可用时段"
+  },
+  "État officiel · 29 juillet 2026": {
+    "wo": "Tolluwaay bu ñu yégle · 29 sulet 2026",
+    "zh": "官方状态 · 2026 年 7 月 29 日"
+  },
+  "0 expérience active confirmée": {
+    "wo": "Amul lu ñu dëggal te ubbeeku",
+    "zh": "0 项已确认开放的体验"
+  },
+  "Annonce passerelle · non confirmée": {
+    "wo": "Yégle ngir seet li nit ñi bëgg · dëggaluñu ko",
+    "zh": "意向征集 · 尚未确认"
+  },
+  "Signaler mon intérêt": {
+    "wo": "Wax ne bëgg naa ci xibaar",
+    "zh": "表达兴趣"
+  },
+  "Inspiration · non réservable": {
+    "wo": "Xalaat · mëneesul koo jël",
+    "zh": "灵感展示 · 暂不可预约"
+  },
+  "Ambiance plage — Saly": {
+    "wo": "Melokaanu tefes — Saly",
+    "zh": "海滩风情 — 萨利"
+  },
+  "Découverte locale — Dakar": {
+    "wo": "Xam gox bi — Dakar",
+    "zh": "本地探索 — 达喀尔"
+  },
+  "Règle officielle": {
+    "wo": "Sàrt bu ñu yégle",
+    "zh": "官方规则"
+  },
+  "DIGIY EXPLORE distingue les expériences réellement confirmées, les annonces passerelles qui testent l’intérêt et les inspirations qui préparent de futures fiches.": {
+    "wo": "DIGIY EXPLORE day ràññale li ñu dëggal, yégle yi ñuy natt li nit ñi bëgg ak xalaat yi ñuy waajal.",
+    "zh": "DIGIY EXPLORE 区分已确认的体验、用于征集意向的公告，以及为未来档案准备的灵感。"
+  },
+  "Aucune activité ne doit être présentée comme réservable ou disponible tant qu’un acteur local n’a pas officiellement validé sa fiche et son contact.": {
+    "wo": "Dañuy wone liggéey ni lu féex gannaaw bu ki koy def dëggalee kartam ak jokkoo gi.",
+    "zh": "本地经营者正式确认档案和联系方式后，活动才能标为可用或可预约。"
+  },
+  "DIGIY recueille l’intérêt pour préparer une future mise en relation. Aucun prestataire, tarif, date ou disponibilité n’est encore confirmé.": {
+    "wo": "DIGIY day seet ñi bëgg ngir waajal jokkoo ëllëg. Dëggaluñu kenn kuy def liggéey bi, njëg, bés walla waxtu wu féex.",
+    "zh": "DIGIY 正在征集意向，以便日后协助联系。服务人员、价格、日期和可用时段均未确认。"
+  },
+  "Une inspiration destinée aux adresses de plage, promenades et lieux de détente qui souhaitent devenir visibles sur DIGIY EXPLORE.": {
+    "wo": "Xalaat ngir bérabi tefes, doxantu ak noppalu yi bëgg feeñ ci DIGIY EXPLORE.",
+    "zh": "面向希望在 DIGIY EXPLORE 展示的海滨场所、散步路线和休闲地点。"
+  },
+  "Une inspiration pour de futures balades, guides, sorties familiales et expériences locales clairement identifiées.": {
+    "wo": "Xalaat ngir doxantu, yóbbaale, génn ak njaboot ak li ñu man a def ci gox bi ëllëg.",
+    "zh": "为未来明确发布的散步、导览、家庭出游及本地体验提供灵感。"
+  },
+  "Une annonce passerelle mesure l’intérêt": {
+    "wo": "Yégle day natt li nit ñi bëgg",
+    "zh": "意向公告用于征集兴趣"
+  },
+  "Annonce passerelle sortie pêche Petite Côte": {
+    "wo": "Yégle dem napp ci Petite Côte",
+    "zh": "小海岸钓鱼出游意向公告"
+  },
+  "Inspiration plage à Saly": {
+    "wo": "Xalaatu tefesu Saly",
+    "zh": "萨利海滩灵感"
+  },
+  "Inspiration découverte locale à Dakar": {
+    "wo": "Xalaatu xam Dakar",
+    "zh": "达喀尔本地探索灵感"
+  },
+  "Bonjour, je viens de DIGIY EXPLORE. Je suis intéressé par une sortie pêche sur la Petite Côte.": {
+    "wo": "Nanga def, DIGIY EXPLORE laa jóge. Bëgg naa dem napp ci Petite Côte.",
+    "zh": "您好，我通过 DIGIY EXPLORE 联系您，想了解小海岸的钓鱼出游。"
   }
 };
   META.index.wo=['DIGIY EXPLORE — Xam bérab yu baax yi','Seetal bérab ak liggéey yu nekk ci gox bi.'];
   META.index.zh=['DIGIY EXPLORE — 探索好去处','发现当地地点与体验。'];
   META.fiche.wo=['Xool bérab bi — DIGIY EXPLORE','Xoolal bérab bi ak anam wi ngay jokkoo ak boroom bi.'];
   META.fiche.zh=['查看地点 — DIGIY EXPLORE','查看地点信息并直接联系经营者。'];
+  META.catalogue.wo=['DIGIY EXPLORE — Bérab ak liggéey ci gox bi','Xool yégle yi, xalaat yi ak li ñu dëggal.'];
+  META.catalogue.zh=['DIGIY EXPLORE — 本地地点与体验','查看本地公告、灵感和已确认体验。'];
   function valid(v){
     v=String(v||'').slice(0,2).toLowerCase();
     return SUPPORTED.indexOf(v)>=0?v:'fr';
